@@ -5,6 +5,7 @@ const { createClient } = require('@supabase/supabase-js');
 const { systemInstruction } = require('./config');
 const { transcribeAudio } = require('./transcribe');
 const { handleReaction } = require('./react');
+const { handleExplainReaction } = require('./explain');
 
 // クライアントの設定
 const client = new Client({
@@ -41,7 +42,7 @@ const commands = [
         .setRequired(true)),
 ].map(command => command.toJSON());
 
-const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
+const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN);
 
 (async () => {
   try {
@@ -105,7 +106,7 @@ async function saveConversationHistory(userId, history) {
   }
 }
 
-// リアクション追加時の処理（👍または🎤）
+// リアクション追加時の処理（👍、🎤、❓）
 client.on('messageReactionAdd', async (reaction, user) => {
   if (user.bot || reaction.message.partial) {
     try {
@@ -139,10 +140,19 @@ client.on('messageReactionAdd', async (reaction, user) => {
     } else if (reaction.emoji.name === '👍') {
       // テキスト応答
       try {
-        await handleReaction(reaction, user, model, getConversationHistory, saveConversationHistory);
+        await handleReaction(reaction, user, genAI, getConversationHistory, saveConversationHistory);
         cooldowns.set(userId, Date.now());
       } catch (error) {
         console.error('リアクション処理エラー:', error);
+        await reaction.message.reply('うわっ、なんかミスっちゃったみたい！🙈 もう一回試してみてね！');
+      }
+    } else if (reaction.emoji.name === '❓') {
+      // 解説処理
+      try {
+        await handleExplainReaction(reaction.message, reaction.message.channel, user, genAI, getConversationHistory, saveConversationHistory);
+        cooldowns.set(userId, Date.now());
+      } catch (error) {
+        console.error('解説処理エラー:', error);
         await reaction.message.reply('うわっ、なんかミスっちゃったみたい！🙈 もう一回試してみてね！');
       }
     }
@@ -188,4 +198,4 @@ client.on('interactionCreate', async (interaction) => {
 });
 
 // ボットログイン
-client.login(process.env.DISCORD_TOKEN);
+client.login(process.env.DISCORD_BOT_TOKEN);
