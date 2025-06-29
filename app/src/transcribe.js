@@ -125,7 +125,7 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
   }
 
   const filename = targetAttachment.filename || targetAttachment.name || `voice-message-${Date.now()}.ogg`;
-  const filePath = path.join(__dirname, 'temp', `original_${Date.now()}.ogg`);
+  const filePath = path.join(__dirname, '../temp', `original_${Date.now()}.ogg`);
   const mimeType = 'audio/ogg';
 
   try {

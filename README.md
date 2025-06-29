@@ -1,158 +1,128 @@
 # Aimolt Discord Bot
 
-Aimolt is a Discord bot powered by Gemini AI and Supabase, designed to respond to text messages, provide detailed explanations, and transcribe voice messages. It supports:
+Aimolt is a Discord bot powered by Gemini AI (gemini-1.5-flash) and Supabase, designed to respond to text messages, transcribe voice messages, and explain content. It supports:
 
-- **Text Responses**: Reply to messages with 👍 reactions or `/ask` slash command, using Gemini AI with conversation history stored in Supabase.
-- **Explanations**: Provide detailed explanations for messages with ❓ reactions, including embedded content.
-- **Voice Transcription**: Transcribe `.ogg` voice messages with 🎤 reactions, powered by Gemini AI.
+- **Text Responses**: Reply to messages with 👍 reactions or `/ask` slash command, using Gemini AI with conversation history stored in Supabase/PostgreSQL.
+- **Voice Transcription**: Transcribe `.ogg` voice messages with 🎤 reactions.
+- **Content Explanation**: Explain messages with ❓ reactions, providing detailed insights in an Embed format.
 
 ## Features
 
-- Responds to text messages via 👍 reactions or `/ask` command with context-aware replies.
-- Explains message content in detail with ❓ reactions, including embedded content, using a custom prompt.
-- Transcribes `.ogg` voice messages when reacted with 🎤, displaying results in the chat.
-- Stores conversation history in Supabase for contextual responses.
+- Responds to text messages via 👍 reactions or `/ask` command with context-aware replies in a fun, casual Japanese tone (emulating a witty 20s female, "aimolt").
+- Transcribes `.ogg` voice messages when reacted with 🎤, posting results with "🎉 文字起こしが完了したよ〜！".
+- Explains message content with ❓ reactions, using clear and beginner-friendly explanations.
+- Stores conversation history in Supabase or local PostgreSQL for contextual responses.
 - Uses PM2 for process management in production.
 
 ## Prerequisites
 
-- **Node.js**: v18 or later.
-- **Discord Bot Token**: Create a bot on [Discord Developer Portal](https://discord.com/developers/applications).
+- **Node.js**: v18.x or later (tested with v18.20.0).
+- **Discord Bot Token**: Create a bot on [Discord Developer Portal](https://discord.com/developers/applications) with `Guilds`, `GuildMessages`, `GuildMessageReactions`, and `MessageContent` intents.
 - **Gemini API Key**: Obtain from [Google AI Studio](https://makersuite.google.com/).
-- **Supabase Project**: Set up a project with a `conversations` table (`user_id: string`, `message: jsonb`, `created_at: timestamp`).
+- **Supabase Project**: Set up with a `conversations` table (see Database Schema below).
+- **PostgreSQL**: Local instance (via Docker, `postgres:15`) for conversation history backup.
 - **PM2**: For running the bot in production (`npm install -g pm2`).
-- **Git**: For version control and GitHub deployment.
+- **Docker**: For running the PostgreSQL container.
 
 ## Installation
 
-1. **Clone the Repository** (if starting from scratch):
+1. **Clone or Initialize the Repository**:
    ```bash
    git clone https://github.com/<your-username>/aimolt.git
    cd aimolt
    ```
+   Or initialize a new repository:
+   ```bash
+   cd /home/ubuntu/discord
+   git init
+   ```
 
 2. **Install Dependencies**:
    ```bash
+   cd app
    npm install
    ```
 
 3. **Set Up Environment Variables**:
-   - Copy `.env.example` to `.env`:
+   - Copy `.env.example` to `app/.env`:
      ```bash
-     cp .env.example .env
+     cp app/.env.example app/.env
      ```
-   - Edit `.env` with your credentials:
+   - Edit `app/.env` with your credentials:
      ```plaintext
-     DISCORD_BOT_TOKEN=your_discord_bot_token
+     DISCORD_TOKEN=your_discord_bot_token
      DISCORD_APPLICATION_ID=your_application_id
      DISCORD_GUILD_ID=your_guild_id
      GEMINI_API_KEY=your_gemini_api_key
      SUPABASE_URL=your_supabase_url
      SUPABASE_KEY=your_supabase_key
+     POSTGRES_HOST=localhost
+     POSTGRES_PORT=5432
+     POSTGRES_USER=postgres
+     POSTGRES_PASSWORD=your_postgres_password
+     POSTGRES_DB=aimolt
+     CONVERSATION_LIMIT=100
      ```
 
-4. **Create Temp Directory**:
-   - For voice transcription storage:
+4. **Set Up PostgreSQL**:
+   - Start the Docker container:
      ```bash
-     mkdir temp
-     chmod 755 temp
+     cd db
+     docker compose up -d
+     ```
+   - Initialize the schema:
+     ```bash
+     psql -h localhost -U postgres -d aimolt -f db/init.sql
      ```
 
-5. **Configure systemInstruction**:
-   - Edit `config.js` to define `systemInstruction` for Gemini AI:
+5. **Create Temp Directory**:
+   ```bash
+   mkdir -p app/temp
+   chmod 755 app/temp
+   ```
+
+6. **Configure System Instruction**:
+   - Edit `app/src/config.js` for Gemini AI's system instruction:
      ```javascript
      module.exports = {
-       systemInstruction: { parts: [{ text: 'You are Aimolt, a friendly Discord bot. Respond in Japanese with a fun tone, using emojis like 😄 and 😉.' }] }
+       systemInstruction: 'あなたは「aimolt」、エネルギッシュでウィットに富んだ20代の女性！日本語で楽しく、親しみやすいトーンで応答してね。カジュアルな言葉遣いで、たまに軽いジョークや絵文字を入れて、まるで親友とチャットしてるみたいに！英語の入力があっても、日本語で答えてね！'
      };
      ```
 
-## Deploy to GitHub
-
-To share your project on GitHub, follow these steps:
-
-1. **Install Git** (if not already installed):
-   - Verify installation:
+7. **Run the Bot**:
+   - Using PM2 (recommended):
      ```bash
-     git --version
-     ```
-   - Install Git if needed (e.g., on Ubuntu):
-     ```bash
-     sudo apt update
-     sudo apt install git
-     ```
-
-2. **Create a `.gitignore` File**:
-   - Create a `.gitignore` file in the project root to exclude sensitive or temporary files:
-     ```bash
-     echo -e "node_modules/\n.env\ntemp/" > .gitignore
-     ```
-
-3. **Initialize a Git Repository**:
-   - Initialize a local Git repository:
-     ```bash
-     git init
-     ```
-
-4. **Add Files to Git**:
-   - Add all project files (excluding those in `.gitignore`):
-     ```bash
-     git add .
-     ```
-
-5. **Commit Changes**:
-   - Create an initial commit:
-     ```bash
-     git commit -m "Initial commit of Aimolt Discord Bot"
-     ```
-
-6. **Create a GitHub Repository**:
-   - Go to [GitHub](https://github.com/new) and create a new repository (e.g., `aimolt`).
-   - Choose public or private based on your preference.
-   - Do **not** initialize with a README, `.gitignore`, or license (as they are already in your project).
-
-7. **Link Local Repository to GitHub**:
-   - Add the remote repository (replace `<your-username>` and `aimolt` with your GitHub username and repository name):
-     ```bash
-     git remote add origin https://github.com/<your-username>/aimolt.git
-     ```
-
-8. **Push to GitHub**:
-   - Push your local repository to GitHub:
-     ```bash
-     git push -u origin main
-     ```
-   - If prompted, authenticate with your GitHub credentials or a personal access token.
-
-9. **Verify on GitHub**:
-   - Visit `https://github.com/<your-username>/aimolt` to confirm your files are uploaded.
-
-## Usage
-
-1. **Run the Bot**:
-   - Using PM2 (recommended for production):
-     ```bash
+     cd app
      pm2 start ecosystem.config.js
      pm2 save
      ```
    - Or directly:
      ```bash
-     npm start
+     node src/index.js
      ```
 
-2. **Text Interaction**:
-   - Send a message and add a 👍 reaction to get a response.
-   - Use the `/ask` slash command: `/ask query: Hello, how are you?`
-   - Add a ❓ reaction to get a detailed explanation of a message.
+## Usage
+
+1. **Text Interaction**:
+   - Send a message (e.g., "こんにちは！") and add a 👍 reaction to get a fun response (e.g., "やっほー！元気じゃん！😎").
+   - Use the `/ask` command: `/ask query: Hello, how are you?`
    - The bot maintains conversation history for contextual replies.
 
-3. **Voice Transcription**:
+2. **Voice Transcription**:
    - Send a `.ogg` voice message and add a 🎤 reaction.
-   - The bot transcribes the audio and posts the text in the chat, prefixed with "🎉 文字起こしが完了したよ〜！".
+   - Results are posted with "🎉 文字起こしが完了したよ〜！".
 
-4. **Restarting the Bot**:
-   ```bash
-   pm2 stop aimolt || true && pm2 start ecosystem.config.js && pm2 save
-   ```
+3. **Content Explanation**:
+   - Add a ❓ reaction to a message to get a detailed explanation in an Embed format.
+   - Example: "💡 解説が完了したよ〜！" with a structured breakdown.
+
+4. **PM2 Commands**:
+   - Start: `pm2 start ecosystem.config.js`
+   - Stop: `pm2 stop aimolt`
+   - Restart: `pm2 restart aimolt`
+   - View logs: `pm2 logs aimolt`
+   - Save configuration: `pm2 save`
+   - Delete process: `pm2 delete aimolt`
 
 ## Dependencies
 
@@ -160,42 +130,111 @@ To share your project on GitHub, follow these steps:
 - `@supabase/supabase-js`: ^2.50.1 (Conversation history storage)
 - `discord.js`: ^14.20.0 (Discord bot functionality)
 - `dotenv`: ^16.5.0 (Environment variable management)
+- `pg`: ^8.13.0 (PostgreSQL client)
 
 Install with:
 ```bash
-npm install @google/generative-ai@0.24.1 @supabase/supabase-js@2.50.1 discord.js@14.20.0 dotenv@16.5.0
+cd app
+npm install @google/generative-ai @supabase/supabase-js discord.js dotenv pg
 ```
 
 ## Project Structure
 
-- `index.js`: Main bot logic (slash commands, reaction handling).
-- `explain.js`: Handles ❓ reactions for detailed message explanations.
-- `react.js`: Handles 👍 reactions for text responses.
-- `transcribe.js`: Handles 🎤 reactions for voice transcription.
-- `config.js`: System instruction for Gemini AI.
-- `prompt/like_reaction.txt`: Prompt for 👍 reactions.
-- `prompt/question_explain.txt`: Prompt for ❓ reactions.
-- `package.json`: Project metadata and dependencies.
-- `.env`: Environment variables (not committed).
-- `temp/`: Temporary storage for `.ogg` files (auto-deleted after transcription).
-- `.gitignore`: Excludes `node_modules/`, `.env`, and `temp/`.
+- `app/`: Node.js application
+  - `src/`: Source code
+    - `index.js`: Main bot logic (slash commands, reaction handling, history storage).
+    - `react.js`: Handles 👍 reactions for text responses.
+    - `transcribe.js`: Handles 🎤 reactions for voice transcription.
+    - `explain.js`: Handles ❓ reactions for content explanation.
+    - `config.js`: Gemini AI system instruction.
+  - `prompt/`: Prompt files
+    - `like_reaction.txt`: Prompt for 👍 reactions (fun, casual tone).
+    - `question_explain.txt`: Prompt for ❓ reactions (detailed, beginner-friendly explanations).
+  - `temp/`: Temporary storage for `.ogg` files (auto-deleted after transcription).
+  - `package.json`, `package-lock.json`, `node_modules/`: Node.js dependencies.
+  - `ecosystem.config.js`: PM2 configuration.
+  - `.env`: Environmentვ
+
+## Database Schema
+
+The bot uses both a local PostgreSQL instance and Supabase for conversation history. The `conversations` table is defined as follows:
+
+```sql
+CREATE TABLE IF NOT EXISTS conversations (
+    id BIGINT GENERATED BY DEFAULT AS IDENTITY,
+    user_id TEXT NOT NULL UNIQUE,
+    message JSONB NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+CREATE INDEX IF NOT EXISTS idx_conversations_user_id ON conversations (user_id);
+```
+
+- **id**: Auto-incrementing primary key (BIGINT).
+- **user_id**: Discord user ID (TEXT, unique).
+- **message**: Conversation history as JSONB (array of `{ role: string, parts: [{ text: string }]`).
+- **created_at**: Timestamp of the last update.
+- **idx_conversations_user_id**: Index on `user_id` for faster queries.
+
+To query the history:
+```bash
+psql -h localhost -U postgres -d aimolt -c "SELECT user_id, array_length(message, 1) FROM conversations;"
+```
+
+For Supabase, the same schema is used. Ensure `SUPABASE_URL` and `SUPABASE_KEY` are set in `app/.env`.
 
 ## Troubleshooting
 
 - **Bot not responding**:
   - Check logs: `pm2 logs aimolt`.
-  - Verify `.env` credentials and `config.js`.
+  - Verify `app/.env` credentials and `app/src/config.js`.
+  - Ensure `DISCORD_TOKEN`, `GEMINI_API_KEY`, `SUPABASE_URL`, `SUPABASE_KEY` are valid.
 - **Transcription errors**:
   - Ensure `.ogg` files are valid and under 100MB.
-  - Check `temp/` permissions: `chmod -R 755 temp`.
+  - Check `app/temp/` permissions: `chmod -R 755 app/temp`.
 - **Conversation history issues**:
-  - Query Supabase: `SELECT user_id, message FROM conversations WHERE user_id = '<your_user_id>';`.
-  - Verify Supabase credentials in `.env`.
-- **GitHub push errors**:
-  - Ensure Git is installed and configured: `git config --global user.name "Your Name"` and `git config --global user.email "your.email@example.com"`.
-  - Check remote URL: `git remote -v`.
-  - If authentication fails, generate a personal access token in GitHub settings and use it for `git push`.
+  - Query Supabase or PostgreSQL: `SELECT user_id, message FROM conversations WHERE user_id = '<your_user_id>';`.
+  - Verify database credentials in `app/.env`.
+- **PM2 errors**:
+  - If `Cannot find module '/home/ubuntu/discord/index.js'`, ensure `ecosystem.config.js` points to `app/src/index.js` and `cwd` is `/home/ubuntu/discord/app`.
+  - If `ReferenceError: path is not defined`, add `const path = require('path');` at the top of `app/src/index.js`.
+  - If `プロンプトの読み込みに失敗しました！🙈`, check if `app/prompt/like_reaction.txt` exists and has correct permissions (`chmod 644`).
+
+## Future Improvements
+
+- **New Commands**:
+  - `/history`: Display a user's conversation history.
+  - `/clear`: Clear conversation history for a user (with confirmation).
+- **Additional Reactions**:
+  - 😎 for cool, humorous responses.
+  - 📝 for summarizing long messages.
+- **Performance Optimizations**:
+  - Cache Gemini API responses to reduce latency.
+  - Implement batch processing for conversation history to handle high traffic.
+- **Error Handling**:
+  - Add retry logic for Gemini API rate limits.
+  - Improve logging for debugging (e.g., structured JSON logs).
+- **Localization**:
+  - Support English responses for non-Japanese users.
+- **Monitoring**:
+  - Add health checks for Supabase/PostgreSQL connectivity.
+  - Monitor `app/temp/` disk usage to prevent overflow.
+
+## For Grok Handover
+
+To ensure seamless handover to another Grok session, the following details are provided:
+- **Environment**: Ubuntu (e.g., 20.04), Node.js v18.x, Docker (postgres:15), PM2.
+- **Deployment**: Runs in `/home/ubuntu/discord`. Use `app/ecosystem.config.js` for PM2 (`script: ./src/index.js`, `cwd: /home/ubuntu/discord/app`).
+- **Database**: Local PostgreSQL (`db/data/`, `db/initial.sql`) and Supabase (`conversations` table).
+- **Known Issues**:
+  - 👍 reactions occasionally fail with "うわっ、なんかミスっちゃったみたい！🙈" (Gemini API or history errors; check logs).
+  - Typing Indicator ("aimoltが返信中…") not always displayed (add `channel.startTyping()` as needed).
+- **Logs**: Use `pm2 logs aimolt` for debugging. Key errors: `ENOENT` (file not found), `EACCES` (permission denied).
+- **Maintenance**:
+  - Clear `app/temp/` periodically: `find app/temp -type f -name "*.ogg" -mtime +1 -delete`.
+  - Monitor Supabase storage (free tier: 500MB).
+- **Contact**: For issues, ping the bot owner on Discord or check GitHub issues.
 
 ## License
 
-ISC License. See `package.json` for details.
+ISC License. See `app/package.json` for details.

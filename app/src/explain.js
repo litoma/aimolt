@@ -92,7 +92,7 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
 
     // 解説プロンプトの読み込み
     let explainPrompt = DEFAULT_EXPLAIN_PROMPT;
-    const promptPath = path.join(__dirname, 'prompt', 'question_explain.txt');
+    const promptPath = path.join(__dirname, '../prompt', 'question_explain.txt');
     try {
       explainPrompt = await fs.readFile(promptPath, 'utf-8');
       console.log('解説プロンプトファイルを使用');

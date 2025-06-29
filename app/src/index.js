@@ -1,7 +1,9 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 const { Client, GatewayIntentBits, REST, Routes, SlashCommandBuilder } = require('discord.js');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { createClient } = require('@supabase/supabase-js');
+const { Pool } = require('pg');
 const { systemInstruction } = require('./config');
 const { transcribeAudio } = require('./transcribe');
 const { handleReaction } = require('./react');
@@ -22,10 +24,23 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({
   model: 'gemini-1.5-flash',
   systemInstruction,
+  generationConfig: { maxOutputTokens: 2000, temperature: 0.7 }
 });
 
 // Supabaseの設定
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+
+// ローカルPostgreSQLの設定
+const pgPool = new Pool({
+  host: process.env.POSTGRES_HOST,
+  port: process.env.POSTGRES_PORT,
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  database: process.env.POSTGRES_DB,
+});
+
+// キャッシュ
+const conversationCache = new Map();
 
 // クールダウン管理
 const cooldowns = new Map();
@@ -46,63 +61,88 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_BOT_TOKEN)
 
 (async () => {
   try {
-    console.log('スラッシュコマンドを登録中...');
     await rest.put(
       Routes.applicationGuildCommands(process.env.DISCORD_APPLICATION_ID, process.env.DISCORD_GUILD_ID),
       { body: commands },
     );
-    console.log('スラッシュコマンドを登録しました！');
   } catch (error) {
-    console.error('スラッシュコマンド登録エラー:', error);
+    // スラッシュコマンド登録エラーは静かに処理
   }
 })();
 
-// ボット起動時のログ
-client.on('ready', () => {
-  console.log(`ログインしました: ${client.user.tag} 😄`);
+// ボット起動時の処理
+client.on('ready', async () => {
+  try {
+    await pgPool.query('SELECT NOW()');
+  } catch (error) {
+    // PostgreSQL接続エラーは静かに処理
+  }
 });
 
-// 会話履歴の取得
+// 会話履歴の取得（ローカルPostgreSQL）
 async function getConversationHistory(userId) {
   if (!userId) {
-    console.error('getConversationHistory: userIdがundefinedまたは空');
     return [];
   }
-  console.log(`Conversation history query for userId=${userId}`);
-  const { data, error } = await supabase
-    .from('conversations')
-    .select('message')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false })
-    .limit(10);
-  if (error) {
-    console.error(`Supabase取得エラー: userId=${userId}, エラー:`, error);
+  try {
+    if (conversationCache.has(userId)) {
+      return conversationCache.get(userId);
+    }
+    const conversationLimit = parseInt(process.env.CONVERSATION_LIMIT) || 100;
+    const result = await pgPool.query(
+      'SELECT message FROM conversations WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1',
+      [userId]
+    );
+    if (!result.rows || result.rows.length === 0) {
+      return [];
+    }
+    let history = result.rows[0].message || [];
+    if (!Array.isArray(history)) {
+      history = [];
+    }
+    const limitedHistory = history.slice(-conversationLimit);
+    conversationCache.set(userId, limitedHistory);
+    return limitedHistory;
+  } catch (error) {
     return [];
   }
-  console.log(`Conversation history query result for userId=${userId}:`, JSON.stringify(data));
-  if (!data || data.length === 0) {
-    console.log(`Conversation history empty for userId=${userId}`);
-    return [];
-  }
-  const history = data[0].message || [];
-  console.log(`History retrieved for userId=${userId}:`, JSON.stringify(history));
-  return Array.isArray(history) ? history : [];
 }
 
-// 会話履歴の保存
+// 会話履歴の保存（SupabaseとローカルPostgreSQL）
 async function saveConversationHistory(userId, history) {
   if (!userId) {
-    console.error('saveConversationHistory: userIdがundefinedまたは空');
     return;
   }
-  console.log(`Saving conversation history for userId=${userId}`);
-  const { error } = await supabase
-    .from('conversations')
-    .upsert({ user_id: userId, message: history.slice(-10) });
-  if (error) {
-    console.error(`Supabase保存エラー: userId=${userId}, エラー:`, error);
-  } else {
-    console.log(`Conversation history saved for userId=${userId}`);
+  const conversationLimit = parseInt(process.env.CONVERSATION_LIMIT) || 100;
+  const fullHistory = Array.isArray(history) ? history : [];
+
+  // JSONデータの検証
+  try {
+    const jsonString = JSON.stringify(fullHistory);
+  } catch (error) {
+    return; // 保存をスキップ
+  }
+
+  // ローカルPostgreSQLに保存
+  try {
+    await pgPool.query(
+      'INSERT INTO conversations (user_id, message, created_at) VALUES ($1, $2::jsonb, NOW()) ON CONFLICT (user_id) DO UPDATE SET message = $2::jsonb, created_at = NOW()',
+      [userId, JSON.stringify(fullHistory)]
+    );
+  } catch (error) {
+    // PostgreSQL保存エラーは静かに処理
+  }
+
+  // Supabaseに保存（バックアップ用）
+  try {
+    const { error } = await supabase
+      .from('conversations')
+      .upsert({ user_id: userId, message: fullHistory });
+    if (error) {
+      // Supabase保存エラーは静かに処理
+    }
+  } catch (error) {
+    // Supabase保存エラーは静かに処理
   }
 }
 
@@ -112,14 +152,12 @@ client.on('messageReactionAdd', async (reaction, user) => {
     try {
       await reaction.message.fetch();
     } catch (error) {
-      console.error('メッセージ取得エラー:', error);
       return;
     }
   }
 
   if (reaction.message.author.id !== client.user.id) {
     const userId = user.id;
-    console.log(`Processing reaction for userId=${userId}, messageId=${reaction.message.id}, emoji=${reaction.emoji.name}`);
 
     if (cooldowns.has(userId)) {
       const expirationTime = cooldowns.get(userId) + COOLDOWN_TIME;
@@ -129,30 +167,24 @@ client.on('messageReactionAdd', async (reaction, user) => {
     }
 
     if (reaction.emoji.name === '🎤') {
-      // 音声文字起こし
       try {
         await transcribeAudio(reaction.message, reaction.message.channel, user, genAI, getConversationHistory, saveConversationHistory);
         cooldowns.set(userId, Date.now());
       } catch (error) {
-        console.error('音声処理エラー:', error);
         await reaction.message.channel.send(`<@${user.id}> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: ${error.message}`);
       }
     } else if (reaction.emoji.name === '👍') {
-      // テキスト応答
       try {
         await handleReaction(reaction, user, genAI, getConversationHistory, saveConversationHistory);
         cooldowns.set(userId, Date.now());
       } catch (error) {
-        console.error('リアクション処理エラー:', error);
         await reaction.message.reply('うわっ、なんかミスっちゃったみたい！🙈 もう一回試してみてね！');
       }
     } else if (reaction.emoji.name === '❓') {
-      // 解説処理
       try {
         await handleExplainReaction(reaction.message, reaction.message.channel, user, genAI, getConversationHistory, saveConversationHistory);
         cooldowns.set(userId, Date.now());
       } catch (error) {
-        console.error('解説処理エラー:', error);
         await reaction.message.reply('うわっ、なんかミスっちゃったみたい！🙈 もう一回試してみてね！');
       }
     }
@@ -191,7 +223,6 @@ client.on('interactionCreate', async (interaction) => {
       await interaction.editReply(reply.slice(0, 2000));
       cooldowns.set(userId, Date.now());
     } catch (error) {
-      console.error('Gemini APIエラー:', error);
       await interaction.editReply('うわっ、なんかミスっちゃったみたい！🙈 もう一回試してみてね！');
     }
   }
