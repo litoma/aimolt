@@ -100,10 +100,7 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
       console.log('フォールバック解説プロンプトを使用');
     }
 
-    // 会話履歴の取得
-    const history = await getConversationHistory(user.id);
-
-    // Gemini APIで解説生成
+    // Gemini APIで解説生成（会話履歴は使用しない）
     try {
       const model = genAI.getGenerativeModel({
         model: 'gemini-1.5-flash',
@@ -111,17 +108,15 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
         generationConfig: { maxOutputTokens: 1500, temperature: 0.7 }
       });
 
-      const chatSession = model.startChat({ history });
+      // 新しいチャットセッションを開始（履歴なし）
+      const chatSession = model.startChat({ history: [] });
       const result = await chatSession.sendMessage(inputText);
       let explanation = result.response.text();
       if (explanation.length > 1500) {
         explanation = explanation.substring(0, 1500) + '...';
       }
 
-      // 会話履歴を更新
-      history.push({ role: 'user', parts: [{ text: inputText }] });
-      history.push({ role: 'model', parts: [{ text: explanation }] });
-      await saveConversationHistory(user.id, history);
+      // 会話履歴には保存しない（要件通り）
 
       // 結果を送信
       const embed = new EmbedBuilder()

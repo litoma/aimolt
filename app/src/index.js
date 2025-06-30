@@ -88,46 +88,45 @@ async function getConversationHistory(userId) {
     if (conversationCache.has(userId)) {
       return conversationCache.get(userId);
     }
-    const conversationLimit = parseInt(process.env.CONVERSATION_LIMIT) || 100;
+    
+    const conversationLimit = parseInt(process.env.CONVERSATION_LIMIT) || 1000;
+    
+    // 直近のCONVERSATION_LIMIT件のレコードを取得
     const result = await pgPool.query(
-      'SELECT message FROM conversations WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1',
-      [userId]
+      'SELECT user_message, bot_response FROM conversations WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2',
+      [userId, conversationLimit]
     );
+    
     if (!result.rows || result.rows.length === 0) {
       return [];
     }
-    let history = result.rows[0].message || [];
-    if (!Array.isArray(history)) {
-      history = [];
+    
+    // Gemini API形式に変換（古い順に並び替え）
+    const history = [];
+    for (let i = result.rows.length - 1; i >= 0; i--) {
+      const row = result.rows[i];
+      history.push({ role: 'user', parts: [{ text: row.user_message }] });
+      history.push({ role: 'model', parts: [{ text: row.bot_response }] });
     }
-    const limitedHistory = history.slice(-conversationLimit);
-    conversationCache.set(userId, limitedHistory);
-    return limitedHistory;
+    
+    conversationCache.set(userId, history);
+    return history;
   } catch (error) {
     return [];
   }
 }
 
 // 会話履歴の保存（SupabaseとローカルPostgreSQL）
-async function saveConversationHistory(userId, history) {
-  if (!userId) {
+async function saveConversationHistory(userId, userMessage, botResponse) {
+  if (!userId || !userMessage || !botResponse) {
     return;
-  }
-  const conversationLimit = parseInt(process.env.CONVERSATION_LIMIT) || 100;
-  const fullHistory = Array.isArray(history) ? history : [];
-
-  // JSONデータの検証
-  try {
-    const jsonString = JSON.stringify(fullHistory);
-  } catch (error) {
-    return; // 保存をスキップ
   }
 
   // ローカルPostgreSQLに保存
   try {
     await pgPool.query(
-      'INSERT INTO conversations (user_id, message, created_at) VALUES ($1, $2::jsonb, NOW()) ON CONFLICT (user_id) DO UPDATE SET message = $2::jsonb, created_at = NOW()',
-      [userId, JSON.stringify(fullHistory)]
+      'INSERT INTO conversations (user_id, user_message, bot_response) VALUES ($1, $2, $3)',
+      [userId, userMessage, botResponse]
     );
   } catch (error) {
     // PostgreSQL保存エラーは静かに処理
@@ -137,13 +136,20 @@ async function saveConversationHistory(userId, history) {
   try {
     const { error } = await supabase
       .from('conversations')
-      .upsert({ user_id: userId, message: fullHistory });
+      .insert({
+        user_id: userId,
+        user_message: userMessage,
+        bot_response: botResponse
+      });
     if (error) {
       // Supabase保存エラーは静かに処理
     }
   } catch (error) {
     // Supabase保存エラーは静かに処理
   }
+
+  // キャッシュをクリア（次回取得時に最新データを読み込む）
+  conversationCache.delete(userId);
 }
 
 // リアクション追加時の処理（👍、🎤、❓）
@@ -216,9 +222,8 @@ client.on('interactionCreate', async (interaction) => {
       const result = await chatSession.sendMessage(`以下の質問に日本語で答えて: ${query}`);
       const reply = result.response.text();
 
-      history.push({ role: 'user', parts: [{ text: query }] });
-      history.push({ role: 'model', parts: [{ text: reply }] });
-      await saveConversationHistory(userId, history);
+      // 会話を保存（1会話1レコード）
+      await saveConversationHistory(userId, query, reply);
 
       await interaction.editReply(reply.slice(0, 2000));
       cooldowns.set(userId, Date.now());

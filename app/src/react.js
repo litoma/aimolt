@@ -51,13 +51,8 @@ async function handleReaction(reaction, user, genAI, getConversationHistory, sav
     const result = await chatSession.sendMessage(promptWithMessage);
     const reply = sanitizeText(result.response.text());
 
-    // 会話履歴に追加
-    const history = await getConversationHistory(userId);
-    history.push({ role: 'user', parts: [{ text: userMessage }] });
-    history.push({ role: 'model', parts: [{ text: reply }] });
-
-    // 会話履歴を保存
-    await saveConversationHistory(userId, history);
+    // 会話履歴を保存（新しい引数形式）
+    await saveConversationHistory(userId, userMessage, reply);
 
     // 応答を送信
     await message.reply(reply.slice(0, 2000));

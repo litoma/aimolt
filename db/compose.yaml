@@ -3,6 +3,7 @@ services:
     image: postgres
     restart: always
     shm_size: 128mb
+    user: "1001:1001"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: aimolt
