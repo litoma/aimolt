@@ -2,18 +2,54 @@
   "name": "aimolt",
   "version": "1.0.0",
   "description": "Discord bot with Gemini AI and Supabase",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node src/index.js",
+    "dev": "node --inspect=0.0.0.0:9229 src/index.js",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop aimolt",
+    "pm2:restart": "pm2 restart aimolt",
+    "pm2:logs": "pm2 logs aimolt",
+    "pm2:delete": "pm2 delete aimolt",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f discord-bot",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "echo \"No linting configured\" && exit 0"
   },
-  "keywords": [],
+  "keywords": [
+    "discord",
+    "bot",
+    "gemini",
+    "ai",
+    "supabase",
+    "postgresql",
+    "transcription",
+    "voice"
+  ],
   "author": "litoma",
   "license": "ISC",
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@supabase/supabase-js": "^2.50.1",
     "discord.js": "^14.20.0",
     "dotenv": "^16.5.0",
     "pg": "^8.13.0"
-  }
+  },
+  "devDependencies": {
+    "pm2": "^5.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/litoma/aimolt.git"
+  },
+  "bugs": {
+    "url": "https://github.com/litoma/aimolt/issues"
+  },
+  "homepage": "https://github.com/litoma/aimolt#readme"
 }

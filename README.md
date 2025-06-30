@@ -28,7 +28,7 @@ Aimolt is a Discord bot powered by Gemini AI (gemini-1.5-flash) and Supabase, de
 
 1. **Clone or Initialize the Repository**:
    ```bash
-   git clone https://github.com/<your-username>/aimolt.git
+   git clone https://github.com/litoma/aimolt.git
    cd aimolt
    ```
    Or initialize a new repository:
@@ -182,6 +182,290 @@ psql -h localhost -U postgres -d aimolt -c "SELECT COUNT(*) FROM conversations;"
 
 For Supabase, the same schema is used. Ensure `SUPABASE_URL` and `SUPABASE_KEY` are set in `app/.env`.
 
+# 🐳 Docker Deployment Guide
+
+## Prerequisites for Docker
+
+- **Docker**: v20.10+ 
+- **Docker Compose**: v2.0+
+- **Node.js v22.x**: Required for development (optional for production)
+- **Git**: For cloning the repository
+
+## 🚀 Quick Start
+
+### 1. Automated Setup (Recommended)
+```bash
+# Clone the repository
+git clone https://github.com/litoma/aimolt.git
+cd aimolt
+
+# Run the setup script
+chmod +x setup-docker.sh
+./setup-docker.sh
+```
+
+### 2. Manual Setup
+```bash
+# Create required directories
+mkdir -p app/temp app/logs db/data
+chmod 755 app/temp app/logs db/data
+
+# Copy environment template
+cp app/.env.docker app/.env
+# Edit app/.env with your actual credentials
+
+# Build and start
+docker-compose up --build -d
+```
+
+## 📋 Environment Variables
+
+### Required Variables
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `DISCORD_TOKEN` | Discord bot token | `MTxxxxx.xxxxx.xxxxx` |
+| `DISCORD_APPLICATION_ID` | Discord application ID | `1234567890123456789` |
+| `GEMINI_API_KEY` | Google Gemini AI API key | `AIxxxxxxxxxxxxx` |
+| `SUPABASE_URL` | Supabase project URL | `https://xxx.supabase.co` |
+| `SUPABASE_KEY` | Supabase anon key | `eyxxxxxx` |
+
+### Docker-specific Variables
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `POSTGRES_HOST` | `postgres` | Container name for PostgreSQL |
+| `NODE_ENV` | `production` | Environment mode |
+| `CONVERSATION_LIMIT` | `1000` | Max conversation history |
+
+## 🏗️ Container Architecture
+
+```
+┌─────────────────────────────────────────┐
+│               Docker Network           │
+│  ┌─────────────────┐ ┌───────────────┐ │
+│  │   Discord Bot   │ │  PostgreSQL   │ │
+│  │   (Node.js 22)  │ │  (postgres:17)│ │
+│  │   + PM2         │ │               │ │
+│  │   + Gemini AI   │ │               │ │
+│  └─────────────────┘ └───────────────┘ │
+└─────────────────────────────────────────┘
+```
+
+## 🔧 Development vs Production
+
+### Production Mode
+```bash
+# Production deployment
+docker compose -f compose.yaml up -d --build
+
+# Or set environment
+NODE_ENV=production docker compose up -d
+```
+
+Features:
+- Optimized image size
+- Security hardening
+- Resource limits
+- Health checks
+- Graceful shutdown
+
+## 📊 Monitoring & Logs
+
+### View Logs
+```bash
+# Real-time logs
+docker-compose logs -f discord-bot
+
+# PostgreSQL logs
+docker-compose logs -f postgres
+
+# Last 100 lines
+docker-compose logs --tail=100 discord-bot
+```
+
+### Health Checks
+```bash
+# Check container status
+docker-compose ps
+
+# Detailed health info
+docker inspect $(docker-compose ps -q discord-bot) | jq '.[0].State.Health'
+```
+
+### PM2 Monitoring (Inside Container)
+```bash
+# Access container shell
+docker-compose exec discord-bot sh
+
+# PM2 commands
+pm2 list
+pm2 logs
+pm2 monit
+pm2 restart aimolt
+```
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### Bot Not Starting
+```bash
+# Check logs
+docker compose logs discord-bot
+
+# Common causes:
+# - Invalid Discord token
+# - Missing .env file
+# - Database connection failed
+```
+
+#### Database Connection Issues
+```bash
+# Test PostgreSQL connection
+docker compose exec postgres psql -U postgres -d aimolt -c "SELECT 1;"
+
+# Check network connectivity
+docker compose exec discord-bot ping postgres
+```
+
+#### Permission Issues
+```bash
+# Fix temp directory permissions
+sudo chown -R 1001:1001 app/temp app/logs
+chmod 755 app/temp app/logs
+```
+
+#### Memory Issues
+```bash
+# Check resource usage
+docker stats $(docker-compose ps -q)
+
+# Restart with memory limit
+docker compose up -d --scale discord-bot=1
+```
+
+### Debug Mode
+```bash
+# Enable Node.js debugging
+docker compose -f docker-compose.yml -f docker-compose.override.yml up
+
+# Connect debugger to localhost:9229
+```
+
+## 🔐 Security Considerations
+
+### Container Security
+- Non-root user execution (nodejs:1001)
+- Read-only filesystem where possible
+- Minimal base image (Alpine Linux)
+- Regular security updates
+
+### Network Security
+- Internal Docker network
+- No unnecessary port exposure
+- Environment variable encryption
+
+### Data Security
+- PostgreSQL data persistence
+- Secure credential management
+- Conversation history protection
+
+## 📈 Performance Optimization
+
+### Resource Limits
+```yaml
+# In docker-compose.yml
+deploy:
+  resources:
+    limits:
+      cpus: '1.0'
+      memory: 512M
+    reservations:
+      cpus: '0.5'
+      memory: 256M
+```
+
+### Caching Strategy
+- Docker layer caching
+- npm dependency caching
+- PM2 process clustering (if needed)
+
+## 🚀 Production Deployment
+
+### Prerequisites
+- Docker Swarm or Kubernetes
+- Load balancer (if scaling)
+- Monitoring solution (Prometheus/Grafana)
+- Log aggregation (ELK Stack)
+
+### Docker Swarm Example
+```bash
+# Initialize swarm
+docker swarm init
+
+# Deploy stack
+docker stack deploy -c docker-compose.yml aimolt
+
+# Scale service
+docker service scale aimolt_discord-bot=3
+```
+
+### Kubernetes Deployment
+```bash
+# Convert to Kubernetes manifests
+kompose convert
+
+# Apply manifests
+kubectl apply -f .
+```
+
+## 🔄 Updates & Maintenance
+
+### Update Bot Code
+```bash
+# Pull latest code
+git pull origin main
+
+# Rebuild and restart
+docker compose up --build -d
+```
+
+### Database Maintenance
+```bash
+# Backup database
+docker compose exec postgres pg_dump -U postgres aimolt > backup.sql
+
+# Restore database
+docker compose exec -T postgres psql -U postgres aimolt < backup.sql
+```
+
+### Clean Up
+```bash
+# Remove unused images
+docker image prune -a
+
+# Remove all containers and volumes
+docker compose down -v
+
+# Clean build cache
+docker builder prune
+```
+
+## 📞 Support
+
+For Docker-specific issues:
+1. Check container logs: `docker compose logs discord-bot`
+2. Verify environment variables: `docker compose config`
+3. Test database connectivity: `docker compose exec postgres pg_isready`
+4. Create GitHub issue with logs and configuration
+
+## 🎯 Next Steps
+
+- [ ] Set up monitoring with Prometheus
+- [ ] Implement log rotation
+- [ ] Add backup automation
+- [ ] Configure SSL/TLS certificates
+- [ ] Set up CI/CD pipeline
+
 ## Troubleshooting
 
 - **Bot not responding**:
@@ -216,20 +500,6 @@ For Supabase, the same schema is used. Ensure `SUPABASE_URL` and `SUPABASE_KEY` 
 - **Monitoring**:
   - Add health checks for Supabase/PostgreSQL connectivity.
   - Monitor `app/temp/` disk usage to prevent overflow.
-
-## For Grok Handover
-
-To ensure seamless handover to another Grok session, the following details are provided:
-- **Environment**: Ubuntu (e.g., 20.04), Node.js v18.x, Docker (postgres:15), PM2.
-- **Deployment**: Runs in `/home/ubuntu/discord`. Use `app/ecosystem.config.js` for PM2 (`script: ./src/index.js`, `cwd: /home/ubuntu/discord/app`).
-- **Database**: Local PostgreSQL (`db/data/`, `db/initial.sql`) and Supabase (`conversations` table).
-- **Known Issues**:
-  - 👍 reactions occasionally fail with "うわっ、なんかミスっちゃったみたい！🙈" (Gemini API or history errors; check logs).
-- **Logs**: Use `pm2 logs aimolt` for debugging. Key errors: `ENOENT` (file not found), `EACCES` (permission denied).
-- **Maintenance**:
-  - Clear `app/temp/` periodically: `find app/temp -type f -name "*.ogg" -mtime +1 -delete`.
-  - Monitor Supabase storage (free tier: 500MB).
-- **Contact**: For issues, ping the bot owner on Discord or check GitHub issues.
 
 ## License
 
