@@ -9,9 +9,7 @@ LABEL maintainer="litoma" \
 # 環境変数設定
 ENV NODE_ENV=production \
     NPM_CONFIG_LOGLEVEL=warn \
-    NPM_CONFIG_COLOR=false \
-    PM2_PUBLIC_KEY="" \
-    PM2_SECRET_KEY=""
+    NPM_CONFIG_COLOR=false
 
 # 作業ディレクトリを設定
 WORKDIR /app
