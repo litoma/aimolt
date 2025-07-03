@@ -58,7 +58,7 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
   try {
     await downloadAudio(targetAttachment.proxyUrl, filePath, targetAttachment.url);
 
-    const transcriptionModel = genAI.getGenerativeModel({ model: 'gemini-1.5-flash', systemInstruction: '' });
+    const transcriptionModel = genAI.getGenerativeModel({ model: 'gemini-2.5-flash', systemInstruction: '' });
     // 会話履歴を使用せずに直接文字起こし処理
     const chatSession = transcriptionModel.startChat();
 

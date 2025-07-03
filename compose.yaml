@@ -5,7 +5,7 @@ services:
       context: ./app
       dockerfile: Dockerfile
     container_name: aimolt-discord-bot
-    restart: unless-stopped
+    restart: always
     environment:
       - NODE_ENV=production
       - POSTGRES_HOST=postgres
@@ -28,7 +28,8 @@ services:
   postgres:
     image: postgres
     container_name: aimolt-postgres
-    restart: unless-stopped
+    hostname: postgres
+    restart: always
     shm_size: 128mb
     user: "1001:1001"
     environment:

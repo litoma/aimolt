@@ -103,7 +103,7 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
     // Gemini APIで解説生成（会話履歴は使用しない）
     try {
       const model = genAI.getGenerativeModel({
-        model: 'gemini-1.5-flash',
+        model: 'gemini-2.5-flash',
         systemInstruction: { parts: [{ text: explainPrompt }] },
         generationConfig: { maxOutputTokens: 1500, temperature: 0.7 }
       });

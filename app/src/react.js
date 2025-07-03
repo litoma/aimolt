@@ -40,7 +40,7 @@ async function handleReaction(reaction, user, genAI, getConversationHistory, sav
   try {
     // システムプロンプトを明示的に設定
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.5-flash',
       systemInstruction: prompt, // システムプロンプトとして適用
       generationConfig: { maxOutputTokens: 2000, temperature: 0.7 },
     });
