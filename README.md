@@ -1,242 +1,22 @@
 # Aimolt Discord Bot
 
-Aimolt is a Discord bot powered by Gemini AI (gemini-1.5-flash) and Supabase, designed to respond to text messages, transcribe voice messages, and explain content. It supports:
+Aimoltは、Gemini 2.5 FlashとSupabaseを活用した多機能Discordボットです。テキストメッセージへの応答、音声メッセージの文字起こし、コンテンツの解説など、多彩な機能を提供します。
 
-- **Text Responses**: Reply to messages with 👍 reactions or `/ask` slash command, using Gemini AI with conversation history stored in Supabase/PostgreSQL.
-- **Voice Transcription**: Transcribe `.ogg` voice messages with 🎤 reactions.
-- **Content Explanation**: Explain messages with ❓ reactions, providing detailed insights in an Embed format.
+- **テキスト応答**: 👍リアクションに、会話履歴を考慮したAIが応答します。
+- **音声文字起こし**: 🎤リアクションを付けるだけで、`.ogg`形式の音声メッセージを文字に起こします。
+- **コンテンツ解説**: ❓リアクションを付けると、メッセージの内容をAIが分かりやすく解説します。
 
-## Features
+## 🚀 主な機能
 
-- Responds to text messages via 👍 reactions or `/ask` command with context-aware replies in a fun, casual Japanese tone (emulating a witty 20s female, "aimolt").
-- Transcribes `.ogg` voice messages when reacted with 🎤, posting results with "🎉 文字起こしが完了したよ〜！".
-- Explains message content with ❓ reactions, using clear and beginner-friendly explanations.
-- Stores conversation history in Supabase or local PostgreSQL for contextual responses.
-- Uses PM2 for process management in production.
+- **楽しい対話**: ウィットに富んだ20代女性「aimolt」として、親しみやすい日本語で応答します。
+- **音声のテキスト化**: `.ogg`形式の音声ファイルを高精度に文字起こしします。
+- **分かりやすい解説**: 難しい文章や専門用語も、初心者向けに丁寧に解説します。
+- **文脈理解**: Supabase/PostgreSQLに会話履歴を保存し、文脈に沿った応答を実現します。
+- **安定稼働**: 本番環境ではPM2やDockerを利用して安定したプロセス管理が可能です。
 
-## Prerequisites
+## 🏗️ アーキテクチャ
 
-- **Node.js**: v18.x or later (tested with v18.20.0).
-- **Discord Bot Token**: Create a bot on [Discord Developer Portal](https://discord.com/developers/applications) with `Guilds`, `GuildMessages`, `GuildMessageReactions`, and `MessageContent` intents.
-- **Gemini API Key**: Obtain from [Google AI Studio](https://makersuite.google.com/).
-- **Supabase Project**: Set up with a `conversations` table (see Database Schema below).
-- **PostgreSQL**: Local instance (via Docker, `postgres:15`) for conversation history backup.
-- **PM2**: For running the bot in production (`npm install -g pm2`).
-- **Docker**: For running the PostgreSQL container.
-
-## Installation
-
-1. **Clone or Initialize the Repository**:
-   ```bash
-   git clone https://github.com/litoma/aimolt.git
-   cd aimolt
-   ```
-   Or initialize a new repository:
-   ```bash
-   cd /home/ubuntu/discord
-   git init
-   ```
-
-2. **Install Dependencies**:
-   ```bash
-   cd app
-   npm install
-   ```
-
-3. **Set Up Environment Variables**:
-   - Copy `.env.example` to `app/.env`:
-     ```bash
-     cp app/.env.example app/.env
-     ```
-   - Edit `app/.env` with your credentials:
-     ```plaintext
-     DISCORD_TOKEN=your_discord_bot_token
-     DISCORD_APPLICATION_ID=your_application_id
-     DISCORD_GUILD_ID=your_guild_id
-     GEMINI_API_KEY=your_gemini_api_key
-     SUPABASE_URL=your_supabase_url
-     SUPABASE_KEY=your_supabase_key
-     POSTGRES_HOST=localhost
-     POSTGRES_PORT=5432
-     POSTGRES_USER=postgres
-     POSTGRES_PASSWORD=aimolt
-     POSTGRES_DB=aimolt
-     CONVERSATION_LIMIT=1000
-     ```
-
-4. **Set Up PostgreSQL**:
-   - Start the Docker container:
-     ```bash
-     cd db
-     docker compose up -d
-     ```
-   - Initialize the schema:
-     ```bash
-     psql -h localhost -U postgres -d aimolt -f db/init.sql
-     ```
-
-5. **Create Temp Directory**:
-   ```bash
-   mkdir -p app/temp
-   chmod 755 app/temp
-   ```
-
-6. **Configure System Instruction**:
-   - Edit `app/src/config.js` for Gemini AI's system instruction:
-     ```javascript
-     module.exports = {
-       systemInstruction: 'あなたは「aimolt」、エネルギッシュでウィットに富んだ20代の女性！日本語で楽しく、親しみやすいトーンで応答してね。カジュアルな言葉遣いで、たまに軽いジョークや絵文字を入れて、まるで親友とチャットしてるみたいに！英語の入力があっても、日本語で答えてね！'
-     };
-     ```
-
-7. **Run the Bot**:
-   - Using PM2 (recommended):
-     ```bash
-     cd app
-     pm2 start ecosystem.config.js
-     pm2 save
-     ```
-   - Or directly:
-     ```bash
-     node src/index.js
-     ```
-
-## Usage
-
-1. **Text Interaction**:
-   - Send a message (e.g., "こんにちは！") and add a 👍 reaction to get a fun response (e.g., "やっほー！元気じゃん！😎").
-   - Use the `/ask` command: `/ask query: Hello, how are you?`
-   - The bot maintains conversation history for contextual replies.
-
-2. **Voice Transcription**:
-   - Send a `.ogg` voice message and add a 🎤 reaction.
-   - Results are posted with "🎉 文字起こしが完了したよ〜！".
-
-3. **Content Explanation**:
-   - Add a ❓ reaction to a message to get a detailed explanation in an Embed format.
-   - Example: "💡 解説が完了したよ〜！" with a structured breakdown.
-
-4. **PM2 Commands**:
-   - Start: `pm2 start ecosystem.config.js`
-   - Stop: `pm2 stop aimolt`
-   - Restart: `pm2 restart aimolt`
-   - View logs: `pm2 logs aimolt`
-   - Save configuration: `pm2 save`
-   - Delete process: `pm2 delete aimolt`
-
-## Dependencies
-
-- `@google/generative-ai`: ^0.24.1 (Gemini AI for text and audio processing)
-- `@supabase/supabase-js`: ^2.50.1 (Conversation history storage)
-- `discord.js`: ^14.20.0 (Discord bot functionality)
-- `dotenv`: ^16.5.0 (Environment variable management)
-- `pg`: ^8.13.0 (PostgreSQL client)
-
-Install with:
-```bash
-cd app
-npm install @google/generative-ai @supabase/supabase-js discord.js dotenv pg
-```
-
-## Project Structure
-
-- `app/`: Node.js application
-  - `src/`: Source code
-    - `index.js`: Main bot logic (slash commands, reaction handling, history storage).
-    - `react.js`: Handles 👍 reactions for text responses.
-    - `transcribe.js`: Handles 🎤 reactions for voice transcription.
-    - `explain.js`: Handles ❓ reactions for content explanation.
-    - `config.js`: Gemini AI system instruction.
-  - `prompt/`: Prompt files
-    - `like_reaction.txt`: Prompt for 👍 reactions (fun, casual tone).
-    - `question_explain.txt`: Prompt for ❓ reactions (detailed, beginner-friendly explanations).
-  - `temp/`: Temporary storage for `.ogg` files (auto-deleted after transcription).
-  - `package.json`, `package-lock.json`, `node_modules/`: Node.js dependencies.
-  - `ecosystem.config.js`: PM2 configuration.
-  - `.env`: Environmentვ
-
-## Database Schema
-
-The bot uses both a local PostgreSQL instance and Supabase for conversation history. The `conversations` table is defined as follows:
-
-```sql
--- 会話履歴テーブル（1会話1レコード）
-CREATE TABLE IF NOT EXISTS conversations (
-    id BIGINT GENERATED BY DEFAULT AS IDENTITY,
-    user_id TEXT NOT NULL,
-    user_message TEXT NOT NULL,
-    bot_response TEXT NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (id)
-);
-
--- インデックス作成
-CREATE INDEX IF NOT EXISTS idx_conversations_user_id ON conversations (user_id);
-CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user_id, created_at DESC);
-```
-
-To query the history:
-```bash
-psql -h localhost -U postgres -d aimolt -c "SELECT COUNT(*) FROM conversations;"
-```
-
-For Supabase, the same schema is used. Ensure `SUPABASE_URL` and `SUPABASE_KEY` are set in `app/.env`.
-
-# 🐳 Docker Deployment Guide
-
-## Prerequisites for Docker
-
-- **Docker**: v20.10+ 
-- **Docker Compose**: v2.0+
-- **Node.js v22.x**: Required for development (optional for production)
-- **Git**: For cloning the repository
-
-## 🚀 Quick Start
-
-### 1. Automated Setup (Recommended)
-```bash
-# Clone the repository
-git clone https://github.com/litoma/aimolt.git
-cd aimolt
-
-# Run the setup script
-chmod +x setup-docker.sh
-./setup-docker.sh
-```
-
-### 2. Manual Setup
-```bash
-# Create required directories
-mkdir -p app/temp app/logs db/data
-chmod 755 app/temp app/logs db/data
-
-# Copy environment template
-cp app/.env.docker app/.env
-# Edit app/.env with your actual credentials
-
-# Build and start
-docker compose up --build -d
-```
-
-## 📋 Environment Variables
-
-### Required Variables
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `DISCORD_TOKEN` | Discord bot token | `MTxxxxx.xxxxx.xxxxx` |
-| `DISCORD_APPLICATION_ID` | Discord application ID | `1234567890123456789` |
-| `GEMINI_API_KEY` | Google Gemini AI API key | `AIxxxxxxxxxxxxx` |
-| `SUPABASE_URL` | Supabase project URL | `https://xxx.supabase.co` |
-| `SUPABASE_KEY` | Supabase anon key | `eyxxxxxx` |
-
-### Docker-specific Variables
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `POSTGRES_HOST` | `postgres` | Container name for PostgreSQL |
-| `NODE_ENV` | `production` | Environment mode |
-| `CONVERSATION_LIMIT` | `1000` | Max conversation history |
-
-## 🏗️ Container Architecture
+Dockerコンテナ内でNode.jsアプリケーションとPostgreSQLデータベースが連携して動作します。
 
 ```
 ┌─────────────────────────────────────────┐
@@ -250,249 +30,226 @@ docker compose up --build -d
 └─────────────────────────────────────────┘
 ```
 
-## 🔧 Development vs Production
+## ✅ 必須環境
 
-### Production Mode
-```bash
-# Production deployment
-docker compose -f compose.yaml up -d --build
+- **Node.js**: v18.x 以上
+- **Docker** & **Docker Compose**: v2.0 以上
+- **Discord Bot Token**: [Discord Developer Portal](https://discord.com/developers/applications) で取得
+- **Gemini API Key**: [Google AI Studio](https://makersuite.google.com/) で取得
+- **Supabase Project**: [Supabase](https://supabase.com/) でプロジェクトを作成
 
-# Or set environment
-NODE_ENV=production docker compose up -d
+## 🛠️ セットアップ
+
+ローカル環境またはDocker環境を選択してセットアップできます。
+
+### 🐳 Dockerでのセットアップ (推奨)
+
+1.  **リポジトリをクローン**:
+    ```bash
+    git clone https://github.com/litoma/aimolt.git
+    cd aimolt
+    ```
+
+2.  **環境変数を設定**:
+    - `.env`ファイルを作成し、ご自身のAPIキーやトークンを設定します。
+
+3.  **コンテナをビルドして起動**:
+    ```bash
+    docker compose up --build -d
+    ```
+    これでBotが起動します。
+
+### 💻 ローカル環境でのセットアップ
+
+1.  **リポジトリをクローンし、ディレクトリを移動**:
+    ```bash
+    git clone https://github.com/litoma/aimolt.git
+    cd aimolt/app
+    ```
+
+2.  **依存関係をインストール**:
+    ```bash
+    npm install
+    ```
+
+3.  **環境変数を設定**:
+    - `app/.env`ファイルを作成し、必要なキーを記述します。
+    - 詳細は「⚙️ 設定」のセクションを参照してください。
+
+4.  **一時ディレクトリを作成**:
+    ```bash
+    mkdir -p temp
+    chmod 755 temp
+    ```
+
+5.  **データベースを起動**:
+    - Dockerを使用してローカルにPostgreSQLをセットアップします。
+      ```bash
+      cd ../db
+      docker compose up -d
+      ```
+    - `init.sql`を使ってテーブルを初期化します。
+      ```bash
+      psql -h localhost -U postgres -d aimolt -f db/init.sql
+      ```
+
+6.  **Botを起動**:
+    - PM2を利用する場合 (本番推奨):
+      ```bash
+      cd ../app
+      pm2 start ecosystem.config.js --env production
+      pm2 save
+      ```
+    - 直接Node.jsで実行する場合:
+      ```bash
+      node src/index.js
+      ```
+
+## ⚙️ 設定
+
+### 環境変数 (`app/.env`)
+
+Botの動作には以下の環境変数が必要です。
+
+| 変数名 | 説明 | 例 |
+| :--- | :--- | :--- |
+| `DISCORD_TOKEN` | Discordボットのトークン | `MTxxxxx.xxxxx.xxxxx` |
+| `DISCORD_APPLICATION_ID` | DiscordアプリケーションのID | `1234567890123456789` |
+| `DISCORD_GUILD_ID` | Botを導入するサーバー(Guild)のID | `1234567890123456789` |
+| `GEMINI_API_KEY` | Google Gemini AIのAPIキー | `AIxxxxxxxxxxxxx` |
+| `SUPABASE_URL` | SupabaseプロジェクトのURL | `https://xxx.supabase.co` |
+| `SUPABASE_KEY` | SupabaseのAnonキー | `eyxxxxxx` |
+| `POSTGRES_HOST` | PostgreSQLホスト名 | `localhost` (ローカル) / `postgres` (Docker) |
+| `POSTGRES_PORT` | PostgreSQLポート | `5432` |
+| `POSTGRES_USER` | PostgreSQLユーザー名 | `postgres` |
+| `POSTGRES_PASSWORD` | PostgreSQLパスワード | `aimolt` |
+| `POSTGRES_DB` | PostgreSQLデータベース名 | `aimolt` |
+| `CONVERSATION_LIMIT` | 参照する会話履歴の最大件数 | `1000` |
+
+### AIの応答設定 (プロンプト)
+
+AIの性格や応答スタイルは、`app/prompt/`ディレクトリ内のテキストファイルを編集することでカスタマイズできます。
+
+- **`like_reaction.txt`**: 👍リアクション時の、フレンドリーでカジュアルな応答スタイルを定義します。
+- **`question_explain.txt`**: ❓リアクション時の、丁寧で分かりやすい解説スタイルを定義します。
+
+ファイルを変更した後は、Botを再起動してください。
+
+## 使い方
+
+1.  **テキスト応答**:
+    - メッセージに👍リアクションを付けます。
+
+2.  **音声文字起こし**:
+    - `.ogg`形式の音声メッセージを投稿し、それに🎤リアクションを付けます。
+    - Botが自動で文字起こし結果を投稿します。
+
+3.  **コンテンツ解説**:
+    - 解説してほしいメッセージに❓リアクションを付けます。
+    - Botが解説をEmbed形式で投稿します。
+
+## 🗂️ プロジェクト構造
+
+```
+aimolt/
+├── app/                  # Node.jsアプリケーション
+│   ├── src/              # ソースコード
+│   │   ├── index.js      # Botのメインロジック
+│   │   ├── react.js      # 👍リアクション処理
+│   │   ├── transcribe.js # 🎤リアクション処理
+│   │   ├── explain.js    # ❓リアクション処理
+│   │   └── config.js     # プロンプト読込設定
+│   ├── prompt/           # AIの指示プロンプト
+│   │   ├── like_reaction.txt
+│   │   └── question_explain.txt
+│   ├── temp/             # 音声ファイルの一時保存場所
+│   ├── Dockerfile        # アプリケーション用Dockerfile
+│   ├── ecosystem.config.js # PM2設定ファイル
+│   └── package.json
+├── db/                   # データベース関連
+│   ├── init.sql          # テーブル初期化スキーマ
+│   └── data/             # (ローカル)DBデータ
+├── compose.yaml          # Docker Compose設定ファイル
+└── README.md             # このファイル
 ```
 
-Features:
-- Optimized image size
-- Security hardening
-- Resource limits
-- Health checks
-- Graceful shutdown
+## 💾 データベース
 
-## 📊 Monitoring & Logs
+会話履歴を保存するために、SupabaseとローカルPostgreSQLを使用します。
 
-### View Logs
-```bash
-# Real-time logs
-docker compose logs -f discord-bot
+```sql
+-- conversationsテーブル: 会話履歴を保存
+CREATE TABLE IF NOT EXISTS conversations (
+    id BIGINT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    user_message TEXT NOT NULL,
+    bot_response TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
 
-# PostgreSQL logs
-docker compose logs -f postgres
-
-# Last 100 lines
-docker compose logs --tail=100 discord-bot
+-- パフォーマンス向上のためのインデックス
+CREATE INDEX IF NOT EXISTS idx_conversations_user_id ON conversations (user_id);
+CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user_id, created_at DESC);
 ```
 
-### Health Checks
-```bash
-# Check container status
-docker compose ps
+## 🩺 トラブルシューティング
 
-# Detailed health info
-docker inspect $(docker compose ps -q discord-bot) | jq '.[0].State.Health'
-```
+- **Botが起動しない**:
+  - `docker compose logs discord-bot` (Docker) または `pm2 logs aimolt` (ローカル) でログを確認します。
+  - `.env`ファイルのトークンやAPIキーが正しいか確認してください。
+- **データベースに接続できない**:
+  - `POSTGRES_HOST`が環境に合わせて正しく設定されているか確認します (`localhost` or `postgres`)。
+- **リアクションに反応しない**:
+  - Botが必要な権限 (`Guilds`, `GuildMessages`, `GuildMessageReactions`, `MessageContent`) を持っているか、Discord Developer Portalで確認してください。
+- **音声の文字起こしに失敗する**:
+  - `app/temp`ディレクトリが存在し、書き込み権限があるか確認してください。
 
-### PM2 Monitoring (Inside Container)
-```bash
-# Access container shell
-docker compose exec discord-bot sh
+## 🔄 開発とメンテナンス
 
-# PM2 commands
-pm2 list
-pm2 logs
-pm2 monit
-pm2 restart aimolt
-```
+### コードの更新とリビルド
 
-## 🔧 Troubleshooting
+`app`ディレクトリ内のソースコードを修正した場合、以下の手順で`discord-bot`コンテナのみを効率的にリビルド・再起動できます。
 
-### Common Issues
+1.  **Botコンテナを停止**:
+    ```bash
+    docker compose stop discord-bot
+    ```
 
-#### Bot Not Starting
-```bash
-# Check logs
-docker compose logs discord-bot
+2.  **Botコンテナをリビルドして起動**:
+    ```bash
+    docker compose up --build -d discord-bot
+    ```
+    `discord-bot`サービスのみを対象とすることで、データベースコンテナに影響を与えずに済みます。
 
-# Common causes:
-# - Invalid Discord token
-# - Missing .env file
-# - Database connection failed
-```
+3.  **ログを確認**:
+    ```bash
+    docker compose logs -f discord-bot
+    ```
+    `-f`オプションを付けることで、リアルタイムにログを監視できます。
 
-#### Database Connection Issues
-```bash
-# Test PostgreSQL connection
-docker compose exec postgres psql -U postgres -d aimolt -c "SELECT 1;"
+4.  **Botコンテナの再起動**:
+    ```bash
+    docker compose restart discord-bot
+    ```
 
-# Check network connectivity
-docker compose exec discord-bot ping postgres
-```
+5.  **Botコンテナへのログイン**:
+    ```bash
+    docker compose exec discord-bot sh
+    ```
 
-#### Permission Issues
-```bash
-# Fix temp directory permissions
-sudo chown -R 1001:1001 app/temp app/logs
-chmod 755 app/temp app/logs
-```
+6.  **DB接続**:
+    ```bash
+    docker compose exec postgres psql -U postgres -d aimolt
+    ```
 
-#### Memory Issues
-```bash
-# Check resource usage
-docker stats $(docker compose ps -q)
+## 🚀 今後の改善案
 
-# Restart with memory limit
-docker compose up -d --scale discord-bot=1
-```
+- `/history`コマンドで会話履歴を表示する機能
+- `/clear`コマンドで会話履歴を削除する機能
+- 📝リアクションで長文を要約する機能
+- Gemini APIのレート制限に対するリトライ処理
+- Prometheusなどによる詳細なモニタリング
 
-## 🔐 Security Considerations
+## 📄 ライセンス
 
-### Container Security
-- Non-root user execution (nodejs:1001)
-- Read-only filesystem where possible
-- Minimal base image (Alpine Linux)
-- Regular security updates
-
-### Network Security
-- Internal Docker network
-- No unnecessary port exposure
-- Environment variable encryption
-
-### Data Security
-- PostgreSQL data persistence
-- Secure credential management
-- Conversation history protection
-
-## 📈 Performance Optimization
-
-### Resource Limits
-```yaml
-# In compose.yaml
-deploy:
-  resources:
-    limits:
-      cpus: '1.0'
-      memory: 512M
-    reservations:
-      cpus: '0.5'
-      memory: 256M
-```
-
-### Caching Strategy
-- Docker layer caching
-- npm dependency caching
-- PM2 process clustering (if needed)
-
-## 🚀 Production Deployment
-
-### Prerequisites
-- Docker Swarm or Kubernetes
-- Load balancer (if scaling)
-- Monitoring solution (Prometheus/Grafana)
-- Log aggregation (ELK Stack)
-
-### Docker Swarm Example
-```bash
-# Initialize swarm
-docker swarm init
-
-# Deploy stack
-docker stack deploy -c compose.yaml aimolt
-
-# Scale service
-docker service scale aimolt_discord-bot=3
-```
-
-### Kubernetes Deployment
-```bash
-# Convert to Kubernetes manifests
-kompose convert
-
-# Apply manifests
-kubectl apply -f .
-```
-
-## 🔄 Updates & Maintenance
-
-### Update Bot Code
-```bash
-# Pull latest code
-git pull origin main
-
-# Rebuild and restart
-docker compose up --build -d
-```
-
-### Database Maintenance
-```bash
-# Backup database
-docker compose exec postgres pg_dump -U postgres aimolt > backup.sql
-
-# Restore database
-docker compose exec -T postgres psql -U postgres aimolt < backup.sql
-```
-
-### Clean Up
-```bash
-# Remove unused images
-docker image prune -a
-
-# Remove all containers and volumes
-docker compose down -v
-
-# Clean build cache
-docker builder prune
-```
-
-## 📞 Support
-
-For Docker-specific issues:
-1. Check container logs: `docker compose logs discord-bot`
-2. Verify environment variables: `docker compose config`
-3. Test database connectivity: `docker compose exec postgres pg_isready`
-4. Create GitHub issue with logs and configuration
-
-## 🎯 Next Steps
-
-- [ ] Set up monitoring with Prometheus
-- [ ] Implement log rotation
-- [ ] Add backup automation
-- [ ] Configure SSL/TLS certificates
-- [ ] Set up CI/CD pipeline
-
-## Troubleshooting
-
-- **Bot not responding**:
-  - Check logs: `pm2 logs aimolt`.
-  - Verify `app/.env` credentials and `app/src/config.js`.
-  - Ensure `DISCORD_TOKEN`, `GEMINI_API_KEY`, `SUPABASE_URL`, `SUPABASE_KEY` are valid.
-- **Transcription errors**:
-  - Ensure `.ogg` files are valid and under 100MB.
-  - Check `app/temp/` permissions: `chmod -R 755 app/temp`.
-- **Conversation history issues**:
-  - Query Supabase or PostgreSQL: `SELECT user_id, message FROM conversations WHERE user_id = '<your_user_id>';`.
-  - Verify database credentials in `app/.env`.
-- **PM2 errors**:
-  - If `Cannot find module '/home/ubuntu/discord/index.js'`, ensure `ecosystem.config.js` points to `app/src/index.js` and `cwd` is `/home/ubuntu/discord/app`.
-  - If `ReferenceError: path is not defined`, add `const path = require('path');` at the top of `app/src/index.js`.
-  - If `プロンプトの読み込みに失敗しました！🙈`, check if `app/prompt/like_reaction.txt` exists and has correct permissions (`chmod 644`).
-
-## Future Improvements
-
-- **New Commands**:
-  - `/history`: Display a user's conversation history.
-  - `/clear`: Clear conversation history for a user (with confirmation).
-- **Additional Reactions**:
-  - 😎 for cool, humorous responses.
-  - 📝 for summarizing long messages.
-- **Performance Optimizations**:
-  - Cache Gemini API responses to reduce latency.
-  - Implement batch processing for conversation history to handle high traffic.
-- **Error Handling**:
-  - Add retry logic for Gemini API rate limits.
-  - Improve logging for debugging (e.g., structured JSON logs).
-- **Monitoring**:
-  - Add health checks for Supabase/PostgreSQL connectivity.
-  - Monitor `app/temp/` disk usage to prevent overflow.
-
-## License
-
-ISC License. See `app/package.json` for details.
+このプロジェクトはISCライセンスです。詳細は`app/package.json`を参照してください。
