@@ -215,7 +215,7 @@ cp app/.env.docker app/.env
 # Edit app/.env with your actual credentials
 
 # Build and start
-docker-compose up --build -d
+docker compose up --build -d
 ```
 
 ## 📋 Environment Variables
@@ -273,28 +273,28 @@ Features:
 ### View Logs
 ```bash
 # Real-time logs
-docker-compose logs -f discord-bot
+docker compose logs -f discord-bot
 
 # PostgreSQL logs
-docker-compose logs -f postgres
+docker compose logs -f postgres
 
 # Last 100 lines
-docker-compose logs --tail=100 discord-bot
+docker compose logs --tail=100 discord-bot
 ```
 
 ### Health Checks
 ```bash
 # Check container status
-docker-compose ps
+docker compose ps
 
 # Detailed health info
-docker inspect $(docker-compose ps -q discord-bot) | jq '.[0].State.Health'
+docker inspect $(docker compose ps -q discord-bot) | jq '.[0].State.Health'
 ```
 
 ### PM2 Monitoring (Inside Container)
 ```bash
 # Access container shell
-docker-compose exec discord-bot sh
+docker compose exec discord-bot sh
 
 # PM2 commands
 pm2 list
@@ -337,18 +337,10 @@ chmod 755 app/temp app/logs
 #### Memory Issues
 ```bash
 # Check resource usage
-docker stats $(docker-compose ps -q)
+docker stats $(docker compose ps -q)
 
 # Restart with memory limit
 docker compose up -d --scale discord-bot=1
-```
-
-### Debug Mode
-```bash
-# Enable Node.js debugging
-docker compose -f docker-compose.yml -f docker-compose.override.yml up
-
-# Connect debugger to localhost:9229
 ```
 
 ## 🔐 Security Considerations
@@ -373,7 +365,7 @@ docker compose -f docker-compose.yml -f docker-compose.override.yml up
 
 ### Resource Limits
 ```yaml
-# In docker-compose.yml
+# In compose.yaml
 deploy:
   resources:
     limits:
@@ -403,7 +395,7 @@ deploy:
 docker swarm init
 
 # Deploy stack
-docker stack deploy -c docker-compose.yml aimolt
+docker stack deploy -c compose.yaml aimolt
 
 # Scale service
 docker service scale aimolt_discord-bot=3

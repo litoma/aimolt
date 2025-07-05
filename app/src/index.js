@@ -24,7 +24,12 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({
   model: 'gemini-2.5-flash',
   systemInstruction,
-  generationConfig: { maxOutputTokens: 2000, temperature: 0.7 }
+  generationConfig: { 
+    maxOutputTokens: 2000, 
+    temperature: 0.7,
+    // Gemini 2.5の動的思考機能を有効化
+    thinkingBudget: 0  // 基本的な思考トークン
+  }
 });
 
 // Supabaseの設定
