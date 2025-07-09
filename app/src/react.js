@@ -1,4 +1,3 @@
-// react.js
 const fs = require('fs').promises;
 const path = require('path');
 const axios = require('axios');
@@ -151,16 +150,11 @@ async function handleReaction(reaction, user, genAI, getConversationHistory, sav
     // プロンプトにObsidianメモのコンテキストを追加
     const enhancedPrompt = buildPromptWithContext(prompt, userMessage, relevantNotes);
     
-    // Gemini 2.5用のモデル設定（動的思考を有効化）
+    // Gemini APIで応答を生成
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      systemInstruction: enhancedPrompt,
-      generationConfig: { 
-        maxOutputTokens: 2000, 
-        temperature: 0.7,
-        // Gemini 2.5の動的思考機能を有効化
-        thinkingBudget: -1  // 無制限の思考トークン
-      },
+      systemInstruction: enhancedPrompt, // 強化されたプロンプトを使用
+      generationConfig: { maxOutputTokens: 2000, temperature: 0.7 },
     });
     
     const chatSession = model.startChat({ history: await getConversationHistory(userId) });

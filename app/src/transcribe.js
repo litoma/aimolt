@@ -25,6 +25,39 @@ async function downloadAudio(url, filePath, fallbackUrl) {
   });
 }
 
+// ケバ取り用の後処理関数
+function removeFillerWords(text) {
+  // 一般的なフィラー語のパターン
+  const fillerPatterns = [
+    /\b(あー|ああ|あああ)+\b/g,
+    /\b(えー|ええ|えええ)+\b/g,
+    /\b(うー|ううん|うう)+\b/g,
+    /\b(おー|おお)+\b/g,
+    /\b(んー|んん)+\b/g,
+    /\b(まあ|まー)+\b/g,
+    /\b(そのー|その)+\b/g,
+    /\b(なんか|なんて)+\b/g,
+    /\b(ちょっと)+\b/g,
+    // 繰り返し表現
+    /(.)\1{2,}/g, // 同じ文字が3回以上連続
+    // 余分な空白
+    /\s+/g
+  ];
+
+  let cleanText = text;
+  fillerPatterns.forEach(pattern => {
+    if (pattern.source === '\\s+') {
+      cleanText = cleanText.replace(pattern, ' ');
+    } else if (pattern.source === '(.)\\1{2,}') {
+      cleanText = cleanText.replace(pattern, '$1$1');
+    } else {
+      cleanText = cleanText.replace(pattern, '');
+    }
+  });
+
+  return cleanText.trim();
+}
+
 // 音声文字起こし
 async function transcribeAudio(message, channel, user, genAI, getConversationHistory, saveConversationHistory) {
   const audioExts = ['.ogg'];
@@ -58,8 +91,21 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
   try {
     await downloadAudio(targetAttachment.proxyUrl, filePath, targetAttachment.url);
 
-    const transcriptionModel = genAI.getGenerativeModel({ model: 'gemini-2.5-flash', systemInstruction: '' });
-    // 会話履歴を使用せずに直接文字起こし処理
+    // ケバ取り用のシステムインストラクション
+    const systemInstruction = `
+音声を日本語のテキストに変換してください。以下の点に注意してください：
+- フィラー語（あー、えー、うー、んー、まあ、そのー等）は除去する
+- 意味のない繰り返しや言い直しは除去する
+- 自然で読みやすい文章にする
+- 句読点を適切に配置する
+- 重要な内容のみを抽出する
+    `;
+
+    const transcriptionModel = genAI.getGenerativeModel({ 
+      model: 'gemini-2.5-flash', 
+      systemInstruction: systemInstruction 
+    });
+    
     const chatSession = transcriptionModel.startChat();
 
     const audioData = await fs.readFile(filePath);
@@ -69,24 +115,29 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
         mimeType,
       },
     };
+    
     const result = await chatSession.sendMessage([
-      '以下の音声を日本語のテキストに変換するだけ',
+      '以下の音声を日本語のテキストに変換し、フィラー語を除去して自然な文章にしてください。',
       audioFile,
     ]);
-    const transcription = result.response.text();
+    
+    let transcription = result.response.text();
+    
+    // 追加の後処理でケバ取り
+    transcription = removeFillerWords(transcription);
 
     await channel.send('🎉 文字起こしが完了したよ〜！');
     if (transcription.trim()) {
-      for (let i = 0; i < transcription.length; i += 1000) {
-        await channel.send(transcription.slice(i, i + 1000));
+      // 引用ブロックで囲んで送信
+      const quotedText = `>>> ${transcription}`;
+      
+      for (let i = 0; i < quotedText.length; i += 1000) {
+        await channel.send(quotedText.slice(i, i + 1000));
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     } else {
       await channel.send(`<@${user.id}> ⚠️ 文字起こし結果が空でした。😓`);
     }
-
-    // 会話履歴の保存を無効化（コメントアウト）
-    // await saveConversationHistory(userId, '音声ファイル', transcription);
 
     try {
       await fs.unlink(filePath);
