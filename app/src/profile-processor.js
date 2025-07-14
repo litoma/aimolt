@@ -31,40 +31,203 @@ class ProfileProcessor {
         return client;
     }
 
-    // Obsidianからすべてのメモを取得
+    // 改善版: 複数の方法でObsidianからすべてのメモを取得
     async getAllNotesFromObsidian() {
         try {
+            console.log('Fetching all notes from Obsidian (including subdirectories)...');
+            
+            // 方法1: 検索を使ってすべてのMarkdownファイルを探す
+            let allFiles = await this.searchAllMarkdownFiles();
+            
+            // 方法2: 失敗した場合は直接探索
+            if (allFiles.length === 0) {
+                console.log('Fallback: Using direct vault exploration...');
+                allFiles = await this.exploreVaultDirectly();
+            }
+            
+            console.log(`Found ${allFiles.length} potential markdown files`);
+            
+            const notes = [];
+            const processedFiles = new Set();
+            
+            for (const filePath of allFiles) {
+                if (filePath.endsWith('.md') && !processedFiles.has(filePath)) {
+                    try {
+                        const noteContent = await this.getNoteContent(filePath);
+                        if (noteContent && noteContent.trim().length > 0) {
+                            notes.push({
+                                filename: filePath,
+                                content: noteContent,
+                                lastModified: new Date()
+                            });
+                            processedFiles.add(filePath);
+                            console.log(`✓ Loaded: ${filePath}`);
+                        }
+                    } catch (noteError) {
+                        console.error(`✗ Error fetching note ${filePath}:`, noteError.message);
+                    }
+                }
+            }
+            
+            console.log(`Successfully loaded ${notes.length} notes`);
+            return notes;
+        } catch (error) {
+            console.error('Error fetching notes from Obsidian:', error.message);
+            return [];
+        }
+    }
+
+    // 方法1: 検索を使ってすべてのMarkdownファイルを探す
+    async searchAllMarkdownFiles() {
+        const allFiles = [];
+        
+        try {
+            console.log('Searching for all markdown files...');
+            
+            // よく使われる文字や記号で検索して、できるだけ多くのファイルを見つける
+            const searchTerms = [
+                '', // 空の検索（全ファイル）
+                'the', 'and', 'a', 'to', 'of', 'in', 'for', 'on', 'with', 'as',
+                '。', '、', '.', ',', ':', ';', '!', '?', '-', '_', '#',
+                // 日本語の一般的な文字
+                'の', 'が', 'を', 'に', 'は', 'で', 'と', 'も', 'から',
+                // 英語の一般的な単語
+                'it', 'be', 'have', 'do', 'say', 'get', 'make', 'go', 'know'
+            ];
+            
+            const foundFiles = new Set();
+            
+            for (const term of searchTerms) {
+                try {
+                    const searchResults = await this.searchFiles(term);
+                    let termCount = 0;
+                    
+                    for (const file of searchResults) {
+                        if (file.filename && file.filename.endsWith('.md')) {
+                            foundFiles.add(file.filename);
+                            termCount++;
+                        }
+                    }
+                    
+                    console.log(`Search term "${term}": found ${termCount} files`);
+                    
+                    // 少し待機（APIレート制限対策）
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                } catch (searchError) {
+                    console.error(`Search error for term "${term}":`, searchError.message);
+                }
+            }
+            
+            console.log(`Total unique files found via search: ${foundFiles.size}`);
+            return Array.from(foundFiles);
+        } catch (error) {
+            console.error('Error in search method:', error.message);
+            return [];
+        }
+    }
+
+    // 方法2: 直接Vaultを探索
+    async exploreVaultDirectly() {
+        try {
+            console.log('Exploring vault directly...');
+            
             const response = await axios.get(`${this.obsidianConfig.baseURL}/vault/`, {
                 headers: this.obsidianConfig.headers,
                 timeout: 10000
             });
             
-            const notes = [];
+            const foundFiles = [];
+            
             if (response.data && response.data.files) {
+                console.log(`Root directory contains ${response.data.files.length} items`);
+                
                 for (const file of response.data.files) {
                     if (file.endsWith('.md')) {
-                        try {
-                            const noteResponse = await axios.get(
-                                `${this.obsidianConfig.baseURL}/vault/${encodeURIComponent(file)}`,
-                                { headers: this.obsidianConfig.headers, timeout: 5000 }
-                            );
-                            
-                            notes.push({
-                                filename: file,
-                                content: noteResponse.data,
-                                lastModified: new Date()
-                            });
-                        } catch (noteError) {
-                            console.error(`Error fetching note ${file}:`, noteError.message);
-                        }
+                        foundFiles.push(file);
+                        console.log(`Found markdown file: ${file}`);
                     }
                 }
             }
             
-            return notes;
+            return foundFiles;
         } catch (error) {
-            console.error('Error fetching notes from Obsidian:', error.message);
+            console.error('Error in direct vault exploration:', error.message);
             return [];
+        }
+    }
+
+    // 検索APIを使用
+    async searchFiles(query) {
+        try {
+            const response = await axios.post(`${this.obsidianConfig.baseURL}/search/simple/`, null, {
+                headers: this.obsidianConfig.headers,
+                params: { query },
+                timeout: 8000
+            });
+            return response.data || [];
+        } catch (error) {
+            if (error.code !== 'ECONNABORTED') {
+                console.error(`Search error for "${query}":`, error.message);
+            }
+            return [];
+        }
+    }
+
+    // 個別ファイルの内容を取得
+    async getNoteContent(filePath) {
+        try {
+            const response = await axios.get(
+                `${this.obsidianConfig.baseURL}/vault/${encodeURIComponent(filePath)}`,
+                { 
+                    headers: this.obsidianConfig.headers, 
+                    timeout: 8000 
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error(`Error getting content for ${filePath}:`, error.message);
+            return null;
+        }
+    }
+
+    // デバッグ用: Obsidian API の動作確認
+    async debugObsidianAPI() {
+        console.log('=== Obsidian API Debug ===');
+        
+        try {
+            // APIの基本動作確認
+            console.log('1. Testing basic API connection...');
+            const testResponse = await axios.get(`${this.obsidianConfig.baseURL}/vault/`, {
+                headers: this.obsidianConfig.headers,
+                timeout: 5000
+            });
+            
+            console.log('✓ API connection successful');
+            console.log('Response structure:', Object.keys(testResponse.data));
+            
+            if (testResponse.data.files) {
+                console.log(`Files in root: ${testResponse.data.files.length}`);
+                console.log('First 10 files:', testResponse.data.files.slice(0, 10));
+            }
+            
+            // 検索機能の確認
+            console.log('\n2. Testing search functionality...');
+            const searchTest = await this.searchFiles('');
+            console.log(`Search results count: ${searchTest.length}`);
+            
+            if (searchTest.length > 0) {
+                console.log('Sample search results:');
+                searchTest.slice(0, 5).forEach((result, index) => {
+                    console.log(`  ${index + 1}. ${result.filename || 'No filename'}`);
+                });
+            }
+            
+        } catch (error) {
+            console.error('❌ Debug error:', error.message);
+            if (error.response) {
+                console.error('Response status:', error.response.status);
+                console.error('Response data:', error.response.data);
+            }
         }
     }
 
@@ -127,11 +290,11 @@ ${content}
         const client = await this.connectDB();
         
         try {
-            // メモファイル管理テーブル
+            // メモファイル管理テーブル（file_nameを500文字に拡張）
             await client.query(`
                 CREATE TABLE IF NOT EXISTS obsidian_notes (
                     id SERIAL PRIMARY KEY,
-                    file_name VARCHAR(255) NOT NULL UNIQUE,
+                    file_name VARCHAR(500) NOT NULL UNIQUE,
                     content TEXT NOT NULL,
                     last_modified TIMESTAMP NOT NULL,
                     processed_at TIMESTAMP,
@@ -502,14 +665,19 @@ ${content}
             // 1. テーブル初期化
             await this.initializeProfileTables();
             
-            // 2. Obsidianからメモを取得
+            // 2. デバッグ情報（必要に応じて）
+            if (process.env.NODE_ENV === 'development' || process.env.OBSIDIAN_DEBUG === 'true') {
+                await this.debugObsidianAPI();
+            }
+            
+            // 3. Obsidianからメモを取得
             const notes = await this.getAllNotesFromObsidian();
             console.log(`Found ${notes.length} notes from Obsidian`);
             
-            // 3. メモをDBに保存
+            // 4. メモをDBに保存
             await this.saveNotesToDB(notes);
             
-            // 4. 未処理メモを分析
+            // 5. 未処理メモを分析
             await this.processUnprocessedNotes(genAI);
             
             console.log('Profile processing completed!');
