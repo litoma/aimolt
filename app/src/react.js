@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const axios = require('axios');
+const ProfileProcessor = require('./profile-processor');
 
 // Obsidian API クライアント
 class ObsidianAPI {
@@ -40,10 +41,13 @@ class ObsidianAPI {
   }
 }
 
-// Obsidianクライアントの初期化
+// Obsidianクライアントとプロファイルプロセッサーの初期化
 let obsidian = null;
-if (process.env.OBSIDIAN_URL && process.env.OBSIDIAN_API_KEY) {
-  obsidian = new ObsidianAPI(process.env.OBSIDIAN_URL, process.env.OBSIDIAN_API_KEY);
+let profileProcessor = null;
+
+if (process.env.OBSIDIAN_URL && process.env.OBSIDIAN_API) {
+  obsidian = new ObsidianAPI(process.env.OBSIDIAN_URL, process.env.OBSIDIAN_API);
+  profileProcessor = new ProfileProcessor();
 }
 
 async function loadPrompt(filePath) {
@@ -69,7 +73,7 @@ function extractKeywords(text) {
   return [...new Set(words)].slice(0, 3); // 重複除去して最初の3個
 }
 
-// 関連メモ検索
+// 関連メモ検索（動的検索）
 async function findRelevantNotes(userMessage, maxNotes = 2) {
   if (!obsidian) {
     return [];
@@ -101,22 +105,91 @@ async function findRelevantNotes(userMessage, maxNotes = 2) {
   return uniqueNotes.slice(0, maxNotes);
 }
 
-// Geminiへのプロンプト構築（Obsidianメモ付き）
-function buildPromptWithContext(originalPrompt, userMessage, relevantNotes) {
-  if (!relevantNotes || relevantNotes.length === 0) {
-    return originalPrompt;
+// 基本プロファイルを取得
+async function getBasicProfile() {
+  if (!profileProcessor) {
+    return null;
   }
+  
+  try {
+    return await profileProcessor.getCurrentProfile();
+  } catch (error) {
+    console.error('Error getting basic profile:', error);
+    return null;
+  }
+}
 
-  let contextPrompt = originalPrompt + '\n\n';
-  contextPrompt += '以下のメモを参考情報として活用してください：\n\n';
+// プロファイルをプロンプト用のテキストに変換
+function formatProfileForPrompt(profile) {
+  if (!profile || Object.keys(profile).length === 0) {
+    return '';
+  }
+  
+  let profileText = '\n\n【あなたの基本的な人物特性】\n';
+  
+  if (profile.values && profile.values.content) {
+    profileText += `価値観: ${profile.values.content.join(', ')}\n`;
+  }
+  
+  if (profile.interests && profile.interests.content) {
+    profileText += `興味・関心: ${profile.interests.content.join(', ')}\n`;
+  }
+  
+  if (profile.personality && profile.personality.content) {
+    profileText += `性格特性: ${profile.personality.content.join(', ')}\n`;
+  }
+  
+  if (profile.thinking_patterns && profile.thinking_patterns.content) {
+    profileText += `思考パターン: ${profile.thinking_patterns.content.join(', ')}\n`;
+  }
+  
+  profileText += '\n上記があなたの基本的な特性です。これらを踏まえて、あなたらしい応答を生成してください。';
+  
+  return profileText;
+}
 
-  relevantNotes.forEach((note, index) => {
-    contextPrompt += `【参考メモ${index + 1}: ${note.filename}】\n${note.content}\n\n`;
-  });
+// Geminiへのプロンプト構築（ハイブリッド型：基本プロファイル + 動的検索）
+async function buildEnhancedPrompt(originalPrompt, userMessage) {
+  let enhancedPrompt = originalPrompt;
+  
+  // 1. 基本プロファイルを追加
+  const basicProfile = await getBasicProfile();
+  const profileText = formatProfileForPrompt(basicProfile);
+  if (profileText) {
+    enhancedPrompt += profileText;
+  }
+  
+  // 2. 関連メモ検索（動的検索）
+  const relevantNotes = await findRelevantNotes(userMessage, 2);
+  if (relevantNotes && relevantNotes.length > 0) {
+    enhancedPrompt += '\n\n【関連する具体的な情報】\n';
+    relevantNotes.forEach((note, index) => {
+      enhancedPrompt += `参考メモ${index + 1}: ${note.filename}\n${note.content}\n\n`;
+    });
+    enhancedPrompt += '上記のメモも参考にして、より具体的で個人的な応答を生成してください。';
+  }
+  
+  return {
+    enhancedPrompt,
+    profileUsed: !!profileText,
+    notesFound: relevantNotes.length
+  };
+}
 
-  contextPrompt += `上記のメモの内容も参考にしつつ、ユーザーのメッセージに対してポジティブで有用な応答を生成してください。`;
-
-  return contextPrompt;
+// プロファイル処理の定期実行
+async function runProfileProcessing(genAI) {
+  if (!profileProcessor) {
+    console.log('Profile processor not available');
+    return;
+  }
+  
+  try {
+    console.log('Starting scheduled profile processing...');
+    await profileProcessor.runFullProcess(genAI);
+    console.log('Scheduled profile processing completed');
+  } catch (error) {
+    console.error('Error in scheduled profile processing:', error);
+  }
 }
 
 async function handleReaction(reaction, user, genAI, getConversationHistory, saveConversationHistory) {
@@ -144,16 +217,13 @@ async function handleReaction(reaction, user, genAI, getConversationHistory, sav
   }
 
   try {
-    // 関連メモ検索（Obsidian連携）
-    const relevantNotes = await findRelevantNotes(userMessage);
-    
-    // プロンプトにObsidianメモのコンテキストを追加
-    const enhancedPrompt = buildPromptWithContext(prompt, userMessage, relevantNotes);
+    // ハイブリッド型プロンプト生成（基本プロファイル + 動的検索）
+    const { enhancedPrompt, profileUsed, notesFound } = await buildEnhancedPrompt(prompt, userMessage);
     
     // Gemini APIで応答を生成
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      systemInstruction: enhancedPrompt, // 強化されたプロンプトを使用
+      systemInstruction: enhancedPrompt, // ハイブリッド強化されたプロンプトを使用
       generationConfig: { maxOutputTokens: 2000, temperature: 0.7 },
     });
     
@@ -167,11 +237,16 @@ async function handleReaction(reaction, user, genAI, getConversationHistory, sav
     // 会話履歴を保存
     await saveConversationHistory(userId, userMessage, reply);
 
-    // 応答を送信（関連メモがある場合は追記）
+    // 応答を送信
     let finalReply = reply.slice(0, 1800); // 少し余裕を持たせる
-    if (relevantNotes.length > 0) {
-      const notesList = relevantNotes.map(note => note.filename).join(', ');
-      finalReply += `\n\n📝 参考メモ: ${notesList}`;
+    
+    // デバッグ情報を追加（必要に応じて）
+    const debugInfo = [];
+    if (profileUsed) debugInfo.push('🧠基本プロファイル');
+    if (notesFound > 0) debugInfo.push(`📝関連メモ${notesFound}件`);
+    
+    if (debugInfo.length > 0) {
+      finalReply += `\n\n💡 参考: ${debugInfo.join(', ')}`;
     }
 
     await message.reply(finalReply.slice(0, 2000));
@@ -182,4 +257,36 @@ async function handleReaction(reaction, user, genAI, getConversationHistory, sav
   }
 }
 
-module.exports = { handleReaction };
+// プロファイル処理の初期化と定期実行の設定
+async function initializeProfileSystem(genAI) {
+  if (!profileProcessor) {
+    console.log('Profile system not available (missing Obsidian config)');
+    return;
+  }
+  
+  try {
+    // 初回のプロファイル処理
+    console.log('Initializing profile system...');
+    await profileProcessor.initializeProfileTables();
+    
+    // 起動時に一度実行
+    setTimeout(async () => {
+      await runProfileProcessing(genAI);
+    }, 5000); // 5秒後に実行
+    
+    // 定期実行（1時間ごと）
+    setInterval(async () => {
+      await runProfileProcessing(genAI);
+    }, 60 * 60 * 1000); // 1時間
+    
+    console.log('Profile system initialized with scheduled processing');
+  } catch (error) {
+    console.error('Error initializing profile system:', error);
+  }
+}
+
+module.exports = { 
+  handleReaction,
+  initializeProfileSystem,
+  runProfileProcessing
+};
