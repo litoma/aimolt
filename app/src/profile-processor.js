@@ -1,5 +1,6 @@
 const { Client } = require('pg');
 const axios = require('axios');
+const { createClient } = require('@supabase/supabase-js');
 
 class ProfileProcessor {
     constructor() {
@@ -19,6 +20,9 @@ class ProfileProcessor {
             user: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD
         };
+        
+        // Supabaseクライアント
+        this.supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
     }
 
     async connectDB() {
@@ -117,8 +121,9 @@ ${content}
         }
     }
 
-    // プロファイルテーブルの初期化
+    // プロファイルテーブルの初期化（PostgreSQL + Supabase）
     async initializeProfileTables() {
+        // PostgreSQL初期化
         const client = await this.connectDB();
         
         try {
@@ -163,15 +168,31 @@ ${content}
             await client.query('CREATE INDEX IF NOT EXISTS idx_obsidian_notes_modified ON obsidian_notes(last_modified)');
             await client.query('CREATE INDEX IF NOT EXISTS idx_user_profile_category ON user_profile(category)');
             
-            console.log('Profile tables initialized successfully');
+            console.log('PostgreSQL profile tables initialized successfully');
         } catch (error) {
-            console.error('Error initializing profile tables:', error);
+            console.error('Error initializing PostgreSQL profile tables:', error);
         } finally {
             await client.end();
         }
+
+        // Supabaseテーブル存在確認（テーブルが存在しない場合は警告を出すのみ）
+        try {
+            const { data, error } = await this.supabase
+                .from('obsidian_notes')
+                .select('id')
+                .limit(1);
+            
+            if (error && error.code === '42P01') {
+                console.warn('⚠️ Supabase tables not found. Please create them manually using the provided SQL.');
+            } else {
+                console.log('✅ Supabase profile tables are available');
+            }
+        } catch (error) {
+            console.warn('⚠️ Could not verify Supabase tables:', error.message);
+        }
     }
 
-    // メモを保存/更新
+    // メモを保存/更新（PostgreSQL + Supabase）
     async saveNotesToDB(notes) {
         if (notes.length === 0) return;
         
@@ -179,6 +200,7 @@ ${content}
         
         try {
             for (const note of notes) {
+                // PostgreSQL処理
                 const existingQuery = `
                     SELECT id, last_modified FROM obsidian_notes 
                     WHERE file_name = $1
@@ -186,19 +208,51 @@ ${content}
                 const existing = await client.query(existingQuery, [note.filename]);
                 
                 if (existing.rows.length === 0) {
-                    // 新規作成
+                    // PostgreSQL新規作成
                     await client.query(`
                         INSERT INTO obsidian_notes (file_name, content, last_modified)
                         VALUES ($1, $2, $3)
                     `, [note.filename, note.content, note.lastModified]);
+                    
+                    // Supabase新規作成
+                    try {
+                        const { error } = await this.supabase
+                            .from('obsidian_notes')
+                            .insert({
+                                file_name: note.filename,
+                                content: note.content,
+                                last_modified: note.lastModified.toISOString()
+                            });
+                        if (error) console.error('Supabase insert error:', error.message);
+                    } catch (supabaseError) {
+                        console.error('Supabase insert error:', supabaseError.message);
+                    }
+                    
                     console.log(`New note saved: ${note.filename}`);
                 } else {
-                    // 内容更新（常に新しい内容で更新）
+                    // PostgreSQL更新
                     await client.query(`
                         UPDATE obsidian_notes 
                         SET content = $1, last_modified = $2, processed_at = NULL, updated_at = CURRENT_TIMESTAMP
                         WHERE file_name = $3
                     `, [note.content, note.lastModified, note.filename]);
+                    
+                    // Supabase更新
+                    try {
+                        const { error } = await this.supabase
+                            .from('obsidian_notes')
+                            .update({
+                                content: note.content,
+                                last_modified: note.lastModified.toISOString(),
+                                processed_at: null,
+                                updated_at: new Date().toISOString()
+                            })
+                            .eq('file_name', note.filename);
+                        if (error) console.error('Supabase update error:', error.message);
+                    } catch (supabaseError) {
+                        console.error('Supabase update error:', supabaseError.message);
+                    }
+                    
                     console.log(`Note updated: ${note.filename}`);
                 }
             }
@@ -235,12 +289,23 @@ ${content}
                     const insights = await this.analyzeNoteForProfile(note.content, genAI);
                     await this.updateProfileWithInsights(client, insights, note.file_name);
                     
-                    // 処理済みマーク
+                    // PostgreSQL処理済みマーク
                     await client.query(`
                         UPDATE obsidian_notes 
                         SET processed_at = CURRENT_TIMESTAMP 
                         WHERE id = $1
                     `, [note.id]);
+                    
+                    // Supabase処理済みマーク
+                    try {
+                        const { error } = await this.supabase
+                            .from('obsidian_notes')
+                            .update({ processed_at: new Date().toISOString() })
+                            .eq('file_name', note.file_name);
+                        if (error) console.error('Supabase processed_at update error:', error.message);
+                    } catch (supabaseError) {
+                        console.error('Supabase processed_at update error:', supabaseError.message);
+                    }
                     
                     console.log(`Processed: ${note.file_name}`);
                 } catch (error) {
@@ -256,13 +321,13 @@ ${content}
         }
     }
 
-    // 抽出した特性をDBに保存
+    // 抽出した特性をDBに保存（PostgreSQL + Supabase）
     async updateProfileWithInsights(client, insights, sourceFileName) {
         const categories = ['values', 'interests', 'personality', 'thinking_patterns'];
         
         for (const category of categories) {
             if (insights[category] && insights[category].length > 0) {
-                // 既存データの取得
+                // PostgreSQL処理
                 const existingQuery = `
                     SELECT content, source_notes FROM user_profile WHERE category = $1
                 `;
@@ -281,6 +346,7 @@ ${content}
                 const updatedSourceNotes = [...new Set([...sourceNotes, sourceFileName])];
                 
                 if (existing.rows.length > 0) {
+                    // PostgreSQL更新
                     await client.query(`
                         UPDATE user_profile 
                         SET content = $1, 
@@ -289,17 +355,49 @@ ${content}
                             updated_at = CURRENT_TIMESTAMP
                         WHERE category = $4
                     `, [JSON.stringify(merged), insights.confidence, updatedSourceNotes, category]);
+                    
+                    // Supabase更新
+                    try {
+                        const { error } = await this.supabase
+                            .from('user_profile')
+                            .update({
+                                content: merged,
+                                confidence_score: insights.confidence,
+                                source_notes: updatedSourceNotes,
+                                updated_at: new Date().toISOString()
+                            })
+                            .eq('category', category);
+                        if (error) console.error('Supabase profile update error:', error.message);
+                    } catch (supabaseError) {
+                        console.error('Supabase profile update error:', supabaseError.message);
+                    }
                 } else {
+                    // PostgreSQL新規作成
                     await client.query(`
                         INSERT INTO user_profile (category, content, confidence_score, source_notes)
                         VALUES ($1, $2, $3, $4)
                     `, [category, JSON.stringify(merged), insights.confidence, [sourceFileName]]);
+                    
+                    // Supabase新規作成
+                    try {
+                        const { error } = await this.supabase
+                            .from('user_profile')
+                            .insert({
+                                category: category,
+                                content: merged,
+                                confidence_score: insights.confidence,
+                                source_notes: [sourceFileName]
+                            });
+                        if (error) console.error('Supabase profile insert error:', error.message);
+                    } catch (supabaseError) {
+                        console.error('Supabase profile insert error:', supabaseError.message);
+                    }
                 }
             }
         }
     }
 
-    // プロファイルの統合・整理
+    // プロファイルの統合・整理（PostgreSQL + Supabase）
     async consolidateProfile(client, genAI) {
         try {
             const allProfilesQuery = `
@@ -315,11 +413,25 @@ ${content}
                 return acc;
             }, {});
             
-            // 履歴記録
+            // PostgreSQL履歴記録
             await client.query(`
                 INSERT INTO profile_update_history (update_type, processed_notes_count, new_insights)
                 VALUES ('consolidation', $1, $2)
             `, [profiles.rows.length, JSON.stringify(profileData)]);
+            
+            // Supabase履歴記録
+            try {
+                const { error } = await this.supabase
+                    .from('profile_update_history')
+                    .insert({
+                        update_type: 'consolidation',
+                        processed_notes_count: profiles.rows.length,
+                        new_insights: JSON.stringify(profileData)
+                    });
+                if (error) console.error('Supabase history insert error:', error.message);
+            } catch (supabaseError) {
+                console.error('Supabase history insert error:', supabaseError.message);
+            }
             
             console.log('Profile consolidation completed');
         } catch (error) {
@@ -327,7 +439,7 @@ ${content}
         }
     }
 
-    // 現在のプロファイルを取得
+    // 現在のプロファイルを取得（PostgreSQL優先、Supabaseフォールバック）
     async getCurrentProfile() {
         const client = await this.connectDB();
         
@@ -340,7 +452,35 @@ ${content}
             
             const result = await client.query(query);
             
-            return result.rows.reduce((profile, row) => {
+            if (result.rows.length > 0) {
+                return result.rows.reduce((profile, row) => {
+                    profile[row.category] = {
+                        content: row.content,
+                        confidence: row.confidence_score,
+                        updated_at: row.updated_at
+                    };
+                    return profile;
+                }, {});
+            }
+        } catch (error) {
+            console.error('Error getting profile from PostgreSQL:', error);
+        } finally {
+            await client.end();
+        }
+        
+        // PostgreSQLで失敗した場合、Supabaseから取得
+        try {
+            const { data, error } = await this.supabase
+                .from('user_profile')
+                .select('category, content, confidence_score, updated_at')
+                .order('category');
+            
+            if (error) {
+                console.error('Error getting profile from Supabase:', error.message);
+                return {};
+            }
+            
+            return data.reduce((profile, row) => {
                 profile[row.category] = {
                     content: row.content,
                     confidence: row.confidence_score,
@@ -349,10 +489,8 @@ ${content}
                 return profile;
             }, {});
         } catch (error) {
-            console.error('Error getting current profile:', error);
+            console.error('Error getting profile from Supabase:', error);
             return {};
-        } finally {
-            await client.end();
         }
     }
 
