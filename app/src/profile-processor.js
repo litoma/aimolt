@@ -1,12 +1,3 @@
-                return result.rows.reduce((profile, row) => {
-                    profile[row.category] = {
-                        content: row.content,
-                        confidence: row.confidence_score,
-                        updated_at: row.updated_at
-                    };
-                    return profile;
-                }, {});
-            }
         } catch (error) {
             console.error('Error getting profile from PostgreSQL:', error);
         } finally {
