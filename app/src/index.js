@@ -6,7 +6,7 @@ const { createClient } = require('@supabase/supabase-js');
 const { Pool } = require('pg');
 const { systemInstruction } = require('./config');
 const { transcribeAudio } = require('./transcribe');
-const { handleReaction } = require('./react');
+const { handleReaction, initializeProfileSystem } = require('./react');
 const { handleExplainReaction } = require('./explain');
 
 // クライアントの設定
@@ -78,10 +78,17 @@ function stopTyping(typingInterval) {
 
 // ボット起動時の処理
 client.on('ready', async () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+  
   try {
     await pgPool.query('SELECT NOW()');
+    console.log('PostgreSQL connection successful');
+    
+    // プロファイルシステムの初期化
+    await initializeProfileSystem(genAI);
+    console.log('Profile system initialization completed');
   } catch (error) {
-    // PostgreSQL接続エラーは静かに処理
+    console.error('Database connection error:', error.message);
   }
 });
 
