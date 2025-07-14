@@ -13,10 +13,10 @@ CREATE INDEX IF NOT EXISTS idx_conversations_user_id ON conversations (user_id);
 CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user_id, created_at DESC);
 
 -- ==================================================
--- プロファイル用テーブル（追加・更新）
+-- プロファイル用テーブル
 -- ==================================================
 
--- メモファイル管理テーブル（ファイルパス長を拡張）
+-- メモファイル管理テーブル
 CREATE TABLE IF NOT EXISTS obsidian_notes (
     id SERIAL PRIMARY KEY,
     file_name VARCHAR(500) NOT NULL UNIQUE,
@@ -51,21 +51,3 @@ CREATE TABLE IF NOT EXISTS profile_update_history (
 CREATE INDEX IF NOT EXISTS idx_obsidian_notes_modified ON obsidian_notes(last_modified);
 CREATE INDEX IF NOT EXISTS idx_user_profile_category ON user_profile(category);
 CREATE INDEX IF NOT EXISTS idx_profile_history_created ON profile_update_history(created_at);
-
--- 既存テーブルの列拡張（一度だけ実行、エラーが出ても継続）
-DO $$ 
-BEGIN
-    -- file_name列のサイズ確認と拡張
-    IF EXISTS (
-        SELECT 1 FROM information_schema.columns 
-        WHERE table_name = 'obsidian_notes' 
-        AND column_name = 'file_name' 
-        AND character_maximum_length < 500
-    ) THEN
-        ALTER TABLE obsidian_notes ALTER COLUMN file_name TYPE VARCHAR(500);
-        RAISE NOTICE 'Extended obsidian_notes.file_name to VARCHAR(500)';
-    END IF;
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE NOTICE 'Column extension skipped or already completed: %', SQLERRM;
-END $$;
