@@ -270,14 +270,21 @@ async function initializeProfileSystem(genAI) {
     await profileProcessor.initializeProfileTables();
     
     // 起動時に一度実行
+    const initialDelaySeconds = parseInt(process.env.PROFILE_INITIAL_DELAY_SECONDS) || 5;
     setTimeout(async () => {
       await runProfileProcessing(genAI);
-    }, 5000); // 5秒後に実行
+    }, initialDelaySeconds * 1000);
     
-    // 定期実行（1時間ごと）
+    // 定期実行間隔の設定（環境変数で制御可能）
+    const intervalHours = parseFloat(process.env.PROFILE_UPDATE_INTERVAL_HOURS) || 1.0;
+    const intervalMs = intervalHours * 60 * 60 * 1000;
+    
+    console.log(`Profile system: Initial delay ${initialDelaySeconds}s, Update interval ${intervalHours}h`);
+    
+    // 定期実行
     setInterval(async () => {
       await runProfileProcessing(genAI);
-    }, 60 * 60 * 1000); // 1時間
+    }, intervalMs);
     
     console.log('Profile system initialized with scheduled processing');
   } catch (error) {
