@@ -1,13 +1,17 @@
 const { prompts } = require('./prompt');
+const AimoltProfileSync = require('./profile-sync');
+
+// プロファイル同期インスタンス（グローバル）
+const profileSync = new AimoltProfileSync();
 
 async function handleLikeReaction(reaction, user, genAI, getConversationHistory, saveConversationHistory) {
   const message = reaction.message;
   const userId = user.id;
 
-  // プロンプトを読み込む
-  let prompt;
+  // 基本プロンプトを読み込む
+  let basePrompt;
   try {
-    prompt = await prompts.getLike();
+    basePrompt = await prompts.getLike();
   } catch (error) {
     console.error('Error loading like prompt:', error.message);
     return message.reply('プロンプトの読み込みに失敗しました！🙈');
@@ -16,8 +20,7 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
   // メッセージ内容をサニタイズ（絵文字を保持）
   const sanitizeText = (text) => {
     if (typeof text !== 'string') return '';
-    // 制御文字と引用符のみエスケープ、絵文字（Unicode U+1F600以降）は保持
-    return text.replace(/[\x00-\x1F\x7F"]/g, '').replace(/\\/g, '\\\\').replace(/,/g, '\\,');
+    return text.replace(/[\\x00-\\x1F\\x7F\"]/g, '').replace(/\\\\/g, '\\\\\\\\').replace(/,/g, '\\\\,');
   };
 
   const userMessage = sanitizeText(message.content);
@@ -29,10 +32,28 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
     // システム指示を取得
     const systemInstruction = await prompts.getSystem();
     
+    // 個人プロファイルを取得（like.js実行時のみ）
+    let profileExtension = '';
+    try {
+      const profile = await profileSync.getProfile();
+      if (profile) {
+        profileExtension = profileSync.generateAdaptiveExtension(profile, userMessage);
+        if (profileExtension) {
+          console.log('📋 Personal profile applied to like reaction (adaptive mode)');
+        }
+      }
+    } catch (error) {
+      console.warn('⚠️ Profile load failed, using default prompts:', error.message);
+      // プロファイル取得に失敗してもメイン機能は継続
+    }
+
+    // 統合プロンプトを構築
+    const enhancedPrompt = `${basePrompt}${profileExtension}`;
+    
     // Gemini APIで応答を生成
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      systemInstruction: `${systemInstruction}\n\n${prompt}`,
+      systemInstruction: `${systemInstruction}\\n\\n${enhancedPrompt}`,
       generationConfig: { maxOutputTokens: 2000, temperature: 0.7 },
     });
     
@@ -55,6 +76,18 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
   }
 }
 
+// プロファイル状態確認関数（デバッグ用）
+async function getProfileStatus() {
+  return profileSync.getStatus();
+}
+
+// プロファイル手動更新関数（デバッグ用）
+async function refreshProfile() {
+  return await profileSync.forceRefresh();
+}
+
 module.exports = { 
-  handleLikeReaction
+  handleLikeReaction,
+  getProfileStatus,
+  refreshProfile
 };
