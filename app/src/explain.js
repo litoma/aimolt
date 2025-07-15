@@ -67,7 +67,7 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
     // 解説プロンプトの読み込み
     let explainPrompt;
     try {
-      explainPrompt = await prompts.getQuestionExplain();
+      explainPrompt = await prompts.getExplain();
       console.log('解説プロンプトを新しいシステムから取得');
     } catch (error) {
       console.error('解説プロンプト取得エラー:', error.message);
