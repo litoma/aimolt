@@ -17,6 +17,7 @@ services:
       - ./app/.env
     volumes:
       - ./app/temp:/app/temp
+      - ./app/profile:/app/profile
       - ./app/prompt:/app/prompt:ro
       - ./app/src:/app/src:ro
     depends_on:
