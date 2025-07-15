@@ -1,15 +1,4 @@
-const fs = require('fs').promises;
-const path = require('path');
-
-async function loadPrompt(filePath) {
-  try {
-    const fullPath = path.resolve(__dirname, filePath);
-    const data = await fs.readFile(fullPath, 'utf8');
-    return data.trim();
-  } catch (error) {
-    throw new Error(`Failed to load prompt from ${filePath}: ${error.message}`);
-  }
-}
+const { prompts } = require('./prompt');
 
 async function handleReaction(reaction, user, genAI, getConversationHistory, saveConversationHistory) {
   const message = reaction.message;
@@ -18,8 +7,9 @@ async function handleReaction(reaction, user, genAI, getConversationHistory, sav
   // プロンプトを読み込む
   let prompt;
   try {
-    prompt = await loadPrompt(path.join(__dirname, '../prompt', 'like_reaction.txt'));
+    prompt = await prompts.getLikeReaction();
   } catch (error) {
+    console.error('Error loading like reaction prompt:', error.message);
     return message.reply('プロンプトの読み込みに失敗しました！🙈');
   }
 
@@ -36,10 +26,13 @@ async function handleReaction(reaction, user, genAI, getConversationHistory, sav
   }
 
   try {
+    // システム指示を取得
+    const systemInstruction = await prompts.getSystemInstruction();
+    
     // Gemini APIで応答を生成
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      systemInstruction: prompt,
+      systemInstruction: `${systemInstruction}\n\n${prompt}`,
       generationConfig: { maxOutputTokens: 2000, temperature: 0.7 },
     });
     
