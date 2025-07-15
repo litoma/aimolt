@@ -6,7 +6,7 @@ const { createClient } = require('@supabase/supabase-js');
 const { Pool } = require('pg');
 const { prompts } = require('./prompt');
 const { transcribeAudio } = require('./transcribe');
-const { handleLikeReaction } = require('./like');
+const { handleLikeReaction, getProfileStatus, forceRefreshProfile } = require('./like');
 const { handleExplainReaction } = require('./explain');
 
 // クライアントの設定
@@ -159,6 +159,155 @@ async function saveConversationHistory(userId, userMessage, botResponse) {
   // キャッシュをクリア（次回取得時に最新データを読み込む）
   conversationCache.delete(userId);
 }
+
+// プロファイル管理コマンドの処理
+client.on('messageCreate', async (message) => {
+  // ボット自身のメッセージは無視
+  if (message.author.bot) return;
+
+  // プロファイル管理コマンド
+  if (message.content.startsWith('!profile')) {
+    const args = message.content.split(' ').slice(1);
+    const command = args[0]?.toLowerCase();
+
+    try {
+      switch (command) {
+        case 'status':
+          const status = await getProfileStatus();
+          const statusEmbed = {
+            title: '🤖 プロファイル状態',
+            color: status.hasProfile ? 0x00ff00 : 0xff0000,
+            fields: [
+              { 
+                name: '機能状態', 
+                value: status.enabled ? '✅ 有効' : '❌ 無効 (GITHUB_TOKEN未設定)', 
+                inline: true 
+              },
+              { 
+                name: 'プロファイル', 
+                value: status.hasProfile ? '✅ 読み込み済み' : '❌ 未読み込み', 
+                inline: true 
+              },
+              { 
+                name: '最終更新', 
+                value: status.lastFetch 
+                  ? `<t:${Math.floor(new Date(status.lastFetch).getTime() / 1000)}:R>`
+                  : '未取得', 
+                inline: true 
+              },
+              { 
+                name: 'キャッシュ', 
+                value: status.cacheAgeHours !== null 
+                  ? `${status.cacheAgeHours}時間前 (${status.cacheTimeHours}h設定)`
+                  : 'なし', 
+                inline: true 
+              },
+              { 
+                name: 'キャッシュ状態', 
+                value: status.isExpired === null 
+                  ? 'なし' 
+                  : status.isExpired ? '⚠️ 期限切れ' : '✅ 有効', 
+                inline: true 
+              }
+            ],
+            timestamp: new Date().toISOString(),
+            footer: { text: 'AImolt Profile System' }
+          };
+          
+          await message.reply({ embeds: [statusEmbed] });
+          break;
+
+        case 'refresh':
+          const currentStatus = await getProfileStatus();
+          if (!currentStatus.enabled) {
+            await message.reply('❌ プロファイル機能が無効です。GITHUB_TOKENを設定してください。');
+            return;
+          }
+
+          const refreshMsg = await message.reply('🔄 プロファイルを更新中...');
+          
+          try {
+            await forceRefreshProfile();
+            const newStatus = await getProfileStatus();
+            
+            await refreshMsg.edit({
+              content: '',
+              embeds: [{
+                title: '✅ プロファイル更新完了',
+                description: `プロファイルが正常に更新されました！`,
+                color: 0x00ff00,
+                fields: [
+                  { 
+                    name: '更新時刻', 
+                    value: `<t:${Math.floor(Date.now() / 1000)}:F>`, 
+                    inline: true 
+                  },
+                  { 
+                    name: 'ステータス', 
+                    value: newStatus.hasProfile ? '✅ 読み込み済み' : '❌ 読み込み失敗', 
+                    inline: true 
+                  }
+                ],
+                timestamp: new Date().toISOString(),
+                footer: { text: 'AImolt Profile System' }
+              }]
+            });
+          } catch (error) {
+            await refreshMsg.edit({
+              content: '',
+              embeds: [{
+                title: '❌ プロファイル更新失敗',
+                description: 'プロファイルの更新に失敗しました。',
+                color: 0xff0000,
+                fields: [
+                  { name: 'エラー', value: `\`${error.message}\``, inline: false }
+                ],
+                timestamp: new Date().toISOString(),
+                footer: { text: 'AImolt Profile System' }
+              }]
+            });
+          }
+          break;
+
+        case 'help':
+        default:
+          await message.reply({
+            embeds: [{
+              title: '📋 プロファイル管理コマンド',
+              description: 'プロファイル連携機能の管理コマンドです',
+              color: 0x0099ff,
+              fields: [
+                {
+                  name: '`!profile status`',
+                  value: 'プロファイルの現在の状態を表示します',
+                  inline: false
+                },
+                {
+                  name: '`!profile refresh`',
+                  value: 'プロファイルを強制的に更新します（GitHubから再取得）',
+                  inline: false
+                },
+                {
+                  name: '`!profile help`',
+                  value: 'このヘルプメッセージを表示します',
+                  inline: false
+                }
+              ],
+              footer: { 
+                text: 'プロファイル機能はGITHUB_TOKENが設定されている場合のみ有効です' 
+              }
+            }]
+          });
+          break;
+      }
+
+    } catch (error) {
+      console.error('Error in profile command:', error);
+      await message.reply('❌ プロファイルコマンドの実行中にエラーが発生しました。');
+    }
+    return;
+  }
+});
 
 // リアクション追加時の処理（👍、🎤、❓）
 client.on('messageReactionAdd', async (reaction, user) => {
