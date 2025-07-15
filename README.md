@@ -12,6 +12,7 @@ AImoltは、Gemini 2.5 FlashとSupabaseを活用した多機能Discordボット�
 - **音声のテキスト化**: `.ogg`形式の音声ファイルを高精度に文字起こしします。
 - **分かりやすい解説**: 難しい文章や専門用語も、初心者向けに丁寧に解説します。
 - **文脈理解**: Supabase/PostgreSQLに会話履歴を保存し、文脈に沿った応答を実現します。
+- **プロファイル管理**: ユーザーのメッセージパターンを分析し、個人に最適化された応答を提供します。
 - **安定稼働**: 本番環境ではPM2やDockerを利用して安定したプロセス管理が可能です。
 
 ## 🏗️ アーキテクチャ
@@ -32,7 +33,8 @@ Dockerコンテナ内でNode.jsアプリケーションとPostgreSQLデータベ
 
 ## ✅ 必須環境
 
-- **Node.js**: v18.x 以上
+- **Node.js**: v22.x 以上
+- **npm**: v10.x 以上
 - **Docker** & **Docker Compose**: v2.0 以上
 - **Discord Bot Token**: [Discord Developer Portal](https://discord.com/developers/applications) で取得
 - **Gemini API Key**: [Google AI Studio](https://makersuite.google.com/) で取得
@@ -51,13 +53,22 @@ Dockerコンテナ内でNode.jsアプリケーションとPostgreSQLデータベ
     ```
 
 2.  **環境変数を設定**:
-    - `.env`ファイルを作成し、ご自身のAPIキーやトークンを設定します。
+    - `app/.env`ファイルを作成し、ご自身のAPIキーやトークンを設定します。
 
 3.  **コンテナをビルドして起動**:
     ```bash
     docker compose up --build -d
     ```
     これでBotが起動します。
+
+4.  **動作確認**:
+    ```bash
+    # ログを確認
+    docker compose logs -f discord-bot
+    
+    # データベース接続確認
+    docker compose exec postgres psql -U postgres -d aimolt
+    ```
 
 ### 💻 ローカル環境でのセットアップ
 
@@ -97,12 +108,11 @@ Dockerコンテナ内でNode.jsアプリケーションとPostgreSQLデータベ
     - PM2を利用する場合 (本番推奨):
       ```bash
       cd ../app
-      pm2 start ecosystem.config.js --env production
-      pm2 save
+      npm run pm2:start
       ```
     - 直接Node.jsで実行する場合:
       ```bash
-      node src/index.js
+      npm start
       ```
 
 ## ⚙️ 設定
@@ -152,30 +162,59 @@ AIの性格や応答スタイルは、`app/prompt/`ディレクトリ内のテ�
 
 ```
 aimolt/
-├── app/                  # Node.jsアプリケーション
-│   ├── src/              # ソースコード
-│   │   ├── index.js      # Botのメインロジック
-│   │   ├── react.js      # 👍リアクション処理
-│   │   ├── transcribe.js # 🎤リアクション処理
-│   │   ├── explain.js    # ❓リアクション処理
-│   │   └── config.js     # プロンプト読込設定
-│   ├── prompt/           # AIの指示プロンプト
+├── app/                         # Node.jsアプリケーション
+│   ├── src/                     # ソースコード
+│   │   ├── index.js             # Botのメインロジック
+│   │   ├── react.js             # 👍リアクション処理
+│   │   ├── transcribe.js        # 🎤リアクション処理
+│   │   ├── explain.js           # ❓リアクション処理
+│   │   ├── config.js            # プロンプト読込設定
+│   │   └── profile-processor.js # ユーザープロファイル分析処理
+│   ├── prompt/                  # AIの指示プロンプト
 │   │   ├── like_reaction.txt
 │   │   └── question_explain.txt
-│   ├── temp/             # 音声ファイルの一時保存場所
-│   ├── Dockerfile        # アプリケーション用Dockerfile
-│   ├── ecosystem.config.js # PM2設定ファイル
-│   └── package.json
-├── db/                   # データベース関連
-│   ├── init.sql          # テーブル初期化スキーマ
-│   └── data/             # (ローカル)DBデータ
-├── compose.yaml          # Docker Compose設定ファイル
-└── README.md             # このファイル
+│   ├── temp/                    # 音声ファイルの一時保存場所
+│   ├── .npmrc                   # npm設定
+│   ├── Dockerfile               # アプリケーション用Dockerfile
+│   ├── ecosystem.config.js      # PM2設定ファイル
+│   ├── package.json
+│   ├── profile-scheduler.js     # プロファイル処理スケジューラー
+│   ├── profile-test.js          # プロファイル機能テスト
+│   └── obsidian-test.js         # 外部連携テスト
+├── db/                          # データベース関連
+│   ├── init.sql                 # テーブル初期化スキーマ
+│   └── data/                    # (ローカル)DBデータ
+├── compose.yaml                 # Docker Compose設定ファイル
+├── .gitignore
+└── README.md                    # このファイル
+```
+
+## 📦 利用可能なスクリプト
+
+`app/package.json`で定義されている便利なスクリプト:
+
+```bash
+# 基本操作
+npm start                # Botを直接起動
+npm run dev              # デバッグモードで起動
+
+# PM2を使った本番運用
+npm run pm2:start        # PM2でBotを起動
+npm run pm2:stop         # PM2でBotを停止
+npm run pm2:restart      # PM2でBotを再起動
+npm run pm2:logs         # PM2のログを表示
+npm run pm2:delete       # PM2からBotプロセスを削除
+
+# Docker操作
+npm run docker:build     # Dockerイメージをビルド
+npm run docker:up        # Docker Composeで起動
+npm run docker:down      # Docker Composeで停止
+npm run docker:logs      # Discord Botコンテナのログを表示
 ```
 
 ## 💾 データベース
 
-会話履歴を保存するために、SupabaseとローカルPostgreSQLを使用します。
+会話履歴とユーザープロファイルを保存するために、SupabaseとローカルPostgreSQLを使用します。
 
 ```sql
 -- conversationsテーブル: 会話履歴を保存
@@ -187,16 +226,26 @@ CREATE TABLE IF NOT EXISTS conversations (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- user_profilesテーブル: ユーザープロファイルを保存
+CREATE TABLE IF NOT EXISTS user_profiles (
+    user_id TEXT PRIMARY KEY,
+    profile_data JSONB NOT NULL,
+    last_analyzed TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- パフォーマンス向上のためのインデックス
 CREATE INDEX IF NOT EXISTS idx_conversations_user_id ON conversations (user_id);
 CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_user_profiles_last_analyzed ON user_profiles (last_analyzed);
 ```
 
 ## 🩺 トラブルシューティング
 
 - **Botが起動しない**:
-  - `docker compose logs discord-bot` (Docker) または `pm2 logs aimolt` (ローカル) でログを確認します。
-  - `.env`ファイルのトークンやAPIキーが正しいか確認してください。
+  - `docker compose logs discord-bot` (Docker) または `npm run pm2:logs` (ローカル) でログを確認します。
+  - `app/.env`ファイルのトークンやAPIキーが正しいか確認してください。
 - **データベースに接続できない**:
   - `POSTGRES_HOST`が環境に合わせて正しく設定されているか確認します (`localhost` or `postgres`)。
 - **リアクションに反応しない**:
@@ -224,8 +273,9 @@ CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user
 3.  **ログを確認**:
     ```bash
     docker compose logs -f discord-bot
+    # または
+    npm run docker:logs
     ```
-    `-f`オプションを付けることで、リアルタイムにログを監視できます。
 
 4.  **Botコンテナの再起動**:
     ```bash
@@ -242,6 +292,21 @@ CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user
     docker compose exec postgres psql -U postgres -d aimolt
     ```
 
+### テスト機能の実行
+
+プロジェクトには以下のテスト用ファイルが含まれています:
+
+- **`profile-test.js`**: プロファイル機能のテスト
+- **`obsidian-test.js`**: 外部システム連携のテスト
+
+これらはNode.jsで直接実行できます:
+
+```bash
+cd app
+node profile-test.js
+node obsidian-test.js
+```
+
 ## 🚀 今後の改善案
 
 - `/history`コマンドで会話履歴を表示する機能
@@ -249,6 +314,7 @@ CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user
 - 📝リアクションで長文を要約する機能
 - Gemini APIのレート制限に対するリトライ処理
 - Prometheusなどによる詳細なモニタリング
+- ユーザープロファイルを活用したよりパーソナライズされた応答
 
 ## 📄 ライセンス
 
