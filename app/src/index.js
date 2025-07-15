@@ -6,7 +6,7 @@ const { createClient } = require('@supabase/supabase-js');
 const { Pool } = require('pg');
 const { prompts } = require('./prompt');
 const { transcribeAudio } = require('./transcribe');
-const { handleReaction } = require('./react');
+const { handleLikeReaction } = require('./like');
 const { handleExplainReaction } = require('./explain');
 
 // クライアントの設定
@@ -76,7 +76,7 @@ client.on('ready', async () => {
     
     // プロンプトシステムの動作確認
     try {
-      const systemInstruction = await prompts.getSystemInstruction();
+      const systemInstruction = await prompts.getSystem();
       console.log('Prompt system initialized successfully');
       console.log(`System instruction loaded: ${systemInstruction.length} characters`);
     } catch (promptError) {
@@ -200,7 +200,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
         // タイピング表示開始
         typingInterval = await startTyping(reaction.message.channel);
         
-        await handleReaction(reaction, user, genAI, getConversationHistory, saveConversationHistory);
+        await handleLikeReaction(reaction, user, genAI, getConversationHistory, saveConversationHistory);
         cooldowns.set(userId, Date.now());
       } catch (error) {
         await reaction.message.reply('うわっ、なんかミスっちゃったみたい！🙈 もう一回試してみてね！');
