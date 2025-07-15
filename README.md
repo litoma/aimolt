@@ -12,7 +12,6 @@ AImoltは、Gemini 2.5 FlashとSupabaseを活用した多機能Discordボット�
 - **音声のテキスト化**: `.ogg`形式の音声ファイルを高精度に文字起こしします。
 - **分かりやすい解説**: 難しい文章や専門用語も、初心者向けに丁寧に解説します。
 - **文脈理解**: Supabase/PostgreSQLに会話履歴を保存し、文脈に沿った応答を実現します。
-- **プロファイル管理**: ユーザーのメッセージパターンを分析し、個人に最適化された応答を提供します。
 - **安定稼働**: 本番環境ではPM2やDockerを利用して安定したプロセス管理が可能です。
 
 ## 🏗️ アーキテクチャ
@@ -168,8 +167,7 @@ aimolt/
 │   │   ├── react.js             # 👍リアクション処理
 │   │   ├── transcribe.js        # 🎤リアクション処理
 │   │   ├── explain.js           # ❓リアクション処理
-│   │   ├── config.js            # プロンプト読込設定
-│   │   └── profile-processor.js # ユーザープロファイル分析処理
+│   │   └── config.js            # プロンプト読込設定
 │   ├── prompt/                  # AIの指示プロンプト
 │   │   ├── like_reaction.txt
 │   │   └── question_explain.txt
@@ -177,10 +175,7 @@ aimolt/
 │   ├── .npmrc                   # npm設定
 │   ├── Dockerfile               # アプリケーション用Dockerfile
 │   ├── ecosystem.config.js      # PM2設定ファイル
-│   ├── package.json
-│   ├── profile-scheduler.js     # プロファイル処理スケジューラー
-│   ├── profile-test.js          # プロファイル機能テスト
-│   └── obsidian-test.js         # 外部連携テスト
+│   └── package.json
 ├── db/                          # データベース関連
 │   ├── init.sql                 # テーブル初期化スキーマ
 │   └── data/                    # (ローカル)DBデータ
@@ -214,7 +209,7 @@ npm run docker:logs      # Discord Botコンテナのログを表示
 
 ## 💾 データベース
 
-会話履歴とユーザープロファイルを保存するために、SupabaseとローカルPostgreSQLを使用します。
+会話履歴を保存するために、SupabaseとローカルPostgreSQLを使用します。
 
 ```sql
 -- conversationsテーブル: 会話履歴を保存
@@ -226,19 +221,9 @@ CREATE TABLE IF NOT EXISTS conversations (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- user_profilesテーブル: ユーザープロファイルを保存
-CREATE TABLE IF NOT EXISTS user_profiles (
-    user_id TEXT PRIMARY KEY,
-    profile_data JSONB NOT NULL,
-    last_analyzed TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
 -- パフォーマンス向上のためのインデックス
 CREATE INDEX IF NOT EXISTS idx_conversations_user_id ON conversations (user_id);
 CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user_id, created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_user_profiles_last_analyzed ON user_profiles (last_analyzed);
 ```
 
 ## 🩺 トラブルシューティング
@@ -292,21 +277,6 @@ CREATE INDEX IF NOT EXISTS idx_user_profiles_last_analyzed ON user_profiles (las
     docker compose exec postgres psql -U postgres -d aimolt
     ```
 
-### テスト機能の実行
-
-プロジェクトには以下のテスト用ファイルが含まれています:
-
-- **`profile-test.js`**: プロファイル機能のテスト
-- **`obsidian-test.js`**: 外部システム連携のテスト
-
-これらはNode.jsで直接実行できます:
-
-```bash
-cd app
-node profile-test.js
-node obsidian-test.js
-```
-
 ## 🚀 今後の改善案
 
 - `/history`コマンドで会話履歴を表示する機能
@@ -314,7 +284,6 @@ node obsidian-test.js
 - 📝リアクションで長文を要約する機能
 - Gemini APIのレート制限に対するリトライ処理
 - Prometheusなどによる詳細なモニタリング
-- ユーザープロファイルを活用したよりパーソナライズされた応答
 
 ## 📄 ライセンス
 
