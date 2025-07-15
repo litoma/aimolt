@@ -142,23 +142,23 @@ Botの動作には以下の環境変数が必要です。
 
 #### プロンプトファイル一覧
 
-| ファイル名 | 用途 | 説明 |
-| :--- | :--- | :--- |
-| `system_instruction.txt` | システム基本指示 | Botの基本的な性格・応答スタイルを定義 |
-| `like_reaction.txt` | 👍リアクション応答 | フレンドリーでカジュアルな応答スタイル |
-| `question_explain.txt` | ❓リアクション解説 | 丁寧で分かりやすい解説スタイル |
-| `explain_fallback.txt` | 解説フォールバック | `question_explain.txt`が読み込めない場合の代替 |
-| `transcribe_instruction.txt` | 音声文字起こし | フィラー語除去などの指示 |
+| ファイル名 | 対応JSファイル | 用途 | 説明 |
+| :--- | :--- | :--- | :--- |
+| `system.txt` | `index.js` | システム基本指示 | Botの基本的な性格・応答スタイルを定義 |
+| `like.txt` | `like.js` | 👍リアクション応答 | フレンドリーでカジュアルな応答スタイル |
+| `explain.txt` | `explain.js` | ❓リアクション解説 | 丁寧で分かりやすい解説スタイル |
+| `explain_fallback.txt` | `explain.js` | 解説フォールバック | `explain.txt`が読み込めない場合の代替 |
+| `transcribe.txt` | `transcribe.js` | 音声文字起こし | フィラー語除去などの指示 |
 
 #### プロンプトのカスタマイズ
 
 1. **プロンプトファイルを編集**:
    ```bash
    # 基本的な性格を変更
-   nano app/prompt/system_instruction.txt
+   nano app/prompt/system.txt
    
    # 👍リアクションの応答スタイルを変更
-   nano app/prompt/like_reaction.txt
+   nano app/prompt/like.txt
    ```
 
 2. **Botを再起動**:
@@ -173,13 +173,13 @@ Botの動作には以下の環境変数が必要です。
 3. **新しいプロンプトファイルを追加**:
    ```bash
    # カスタムプロンプトを作成
-   echo "新しいプロンプト内容" > app/prompt/custom_prompt.txt
+   echo "新しい機能のプロンプト" > app/prompt/custom_feature.txt
    ```
 
    ```javascript
    // コード内で使用
    const { prompts } = require('./prompt');
-   const customPrompt = await prompts.getCustomPrompt('custom_prompt');
+   const customPrompt = await prompts.getCustomPrompt('custom_feature');
    ```
 
 ## 使い方
@@ -202,16 +202,16 @@ aimolt/
 ├── app/                         # Node.jsアプリケーション
 │   ├── src/                     # ソースコード
 │   │   ├── index.js             # Botのメインロジック
-│   │   ├── react.js             # 👍リアクション処理
+│   │   ├── like.js              # 👍リアクション処理
 │   │   ├── transcribe.js        # 🎤リアクション処理
 │   │   ├── explain.js           # ❓リアクション処理
 │   │   └── prompt.js            # プロンプト管理システム
 │   ├── prompt/                  # AIプロンプト（一元管理）
-│   │   ├── system_instruction.txt      # 基本システム指示
-│   │   ├── like_reaction.txt           # 👍リアクション用
-│   │   ├── question_explain.txt        # ❓リアクション用
-│   │   ├── explain_fallback.txt        # 解説フォールバック
-│   │   └── transcribe_instruction.txt  # 音声文字起こし用
+│   │   ├── system.txt           # 基本システム指示
+│   │   ├── like.txt             # 👍リアクション用
+│   │   ├── explain.txt          # ❓リアクション用
+│   │   ├── explain_fallback.txt # 解説フォールバック
+│   │   └── transcribe.txt       # 音声文字起こし用
 │   ├── temp/                    # 音声ファイルの一時保存場所
 │   ├── .npmrc                   # npm設定
 │   ├── Dockerfile               # アプリケーション用Dockerfile
@@ -328,10 +328,10 @@ CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user
 **プロンプトの編集:**
 ```bash
 # 基本システム指示を変更
-nano app/prompt/system_instruction.txt
+nano app/prompt/system.txt
 
 # 👍リアクションの応答を変更
-nano app/prompt/like_reaction.txt
+nano app/prompt/like.txt
 
 # 再起動（変更を反映）
 docker compose restart discord-bot
@@ -353,7 +353,7 @@ const newPrompt = await prompts.getCustomPrompt('new_feature');
 ```javascript
 // 特定のプロンプトキャッシュをクリア
 const { promptManager } = require('./prompt');
-promptManager.clearCache('system_instruction');
+promptManager.clearCache('system');
 
 // 全キャッシュをクリア
 promptManager.clearCache();
