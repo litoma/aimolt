@@ -1,3 +1,4 @@
+// profile-sync.js - プロファイル同期モジュール (aimolt専用)
 const fs = require('fs').promises;
 const path = require('path');
 const axios = require('axios');
@@ -17,7 +18,7 @@ class AimoltProfileSync {
         
         this.cachedProfile = null;
         this.lastFetch = null;
-        this.isEnabled = !!this.config.githubToken;
+        this.isEnabled = !!this.config.githubToken; // トークンがある場合のみ有効
     }
 
     // プロファイルが有効かチェック
@@ -75,8 +76,8 @@ class AimoltProfileSync {
                 const maxAge = this.config.cacheTimeMinutes * 60 * 1000;
                 
                 if (cacheAge < maxAge) {
-                    const cacheHours = Math.round(cacheAge / 1000 / 60 / 60 * 10) / 10;
-                    console.log(`💾 Using cached personal profile (${cacheHours}h old)`);
+                    const ageHours = Math.round(cacheAge / 1000 / 60 / 60 * 10) / 10;
+                    console.log(`💾 Using cached personal profile (${ageHours}h old)`);
                     return data.profile;
                 }
             }
@@ -98,8 +99,8 @@ class AimoltProfileSync {
             const cacheData = {
                 profile: profile,
                 cached_at: new Date().toISOString(),
-                cache_duration_hours: this.config.cacheTimeMinutes / 60,
-                bot_version: 'aimolt-v1.0.0'
+                bot_version: 'aimolt-v1.0.0',
+                cache_duration_hours: this.config.cacheTimeMinutes / 60
             };
             
             await fs.writeFile(this.config.localPath, JSON.stringify(cacheData, null, 2), 'utf8');
@@ -113,7 +114,7 @@ class AimoltProfileSync {
     // プロファイルを取得（メイン関数）
     async getProfile() {
         if (!this.isProfileEnabled()) {
-            return null;
+            return null; // プロファイル機能無効
         }
 
         // キャッシュを確認
@@ -124,8 +125,8 @@ class AimoltProfileSync {
         }
 
         // GitHubから取得（リトライ機能付き）
-        let lastError = null;
-        for (let retry = 0; retry < this.config.maxRetries; retry++) {
+        let retries = 0;
+        while (retries < this.config.maxRetries) {
             try {
                 const profile = await this.fetchFromGitHub();
                 if (profile) {
@@ -134,66 +135,71 @@ class AimoltProfileSync {
                     this.lastFetch = Date.now();
                     return profile;
                 }
+                break;
             } catch (error) {
-                lastError = error;
-                if (retry < this.config.maxRetries - 1) {
-                    console.log(`🔄 Retry ${retry + 1}/${this.config.maxRetries} in 2 seconds...`);
+                retries++;
+                if (retries < this.config.maxRetries) {
+                    console.log(`🔄 Retry ${retries}/${this.config.maxRetries} in 2 seconds...`);
                     await new Promise(resolve => setTimeout(resolve, 2000));
+                } else {
+                    console.warn('❌ All retry attempts failed');
                 }
             }
         }
 
-        // 全てのリトライが失敗した場合、期限切れキャッシュでもフォールバック
+        // フォールバック: 期限切れキャッシュを使用
         try {
             const fallbackContent = await fs.readFile(this.config.localPath, 'utf8');
             const fallbackData = JSON.parse(fallbackContent);
             console.log('🆘 Using expired cache as fallback');
             return fallbackData.profile;
-        } catch (fallbackError) {
-            console.warn('❌ No fallback cache available:', lastError?.message || 'Unknown error');
+        } catch (error) {
+            console.warn('⚠️ No fallback cache available');
             return null;
         }
     }
 
-    // 適応型プロファイル拡張生成（メッセージ内容に応じて情報を選択）
-    generateAdaptiveExtension(profile, userMessage = '') {
+    // 適応型プロファイル拡張（メッセージ内容に応じて情報を選択）
+    generateAdaptiveProfileExtension(profile, userMessage = '') {
         if (!profile || !profile.personal_characteristics) {
             return '';
         }
 
         const char = profile.personal_characteristics;
         const ctx = profile.contextual_information || {};
-        const message = userMessage.toLowerCase();
+        const insights = profile.key_insights || [];
         
-        let extension = '\n\n== 関連するユーザー特性 ==\n';
+        let extension = '\n\n== ユーザーの関連特性 ==\n';
         let relevantInfo = [];
         
+        const message = userMessage.toLowerCase();
+        
         // 技術・開発関連キーワード
-        const techKeywords = ['プログラム', 'コード', 'システム', 'アプリ', 'bot', 'api', 'github', 'docker', 'node', 'javascript'];
+        const techKeywords = ['プログラム', 'コード', 'システム', 'アプリ', 'サーバー', 'データベース', 'api', 'github', 'docker', 'javascript', 'python', 'react', 'node'];
         const isTechRelated = techKeywords.some(keyword => message.includes(keyword));
         
-        // 学習・知識関連キーワード
-        const learningKeywords = ['学習', '勉強', '覚え', '理解', '知識', '教え', '説明'];
+        // 学習・教育関連キーワード
+        const learningKeywords = ['学習', '勉強', '覚え', '理解', '習得', '教え', '説明', '解説', '方法', 'やり方'];
         const isLearningRelated = learningKeywords.some(keyword => message.includes(keyword));
         
-        // 効率・生産性関連キーワード
-        const efficiencyKeywords = ['効率', '自動', '時間', '改善', '最適化', 'おすすめ'];
-        const isEfficiencyRelated = efficiencyKeywords.some(keyword => message.includes(keyword));
-
+        // 仕事・プロジェクト関連キーワード
+        const workKeywords = ['仕事', 'プロジェクト', 'タスク', '作業', '進捗', '完了', '締切', '計画', '管理', '効率'];
+        const isWorkRelated = workKeywords.some(keyword => message.includes(keyword));
+        
         // 技術関連の場合
         if (isTechRelated) {
             if (ctx.preferred_tools && ctx.preferred_tools.length > 0) {
                 relevantInfo.push(`愛用技術: ${ctx.preferred_tools.slice(0, 4).join(', ')}`);
             }
             if (ctx.current_projects && ctx.current_projects.length > 0) {
-                relevantInfo.push(`進行中プロジェクト: ${ctx.current_projects.slice(0, 2).join(', ')}`);
+                relevantInfo.push(`進行中: ${ctx.current_projects.slice(0, 2).join(', ')}`);
             }
             if (char.thinking_patterns && char.thinking_patterns.length > 0) {
                 const techThinking = char.thinking_patterns.filter(pattern => 
-                    pattern.includes('論理') || pattern.includes('段階') || pattern.includes('具体')
+                    pattern.includes('論理') || pattern.includes('段階') || pattern.includes('体系') || pattern.includes('効率')
                 );
                 if (techThinking.length > 0) {
-                    relevantInfo.push(`技術的思考: ${techThinking.slice(0, 2).join(', ')}`);
+                    relevantInfo.push(`思考スタイル: ${techThinking.slice(0, 2).join(', ')}`);
                 }
             }
         }
@@ -204,87 +210,96 @@ class AimoltProfileSync {
                 relevantInfo.push(`最近の学習: ${ctx.recent_learnings.slice(0, 3).join(', ')}`);
             }
             if (char.thinking_patterns && char.thinking_patterns.length > 0) {
-                relevantInfo.push(`学習スタイル: ${char.thinking_patterns.slice(0, 2).join(', ')}`);
+                relevantInfo.push(`学習パターン: ${char.thinking_patterns.slice(0, 2).join(', ')}`);
             }
-            if (char.interests_and_passions && char.interests_and_passions.length > 0) {
-                const learningInterests = char.interests_and_passions.filter(interest =>
-                    interest.includes('AI') || interest.includes('技術') || interest.includes('学習')
+            if (char.core_values && char.core_values.length > 0) {
+                const learningValues = char.core_values.filter(value => 
+                    value.includes('学習') || value.includes('成長') || value.includes('知識') || value.includes('理解')
                 );
-                if (learningInterests.length > 0) {
-                    relevantInfo.push(`学習興味: ${learningInterests.slice(0, 2).join(', ')}`);
+                if (learningValues.length > 0) {
+                    relevantInfo.push(`学習価値観: ${learningValues.slice(0, 2).join(', ')}`);
                 }
             }
         }
         
-        // 効率・生産性関連の場合
-        if (isEfficiencyRelated) {
+        // 仕事・プロジェクト関連の場合
+        if (isWorkRelated) {
+            if (ctx.current_projects && ctx.current_projects.length > 0) {
+                relevantInfo.push(`現在のプロジェクト: ${ctx.current_projects.slice(0, 2).join(', ')}`);
+            }
             if (char.core_values && char.core_values.length > 0) {
-                const efficiencyValues = char.core_values.filter(value =>
-                    value.includes('効率') || value.includes('実用') || value.includes('最適')
+                const workValues = char.core_values.filter(value => 
+                    value.includes('効率') || value.includes('実用') || value.includes('品質') || value.includes('継続')
                 );
-                if (efficiencyValues.length > 0) {
-                    relevantInfo.push(`重視する価値: ${efficiencyValues.slice(0, 2).join(', ')}`);
+                if (workValues.length > 0) {
+                    relevantInfo.push(`仕事の価値観: ${workValues.slice(0, 2).join(', ')}`);
                 }
             }
-            if (ctx.preferred_tools && ctx.preferred_tools.length > 0) {
-                relevantInfo.push(`効率化ツール: ${ctx.preferred_tools.slice(0, 3).join(', ')}`);
-            }
         }
-
-        // 一般的な場合（上記のいずれにも該当しない）
-        if (relevantInfo.length === 0) {
-            // 基本的な興味・関心
+        
+        // 一般的な場合（上記に該当しない、または追加情報として）
+        if (relevantInfo.length < 2) {
+            // 興味分野を追加
             if (char.interests_and_passions && char.interests_and_passions.length > 0) {
                 relevantInfo.push(`興味分野: ${char.interests_and_passions.slice(0, 3).join(', ')}`);
             }
             
-            // 核となる価値観
-            if (char.core_values && char.core_values.length > 0) {
-                relevantInfo.push(`価値観: ${char.core_values.slice(0, 2).join(', ')}`);
-            }
-            
-            // コミュニケーションスタイル
+            // コミュニケーションスタイルを追加
             if (char.communication_style && char.communication_style.length > 0) {
                 relevantInfo.push(`コミュニケーション: ${char.communication_style.slice(0, 2).join(', ')}`);
             }
+            
+            // 重要な洞察を追加
+            if (insights.length > 0) {
+                relevantInfo.push(`特徴: ${insights.slice(0, 2).join(' / ')}`);
+            }
         }
-
-        // 関連情報が取得できた場合のみ拡張を追加
+        
+        // 情報が多すぎる場合は制限
+        if (relevantInfo.length > 4) {
+            relevantInfo = relevantInfo.slice(0, 4);
+        }
+        
         if (relevantInfo.length > 0) {
             extension += relevantInfo.join('\n') + '\n';
-            extension += '\n※ これらの特性を参考に、より個人的で関連性の高い応答を心がけてください。aimoltの基本的な性格は保持してください。';
-            return extension;
+            extension += '\n※ これらの特性を踏まえて、より個人的で関連性の高い応答をしてください。aimoltの基本的な明るい性格は保持してください。';
+        } else {
+            extension = ''; // 関連情報がない場合は拡張なし
         }
-
-        return '';
+        
+        return extension;
     }
 
-    // プロファイルの状態を取得
-    getStatus() {
-        const status = {
-            enabled: this.isProfileEnabled(),
-            hasProfile: !!this.cachedProfile,
-            lastFetch: this.lastFetch ? new Date(this.lastFetch).toISOString() : null,
-            cacheHours: this.config.cacheTimeMinutes / 60,
-            maxRetries: this.config.maxRetries
-        };
-
-        // キャッシュの残り時間を計算
-        if (this.lastFetch) {
-            const elapsed = Date.now() - this.lastFetch;
-            const remaining = (this.config.cacheTimeMinutes * 60 * 1000) - elapsed;
-            status.cacheRemainingHours = Math.max(0, remaining / 1000 / 60 / 60);
-        }
-
-        return status;
-    }
-
-    // 手動更新機能
+    // 強制更新
     async forceRefresh() {
         console.log('🔄 Forcing profile refresh...');
         this.cachedProfile = null;
         this.lastFetch = null;
+        
+        // キャッシュファイルを削除
+        try {
+            await fs.unlink(this.config.localPath);
+        } catch (error) {
+            // ファイルが存在しない場合は無視
+        }
+        
         return await this.getProfile();
+    }
+
+    // プロファイルの状態を取得
+    getStatus() {
+        const cacheAge = this.lastFetch ? Date.now() - this.lastFetch : null;
+        const cacheAgeHours = cacheAge ? Math.round(cacheAge / 1000 / 60 / 60 * 10) / 10 : null;
+        
+        return {
+            enabled: this.isProfileEnabled(),
+            hasProfile: !!this.cachedProfile,
+            lastFetch: this.lastFetch ? new Date(this.lastFetch).toISOString() : null,
+            cacheAgeHours: cacheAgeHours,
+            cacheTimeHours: this.config.cacheTimeMinutes / 60,
+            githubRepo: `${this.config.owner}/${this.config.repo}`,
+            profilePath: this.config.filePath
+        };
     }
 }
 
