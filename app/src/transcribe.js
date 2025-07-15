@@ -95,7 +95,7 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
     // ケバ取り用のシステムインストラクションを新しいプロンプトシステムから取得
     let systemInstruction;
     try {
-      systemInstruction = await prompts.getTranscribeInstruction();
+      systemInstruction = await prompts.getTranscribe();
       console.log('文字起こしプロンプトを新しいシステムから取得');
     } catch (error) {
       console.error('文字起こしプロンプト取得エラー:', error.message);
