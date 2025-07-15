@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const https = require('https');
+const { prompts } = require('./prompt');
 
 // 音声ファイルのダウンロード関数
 async function downloadAudio(url, filePath, fallbackUrl) {
@@ -39,16 +40,16 @@ function removeFillerWords(text) {
     /\b(なんか|なんて)+\b/g,
     /\b(ちょっと)+\b/g,
     // 繰り返し表現
-    /(.)\1{2,}/g, // 同じ文字が3回以上連続
+    /(.)\\1{2,}/g, // 同じ文字が3回以上連続
     // 余分な空白
     /\s+/g
   ];
 
   let cleanText = text;
   fillerPatterns.forEach(pattern => {
-    if (pattern.source === '\\s+') {
+    if (pattern.source === '\\\\s+') {
       cleanText = cleanText.replace(pattern, ' ');
-    } else if (pattern.source === '(.)\\1{2,}') {
+    } else if (pattern.source === '(.)\\\\1{2,}') {
       cleanText = cleanText.replace(pattern, '$1$1');
     } else {
       cleanText = cleanText.replace(pattern, '');
@@ -91,15 +92,23 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
   try {
     await downloadAudio(targetAttachment.proxyUrl, filePath, targetAttachment.url);
 
-    // ケバ取り用のシステムインストラクション
-    const systemInstruction = `
+    // ケバ取り用のシステムインストラクションを新しいプロンプトシステムから取得
+    let systemInstruction;
+    try {
+      systemInstruction = await prompts.getTranscribeInstruction();
+      console.log('文字起こしプロンプトを新しいシステムから取得');
+    } catch (error) {
+      console.error('文字起こしプロンプト取得エラー:', error.message);
+      // フォールバック用のプロンプト
+      systemInstruction = `
 音声を日本語のテキストに変換してください。以下の点に注意してください：
 - フィラー語（あー、えー、うー、んー、まあ、そのー等）は除去する
 - 意味のない繰り返しや言い直しは除去する
 - 自然で読みやすい文章にする
 - 句読点を適切に配置する
 - 重要な内容のみを抽出する
-    `;
+      `;
+    }
 
     const transcriptionModel = genAI.getGenerativeModel({ 
       model: 'gemini-2.5-flash', 
