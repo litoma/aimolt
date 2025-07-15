@@ -4,7 +4,7 @@ const { Client, GatewayIntentBits } = require('discord.js');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { createClient } = require('@supabase/supabase-js');
 const { Pool } = require('pg');
-const { systemInstruction } = require('./config');
+const { prompts } = require('./prompt');
 const { transcribeAudio } = require('./transcribe');
 const { handleReaction } = require('./react');
 const { handleExplainReaction } = require('./explain');
@@ -21,16 +21,6 @@ const client = new Client({
 
 // Gemini APIの設定
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({
-  model: 'gemini-2.5-flash',
-  systemInstruction,
-  generationConfig: { 
-    maxOutputTokens: 2000, 
-    temperature: 0.7,
-    // Gemini 2.5の動的思考機能を有効化
-    thinkingBudget: 0  // 基本的な思考トークン
-  }
-});
 
 // Supabaseの設定
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
@@ -83,6 +73,15 @@ client.on('ready', async () => {
   try {
     await pgPool.query('SELECT NOW()');
     console.log('PostgreSQL connection successful');
+    
+    // プロンプトシステムの動作確認
+    try {
+      const systemInstruction = await prompts.getSystemInstruction();
+      console.log('Prompt system initialized successfully');
+      console.log(`System instruction loaded: ${systemInstruction.length} characters`);
+    } catch (promptError) {
+      console.error('Prompt system initialization error:', promptError.message);
+    }
   } catch (error) {
     console.error('Database connection error:', error.message);
   }
