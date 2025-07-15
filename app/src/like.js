@@ -20,7 +20,7 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
   // メッセージ内容をサニタイズ（絵文字を保持）
   const sanitizeText = (text) => {
     if (typeof text !== 'string') return '';
-    return text.replace(/[\\x00-\\x1F\\x7F\"]/g, '').replace(/\\\\/g, '\\\\\\\\').replace(/,/g, '\\\\,');
+    return text.replace(/[\x00-\x1F\x7F\"]/g, '').replace(/\\/g, '\\\\').replace(/,/g, '\\,');
   };
 
   const userMessage = sanitizeText(message.content);
@@ -32,12 +32,12 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
     // システム指示を取得
     const systemInstruction = await prompts.getSystem();
     
-    // 個人プロファイルを取得（like.js実行時のみ）
+    // 個人プロファイルを取得（like.js実行時のみ、適応型）
     let profileExtension = '';
     try {
       const profile = await profileSync.getProfile();
       if (profile) {
-        profileExtension = profileSync.generateAdaptiveExtension(profile, userMessage);
+        profileExtension = profileSync.generateLikePromptExtension(profile, userMessage);
         if (profileExtension) {
           console.log('📋 Personal profile applied to like reaction (adaptive mode)');
         }
@@ -53,7 +53,7 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
     // Gemini APIで応答を生成
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      systemInstruction: `${systemInstruction}\\n\\n${enhancedPrompt}`,
+      systemInstruction: `${systemInstruction}\n\n${enhancedPrompt}`,
       generationConfig: { maxOutputTokens: 2000, temperature: 0.7 },
     });
     
@@ -81,13 +81,13 @@ async function getProfileStatus() {
   return profileSync.getStatus();
 }
 
-// プロファイル手動更新関数（デバッグ用）
-async function refreshProfile() {
+// プロファイル強制更新関数（管理用）
+async function forceRefreshProfile() {
   return await profileSync.forceRefresh();
 }
 
 module.exports = { 
   handleLikeReaction,
   getProfileStatus,
-  refreshProfile
+  forceRefreshProfile
 };
