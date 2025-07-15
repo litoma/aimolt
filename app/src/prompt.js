@@ -131,39 +131,11 @@ const prompts = {
    */
   async getCustomPrompt(filename) {
     return await promptManager.loadPrompt(filename);
-  },
-
-  // レガシー互換性のための関数（旧命名との互換性を保つ）
-  async getSystemInstruction() {
-    return await this.getSystem();
-  },
-
-  async getLikeReaction() {
-    return await this.getLike();
-  },
-
-  async getQuestionExplain() {
-    return await this.getExplain();
-  },
-
-  async getTranscribeInstruction() {
-    return await this.getTranscribe();
   }
 };
-
-/**
- * レガシー互換性のための関数
- * 既存のコードとの互換性を保つため
- */
-async function getSystemInstruction() {
-  return await prompts.getSystem();
-}
 
 module.exports = {
   PromptManager,
   promptManager,
-  prompts,
-  // レガシー互換性
-  systemInstruction: getSystemInstruction(),
-  getSystemInstruction
+  prompts
 };
