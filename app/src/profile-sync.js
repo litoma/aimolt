@@ -1,4 +1,4 @@
-// profile-sync.js - AImolt プロファイル同期モジュール（適応型）
+// profile-sync.js - プロファイル同期モジュール (aimolt専用)
 const fs = require('fs').promises;
 const path = require('path');
 const axios = require('axios');
@@ -77,7 +77,8 @@ class AimoltProfileSync {
                 const maxAge = this.config.cacheTimeMinutes * 60 * 1000;
                 
                 if (cacheAge < maxAge) {
-                    console.log(`💾 Using cached personal profile (${Math.round(cacheAge/1000/60/60)}h old)`);
+                    const ageHours = Math.round(cacheAge / 1000 / 60 / 60 * 10) / 10;
+                    console.log(`💾 Using cached personal profile (${ageHours}h old)`);
                     this.lastFetch = new Date(data.cached_at).getTime();
                     return data.profile;
                 }
@@ -100,12 +101,12 @@ class AimoltProfileSync {
             const cacheData = {
                 profile: profile,
                 cached_at: new Date().toISOString(),
-                cache_duration_hours: this.config.cacheTimeMinutes / 60,
-                bot_version: 'aimolt-v1.0.0'
+                bot_version: 'aimolt-v1.0.0',
+                cache_duration_hours: this.config.cacheTimeMinutes / 60
             };
             
             await fs.writeFile(this.config.localPath, JSON.stringify(cacheData, null, 2), 'utf8');
-            console.log('💾 Personal profile cached locally (12h cache)');
+            console.log('💾 Personal profile cached locally');
             
         } catch (error) {
             console.warn('⚠️ Failed to save profile cache:', error.message);
@@ -140,8 +141,7 @@ class AimoltProfileSync {
             }
         }
 
-        // 全試行失敗時はフォールバック
-        console.warn('⚠️ All profile fetch attempts failed, checking for expired cache...');
+        // 全てのリトライが失敗した場合、期限切れキャッシュをフォールバックとして使用
         try {
             const content = await fs.readFile(this.config.localPath, 'utf8');
             const data = JSON.parse(content);
@@ -151,14 +151,25 @@ class AimoltProfileSync {
                 return data.profile;
             }
         } catch (error) {
-            console.warn('❌ No fallback cache available');
+            console.warn('⚠️ No fallback cache available');
         }
 
         return null;
     }
 
+    // 強制更新
+    async forceRefresh() {
+        const profile = await this.fetchFromGitHub();
+        if (profile) {
+            await this.saveLocalCache(profile);
+            this.cachedProfile = profile;
+            return profile;
+        }
+        return null;
+    }
+
     // 適応型プロンプト拡張生成（メッセージ内容に応じて情報を選択）
-    generateAdaptivePromptExtension(profile, userMessage = '') {
+    generateLikePromptExtension(profile, userMessage = '') {
         if (!profile || !profile.personal_characteristics) {
             return '';
         }
@@ -167,26 +178,16 @@ class AimoltProfileSync {
         const ctx = profile.contextual_information || {};
         const insights = profile.key_insights || [];
         
-        let extension = '\n\n== ユーザーの関連特性 ==\n';
+        let extension = '\n\n== 関連するユーザー特性 ==\n';
         let relevantInfo = [];
         
-        // メッセージ内容を解析
+        // メッセージ内容に基づいて関連情報を抽出
         const message = userMessage.toLowerCase();
         
-        // 技術・開発関連のキーワード
-        const techKeywords = ['プログラム', 'コード', 'システム', 'アプリ', 'サイト', 'api', 'データベース', 'サーバー', 'git', 'github', 'バグ', 'エラー', 'デバッグ', 'テスト', 'リリース', 'デプロイ', 'フレームワーク', 'ライブラリ', 'アルゴリズム', 'セキュリティ'];
-        
-        // 学習・成長関連のキーワード
-        const learningKeywords = ['学習', '勉強', '覚え', '習得', 'スキル', '知識', '理解', '身につけ', '向上', '成長', '改善', '練習', '研究', '調査', '分析', '理解', '習慣'];
-        
-        // 仕事・プロジェクト関連のキーワード
-        const workKeywords = ['仕事', 'プロジェクト', 'タスク', '作業', '業務', '進捗', '締切', '計画', '設計', '開発', '実装', '運用', '保守', '管理', 'マネジメント', 'チーム', '会議', '報告', '相談'];
-        
-        // 効率・生産性関連のキーワード
-        const efficiencyKeywords = ['効率', '生産性', '時間', '自動化', 'ツール', '改善', '最適化', 'ワークフロー', '手順', '方法', 'やり方', 'コツ', 'ベストプラクティス', '便利', '簡単', '速い', '早い'];
-
-        // 技術関連の応答
-        if (techKeywords.some(keyword => message.includes(keyword))) {
+        // 技術・プログラミング関連
+        if (message.includes('プログラム') || message.includes('コード') || message.includes('システム') || 
+            message.includes('開発') || message.includes('エンジニア') || message.includes('技術')) {
+            
             if (ctx.preferred_tools && ctx.preferred_tools.length > 0) {
                 relevantInfo.push(`愛用技術: ${ctx.preferred_tools.slice(0, 4).join(', ')}`);
             }
@@ -194,118 +195,115 @@ class AimoltProfileSync {
                 relevantInfo.push(`進行中: ${ctx.current_projects.slice(0, 2).join(', ')}`);
             }
             if (char.thinking_patterns && char.thinking_patterns.length > 0) {
-                const techThinking = char.thinking_patterns.filter(pattern => 
-                    pattern.includes('論理') || pattern.includes('段階') || pattern.includes('具体') || pattern.includes('実用')
-                );
-                if (techThinking.length > 0) {
-                    relevantInfo.push(`思考スタイル: ${techThinking.slice(0, 2).join(', ')}`);
-                }
+                relevantInfo.push(`アプローチ: ${char.thinking_patterns.slice(0, 2).join(', ')}`);
             }
         }
         
-        // 学習関連の応答
-        else if (learningKeywords.some(keyword => message.includes(keyword))) {
+        // 学習・教育関連
+        else if (message.includes('学習') || message.includes('勉強') || message.includes('覚え') || 
+                 message.includes('教え') || message.includes('理解') || message.includes('知識')) {
+            
             if (ctx.recent_learnings && ctx.recent_learnings.length > 0) {
                 relevantInfo.push(`最近の学習: ${ctx.recent_learnings.slice(0, 3).join(', ')}`);
             }
+            if (char.thinking_patterns && char.thinking_patterns.length > 0) {
+                relevantInfo.push(`学習スタイル: ${char.thinking_patterns.slice(0, 2).join(', ')}`);
+            }
             if (char.core_values && char.core_values.length > 0) {
-                const learningValues = char.core_values.filter(value => 
-                    value.includes('学習') || value.includes('成長') || value.includes('向上') || value.includes('習得')
+                const learningValues = char.core_values.filter(v => 
+                    v.includes('学習') || v.includes('成長') || v.includes('継続') || v.includes('効率')
                 );
                 if (learningValues.length > 0) {
-                    relevantInfo.push(`学習価値観: ${learningValues.join(', ')}`);
+                    relevantInfo.push(`価値観: ${learningValues.slice(0, 2).join(', ')}`);
+                }
+            }
+        }
+        
+        // 仕事・プロジェクト関連
+        else if (message.includes('仕事') || message.includes('プロジェクト') || message.includes('作業') || 
+                 message.includes('タスク') || message.includes('効率') || message.includes('管理')) {
+            
+            if (ctx.current_projects && ctx.current_projects.length > 0) {
+                relevantInfo.push(`現在のプロジェクト: ${ctx.current_projects.slice(0, 3).join(', ')}`);
+            }
+            if (char.core_values && char.core_values.length > 0) {
+                const workValues = char.core_values.filter(v => 
+                    v.includes('効率') || v.includes('実用') || v.includes('品質') || v.includes('継続')
+                );
+                if (workValues.length > 0) {
+                    relevantInfo.push(`仕事の価値観: ${workValues.slice(0, 2).join(', ')}`);
                 }
             }
             if (char.thinking_patterns && char.thinking_patterns.length > 0) {
-                relevantInfo.push(`学習アプローチ: ${char.thinking_patterns.slice(0, 2).join(', ')}`);
+                relevantInfo.push(`思考パターン: ${char.thinking_patterns.slice(0, 2).join(', ')}`);
             }
         }
         
-        // 仕事・プロジェクト関連の応答
-        else if (workKeywords.some(keyword => message.includes(keyword))) {
-            if (ctx.current_projects && ctx.current_projects.length > 0) {
-                relevantInfo.push(`現在のプロジェクト: ${ctx.current_projects.join(', ')}`);
+        // 趣味・興味関連
+        else if (message.includes('趣味') || message.includes('好き') || message.includes('興味') || 
+                 message.includes('楽しい') || message.includes('面白い')) {
+            
+            if (char.interests_and_passions && char.interests_and_passions.length > 0) {
+                relevantInfo.push(`興味分野: ${char.interests_and_passions.slice(0, 4).join(', ')}`);
             }
-            if (char.core_values && char.core_values.length > 0) {
-                const workValues = char.core_values.filter(value => 
-                    value.includes('効率') || value.includes('品質') || value.includes('実用') || value.includes('問題解決')
-                );
-                if (workValues.length > 0) {
-                    relevantInfo.push(`仕事の価値観: ${workValues.join(', ')}`);
-                }
+            if (ctx.recent_learnings && ctx.recent_learnings.length > 0) {
+                relevantInfo.push(`最近の関心: ${ctx.recent_learnings.slice(0, 2).join(', ')}`);
             }
+        }
+        
+        // コミュニケーション関連
+        else if (message.includes('話') || message.includes('相談') || message.includes('意見') || 
+                 message.includes('どう思う') || message.includes('考え')) {
+            
             if (char.communication_style && char.communication_style.length > 0) {
                 relevantInfo.push(`コミュニケーション: ${char.communication_style.slice(0, 2).join(', ')}`);
             }
-        }
-        
-        // 効率・生産性関連の応答
-        else if (efficiencyKeywords.some(keyword => message.includes(keyword))) {
-            if (ctx.preferred_tools && ctx.preferred_tools.length > 0) {
-                relevantInfo.push(`効率化ツール: ${ctx.preferred_tools.slice(0, 3).join(', ')}`);
-            }
             if (char.core_values && char.core_values.length > 0) {
-                const efficiencyValues = char.core_values.filter(value => 
-                    value.includes('効率') || value.includes('自動化') || value.includes('生産性') || value.includes('最適化')
-                );
-                if (efficiencyValues.length > 0) {
-                    relevantInfo.push(`効率性の価値観: ${efficiencyValues.join(', ')}`);
-                }
+                relevantInfo.push(`価値観: ${char.core_values.slice(0, 3).join(', ')}`);
             }
         }
         
         // 一般的な応答（上記に該当しない場合）
-        else {
-            if (char.interests_and_passions && char.interests_and_passions.length > 0) {
-                relevantInfo.push(`興味分野: ${char.interests_and_passions.slice(0, 4).join(', ')}`);
-            }
+        if (relevantInfo.length === 0) {
+            // 基本的な特性情報
             if (char.core_values && char.core_values.length > 0) {
-                relevantInfo.push(`大切にすること: ${char.core_values.slice(0, 3).join(', ')}`);
+                relevantInfo.push(`価値観: ${char.core_values.slice(0, 3).join(', ')}`);
+            }
+            if (char.interests_and_passions && char.interests_and_passions.length > 0) {
+                relevantInfo.push(`興味: ${char.interests_and_passions.slice(0, 3).join(', ')}`);
             }
             if (char.communication_style && char.communication_style.length > 0) {
-                relevantInfo.push(`好みのスタイル: ${char.communication_style.slice(0, 2).join(', ')}`);
+                relevantInfo.push(`スタイル: ${char.communication_style.slice(0, 2).join(', ')}`);
             }
         }
         
-        // 共通で重要な洞察を追加
+        // 重要な洞察を追加（常に含める）
         if (insights.length > 0) {
-            const topInsights = insights.slice(0, 2);
-            relevantInfo.push(`特徴: ${topInsights.join(' / ')}`);
+            relevantInfo.push(`特徴: ${insights.slice(0, 2).join(' / ')}`);
         }
         
-        // 情報がない場合のフォールバック
-        if (relevantInfo.length === 0) {
-            if (char.core_values && char.core_values.length > 0) {
-                relevantInfo.push(`価値観: ${char.core_values.slice(0, 2).join(', ')}`);
-            }
-        }
-        
-        extension += relevantInfo.join('\n');
         if (relevantInfo.length > 0) {
-            extension += '\n\n※ この情報を参考に、ユーザーの関心や価値観に沿った、より個人的で意味のある応答を提供してください。aimoltの基本性格は保持しつつ、より関連性の高い内容にしてください。';
+            extension += relevantInfo.join('\n') + '\n';
+            extension += '\n※ これらの情報を参考に、ユーザーの関心や価値観に沿った個人的で意味のある応答を提供してください。ただし、aimoltの基本的な明るい性格は保持してください。';
+        } else {
+            extension = '';
         }
         
         return extension;
     }
 
-    // 強制更新
-    async forceRefresh() {
-        console.log('🔄 Force refreshing profile...');
-        this.cachedProfile = null;
-        this.lastFetch = null;
-        return await this.getProfile();
-    }
-
     // プロファイルの状態を取得
     getStatus() {
+        const lastFetchTime = this.lastFetch ? new Date(this.lastFetch) : null;
         const cacheAge = this.lastFetch ? Date.now() - this.lastFetch : null;
+        
         return {
             enabled: this.isProfileEnabled(),
             hasProfile: !!this.cachedProfile,
-            lastFetch: this.lastFetch ? new Date(this.lastFetch).toISOString() : null,
+            lastFetch: lastFetchTime,
             cacheAgeHours: cacheAge ? Math.round(cacheAge / 1000 / 60 / 60 * 10) / 10 : null,
             cacheTimeHours: this.config.cacheTimeMinutes / 60,
-            nextRefreshIn: cacheAge ? Math.max(0, Math.round((this.config.cacheTimeMinutes * 60 * 1000 - cacheAge) / 1000 / 60 / 60 * 10) / 10) : null
+            nextRefresh: this.lastFetch ? new Date(this.lastFetch + (this.config.cacheTimeMinutes * 60 * 1000)) : null
         };
     }
 }
