@@ -5,6 +5,7 @@ AImoltは、Gemini 2.5 FlashとSupabaseを活用した多機能Discordボット�
 - **テキスト応答**: 👍リアクションに、会話履歴を考慮したAIが応答します。
 - **音声文字起こし**: 🎤リアクションを付けるだけで、`.ogg`形式の音声メッセージを文字に起こします。
 - **コンテンツ解説**: ❓リアクションを付けると、メッセージの内容をAIが分かりやすく解説します。
+- **個人プロファイル連携**: 👍リアクション時に、ユーザーの個人特性に基づいた個人化された応答を提供します。
 
 ## 🚀 主な機能
 
@@ -13,6 +14,7 @@ AImoltは、Gemini 2.5 FlashとSupabaseを活用した多機能Discordボット�
 - **分かりやすい解説**: 難しい文章や専門用語も、初心者向けに丁寧に解説します。
 - **文脈理解**: Supabase/PostgreSQLに会話履歴を保存し、文脈に沿った応答を実現します。
 - **プロンプト一元管理**: すべてのAIプロンプトを`app/prompt/`ディレクトリで一元管理し、保守性を向上。
+- **適応型個人プロファイル**: メッセージ内容に応じて関連する個人特性を自動選択し、よりパーソナライズされた応答を提供。
 - **安定稼働**: 本番環境ではPM2やDockerを利用して安定したプロセス管理が可能です。
 
 ## 🏗️ アーキテクチャ
@@ -27,6 +29,7 @@ Dockerコンテナ内でNode.jsアプリケーションとPostgreSQLデータベ
 │  │   (Node.js 22)  │ │  (postgres:17) │  │
 │  │   + PM2         │ │                │  │
 │  │   + Gemini AI   │ │                │  │
+│  │   + Profile     │ │                │  │
 │  └─────────────────┘ └────────────────┘  │
 └──────────────────────────────────────────┘
 ```
@@ -39,6 +42,7 @@ Dockerコンテナ内でNode.jsアプリケーションとPostgreSQLデータベ
 - **Discord Bot Token**: [Discord Developer Portal](https://discord.com/developers/applications) で取得
 - **Gemini API Key**: [Google AI Studio](https://makersuite.google.com/) で取得
 - **Supabase Project**: [Supabase](https://supabase.com/) でプロジェクトを作成
+- **GitHub Personal Access Token** (プロファイル連携用・オプション): [GitHub Settings](https://github.com/settings/tokens) で取得
 
 ## 🛠️ セットアップ
 
@@ -89,8 +93,8 @@ Dockerコンテナ内でNode.jsアプリケーションとPostgreSQLデータベ
 
 4.  **一時ディレクトリを作成**:
     ```bash
-    mkdir -p temp
-    chmod 755 temp
+    mkdir -p temp profile
+    chmod 755 temp profile
     ```
 
 5.  **データベースを起動**:
@@ -121,20 +125,77 @@ Dockerコンテナ内でNode.jsアプリケーションとPostgreSQLデータベ
 
 Botの動作には以下の環境変数が必要です。
 
-| 変数名 | 説明 | 例 |
-| :--- | :--- | :--- |
-| `DISCORD_TOKEN` | Discordボットのトークン | `MTxxxxx.xxxxx.xxxxx` |
-| `DISCORD_APPLICATION_ID` | DiscordアプリケーションのID | `1234567890123456789` |
-| `DISCORD_GUILD_ID` | Botを導入するサーバー(Guild)のID | `1234567890123456789` |
-| `GEMINI_API_KEY` | Google Gemini AIのAPIキー | `AIxxxxxxxxxxxxx` |
-| `SUPABASE_URL` | SupabaseプロジェクトのURL | `https://xxx.supabase.co` |
-| `SUPABASE_KEY` | SupabaseのAnonキー | `eyxxxxxx` |
-| `POSTGRES_HOST` | PostgreSQLホスト名 | `localhost` (ローカル) / `postgres` (Docker) |
-| `POSTGRES_PORT` | PostgreSQLポート | `5432` |
-| `POSTGRES_USER` | PostgreSQLユーザー名 | `postgres` |
-| `POSTGRES_PASSWORD` | PostgreSQLパスワード | `aimolt` |
-| `POSTGRES_DB` | PostgreSQLデータベース名 | `aimolt` |
-| `CONVERSATION_LIMIT` | 参照する会話履歴の最大件数 | `1000` |
+| 変数名 | 説明 | 例 | 必須 |
+| :--- | :--- | :--- | :--- |
+| `DISCORD_TOKEN` | Discordボットのトークン | `MTxxxxx.xxxxx.xxxxx` | ✅ |
+| `DISCORD_APPLICATION_ID` | DiscordアプリケーションのID | `1234567890123456789` | ✅ |
+| `DISCORD_GUILD_ID` | Botを導入するサーバー(Guild)のID | `1234567890123456789` | ✅ |
+| `GEMINI_API_KEY` | Google Gemini AIのAPIキー | `AIxxxxxxxxxxxxx` | ✅ |
+| `SUPABASE_URL` | SupabaseプロジェクトのURL | `https://xxx.supabase.co` | ✅ |
+| `SUPABASE_KEY` | SupabaseのAnonキー | `eyxxxxxx` | ✅ |
+| `POSTGRES_HOST` | PostgreSQLホスト名 | `localhost` (ローカル) / `postgres` (Docker) | ✅ |
+| `POSTGRES_PORT` | PostgreSQLポート | `5432` | ✅ |
+| `POSTGRES_USER` | PostgreSQLユーザー名 | `postgres` | ✅ |
+| `POSTGRES_PASSWORD` | PostgreSQLパスワード | `aimolt` | ✅ |
+| `POSTGRES_DB` | PostgreSQLデータベース名 | `aimolt` | ✅ |
+| `CONVERSATION_LIMIT` | 参照する会話履歴の最大件数 | `1000` | ✅ |
+| `GITHUB_TOKEN` | GitHub Personal Access Token (プロファイル連携用) | `ghp_xxxxxxxxxxxxxxxx` | ❌ |
+
+### 🔧 プロファイル連携機能 (オプション)
+
+#### セットアップ手順
+
+1. **GitHub Personal Access Token の作成**
+   - GitHub > Settings > Developer settings > Personal access tokens > Tokens (classic)
+   - 権限: `repo` (プライベートリポジトリアクセス用)
+   - 生成されたトークンを `.env` ファイルの `GITHUB_TOKEN` に設定
+
+2. **プロファイルディレクトリの作成**
+   ```bash
+   mkdir -p app/profile
+   ```
+
+3. **Bot の再起動**
+   ```bash
+   # Dockerの場合
+   docker compose restart discord-bot
+   
+   # PM2の場合
+   npm run pm2:restart
+   ```
+
+#### 機能概要
+
+- **適応型プロファイル連携**: メッセージ内容に応じて関連する個人特性を自動選択
+- **12時間キャッシュ**: GitHub API呼び出しを最小化
+- **フォールバック機能**: プロファイル取得失敗時も通常通り動作
+- **👍リアクション限定**: like.js実行時のみプロファイル機能を使用
+
+#### 管理コマンド
+
+以下のコマンドでプロファイル機能を管理できます：
+
+```
+!profile status   # プロファイル状態を確認
+!profile refresh  # プロファイルを強制更新
+```
+
+#### 動作確認
+
+1. プロファイル機能有効時のログ:
+   ```
+   📡 Fetching personal profile from GitHub...
+   ✅ Personal profile fetched successfully
+   💾 Personal profile cached locally (12h cache)
+   📋 Personal profile applied to like reaction (adaptive mode)
+   ```
+
+2. プロファイル機能無効時（GITHUB_TOKEN未設定）:
+   ```
+   📋 Profile sync disabled (no GitHub token)
+   ```
+
+プロファイル機能はオプションなので、トークンが設定されていない場合でも通常通り動作します。
 
 ### AIプロンプトの設定
 
@@ -186,6 +247,7 @@ Botの動作には以下の環境変数が必要です。
 
 1.  **テキスト応答**:
     - メッセージに👍リアクションを付けます。
+    - プロファイル連携が有効な場合、メッセージ内容に応じて個人化された応答を提供します。
 
 2.  **音声文字起こし**:
     - `.ogg`形式の音声メッセージを投稿し、それに🎤リアクションを付けます。
@@ -194,6 +256,10 @@ Botの動作には以下の環境変数が必要です。
 3.  **コンテンツ解説**:
     - 解説してほしいメッセージに❓リアクションを付けます。
     - Botが解説をEmbed形式で投稿します。
+
+4.  **プロファイル管理**:
+    - `!profile status` でプロファイル状態を確認
+    - `!profile refresh` でプロファイルを強制更新
 
 ## 🗂️ プロジェクト構造
 
@@ -205,7 +271,8 @@ aimolt/
 │   │   ├── like.js              # 👍リアクション処理
 │   │   ├── transcribe.js        # 🎤リアクション処理
 │   │   ├── explain.js           # ❓リアクション処理
-│   │   └── prompt.js            # プロンプト管理システム
+│   │   ├── prompt.js            # プロンプト管理システム
+│   │   └── profile-sync.js      # プロファイル同期システム
 │   ├── prompt/                  # AIプロンプト（一元管理）
 │   │   ├── system.txt           # 基本システム指示
 │   │   ├── like.txt             # 👍リアクション用
@@ -213,6 +280,7 @@ aimolt/
 │   │   ├── explain_fallback.txt # 解説フォールバック
 │   │   └── transcribe.txt       # 音声文字起こし用
 │   ├── temp/                    # 音声ファイルの一時保存場所
+│   ├── profile/                 # プロファイルキャッシュ保存場所
 │   ├── .npmrc                   # npm設定
 │   ├── Dockerfile               # アプリケーション用Dockerfile
 │   ├── ecosystem.config.js      # PM2設定ファイル
@@ -281,6 +349,10 @@ CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user
 - **プロンプト読み込みエラー**:
   - `app/prompt/`ディレクトリ内のプロンプトファイルが存在し、読み取り権限があるか確認してください。
   - ログに「Prompt system initialized successfully」が表示されるか確認してください。
+- **プロファイル機能が動作しない**:
+  - `GITHUB_TOKEN`が正しく設定されているか確認してください。
+  - `app/profile`ディレクトリが存在し、書き込み権限があるか確認してください。
+  - `!profile status`コマンドで状態を確認してください。
 
 ## 🔄 開発とメンテナンス
 
@@ -367,6 +439,7 @@ promptManager.clearCache();
 - Gemini APIのレート制限に対するリトライ処理
 - Prometheusなどによる詳細なモニタリング
 - プロンプトのホットリロード機能（再起動なしでプロンプト変更を反映）
+- プロファイル機能の他リアクション（explain.js等）への拡張
 
 ## 📄 ライセンス
 
