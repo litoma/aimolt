@@ -95,23 +95,23 @@ const prompts = {
   /**
    * システム指示を取得
    */
-  async getSystemInstruction() {
-    return await promptManager.loadPrompt('system_instruction');
+  async getSystem() {
+    return await promptManager.loadPrompt('system');
   },
 
   /**
    * 👍リアクション用プロンプトを取得
    */
-  async getLikeReaction() {
-    return await promptManager.loadPrompt('like_reaction');
+  async getLike() {
+    return await promptManager.loadPrompt('like');
   },
 
   /**
    * ❓リアクション用プロンプトを取得（フォールバック付き）
    */
-  async getQuestionExplain() {
+  async getExplain() {
     try {
-      return await promptManager.loadPrompt('question_explain');
+      return await promptManager.loadPrompt('explain');
     } catch (error) {
       console.log('Using fallback explain prompt due to error:', error.message);
       return await promptManager.loadPrompt('explain_fallback');
@@ -121,8 +121,8 @@ const prompts = {
   /**
    * 音声文字起こし用プロンプトを取得
    */
-  async getTranscribeInstruction() {
-    return await promptManager.loadPrompt('transcribe_instruction');
+  async getTranscribe() {
+    return await promptManager.loadPrompt('transcribe');
   },
 
   /**
@@ -131,6 +131,23 @@ const prompts = {
    */
   async getCustomPrompt(filename) {
     return await promptManager.loadPrompt(filename);
+  },
+
+  // レガシー互換性のための関数（旧命名との互換性を保つ）
+  async getSystemInstruction() {
+    return await this.getSystem();
+  },
+
+  async getLikeReaction() {
+    return await this.getLike();
+  },
+
+  async getQuestionExplain() {
+    return await this.getExplain();
+  },
+
+  async getTranscribeInstruction() {
+    return await this.getTranscribe();
   }
 };
 
@@ -139,7 +156,7 @@ const prompts = {
  * 既存のコードとの互換性を保つため
  */
 async function getSystemInstruction() {
-  return await prompts.getSystemInstruction();
+  return await prompts.getSystem();
 }
 
 module.exports = {
