@@ -1,31 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
-const fs = require('fs').promises;
-const path = require('path');
-
-// 解説プロンプト（フォールバック）
-const DEFAULT_EXPLAIN_PROMPT = `
-あなたはDiscordメッセージの内容について詳しく解説するアシスタントです。
-
-ユーザーがクエスチョンマーク（❓）リアクションを付けたメッセージの内容について、わかりやすく丁寧に解説してください。
-
-## 解説の方針：
-1. **専門用語の説明**: 難しい言葉や専門用語があれば、わかりやすく説明する
-2. **背景情報の補足**: 文脈や背景にある情報を補足説明する
-3. **具体例の提示**: 抽象的な内容は具体例を交えて説明する
-4. **関連情報の提供**: 関連する有用な情報があれば併せて紹介する
-5. **疑問点の解消**: メッセージを読んで生じそうな疑問点を先回りして解説する
-
-## 解説スタイル：
-- 親しみやすく、わかりやすい口調で説明してください
-- 相手の知識レベルを想定して、初心者にも理解できるよう配慮してください
-- 長すぎず、要点を整理して説明してください
-- 必要に応じて段落分けや箇条書きを使って読みやすくしてください
-
-## 注意事項：
-- 不適切な内容や間違った情報の場合は、適切に指摘し正しい情報を提供してください
-- 推測や憶測ではなく、確実な情報に基づいて解説してください
-- 解説内容は1500文字以内に収めてください
-`;
+const { prompts } = require('./prompt');
 
 // Embed内容の抽出
 function extractEmbedContent(message) {
@@ -91,13 +65,14 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
     await channel.send(`${user} 🤔 投稿内容について詳しく解説するね〜！ちょっと待っててね\n📎 元メッセージ: ${messageLink}`);
 
     // 解説プロンプトの読み込み
-    let explainPrompt = DEFAULT_EXPLAIN_PROMPT;
-    const promptPath = path.join(__dirname, '../prompt', 'question_explain.txt');
+    let explainPrompt;
     try {
-      explainPrompt = await fs.readFile(promptPath, 'utf-8');
-      console.log('解説プロンプトファイルを使用');
+      explainPrompt = await prompts.getQuestionExplain();
+      console.log('解説プロンプトを新しいシステムから取得');
     } catch (error) {
-      console.log('フォールバック解説プロンプトを使用');
+      console.error('解説プロンプト取得エラー:', error.message);
+      await channel.send(`${user} ❌ プロンプトの読み込みに失敗しました。`);
+      return;
     }
 
     // Gemini APIで解説生成（会話履歴は使用しない）
