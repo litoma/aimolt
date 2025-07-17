@@ -107,15 +107,10 @@ const prompts = {
   },
 
   /**
-   * ❓リアクション用プロンプトを取得（フォールバック付き）
+   * ❓リアクション用プロンプトを取得
    */
   async getExplain() {
-    try {
-      return await promptManager.loadPrompt('explain');
-    } catch (error) {
-      console.log('Using fallback explain prompt due to error:', error.message);
-      return await promptManager.loadPrompt('explain_fallback');
-    }
+    return await promptManager.loadPrompt('explain');
   },
 
   /**

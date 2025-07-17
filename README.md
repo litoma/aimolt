@@ -237,7 +237,6 @@ Botの動作には以下の環境変数が必要です。
 | `system.txt` | `index.js` | システム基本指示 | Botの基本的な性格・応答スタイルを定義 |
 | `like.txt` | `like.js` | 👍リアクション応答 | フレンドリーでカジュアルな応答スタイル |
 | `explain.txt` | `explain.js` | ❓リアクション解説 | 丁寧で分かりやすい解説スタイル |
-| `explain_fallback.txt` | `explain.js` | 解説フォールバック | `explain.txt`が読み込めない場合の代替 |
 | `transcribe.txt` | `transcribe.js` | 音声文字起こし | フィラー語除去などの指示 |
 | `memo.txt` | `memo.js` | 📝メモ機能 | Obsidian メモ整形用の指示 |
 
@@ -312,7 +311,6 @@ aimolt/
 │   │   ├── system.txt           # 基本システム指示
 │   │   ├── like.txt             # 👍リアクション用
 │   │   ├── explain.txt          # ❓リアクション用
-│   │   ├── explain_fallback.txt # 解説フォールバック
 │   │   ├── transcribe.txt       # 音声文字起こし用
 │   │   └── memo.txt             # 📝メモ機能用
 │   ├── temp/                    # 音声ファイルの一時保存場所
