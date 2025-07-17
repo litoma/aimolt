@@ -1,0 +1,440 @@
+{
+  "profile": {
+    "profile_metadata": {
+      "generated_at": "2025-07-17T03:54:35.536Z",
+      "source_files_count": 20,
+      "valid_analyses_count": 1,
+      "failed_analyses_count": 2,
+      "average_confidence": "0.815",
+      "average_quality": "0.58",
+      "analysis_version": "2.0",
+      "update_mode": "incremental",
+      "incremental_files_count": 3,
+      "merge_metadata": {
+        "existing_files": 20,
+        "new_files": 3,
+        "merge_strategy": "intelligent_optimization",
+        "intelligent_metrics": {
+          "similarity_stats": {
+            "core_values": {
+              "totalComparisons": 68,
+              "duplicateCount": 68,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "personality_traits": {
+              "totalComparisons": 0,
+              "duplicateCount": 0,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "thinking_patterns": {
+              "totalComparisons": 20,
+              "duplicateCount": 20,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "interests_and_passions": {
+              "totalComparisons": 0,
+              "duplicateCount": 0,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "communication_style": {
+              "totalComparisons": 18,
+              "duplicateCount": 18,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "current_projects": {
+              "totalComparisons": 0,
+              "duplicateCount": 0,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "recent_learnings": {
+              "totalComparisons": 0,
+              "duplicateCount": 0,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "preferred_tools": {
+              "totalComparisons": 0,
+              "duplicateCount": 0,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            }
+          },
+          "confidence_adjustments": {
+            "quality": 0.02,
+            "stability": 0.03,
+            "trend": 0,
+            "context": -0.005,
+            "learning": 0
+          },
+          "stability_metrics": {
+            "volatility": 0,
+            "trend": 0,
+            "reliability": 1
+          },
+          "priority_distribution": {
+            "high": 1,
+            "medium": 0,
+            "low": 0
+          },
+          "optimization_metrics": {
+            "totalSimilarityChecks": 106,
+            "duplicatesRemoved": 106,
+            "newContentAdded": 0,
+            "averagePriority": 0.7431317865787698
+          }
+        },
+        "merge_timestamp": "2025-07-17T03:54:35.536Z"
+      }
+    },
+    "personal_characteristics": {
+      "core_values": [
+        "効率性",
+        "体系的な情報管理",
+        "利便性",
+        "セキュリティ",
+        "試行錯誤と検証",
+        "情報の透明性への関心",
+        "影響の事前検討",
+        "品質へのこだわり"
+      ],
+      "personality_traits": [
+        "探求心がある",
+        "好奇心旺盛",
+        "実用的",
+        "問題解決志向",
+        "計画的かつ体系的",
+        "探求心と好奇心（新しいツールや設定を試す）",
+        "慎重（テスト的な利用）",
+        "技術的素養がある",
+        "探求心がある（疑問を呈する）",
+        "慎重（公開の影響を懸念）",
+        "計画的（チェックリストを使用）",
+        "自己認識が高い",
+        "几帳面",
+        "向上心がある",
+        "内省的",
+        "新しい技術やツールを試すことに意欲的",
+        "試行錯誤をいとわない",
+        "自分の直感を信じる傾向がある（ただし、今回はそれが裏目に出た）",
+        "記憶力が良い（詳細な時期や場所、状況を覚えている）",
+        "几帳面（情報を整理して記述している）",
+        "安定志向（転向がなかったことを「ありがたかった」と感じる）",
+        "内向的（根暗と自己認識、大人数での交流が苦手）",
+        "自己認識が高い（自分に合う・合わないを理解している）",
+        "過去にコンプレックスを抱えていた（友達の少なさ）",
+        "慎重（積極的に仲を深めることは稀）",
+        "安定志向（細く長く関係が続くことを望む）",
+        "憧れを抱く一面がある（交友関係が広い人への憧れ）",
+        "少数精鋭のグループで行動することを好む"
+      ],
+      "thinking_patterns": [
+        "試行錯誤を通じて学ぶ",
+        "機能検証を重視する",
+        "考察的（本質を問う）",
+        "論理的かつ構造的（複数のツール連携と役割分担）",
+        "試行錯誤的",
+        "効率重視",
+        "問いかけを通じて思考を進める",
+        "結果や影響を予測しようとする"
+      ],
+      "interests_and_passions": [
+        "新しいツールの機能検証",
+        "日々の記録・ログ付け",
+        "メモアプリと情報管理ツール（Obsidian, memos）",
+        "システム連携と自動化（SSO, DB同期, プラグイン）",
+        "パーソナルワークフローの改善",
+        "テクノロジーとITインフラ",
+        "情報共有のメカニズムと影響",
+        "タスク管理",
+        "日々の記録",
+        "情報管理",
+        "生産性向上",
+        "業務改善",
+        "映画鑑賞",
+        "技術（OS、アプリケーションインストール、パッケージ管理）",
+        "住居",
+        "居住環境",
+        "旅行（友人との旅行経験あり）"
+      ],
+      "communication_style": [
+        "箇条書きによる簡潔な記録",
+        "自問自答形式（「〜すればよき？」）",
+        "独り言的な日常の気づきや作業記録",
+        "簡潔",
+        "問いかけが多い",
+        "客観的で事実に基づいた記述"
+      ]
+    },
+    "contextual_information": {
+      "current_projects": [
+        "新しいメモツールの導入または検証",
+        "日々の記録習慣の確立",
+        "メモアプリの最適な運用方法の確立",
+        "memosとObsidianの連携構築",
+        "Authelia経由でのmemosログイン設定とSSO化",
+        "何らかのタスクや作業（チェックリストから推測）",
+        "UbuntuへのObsidianインストール",
+        "東京都職員向けのシステム開発"
+      ],
+      "recent_learnings": [
+        "使用しているメモツールの機能（タグ、階層、追記、タイトル）",
+        "memosへのAuthelia経由でのログイン方法",
+        "SSOのみでのログイン設定",
+        "memosとObsidianの連携可能性",
+        "Raindrop.ioのTags Managerの利用方法",
+        "自身の業務におけるクオリティ妥協の可能性に関する内省",
+        "AIの推奨（debパッケージ）が、自身の直感（snap, AppImage）よりも信頼できる場合があること",
+        "ObsidianをUbuntuにインストールする際の最適な方法（debパッケージ）"
+      ],
+      "preferred_tools": [
+        "Markdown形式をサポートするメモツール",
+        "タグ付け機能を持つツール",
+        "階層構造（ヘッダー）をサポートするツール",
+        "Obsidian",
+        "memos",
+        "Authelia",
+        "Markdown形式のメモツール（タイムスタンプ、ハッシュタグ、チェックボックス機能付き）",
+        "メモツール",
+        "Raindrop.io",
+        "Ubuntu",
+        "AI (情報源)",
+        "debパッケージ",
+        "snap",
+        "AppImage",
+        "LINEチャット"
+      ]
+    },
+    "key_insights": [
+      "新しいメモツールや記録システムを試用中である",
+      "ツールの機能（タグ、階層、追記、タイトル）に関心があり、積極的に検証している",
+      "日々の記録をつけようとしている",
+      "この人物は、自身の情報管理ワークフローを最適化しようと積極的に取り組んでいる技術志向のユーザーである。",
+      "複数のツールを連携させ、効率的かつ体系的な情報管理を目指している。",
+      "新しい技術やツールを試すことに抵抗がなく、自ら設定や検証を行う能力がある。",
+      "日常的に記録やメモを取る習慣がある。",
+      "情報の公開や共有、その影響について関心が高い。",
+      "タスク管理や進捗管理を行っている。",
+      "疑問を抱き、その答えや影響を考察しようとする傾向がある。",
+      "日々の記録を習慣にしている可能性がある",
+      "日常のささいな事象に対する自己認識がある",
+      "効率性と品質を重視し、自己改善に意欲的な人物である",
+      "情報管理ツールを積極的に活用している",
+      "映画鑑賞という一般的な趣味と、技術的な問題解決への関心という二面性を持つ",
+      "技術的な課題に対して、AIの推奨と自身の直感の間で葛藤し、最終的にAIの推奨が正しかったという経験を通じて学習した",
+      "試行錯誤をいとわないが、時には客観的な情報に従うことの重要性を学んだ人物",
+      "1986年7月4日神奈川県生まれ。",
+      "幼少期に東京都八王子市、府中市へ転居し、就職まで府中市で過ごした。",
+      "1年間の浪人期間を経て、東京理科大学工学部経営工学科に入学した。",
+      "2010年に株式会社NTTデータに就職し、現在も勤務している。",
+      "現在の業務は東京都職員向けのシステム開発である。",
+      "幼少期から複数回の転居を経験している",
+      "家族のライフイベントが居住地選択に大きく影響している",
+      "居住環境の質や安定性を重視する傾向がある",
+      "書いた人は内向的な性格であり、過去に交友関係の少なさにコンプレックスを抱えていたが、現在は自分に合った少数の友人との深い関係性を重視している。",
+      "交友関係が広い人への憧れは持ちつつも、自身の特性を理解し、無理に広げようとはしない現実的な側面がある。",
+      "大学時代の友人グループ「石川８」とは卒業後も継続的に交流があり、長期的な関係性を大切にする価値観がうかがえる。"
+    ],
+    "response_guidelines": {
+      "tone": "親しみやすく、でも専門的な知識は正確に",
+      "style": "簡潔で実用的、具体例を含む",
+      "approach": "問題解決志向、建設的な提案",
+      "avoid": "過度に複雑な説明、曖昧な回答"
+    },
+    "gemini_system_prompt": "あなたは効率性と実用性を重視し、継続的な学習を大切にする人のアシスタントです。この人は論理的思考を好み、具体的で建設的な解決策を求める傾向があります。技術的な話題では正確性を保ちながらも親しみやすいトーンで応答し、簡潔で要点を押さえた説明を心がけてください。抽象的な話よりも具体例を重視し、実際に役立つ情報を提供することを最優先にしてください。",
+    "debug_info": {
+      "processed_files": [
+        {
+          "path": "Note/00 今後書くこと.md",
+          "wordCount": 25,
+          "charCount": 217,
+          "content": "- 今やっている仕事の内容(その業界の現在地や市況、今後の展望などもできれば)\n- それに至るまでの職歴などの変遷\n- 人生のターニングポイントになった出来事\n- 大事にしている価値観\n- 将来やりたいこと、夢や目標\n- 今悩んでいること\n- 好きなこと、趣味\n- 休日の過ごし方\n- 旅行や食などの好み\n- 自分が好きな場所、人に紹介したいところ\n- 日本のいいと思っていること、問題だと思っているところ\n- 最近嬉しかったこと\n\n",
+          "mtime": "2025-07-16T13:34:33.330Z"
+        },
+        {
+          "path": "Note/02 勉強.md",
+          "wordCount": 72,
+          "charCount": 1872,
+          "content": "## 小・中学生\n- 小学生の頃は勉強で苦労したことはなかったと思う\n- 進研ゼミのチャレンジだけやっていたけど、テキストを全くやらずに毎月のテストだけやってたら、母親にバレて怒られた記憶がある\n- 中学生になって英語の授業が始まり、文法が分からずに途中から授業に追いつけなくなった\n- 父親に買ってもらったドリルをやるうちにだんだん分かるようになり、最後まで得意にはならなかったものの、英検3級レベルには到達できた\n- また、英語含めた全科目の成績は、学年140人くらいのうち、だいたい10～20位だったと思う\n- 中学3年になって初めて進学塾にも通った\n- 塾の先生から「君は学区（当時、東京都は学区制だった）で1位の公立校にいける」と発破をかけられていたけど、正直自信のなかった私は、一般受験の前に推薦入試で他学区の2番手校を受験し、そのまま受かってしまった\n- なお、他の学区にしたのは、その高校の最寄りが始発・終着駅かつ駅からも近くて通いやすそうだったのと、勉強がそこそこできる優等生キャラという他者からの見え方に疲れていたため、自分を知る人がいない環境に身を置きたかった、というのがある\n\n## 高校\n- 高校受験を通じて、自分は勉強が好きなのではなく、単に人から褒められたいからやってるだけだったと気付き、高校入学で過去の自分を知る人がいなくなったのを契機に、私は全く勉強しなくなった\n- 代わりにオンラインゲーム（当時流行ってたMMORPG）に明け暮れ、昼夜逆転の生活が続いた\n- 定期テストの成績はずっと下位だった\n- ゲームの影響で寝不足だったので授業もずっと寝ていたし、態度も悪かったと思う\n- 高校3年になって大手の進学塾に通うも、そもそものやる気がないので学力はまったく上がらないし、本当に無駄な時間とお金だった\n- 受験した大学は全て落ちて、親に懇願し、浪人が決まった\n\n## 予備校（浪人生）\n- 浪人が決まった頃、「偏差値30台からの大学受験」というサイトと出会い、その著者のリアルな体験記と文章から感じる熱量から「自分もこの一年で心を入れ替えて頑張ろう」と思った記憶がある\n- 浪人時代は、朝早くから予備校の自習室に通い、日中は授業を受けて、夕方からまた自習室で勉強し、日が暮れたら帰宅、という生活をずっと繰り返した\n- 苦手だった英語に関しては、予め英単語を意味とともに自分の声で録音し、予備校からの帰り道をイヤホンで聞きながら一時間ほどかけて歩くことで、運動しながら脳に定着させた\n- 努力の甲斐あってか、偏差値は面白いくらい右肩上がりだった\n- 英語は偏差値50前後をウロウロしたままだったけど、数学は40台が60台に、物理に関しては30台だったのが最終的に70を超えた\n- ただ、どうしても化学が苦手で、元素記号もまともに覚えられなかったので、理科一科目で受験できる大学を選択した\n- 大学受験は、第一志望含む受験したほぼ全ての大学に合格した\n- 進学先は首都大学東京（現在の東京都立大学）と最後まで悩んだものの、就職実績と都心の大学への憧れから、東京理科大学に決めた\n\n## 大学\n- 大学に入学して、また勉強しなくなった\n- 授業の出席も単位が取れるぎりぎりだったけど、仲良くしてくれた周りの友達がとても優秀だったのが大きく、定期テストの度に助けてもらった\n- 同じく勉強しなかった高校の頃との違いは、そういう友達付き合いも含めて、良くも悪くも要領が良くなった点だと思う\n- 実際、成績は学科の平均よりも上だったし、そのおかげで4年次に配属される研究室は一番人気の教授のところに入れた\n- 卒業研究は意思決定方法のAHP（階層分析法）をテーマにしたが、それまでの不勉強がモロに出て、全く誇れるような内容でないのは、未だにやや心残りであったりする\n\n## 就職\n- 理系は半数以上が院進学する中、これ以上勉強するのは気分が乗らないし、それより自分で稼いで自立した生活したいと思い、就職した\n- 就職後に気付いたことは、就職したあとも勉強しないといけないこと\n- 厳密には、勉強しなくても終身雇用で仕事に困らないが、自分のキャリアに直接影響するので、勉強しないと落ちぶれていく点は、これまでの学校教育と変わらないし、何ならよりシビアだと思う\n- 就職してしばらくは不真面目で全く勉強しなかったけど、IT系の資格取得を社内で推奨されていたこともあり、基本情報技術者、応用情報技術者、PMPあたりは取得した",
+          "mtime": "2025-07-16T13:27:34.999Z"
+        },
+        {
+          "path": "Note/05 交友.md",
+          "wordCount": 13,
+          "charCount": 569,
+          "content": "## 前提\n友達は昔から少ない。いわゆる根暗だと思う。\n中学・高校くらいの頃、友達の少なさがコンプレックスで、無理に増やそうとした時期もあったが、大人数で遊んだり、たくさんの人と接するのが性に合ってないことに気付き、大学生以降はそのような心掛けもしていない。\nただ、交友関係が広い人への憧れというか、「自分には真似できないけど、すごいな」という気持ちは常にある。\n一方で、現在の数少ない友人を大切にしたいという気持ちも持っているし、積極的に仲を深めたいと思うことは極めて稀ではあるが、できるだけ細く長く関係が続くといいなとは思っている。\n\n## 石川８\n同じ大学の同級生で、私を含めて８人いる。\nそのうちの一人の故郷である石川県に、全員で旅行に行ったことがきっかけで、石川８（エイト）と呼んでいる。LINEチャットのグループ名もこの名称が使われている。\n学内ではよく共に行動していたし、卒業旅行（ヨーロッパ）にもこの８人で行った。\n卒業後も、このうちの誰かが結婚するときは、たいていこのメンバが呼ばれる。現時点で、８人中６人が既婚。\n卒業後の進路はみんなバラバラだが、メガバンク、製造メーカー、製薬会社、証券会社といった国内最大手の企業に勤めている者がほとんどで、他に外資コンサルから起業した者や、実家の会社を継いだ者もいる。みんな優秀。",
+          "mtime": "2025-07-16T13:43:28.437Z"
+        }
+      ],
+      "analysis_results": [
+        {
+          "file": "Note/00 今後書くこと.md",
+          "analysis": {
+            "core_values": [],
+            "interests": [],
+            "personality": [],
+            "thinking_patterns": [],
+            "communication_style": [],
+            "contextual_info": {
+              "current_projects": [],
+              "tools_used": [],
+              "recent_learnings": []
+            },
+            "confidence": 0.1,
+            "key_insights": []
+          },
+          "processed_at": "2025-07-17T03:54:15.342Z",
+          "error": "All JSON parse attempts failed for Note/00 今後書くこと.md",
+          "success": false
+        },
+        {
+          "file": "Note/02 勉強.md",
+          "analysis": {
+            "core_values": [],
+            "interests": [],
+            "personality": [],
+            "thinking_patterns": [],
+            "communication_style": [],
+            "contextual_info": {
+              "current_projects": [],
+              "tools_used": [],
+              "recent_learnings": []
+            },
+            "confidence": 0.1,
+            "key_insights": []
+          },
+          "processed_at": "2025-07-17T03:54:26.687Z",
+          "error": "All JSON parse attempts failed for Note/02 勉強.md",
+          "success": false
+        },
+        {
+          "file": "Note/05 交友.md",
+          "analysis": {
+            "core_values": [
+              "既存の人間関係を大切にする",
+              "長期的な関係性を重視する",
+              "多様な人間関係を築ける人への尊敬/憧れ",
+              "友人の成功や優秀さを評価する"
+            ],
+            "interests": [],
+            "personality": [
+              "根暗（自己認識）",
+              "内向的（大人数での交流が苦手）",
+              "自己認識力がある",
+              "慎重（積極的に仲を深めることは稀）",
+              "信頼できる少数の友人と深い関係を築く傾向"
+            ],
+            "thinking_patterns": [
+              "自己分析的"
+            ],
+            "communication_style": [
+              "特定の少人数グループ内でのコミュニケーションを好む",
+              "積極的に仲を深めることは稀"
+            ],
+            "contextual_info": {
+              "current_projects": [],
+              "tools_used": [
+                "LINEチャット"
+              ],
+              "recent_learnings": []
+            },
+            "confidence": 0.9,
+            "key_insights": [
+              "筆者は、自身の内向的な性格を理解し受け入れている。",
+              "少数の深い人間関係を重視し、長期的な友情を大切にする。",
+              "過去のコンプレックスを乗り越え、自分に合った交友スタイルを確立している。",
+              "友人の成功を素直に評価する一面を持つ。"
+            ]
+          },
+          "processed_at": "2025-07-17T03:54:35.529Z",
+          "success": true
+        }
+      ],
+      "merge_strategy": "intelligent_optimization",
+      "intelligent_enabled": true,
+      "intelligent_metrics": {
+        "similarity_stats": {
+          "core_values": {
+            "totalComparisons": 68,
+            "duplicateCount": 68,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "personality_traits": {
+            "totalComparisons": 0,
+            "duplicateCount": 0,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "thinking_patterns": {
+            "totalComparisons": 20,
+            "duplicateCount": 20,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "interests_and_passions": {
+            "totalComparisons": 0,
+            "duplicateCount": 0,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "communication_style": {
+            "totalComparisons": 18,
+            "duplicateCount": 18,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "current_projects": {
+            "totalComparisons": 0,
+            "duplicateCount": 0,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "recent_learnings": {
+            "totalComparisons": 0,
+            "duplicateCount": 0,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "preferred_tools": {
+            "totalComparisons": 0,
+            "duplicateCount": 0,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          }
+        },
+        "confidence_adjustments": {
+          "quality": 0.02,
+          "stability": 0.03,
+          "trend": 0,
+          "context": -0.005,
+          "learning": 0
+        },
+        "stability_metrics": {
+          "volatility": 0,
+          "trend": 0,
+          "reliability": 1
+        },
+        "priority_distribution": {
+          "high": 1,
+          "medium": 0,
+          "low": 0
+        },
+        "optimization_metrics": {
+          "totalSimilarityChecks": 106,
+          "duplicatesRemoved": 106,
+          "newContentAdded": 0,
+          "averagePriority": 0.7431317865787698
+        }
+      }
+    }
+  },
+  "cached_at": "2025-07-17T13:18:26.666Z",
+  "bot_version": "aimolt-v1.0.0",
+  "cache_duration_hours": 12
+}

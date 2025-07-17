@@ -8,6 +8,7 @@ const { prompts } = require('./prompt');
 const { transcribeAudio } = require('./transcribe');
 const { handleLikeReaction, getProfileStatus, forceRefreshProfile } = require('./like');
 const { handleExplainReaction } = require('./explain');
+const { handleMemoReaction } = require('./memo');
 
 // クライアントの設定
 const client = new Client({
@@ -309,7 +310,7 @@ client.on('messageCreate', async (message) => {
   }
 });
 
-// リアクション追加時の処理（👍、🎤、❓）
+// リアクション追加時の処理（👍、🎤、❓、📝）
 client.on('messageReactionAdd', async (reaction, user) => {
   if (user.bot || reaction.message.partial) {
     try {
@@ -363,6 +364,19 @@ client.on('messageReactionAdd', async (reaction, user) => {
         typingInterval = await startTyping(reaction.message.channel);
         
         await handleExplainReaction(reaction.message, reaction.message.channel, user, genAI, getConversationHistory, saveConversationHistory);
+        cooldowns.set(userId, Date.now());
+      } catch (error) {
+        await reaction.message.reply('うわっ、なんかミスっちゃったみたい！🙈 もう一回試してみてね！');
+      } finally {
+        // タイピング表示停止
+        stopTyping(typingInterval);
+      }
+    } else if (reaction.emoji.name === '📝') {
+      try {
+        // タイピング表示開始
+        typingInterval = await startTyping(reaction.message.channel);
+        
+        await handleMemoReaction(reaction.message, reaction.message.channel, user, genAI);
         cooldowns.set(userId, Date.now());
       } catch (error) {
         await reaction.message.reply('うわっ、なんかミスっちゃったみたい！🙈 もう一回試してみてね！');

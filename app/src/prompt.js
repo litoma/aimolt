@@ -126,6 +126,13 @@ const prompts = {
   },
 
   /**
+   * 📝メモ用プロンプトを取得
+   */
+  async getMemo() {
+    return await promptManager.loadPrompt('memo');
+  },
+
+  /**
    * カスタムプロンプトを取得
    * @param {string} filename - プロンプトファイル名（拡張子なし）
    */
