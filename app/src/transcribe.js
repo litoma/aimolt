@@ -107,14 +107,15 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
       } catch (fallbackError) {
         console.error('フォールバック文字起こしプロンプト取得エラー:', fallbackError.message);
         // フォールバック用のプロンプト
-      systemInstruction = `
+        systemInstruction = `
 音声を日本語のテキストに変換してください。以下の点に注意してください：
 - フィラー語（あー、えー、うー、んー、まあ、そのー等）は除去する
 - 意味のない繰り返しや言い直しは除去する
 - 自然で読みやすい文章にする
 - 句読点を適切に配置する
 - 重要な内容のみを抽出する
-      `;
+        `;
+      }
     }
 
     const transcriptionModel = genAI.getGenerativeModel({ 
