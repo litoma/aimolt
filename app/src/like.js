@@ -1,5 +1,6 @@
 const { prompts } = require('./prompt');
 const AimoltProfileSync = require('./profile-sync');
+const { personalityManager } = require('./personality/manager');
 
 // プロファイル同期インスタンス（グローバル）
 const profileSync = new AimoltProfileSync();
@@ -7,15 +8,6 @@ const profileSync = new AimoltProfileSync();
 async function handleLikeReaction(reaction, user, genAI, getConversationHistory, saveConversationHistory) {
   const message = reaction.message;
   const userId = user.id;
-
-  // 基本プロンプトを読み込む
-  let basePrompt;
-  try {
-    basePrompt = await prompts.getLike();
-  } catch (error) {
-    console.error('Error loading like prompt:', error.message);
-    return message.reply('プロンプトの読み込みに失敗しました！🙈');
-  }
 
   // メッセージ内容をサニタイズ（絵文字を保持）
   const sanitizeText = (text) => {
@@ -26,6 +18,21 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
   const userMessage = sanitizeText(message.content);
   if (!userMessage) {
     return message.reply('メッセージが空か無効です！😅');
+  }
+
+  // 動的プロンプトを取得（人格システム統合）
+  let enhancedPrompt;
+  try {
+    enhancedPrompt = await prompts.getDynamicLike(userId, userMessage);
+  } catch (error) {
+    console.error('Error loading dynamic like prompt:', error.message);
+    // フォールバック：静的プロンプトを使用
+    try {
+      enhancedPrompt = await prompts.getLike();
+    } catch (fallbackError) {
+      console.error('Error loading fallback prompt:', fallbackError.message);
+      return message.reply('プロンプトの読み込みに失敗しました！🙈');
+    }
   }
 
   try {
@@ -47,13 +54,25 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
       // プロファイル取得に失敗してもメイン機能は継続
     }
 
-    // 統合プロンプトを構築
-    const enhancedPrompt = `${basePrompt}${profileExtension}`;
+    // プロファイル拡張を適用（既存システムとの互換性のため）
+    let finalPrompt = enhancedPrompt;
+    try {
+      const profile = await profileSync.getProfile();
+      if (profile) {
+        const profileExtension = profileSync.generateLikePromptExtension(profile, userMessage);
+        if (profileExtension) {
+          finalPrompt = `${enhancedPrompt}${profileExtension}`;
+          console.log('📋 Personal profile applied to like reaction (adaptive mode)');
+        }
+      }
+    } catch (error) {
+      console.warn('⚠️ Profile load failed, using personality system only:', error.message);
+    }
     
     // Gemini APIで応答を生成
     const model = genAI.getGenerativeModel({
       model: 'gemini-2.5-flash',
-      systemInstruction: `${systemInstruction}\n\n${enhancedPrompt}`,
+      systemInstruction: `${systemInstruction}\n\n${finalPrompt}`,
       generationConfig: { maxOutputTokens: 2000, temperature: 0.7 },
     });
     
@@ -66,6 +85,16 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
 
     // 会話履歴を保存
     await saveConversationHistory(userId, userMessage, reply);
+
+    // 人格システムを更新（非同期で実行）
+    personalityManager.updatePersonalityFromConversation(
+      userId, 
+      userMessage, 
+      reply, 
+      message.id
+    ).catch(error => {
+      console.error('Error updating personality system:', error);
+    });
 
     // 応答を送信（2000文字制限）
     await message.reply(reply.slice(0, 2000));

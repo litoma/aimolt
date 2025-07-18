@@ -7,6 +7,7 @@ AImoltは、Gemini 2.5 FlashとSupabaseを活用した多機能Discordボット�
 - **コンテンツ解説**: ❓リアクションを付けると、メッセージの内容をAIが分かりやすく解説します。
 - **メモ機能**: 📝リアクションを付けると、メッセージ内容をObsidianのDailyメモに自動で追加します。
 - **個人プロファイル連携**: 👍リアクション時に、ユーザーの個人特性に基づいた個人化された応答を提供します。
+- **🧠 動的人格システム**: 会話履歴から学習し、個人化された応答を提供する革新的な人格システムを搭載。
 
 ## 🚀 主な機能
 
@@ -17,6 +18,7 @@ AImoltは、Gemini 2.5 FlashとSupabaseを活用した多機能Discordボット�
 - **文脈理解**: Supabase/PostgreSQLに会話履歴を保存し、文脈に沿った応答を実現します。
 - **プロンプト一元管理**: すべてのAIプロンプトを`app/prompt/`ディレクトリで一元管理し、保守性を向上。
 - **適応型個人プロファイル**: メッセージ内容に応じて関連する個人特性を自動選択し、よりパーソナライズされた応答を提供。
+- **🧠 動的人格システム**: 会話履歴から学習し、感情状態・記憶・個人特性を管理する革新的なAI人格システム。
 - **安定稼働**: 本番環境ではPM2やDockerを利用して安定したプロセス管理が可能です。
 
 ## 🏗️ アーキテクチャ
@@ -30,10 +32,12 @@ Dockerコンテナ内でNode.jsアプリケーションとPostgreSQLデータベ
 │  │   Discord Bot   │ │  PostgreSQL    │  │
 │  │   (Node.js 22)  │ │  (postgres:17) │  │
 │  │   + PM2         │ │                │  │
-│  │   + Gemini AI   │ │                │  │
-│  │   + Profile     │ │                │  │
-│  └─────────────────┘ └────────────────┘  │
-└──────────────────────────────────────────┘
+│  │   + Gemini AI   │ │  Conversations │  │
+│  │   + Profile     │ │  + Personality │  │
+│  │   + Personality │ │    - Emotions  │  │
+│  │     System      │ │    - Memories  │  │
+│  └─────────────────┘ │    - Analysis  │  │
+└──────────────────────┘ └────────────────┘  │
 ```
 
 ## ✅ 必須環境
@@ -108,6 +112,10 @@ Dockerコンテナ内でNode.jsアプリケーションとPostgreSQLデータベ
     - `init.sql`を使ってテーブルを初期化します。
       ```bash
       psql -h localhost -U postgres -d aimolt -f db/init.sql
+      ```
+    - 人格システムのテーブルが作成されているか確認します。
+      ```bash
+      docker exec -it aimolt-postgres psql -U postgres -d aimolt -c "\dt"
       ```
 
 6.  **Botを起動**:
@@ -237,7 +245,7 @@ Botの動作には以下の環境変数が必要です。
 | `system.txt` | `index.js` | システム基本指示 | Botの基本的な性格・応答スタイルを定義 |
 | `like.txt` | `like.js` | 👍リアクション応答 | フレンドリーでカジュアルな応答スタイル |
 | `explain.txt` | `explain.js` | ❓リアクション解説 | 丁寧で分かりやすい解説スタイル |
-| `transcribe.txt` | `transcribe.js` | 音声文字起こし | フィラー語除去などの指示 |
+| `transcribe.txt` | `transcribe.js` | 🎤音声文字起こし | フィラー語除去などの指示 |
 | `memo.txt` | `memo.js` | 📝メモ機能 | Obsidian メモ整形用の指示 |
 
 #### プロンプトのカスタマイズ
@@ -306,21 +314,30 @@ aimolt/
 │   │   ├── explain.js           # ❓リアクション処理
 │   │   ├── memo.js              # 📝メモ機能（Obsidian統合）
 │   │   ├── prompt.js            # プロンプト管理システム
-│   │   └── profile-sync.js      # プロファイル同期システム
+│   │   ├── profile-sync.js      # プロファイル同期システム
+│   │   └── personality/         # 🧠 動的人格システム
+│   │       ├── manager.js       # 人格システム統合管理
+│   │       ├── emotion.js       # 感情状態管理
+│   │       ├── memory.js        # 記憶蓄積システム
+│   │       ├── analyzer.js      # 会話分析エンジン
+│   │       └── generator.js     # 動的プロンプト生成
 │   ├── prompt/                  # AIプロンプト（一元管理）
 │   │   ├── system.txt           # 基本システム指示
 │   │   ├── like.txt             # 👍リアクション用
 │   │   ├── explain.txt          # ❓リアクション用
-│   │   ├── transcribe.txt       # 音声文字起こし用
+│   │   ├── transcribe.txt       # 🎤音声文字起こし用
 │   │   └── memo.txt             # 📝メモ機能用
 │   ├── temp/                    # 音声ファイルの一時保存場所
 │   ├── profile/                 # プロファイルキャッシュ保存場所
+│   ├── initialize-personality.js # 🧠 過去履歴分析スクリプト
 │   ├── .npmrc                   # npm設定
 │   ├── Dockerfile               # アプリケーション用Dockerfile
 │   ├── ecosystem.config.js      # PM2設定ファイル
+│   ├── PERSONALITY_SETUP.md     # 人格システムセットアップガイド
 │   └── package.json
 ├── db/                          # データベース関連
-│   ├── init.sql                 # テーブル初期化スキーマ
+│   ├── init.sql                 # テーブル初期化スキーマ（人格システム含む）
+│   ├── personality_schema.sql   # 人格システム専用スキーマ
 │   └── data/                    # (ローカル)DBデータ
 ├── compose.yaml                 # Docker Compose設定ファイル
 ├── .gitignore
@@ -354,6 +371,7 @@ npm run docker:logs      # Discord Botコンテナのログを表示
 
 会話履歴を保存するために、SupabaseとローカルPostgreSQLを使用します。
 
+### **基本テーブル**
 ```sql
 -- conversationsテーブル: 会話履歴を保存
 CREATE TABLE IF NOT EXISTS conversations (
@@ -363,10 +381,66 @@ CREATE TABLE IF NOT EXISTS conversations (
     bot_response TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+```
 
--- パフォーマンス向上のためのインデックス
+### **🧠 動的人格システム用テーブル**
+```sql
+-- emotion_states: 感情状態管理
+CREATE TABLE IF NOT EXISTS emotion_states (
+    user_id VARCHAR(20) PRIMARY KEY,
+    energy_level INTEGER DEFAULT 50,      -- 元気度 (0-100)
+    intimacy_level INTEGER DEFAULT 0,     -- 親密度 (0-100)
+    interest_level INTEGER DEFAULT 50,    -- 興味度 (0-100)
+    mood_type VARCHAR(20) DEFAULT 'neutral',
+    conversation_count INTEGER DEFAULT 0,
+    last_interaction TIMESTAMP DEFAULT NOW(),
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- user_memories: 記憶蓄積システム
+CREATE TABLE IF NOT EXISTS user_memories (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(20) NOT NULL,
+    memory_type VARCHAR(30) NOT NULL,     -- 'trait', 'preference', 'important_event', 'fact'
+    content TEXT NOT NULL,
+    keywords TEXT[],
+    importance_score INTEGER DEFAULT 5,   -- 重要度 (1-10)
+    emotional_weight INTEGER DEFAULT 0,   -- 感情的重み (-10 to 10)
+    access_count INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT NOW(),
+    last_accessed TIMESTAMP DEFAULT NOW(),
+    expires_at TIMESTAMP NULL
+);
+
+-- conversation_analysis: 会話分析結果
+CREATE TABLE IF NOT EXISTS conversation_analysis (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(20) NOT NULL,
+    message_id VARCHAR(50),
+    user_message TEXT NOT NULL,
+    sentiment VARCHAR(20) DEFAULT 'neutral', -- positive/negative/neutral
+    emotion_detected VARCHAR(30),            -- joy/anger/sadness/excitement等
+    topic_category VARCHAR(50),              -- 話題カテゴリ
+    keywords TEXT[],
+    importance_score INTEGER DEFAULT 1,      -- 重要度 (1-10)
+    confidence_score DECIMAL(3,2) DEFAULT 0.50,
+    analyzed_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+### **パフォーマンス向上のためのインデックス**
+```sql
+-- 基本インデックス
 CREATE INDEX IF NOT EXISTS idx_conversations_user_id ON conversations (user_id);
 CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user_id, created_at DESC);
+
+-- 人格システム用インデックス
+CREATE INDEX IF NOT EXISTS idx_emotion_states_user_id ON emotion_states(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_memories_user_id ON user_memories(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_memories_keywords ON user_memories USING GIN(keywords);
+CREATE INDEX IF NOT EXISTS idx_conversation_analysis_user_id ON conversation_analysis(user_id);
+CREATE INDEX IF NOT EXISTS idx_conversation_analysis_keywords ON conversation_analysis USING GIN(keywords);
 ```
 
 ## 🩺 トラブルシューティング
@@ -465,6 +539,65 @@ promptManager.clearCache('system');
 promptManager.clearCache();
 ```
 
+## 🧠 動的人格システム
+
+AImoltの最も革新的な機能の一つが、会話履歴から学習する動的人格システムです。
+
+### **主な特徴**
+
+#### **1. 感情状態管理**
+- **元気度**: 会話の頻度とポジティブ度から算出
+- **親密度**: 長期的な関係性を数値化
+- **興味度**: 話題への関心レベルを管理
+- **ムード**: excited, happy, curious, tired, melancholy, neutral
+
+#### **2. 記憶蓄積システム**
+- **重要会話の自動抽出**: 重要度スコアに基づく保存
+- **記憶タイプ分類**: trait（特徴）、preference（好み）、important_event（重要な出来事）、fact（事実）
+- **キーワード検索**: 関連する記憶を効率的に検索
+- **感情的重み**: 記憶の感情的な影響度を数値化
+
+#### **3. 会話分析エンジン**
+- **感情分析**: joy, sadness, excitement, curiosity等の感情を検出
+- **センチメント分析**: positive/negative/neutralの判定
+- **話題分類**: プログラミング、ゲーム、日常生活等のカテゴリ分析
+- **重要度判定**: 1-10スケールでの重要度自動算出
+
+#### **4. 動的プロンプト生成**
+- **個人化**: ユーザーの特徴に基づくプロンプト調整
+- **状況適応**: 時間帯、感情状態、会話文脈を考慮
+- **記憶統合**: 関連する過去の記憶を応答に反映
+- **フォールバック**: 人格システムが失敗しても通常動作を継続
+
+### **初期化と運用**
+
+#### **過去履歴の分析**
+新規導入時に既存の会話履歴を分析し、初期人格を構築できます：
+
+```bash
+# 過去の全会話履歴を分析
+POSTGRES_HOST=localhost node initialize-personality.js
+```
+
+#### **システムの監視**
+人格システムの状態を確認できます：
+
+```bash
+# PostgreSQL内で状態確認
+SELECT * FROM emotion_states WHERE user_id = 'YOUR_USER_ID';
+SELECT COUNT(*) FROM user_memories WHERE user_id = 'YOUR_USER_ID';
+SELECT COUNT(*) FROM conversation_analysis WHERE user_id = 'YOUR_USER_ID';
+```
+
+### **技術的な詳細**
+
+- **キャッシュ管理**: 多層キャッシュでパフォーマンス最適化
+- **非同期処理**: 応答速度に影響しない背景処理
+- **エラーハンドリング**: 人格システムの障害時も通常機能を維持
+- **データ整合性**: CHECK制約とトリガーでデータ品質を保証
+
+詳細な設定方法は`PERSONALITY_SETUP.md`を参照してください。
+
 ## 🚀 今後の改善案
 
 - `/history`コマンドで会話履歴を表示する機能
@@ -475,6 +608,7 @@ promptManager.clearCache();
 - プロンプトのホットリロード機能（再起動なしでプロンプト変更を反映）
 - プロファイル機能の他リアクション（explain.js等）への拡張
 - メモ機能の拡張（タグ付け、カテゴリ分類、検索機能など）
+- 🧠 人格システムの拡張（複数ユーザー対応、学習率調整、感情表現の多様化）
 
 ## 📄 ライセンス
 

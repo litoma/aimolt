@@ -1,5 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const { prompts } = require('./prompt');
+const { personalityManager } = require('./personality/manager');
 const https = require('https');
 const http = require('http');
 
@@ -124,19 +125,26 @@ async function handleMemoReaction(message, channel, user, genAI) {
     const messageLink = `https://discord.com/channels/${message.guildId}/${channel.id}/${message.id}`;
     const processingMsg = await channel.send(`${user} 📝 メッセージをObsidianのDailyメモに追加中...`);
 
-    // メモプロンプトの読み込み
+    // 動的メモプロンプトの読み込み（人格システム統合）
     let memoPrompt;
     try {
-      memoPrompt = await prompts.getMemo();
-      console.log('メモプロンプトを新しいシステムから取得');
+      memoPrompt = await prompts.getDynamicMemo(user.id, inputText);
+      console.log('動的メモプロンプトを人格システムから取得');
     } catch (error) {
-      console.error('メモプロンプト取得エラー:', error.message);
-      // フォールバック用のプロンプト
-      memoPrompt = `
+      console.error('動的メモプロンプト取得エラー:', error.message);
+      // フォールバック：静的プロンプトを使用
+      try {
+        memoPrompt = await prompts.getMemo();
+        console.log('フォールバック：静的メモプロンプトを使用');
+      } catch (fallbackError) {
+        console.error('フォールバックメモプロンプト取得エラー:', fallbackError.message);
+        // フォールバック用のプロンプト
+        memoPrompt = `
 メッセージ内容を自然で読みやすい形に整形してください。
 重要な情報は保持しつつ、不要な要素は除去してください。
 Obsidianのマークダウン形式で出力してください。
-      `;
+        `;
+      }
     }
 
     // Gemini APIでメッセージを整形
@@ -162,6 +170,16 @@ Obsidianのマークダウン形式で出力してください。
 
       // Obsidian REST APIを呼び出してDailyメモに追加
       await appendToObsidianDaily(finalContent);
+
+      // 人格システムを更新（非同期で実行）
+      personalityManager.updatePersonalityFromConversation(
+        user.id, 
+        inputText, 
+        formattedContent, 
+        message.id
+      ).catch(error => {
+        console.error('Error updating personality system:', error);
+      });
 
       // 成功メッセージ
       await processingMsg.edit({

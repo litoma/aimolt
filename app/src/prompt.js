@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const { personalityManager } = require('./personality/manager');
 
 /**
  * プロンプト管理クラス
@@ -133,6 +134,100 @@ const prompts = {
    */
   async getCustomPrompt(filename) {
     return await promptManager.loadPrompt(filename);
+  },
+
+  /**
+   * 動的人格システム対応プロンプト取得メソッド
+   */
+
+  /**
+   * 👍リアクション用の動的プロンプトを取得
+   * @param {string} userId - ユーザーID
+   * @param {string} message - メッセージ内容
+   * @param {Object} analysisData - 分析データ（オプション）
+   */
+  async getDynamicLike(userId, message = '', analysisData = null) {
+    const basePrompt = await this.getLike();
+    return await personalityManager.getPersonalizedPrompt(userId, basePrompt, {
+      message,
+      reactionType: 'like',
+      analysisData,
+      includeProfile: true
+    });
+  },
+
+  /**
+   * ❓リアクション用の動的プロンプトを取得
+   * @param {string} userId - ユーザーID
+   * @param {string} message - メッセージ内容
+   * @param {Object} analysisData - 分析データ（オプション）
+   */
+  async getDynamicExplain(userId, message = '', analysisData = null) {
+    const basePrompt = await this.getExplain();
+    return await personalityManager.getPersonalizedPrompt(userId, basePrompt, {
+      message,
+      reactionType: 'explain',
+      analysisData,
+      includeProfile: true
+    });
+  },
+
+  /**
+   * 🎤音声文字起こし用の動的プロンプトを取得
+   * @param {string} userId - ユーザーID
+   * @param {string} message - メッセージ内容
+   * @param {Object} analysisData - 分析データ（オプション）
+   */
+  async getDynamicTranscribe(userId, message = '', analysisData = null) {
+    const basePrompt = await this.getTranscribe();
+    return await personalityManager.getPersonalizedPrompt(userId, basePrompt, {
+      message,
+      reactionType: 'transcribe',
+      analysisData,
+      includeProfile: false
+    });
+  },
+
+  /**
+   * 📝メモ用の動的プロンプトを取得
+   * @param {string} userId - ユーザーID
+   * @param {string} message - メッセージ内容
+   * @param {Object} analysisData - 分析データ（オプション）
+   */
+  async getDynamicMemo(userId, message = '', analysisData = null) {
+    const basePrompt = await this.getMemo();
+    return await personalityManager.getPersonalizedPrompt(userId, basePrompt, {
+      message,
+      reactionType: 'memo',
+      analysisData,
+      includeProfile: false
+    });
+  },
+
+  /**
+   * システム指示の動的プロンプトを取得（通常の会話用）
+   * @param {string} userId - ユーザーID
+   * @param {string} message - メッセージ内容
+   * @param {Object} analysisData - 分析データ（オプション）
+   */
+  async getDynamicSystem(userId, message = '', analysisData = null) {
+    const basePrompt = await this.getSystem();
+    return await personalityManager.getPersonalizedPrompt(userId, basePrompt, {
+      message,
+      analysisData,
+      includeProfile: false
+    });
+  },
+
+  /**
+   * 汎用的な動的プロンプト取得
+   * @param {string} filename - ベースプロンプトファイル名
+   * @param {string} userId - ユーザーID
+   * @param {Object} options - オプション
+   */
+  async getDynamicPrompt(filename, userId, options = {}) {
+    const basePrompt = await promptManager.loadPrompt(filename);
+    return await personalityManager.getPersonalizedPrompt(userId, basePrompt, options);
   }
 };
 

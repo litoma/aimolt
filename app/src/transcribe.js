@@ -2,6 +2,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const https = require('https');
 const { prompts } = require('./prompt');
+const { personalityManager } = require('./personality/manager');
 
 // 音声ファイルのダウンロード関数
 async function downloadAudio(url, filePath, fallbackUrl) {
@@ -92,14 +93,20 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
   try {
     await downloadAudio(targetAttachment.proxyUrl, filePath, targetAttachment.url);
 
-    // ケバ取り用のシステムインストラクションを新しいプロンプトシステムから取得
+    // 動的文字起こしプロンプトを取得（人格システム統合）
     let systemInstruction;
     try {
-      systemInstruction = await prompts.getTranscribe();
-      console.log('文字起こしプロンプトを新しいシステムから取得');
+      systemInstruction = await prompts.getDynamicTranscribe(user.id, 'voice transcription');
+      console.log('動的文字起こしプロンプトを人格システムから取得');
     } catch (error) {
-      console.error('文字起こしプロンプト取得エラー:', error.message);
-      // フォールバック用のプロンプト
+      console.error('動的文字起こしプロンプト取得エラー:', error.message);
+      // フォールバック：静的プロンプトを使用
+      try {
+        systemInstruction = await prompts.getTranscribe();
+        console.log('フォールバック：静的文字起こしプロンプトを使用');
+      } catch (fallbackError) {
+        console.error('フォールバック文字起こしプロンプト取得エラー:', fallbackError.message);
+        // フォールバック用のプロンプト
       systemInstruction = `
 音声を日本語のテキストに変換してください。以下の点に注意してください：
 - フィラー語（あー、えー、うー、んー、まあ、そのー等）は除去する
@@ -134,6 +141,16 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
     
     // 追加の後処理でケバ取り
     transcription = removeFillerWords(transcription);
+
+    // 人格システムを更新（非同期で実行）
+    personalityManager.updatePersonalityFromConversation(
+      user.id, 
+      'voice transcription', 
+      transcription, 
+      message.id
+    ).catch(error => {
+      console.error('Error updating personality system:', error);
+    });
 
     await channel.send('🎉 文字起こしが完了したよ〜！');
     if (transcription.trim()) {
