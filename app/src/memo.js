@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { prompts } = require('./prompt');
 const { personalityManager } = require('./personality/manager');
+const { retryGeminiApiCall } = require('./utils/retry');
 const https = require('https');
 const http = require('http');
 
@@ -156,7 +157,13 @@ Obsidianのマークダウン形式で出力してください。
       });
 
       const chatSession = model.startChat({ history: [] });
-      const result = await chatSession.sendMessage(inputText);
+      
+      // リトライ機能付きでGemini API呼び出し
+      const result = await retryGeminiApiCall(
+        async () => await chatSession.sendMessage(inputText),
+        '📝 メモ整形',
+        { maxRetries: 3, baseDelay: 1000, maxDelay: 8000 }
+      );
       let formattedContent = result.response.text();
 
       // メタデータを付与

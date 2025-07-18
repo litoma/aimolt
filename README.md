@@ -315,6 +315,8 @@ aimolt/
 │   │   ├── memo.js              # 📝メモ機能（Obsidian統合）
 │   │   ├── prompt.js            # プロンプト管理システム
 │   │   ├── profile-sync.js      # プロファイル同期システム
+│   │   ├── utils/               # ユーティリティ関数
+│   │   │   └── retry.js         # Gemini API リトライ機能
 │   │   └── personality/         # 🧠 動的人格システム
 │   │       ├── manager.js       # 人格システム統合管理
 │   │       ├── emotion.js       # 感情状態管理
@@ -598,12 +600,37 @@ SELECT COUNT(*) FROM conversation_analysis WHERE user_id = 'YOUR_USER_ID';
 
 詳細な設定方法は`PERSONALITY_SETUP.md`を参照してください。
 
+## 🔄 信頼性とエラー処理
+
+### **Gemini API リトライ機能**
+
+AImoltは、Gemini APIの一時的な障害に対して自動的にリトライする機能を搭載しています。
+
+#### **対応するエラー**
+- **503 Service Unavailable**: サーバー過負荷
+- **429 Too Many Requests**: レート制限
+- **500 Internal Server Error**: サーバー内部エラー
+- **502 Bad Gateway**: ゲートウェイエラー
+- **504 Gateway Timeout**: タイムアウト
+
+#### **リトライ設定**
+- **最大リトライ回数**: 3回
+- **指数バックオフ**: 1秒 → 2秒 → 4秒 → 8秒
+- **最大待機時間**: 8-12秒（機能により異なる）
+
+#### **ログ出力例**
+```
+🔄 👍 Like応答生成 実行中...
+⚠️ Gemini API リトライ 1/3 - 1000ms 待機中...
+⚠️ Gemini API リトライ 2/3 - 2000ms 待機中...
+✅ 👍 Like応答生成 成功
+```
+
 ## 🚀 今後の改善案
 
 - `/history`コマンドで会話履歴を表示する機能
 - `/clear`コマンドで会話履歴を削除する機能
 - 📝リアクションで長文を要約する機能
-- Gemini APIのレート制限に対するリトライ処理
 - Prometheusなどによる詳細なモニタリング
 - プロンプトのホットリロード機能（再起動なしでプロンプト変更を反映）
 - プロファイル機能の他リアクション（explain.js等）への拡張

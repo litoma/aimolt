@@ -1,6 +1,7 @@
 const { prompts } = require('./prompt');
 const AimoltProfileSync = require('./profile-sync');
 const { personalityManager } = require('./personality/manager');
+const { retryGeminiApiCall } = require('./utils/retry');
 
 // プロファイル同期インスタンス（グローバル）
 const profileSync = new AimoltProfileSync();
@@ -80,7 +81,14 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
 
     // プロンプトにユーザーメッセージを埋め込む
     const promptWithMessage = `ユーザーのメッセージに対するポジティブな応答を生成してください。メッセージ: ${userMessage}`;
-    const result = await chatSession.sendMessage(promptWithMessage);
+    
+    // リトライ機能付きでGemini API呼び出し
+    const result = await retryGeminiApiCall(
+      async () => await chatSession.sendMessage(promptWithMessage),
+      '👍 Like応答生成',
+      { maxRetries: 3, baseDelay: 1000, maxDelay: 8000 }
+    );
+    
     const reply = sanitizeText(result.response.text());
 
     // 会話履歴を保存

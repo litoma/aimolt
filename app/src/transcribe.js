@@ -3,6 +3,7 @@ const path = require('path');
 const https = require('https');
 const { prompts } = require('./prompt');
 const { personalityManager } = require('./personality/manager');
+const { retryGeminiApiCall } = require('./utils/retry');
 
 // 音声ファイルのダウンロード関数
 async function downloadAudio(url, filePath, fallbackUrl) {
@@ -133,10 +134,15 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
       },
     };
     
-    const result = await chatSession.sendMessage([
-      '以下の音声を日本語のテキストに変換し、フィラー語を除去して自然な文章にしてください。',
-      audioFile,
-    ]);
+    // リトライ機能付きでGemini API呼び出し
+    const result = await retryGeminiApiCall(
+      async () => await chatSession.sendMessage([
+        '以下の音声を日本語のテキストに変換し、フィラー語を除去して自然な文章にしてください。',
+        audioFile,
+      ]),
+      '🎤 音声文字起こし',
+      { maxRetries: 3, baseDelay: 2000, maxDelay: 12000 }
+    );
     
     let transcription = result.response.text();
     

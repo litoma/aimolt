@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { prompts } = require('./prompt');
 const { personalityManager } = require('./personality/manager');
+const { retryGeminiApiCall } = require('./utils/retry');
 
 // Embed内容の抽出
 function extractEmbedContent(message) {
@@ -93,7 +94,13 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
 
       // 新しいチャットセッションを開始（履歴なし）
       const chatSession = model.startChat({ history: [] });
-      const result = await chatSession.sendMessage(inputText);
+      
+      // リトライ機能付きでGemini API呼び出し
+      const result = await retryGeminiApiCall(
+        async () => await chatSession.sendMessage(inputText),
+        '❓ 解説生成',
+        { maxRetries: 3, baseDelay: 1500, maxDelay: 10000 }
+      );
       let explanation = result.response.text();
       if (explanation.length > 1500) {
         explanation = explanation.substring(0, 1500) + '...';
