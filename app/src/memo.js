@@ -152,20 +152,13 @@ Obsidianのマークダウン形式で出力してください。
       let formattedContent = result.response.text();
 
       // メタデータを付与
-      const timestamp = new Date().toLocaleString('ja-JP', { 
+      const timeOnly = new Date().toLocaleString('ja-JP', { 
         timeZone: 'Asia/Tokyo',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
         hour: '2-digit',
         minute: '2-digit'
       });
       
-      const authorInfo = `**投稿者**: ${user.displayName || user.username}`;
-      const timeInfo = `**時刻**: ${timestamp}`;
-      const linkInfo = `**リンク**: [メッセージ](${messageLink})`;
-      
-      const finalContent = `## Discord メモ\n\n${authorInfo}\n${timeInfo}\n${linkInfo}\n\n${formattedContent}\n\n---\n\n`;
+      const finalContent = `[${timeOnly}](${messageLink}) ${formattedContent}\n\n`;
 
       // Obsidian REST APIを呼び出してDailyメモに追加
       await appendToObsidianDaily(finalContent);
@@ -179,7 +172,7 @@ Obsidianのマークダウン形式で出力してください。
           color: 0x00ff00,
           fields: [
             { name: '投稿者', value: user.displayName || user.username, inline: true },
-            { name: '時刻', value: timestamp, inline: true },
+            { name: '時刻', value: timeOnly, inline: true },
             { name: '元メッセージ', value: `[リンク](${messageLink})`, inline: true }
           ],
           timestamp: new Date().toISOString(),
