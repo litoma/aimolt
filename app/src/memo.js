@@ -189,21 +189,7 @@ Obsidianのマークダウン形式で出力してください。
       });
 
       // 成功メッセージ
-      await processingMsg.edit({
-        content: '',
-        embeds: [{
-          title: '✅ メモ追加完了',
-          description: `メッセージがObsidianのDailyメモに追加されました！`,
-          color: 0x00ff00,
-          fields: [
-            { name: '投稿者', value: user.displayName || user.username, inline: true },
-            { name: '時刻', value: timeOnly, inline: true },
-            { name: '元メッセージ', value: `[リンク](${messageLink})`, inline: true }
-          ],
-          timestamp: new Date().toISOString(),
-          footer: { text: 'AImolt Memo System' }
-        }]
-      });
+      await processingMsg.edit('✅ Obsidian Daily Note追加完了');
 
     } catch (error) {
       console.error(`メモ処理エラー: ${error.message}`);
