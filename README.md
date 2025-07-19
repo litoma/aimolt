@@ -26,19 +26,19 @@ AImoltは、Gemini 2.5 FlashとSupabaseを活用した多機能Discordボット�
 Dockerコンテナ内でNode.jsアプリケーションとPostgreSQLデータベースが連携して動作します。
 
 ```
-┌─────────────────────────────────────────┐
-│              Docker Network             │
-│  ┌────────────────┐ ┌────────────────┐  │
-│  │  Discord Bot   │ │  PostgreSQL    │  │
-│  │  (Node.js 22)  │ │  (postgres:17) │  │
-│  │  + PM2         │ │                │  │
-│  │  + Gemini AI   │ │  Conversations │  │
-│  │  + Profile     │ │  + Personality │  │
-│  │  + Personality │ │    - Emotions  │  │
-│  │    System      │ │    - Memories  │  │
-│  │                │ │    - Analysis  │  │
-│  └────────────────┘ └────────────────┘  │
-└─────────────────────────────────────────┘
+┌───────────────────────────────────────────────┐
+│                 Docker Network                │
+│  ┌───────────────────┐ ┌───────────────────┐  │
+│  │  Discord Bot      │ │  PostgreSQL       │  │
+│  │  (Node.js 22)     │ │  (postgres:17)    │  │
+│  │  + PM2            │ │                   │  │
+│  │  + Gemini AI      │ │  Conversations    │  │
+│  │  + Profile        │ │  + Personality    │  │
+│  │  + Personality    │ │    - Emotions     │  │
+│  │    System         │ │    - Memories     │  │
+│  │                   │ │    - Analysis     │  │
+│  └───────────────────┘ └───────────────────┘  │
+└───────────────────────────────────────────────┘
 ```
 
 ## ✅ 必須環境
@@ -409,46 +409,46 @@ PostgreSQL → リアルタイム同期 → Supabase
 
 ```
 aimolt/
-├── app/                          # Node.jsアプリケーション
-│   ├── src/                      # ソースコード
-│   │   ├── index.js              # Botのメインロジック
-│   │   ├── like.js               # 👍リアクション処理
-│   │   ├── transcribe.js         # 🎤リアクション処理
-│   │   ├── explain.js            # ❓リアクション処理
-│   │   ├── memo.js               # 📝メモ機能（Obsidian統合）
-│   │   ├── prompt.js             # プロンプト管理システム
-│   │   ├── profile-sync.js       # プロファイル同期システム
-│   │   ├── supabase-sync.js      # 🔄 Supabase疑似レプリケーション
-│   │   ├── utils/                # ユーティリティ関数
-│   │   │   └── retry.js          # Gemini API リトライ機能
-│   │   └── personality/          # 🧠 動的人格システム
-│   │       ├── manager.js        # 人格システム統合管理
-│   │       ├── emotion.js        # 感情状態管理
-│   │       ├── memory.js         # 記憶蓄積システム
-│   │       ├── analyzer.js       # 会話分析エンジン
-│   │       └── generator.js      # 動的プロンプト生成
-│   ├── prompt/                   # AIプロンプト（一元管理）
-│   │   ├── system.txt            # 基本システム指示
-│   │   ├── like.txt              # 👍リアクション用
-│   │   ├── explain.txt           # ❓リアクション用
-│   │   ├── transcribe.txt        # 🎤音声文字起こし用
-│   │   └── memo.txt              # 📝メモ機能用
-│   ├── temp/                     # 音声ファイルの一時保存場所
-│   ├── profile/                  # プロファイルキャッシュ保存場所
-│   ├── initialize-personality.js # 🧠 過去履歴分析スクリプト
-│   ├── .npmrc                    # npm設定
-│   ├── Dockerfile                # アプリケーション用Dockerfile
-│   ├── ecosystem.config.js       # PM2設定ファイル
-│   ├── PERSONALITY_SETUP.md      # 人格システムセットアップガイド
+├── app/                             # Node.jsアプリケーション
+│   ├── src/                         # ソースコード
+│   │   ├── index.js                 # Botのメインロジック
+│   │   ├── like.js                  # 👍リアクション処理
+│   │   ├── transcribe.js            # 🎤リアクション処理
+│   │   ├── explain.js               # ❓リアクション処理
+│   │   ├── memo.js                  # 📝メモ機能（Obsidian統合）
+│   │   ├── prompt.js                # プロンプト管理システム
+│   │   ├── profile-sync.js          # プロファイル同期システム
+│   │   ├── supabase-sync.js         # 🔄 Supabase疑似レプリケーション
+│   │   ├── utils/                   # ユーティリティ関数
+│   │   │   └── retry.js             # Gemini API リトライ機能
+│   │   └── personality/             # 🧠 動的人格システム
+│   │       ├── manager.js           # 人格システム統合管理
+│   │       ├── emotion.js           # 感情状態管理
+│   │       ├── memory.js            # 記憶蓄積システム
+│   │       ├── analyzer.js          # 会話分析エンジン
+│   │       └── generator.js         # 動的プロンプト生成
+│   ├── prompt/                      # AIプロンプト（一元管理）
+│   │   ├── system.txt               # 基本システム指示
+│   │   ├── like.txt                 # 👍リアクション用
+│   │   ├── transcribe.txt           # 🎤音声文字起こし用
+│   │   ├── explain.txt              # ❓リアクション用
+│   │   └── memo.txt                 # 📝メモ機能用
+│   ├── temp/                        # 音声ファイルの一時保存場所
+│   ├── profile/                     # プロファイルキャッシュ保存場所
+│   ├── initialize-personality.js    # 🧠 過去履歴分析スクリプト
+│   ├── .npmrc                       # npm設定
+│   ├── Dockerfile                   # アプリケーション用Dockerfile
+│   ├── ecosystem.config.js          # PM2設定ファイル
+│   ├── PERSONALITY_SETUP.md         # 人格システムセットアップガイド
 │   └── package.json
-├── db/                           # データベース関連
-│   ├── init.sql                  # テーブル初期化スキーマ（人格システム含む）
-│   ├── personality_schema.sql    # 人格システム専用スキーマ
-│   ├── supabase_sync_triggers.sql # Supabase同期用トリガー・ファンクション
-│   └── data/                     # (ローカル)DBデータ
-├── compose.yaml                  # Docker Compose設定ファイル
+├── db/                              # データベース関連
+│   ├── init.sql                     # テーブル初期化スキーマ（人格システム含む）
+│   ├── personality_schema.sql       # 人格システム専用スキーマ
+│   ├── supabase_sync_triggers.sql   # Supabase同期用トリガー・ファンクション
+│   └── data/                        # (ローカル)DBデータ
+├── compose.yaml                     # Docker Compose設定ファイル
 ├── .gitignore
-└── README.md                     # このファイル
+└── README.md                        # このファイル
 ```
 
 ## 📦 利用可能なスクリプト
@@ -733,12 +733,7 @@ AImoltは、Gemini APIの一時的な障害に対して自動的にリトライ�
 
 ## 🚀 今後の改善案
 
-- 📝リアクションで長文を要約する機能
-- Prometheusなどによる詳細なモニタリング
-- プロンプトのホットリロード機能（再起動なしでプロンプト変更を反映）
-- プロファイル機能の他リアクション（explain.js等）への拡張
-- メモ機能の拡張（タグ付け、カテゴリ分類、検索機能など）
-- 🧠 人格システムの拡張（学習率調整、感情表現の多様化）
+詳細な改善案は [GitHub Issues](https://github.com/litoma/aimolt/issues) で管理しています。
 
 ## 📄 ライセンス
 
