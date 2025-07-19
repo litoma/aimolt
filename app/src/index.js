@@ -10,6 +10,7 @@ const { handleLikeReaction, getProfileStatus, forceRefreshProfile } = require('.
 const { handleExplainReaction } = require('./explain');
 const { handleMemoReaction } = require('./memo');
 const { personalityManager } = require('./personality/manager');
+const { supabaseSync } = require('./supabase-sync');
 
 // クライアントの設定
 const client = new Client({
@@ -84,6 +85,14 @@ client.on('ready', async () => {
     } catch (promptError) {
       console.error('Prompt system initialization error:', promptError.message);
     }
+
+    // Supabase同期システムを開始
+    try {
+      await supabaseSync.start();
+      console.log('Supabase sync system started successfully');
+    } catch (syncError) {
+      console.error('Supabase sync system initialization error:', syncError.message);
+    }
   } catch (error) {
     console.error('Database connection error:', error.message);
   }
@@ -126,36 +135,21 @@ async function getConversationHistory(userId) {
   }
 }
 
-// 会話履歴の保存（SupabaseとローカルPostgreSQL）
+// 会話履歴の保存（ローカルPostgreSQL）
+// 注意: Supabaseへの同期は自動トリガーで処理されます
 async function saveConversationHistory(userId, userMessage, botResponse) {
   if (!userId || !userMessage || !botResponse) {
     return;
   }
 
-  // ローカルPostgreSQLに保存
+  // ローカルPostgreSQLに保存（同期トリガーが自動でSupabaseに送信）
   try {
     await pgPool.query(
       'INSERT INTO conversations (user_id, user_message, bot_response) VALUES ($1, $2, $3)',
       [userId, userMessage, botResponse]
     );
   } catch (error) {
-    // PostgreSQL保存エラーは静かに処理
-  }
-
-  // Supabaseに保存（バックアップ用）
-  try {
-    const { error } = await supabase
-      .from('conversations')
-      .insert({
-        user_id: userId,
-        user_message: userMessage,
-        bot_response: botResponse
-      });
-    if (error) {
-      // Supabase保存エラーは静かに処理
-    }
-  } catch (error) {
-    // Supabase保存エラーは静かに処理
+    console.error('Error saving conversation history:', error.message);
   }
 
   // キャッシュをクリア（次回取得時に最新データを読み込む）
@@ -596,6 +590,165 @@ client.on('messageCreate', async (message) => {
     } catch (error) {
       console.error('Error in personality command:', error);
       await message.reply('❌ 人格システムコマンドの実行中にエラーが発生しました。');
+    }
+    return;
+  }
+
+  // Supabase同期管理コマンド
+  if (message.content.startsWith('!sync')) {
+    const args = message.content.split(' ').slice(1);
+    const command = args[0]?.toLowerCase();
+
+    try {
+      switch (command) {
+        case 'status':
+          const syncStatus = supabaseSync.getHealthStatus();
+          await message.reply({
+            embeds: [{
+              title: '🔄 Supabase同期システム状態',
+              color: syncStatus.isRunning ? 0x00ff00 : 0xff0000,
+              fields: [
+                { 
+                  name: '⚙️ システム状態', 
+                  value: syncStatus.isRunning ? '✅ 稼働中' : '❌ 停止中', 
+                  inline: true 
+                },
+                { 
+                  name: '📊 同期回数', 
+                  value: `${syncStatus.stats.syncCount}回`, 
+                  inline: true 
+                },
+                { 
+                  name: '❌ エラー回数', 
+                  value: `${syncStatus.stats.errorCount}回`, 
+                  inline: true 
+                },
+                { 
+                  name: '📈 成功率', 
+                  value: syncStatus.stats.syncCount > 0 
+                    ? `${Math.round((syncStatus.stats.syncCount / (syncStatus.stats.syncCount + syncStatus.stats.errorCount)) * 100)}%`
+                    : 'N/A', 
+                  inline: true 
+                },
+                { 
+                  name: '📅 最終同期', 
+                  value: syncStatus.stats.lastSync 
+                    ? `<t:${Math.floor(new Date(syncStatus.stats.lastSync).getTime() / 1000)}:R>`
+                    : '未実行', 
+                  inline: true 
+                },
+                { 
+                  name: '🏷️ 対象テーブル', 
+                  value: syncStatus.tables.join(', '), 
+                  inline: false 
+                }
+              ],
+              timestamp: new Date().toISOString(),
+              footer: { text: 'Supabase Sync System' }
+            }]
+          });
+          break;
+
+        case 'manual':
+          const tableName = args[1];
+          const manualMsg = await message.reply('🔄 手動同期を開始中...');
+          
+          try {
+            if (tableName && !supabaseSync.syncTables[tableName]) {
+              await manualMsg.edit({
+                content: '',
+                embeds: [{
+                  title: '❌ 無効なテーブル名',
+                  description: `テーブル '${tableName}' は存在しません。`,
+                  color: 0xff0000,
+                  fields: [
+                    { 
+                      name: '利用可能なテーブル', 
+                      value: Object.keys(supabaseSync.syncTables).join(', '), 
+                      inline: false 
+                    }
+                  ]
+                }]
+              });
+              return;
+            }
+
+            await supabaseSync.manualSync(tableName);
+            
+            await manualMsg.edit({
+              content: '',
+              embeds: [{
+                title: '✅ 手動同期完了',
+                description: tableName 
+                  ? `テーブル '${tableName}' の手動同期が完了しました。`
+                  : '全テーブルの手動同期が完了しました。',
+                color: 0x00ff00,
+                timestamp: new Date().toISOString(),
+                footer: { text: 'Supabase Sync System' }
+              }]
+            });
+          } catch (error) {
+            await manualMsg.edit({
+              content: '',
+              embeds: [{
+                title: '❌ 手動同期失敗',
+                description: '手動同期中にエラーが発生しました。',
+                color: 0xff0000,
+                fields: [
+                  { name: 'エラー', value: `\`${error.message}\``, inline: false }
+                ],
+                timestamp: new Date().toISOString(),
+                footer: { text: 'Supabase Sync System' }
+              }]
+            });
+          }
+          break;
+
+        case 'stats':
+          supabaseSync.logStats();
+          await message.reply('📊 同期統計をログに出力しました。');
+          break;
+
+        case 'help':
+        default:
+          await message.reply({
+            embeds: [{
+              title: '🔄 Supabase同期管理コマンド',
+              description: 'PostgreSQL⇔Supabase間の自動同期システムの管理',
+              color: 0x0099ff,
+              fields: [
+                {
+                  name: '`!sync status`',
+                  value: '同期システムの現在の状態を表示します',
+                  inline: false
+                },
+                {
+                  name: '`!sync manual [table]`',
+                  value: '手動同期を実行します（テーブル指定可能）',
+                  inline: false
+                },
+                {
+                  name: '`!sync stats`',
+                  value: '詳細な統計情報をログに出力します',
+                  inline: false
+                },
+                {
+                  name: '`!sync help`',
+                  value: 'このヘルプメッセージを表示します',
+                  inline: false
+                }
+              ],
+              footer: { 
+                text: '対象テーブル: conversations, emotion_states, user_memories, conversation_analysis' 
+              }
+            }]
+          });
+          break;
+      }
+
+    } catch (error) {
+      console.error('Error in sync command:', error);
+      await message.reply('❌ 同期コマンドの実行中にエラーが発生しました。');
     }
     return;
   }

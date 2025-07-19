@@ -1,24 +1,24 @@
 {
   "profile": {
     "profile_metadata": {
-      "generated_at": "2025-07-17T03:54:35.536Z",
+      "generated_at": "2025-07-18T17:00:09.771Z",
       "source_files_count": 20,
       "valid_analyses_count": 1,
-      "failed_analyses_count": 2,
-      "average_confidence": "0.815",
+      "failed_analyses_count": 0,
+      "average_confidence": "0.845",
       "average_quality": "0.58",
       "analysis_version": "2.0",
       "update_mode": "incremental",
-      "incremental_files_count": 3,
+      "incremental_files_count": 1,
       "merge_metadata": {
         "existing_files": 20,
-        "new_files": 3,
+        "new_files": 1,
         "merge_strategy": "intelligent_optimization",
         "intelligent_metrics": {
           "similarity_stats": {
             "core_values": {
-              "totalComparisons": 68,
-              "duplicateCount": 68,
+              "totalComparisons": 32,
+              "duplicateCount": 32,
               "newContentCount": 0,
               "similarPairCount": 0
             },
@@ -29,8 +29,8 @@
               "similarPairCount": 0
             },
             "thinking_patterns": {
-              "totalComparisons": 20,
-              "duplicateCount": 20,
+              "totalComparisons": 8,
+              "duplicateCount": 8,
               "newContentCount": 0,
               "similarPairCount": 0
             },
@@ -41,8 +41,8 @@
               "similarPairCount": 0
             },
             "communication_style": {
-              "totalComparisons": 18,
-              "duplicateCount": 18,
+              "totalComparisons": 12,
+              "duplicateCount": 12,
               "newContentCount": 0,
               "similarPairCount": 0
             },
@@ -69,7 +69,7 @@
             "quality": 0.02,
             "stability": 0.03,
             "trend": 0,
-            "context": -0.005,
+            "context": -0.02,
             "learning": 0
           },
           "stability_metrics": {
@@ -83,13 +83,13 @@
             "low": 0
           },
           "optimization_metrics": {
-            "totalSimilarityChecks": 106,
-            "duplicatesRemoved": 106,
+            "totalSimilarityChecks": 52,
+            "duplicatesRemoved": 52,
             "newContentAdded": 0,
-            "averagePriority": 0.7431317865787698
+            "averagePriority": 1.868504240087232
           }
         },
-        "merge_timestamp": "2025-07-17T03:54:35.536Z"
+        "merge_timestamp": "2025-07-18T17:00:09.771Z"
       }
     },
     "personal_characteristics": {
@@ -250,108 +250,60 @@
     "debug_info": {
       "processed_files": [
         {
-          "path": "Note/00 今後書くこと.md",
-          "wordCount": 25,
-          "charCount": 217,
-          "content": "- 今やっている仕事の内容(その業界の現在地や市況、今後の展望などもできれば)\n- それに至るまでの職歴などの変遷\n- 人生のターニングポイントになった出来事\n- 大事にしている価値観\n- 将来やりたいこと、夢や目標\n- 今悩んでいること\n- 好きなこと、趣味\n- 休日の過ごし方\n- 旅行や食などの好み\n- 自分が好きな場所、人に紹介したいところ\n- 日本のいいと思っていること、問題だと思っているところ\n- 最近嬉しかったこと\n\n",
-          "mtime": "2025-07-16T13:34:33.330Z"
-        },
-        {
-          "path": "Note/02 勉強.md",
-          "wordCount": 72,
-          "charCount": 1872,
-          "content": "## 小・中学生\n- 小学生の頃は勉強で苦労したことはなかったと思う\n- 進研ゼミのチャレンジだけやっていたけど、テキストを全くやらずに毎月のテストだけやってたら、母親にバレて怒られた記憶がある\n- 中学生になって英語の授業が始まり、文法が分からずに途中から授業に追いつけなくなった\n- 父親に買ってもらったドリルをやるうちにだんだん分かるようになり、最後まで得意にはならなかったものの、英検3級レベルには到達できた\n- また、英語含めた全科目の成績は、学年140人くらいのうち、だいたい10～20位だったと思う\n- 中学3年になって初めて進学塾にも通った\n- 塾の先生から「君は学区（当時、東京都は学区制だった）で1位の公立校にいける」と発破をかけられていたけど、正直自信のなかった私は、一般受験の前に推薦入試で他学区の2番手校を受験し、そのまま受かってしまった\n- なお、他の学区にしたのは、その高校の最寄りが始発・終着駅かつ駅からも近くて通いやすそうだったのと、勉強がそこそこできる優等生キャラという他者からの見え方に疲れていたため、自分を知る人がいない環境に身を置きたかった、というのがある\n\n## 高校\n- 高校受験を通じて、自分は勉強が好きなのではなく、単に人から褒められたいからやってるだけだったと気付き、高校入学で過去の自分を知る人がいなくなったのを契機に、私は全く勉強しなくなった\n- 代わりにオンラインゲーム（当時流行ってたMMORPG）に明け暮れ、昼夜逆転の生活が続いた\n- 定期テストの成績はずっと下位だった\n- ゲームの影響で寝不足だったので授業もずっと寝ていたし、態度も悪かったと思う\n- 高校3年になって大手の進学塾に通うも、そもそものやる気がないので学力はまったく上がらないし、本当に無駄な時間とお金だった\n- 受験した大学は全て落ちて、親に懇願し、浪人が決まった\n\n## 予備校（浪人生）\n- 浪人が決まった頃、「偏差値30台からの大学受験」というサイトと出会い、その著者のリアルな体験記と文章から感じる熱量から「自分もこの一年で心を入れ替えて頑張ろう」と思った記憶がある\n- 浪人時代は、朝早くから予備校の自習室に通い、日中は授業を受けて、夕方からまた自習室で勉強し、日が暮れたら帰宅、という生活をずっと繰り返した\n- 苦手だった英語に関しては、予め英単語を意味とともに自分の声で録音し、予備校からの帰り道をイヤホンで聞きながら一時間ほどかけて歩くことで、運動しながら脳に定着させた\n- 努力の甲斐あってか、偏差値は面白いくらい右肩上がりだった\n- 英語は偏差値50前後をウロウロしたままだったけど、数学は40台が60台に、物理に関しては30台だったのが最終的に70を超えた\n- ただ、どうしても化学が苦手で、元素記号もまともに覚えられなかったので、理科一科目で受験できる大学を選択した\n- 大学受験は、第一志望含む受験したほぼ全ての大学に合格した\n- 進学先は首都大学東京（現在の東京都立大学）と最後まで悩んだものの、就職実績と都心の大学への憧れから、東京理科大学に決めた\n\n## 大学\n- 大学に入学して、また勉強しなくなった\n- 授業の出席も単位が取れるぎりぎりだったけど、仲良くしてくれた周りの友達がとても優秀だったのが大きく、定期テストの度に助けてもらった\n- 同じく勉強しなかった高校の頃との違いは、そういう友達付き合いも含めて、良くも悪くも要領が良くなった点だと思う\n- 実際、成績は学科の平均よりも上だったし、そのおかげで4年次に配属される研究室は一番人気の教授のところに入れた\n- 卒業研究は意思決定方法のAHP（階層分析法）をテーマにしたが、それまでの不勉強がモロに出て、全く誇れるような内容でないのは、未だにやや心残りであったりする\n\n## 就職\n- 理系は半数以上が院進学する中、これ以上勉強するのは気分が乗らないし、それより自分で稼いで自立した生活したいと思い、就職した\n- 就職後に気付いたことは、就職したあとも勉強しないといけないこと\n- 厳密には、勉強しなくても終身雇用で仕事に困らないが、自分のキャリアに直接影響するので、勉強しないと落ちぶれていく点は、これまでの学校教育と変わらないし、何ならよりシビアだと思う\n- 就職してしばらくは不真面目で全く勉強しなかったけど、IT系の資格取得を社内で推奨されていたこともあり、基本情報技術者、応用情報技術者、PMPあたりは取得した",
-          "mtime": "2025-07-16T13:27:34.999Z"
-        },
-        {
-          "path": "Note/05 交友.md",
-          "wordCount": 13,
-          "charCount": 569,
-          "content": "## 前提\n友達は昔から少ない。いわゆる根暗だと思う。\n中学・高校くらいの頃、友達の少なさがコンプレックスで、無理に増やそうとした時期もあったが、大人数で遊んだり、たくさんの人と接するのが性に合ってないことに気付き、大学生以降はそのような心掛けもしていない。\nただ、交友関係が広い人への憧れというか、「自分には真似できないけど、すごいな」という気持ちは常にある。\n一方で、現在の数少ない友人を大切にしたいという気持ちも持っているし、積極的に仲を深めたいと思うことは極めて稀ではあるが、できるだけ細く長く関係が続くといいなとは思っている。\n\n## 石川８\n同じ大学の同級生で、私を含めて８人いる。\nそのうちの一人の故郷である石川県に、全員で旅行に行ったことがきっかけで、石川８（エイト）と呼んでいる。LINEチャットのグループ名もこの名称が使われている。\n学内ではよく共に行動していたし、卒業旅行（ヨーロッパ）にもこの８人で行った。\n卒業後も、このうちの誰かが結婚するときは、たいていこのメンバが呼ばれる。現時点で、８人中６人が既婚。\n卒業後の進路はみんなバラバラだが、メガバンク、製造メーカー、製薬会社、証券会社といった国内最大手の企業に勤めている者がほとんどで、他に外資コンサルから起業した者や、実家の会社を継いだ者もいる。みんな優秀。",
-          "mtime": "2025-07-16T13:43:28.437Z"
+          "path": "Journal/2025-07-18.md",
+          "wordCount": 8,
+          "charCount": 266,
+          "content": "2025-07-18\n- [10:31](https://discord.com/channels/1385044127497977936/1388148828657680404/1395578666238480558) おはようございます。これはテストです。\n- [22:28](https://discord.com/channels/1385044127497977936/1388148828657680404/1395759137618526302) 起業家精神とは、新しいことに挑戦し、困難を乗り越え、目標を達成する力\n",
+          "mtime": "2025-07-18T13:30:26.169Z"
         }
       ],
       "analysis_results": [
         {
-          "file": "Note/00 今後書くこと.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-17T03:54:15.342Z",
-          "error": "All JSON parse attempts failed for Note/00 今後書くこと.md",
-          "success": false
-        },
-        {
-          "file": "Note/02 勉強.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-17T03:54:26.687Z",
-          "error": "All JSON parse attempts failed for Note/02 勉強.md",
-          "success": false
-        },
-        {
-          "file": "Note/05 交友.md",
+          "file": "Journal/2025-07-18.md",
           "analysis": {
             "core_values": [
-              "既存の人間関係を大切にする",
-              "長期的な関係性を重視する",
-              "多様な人間関係を築ける人への尊敬/憧れ",
-              "友人の成功や優秀さを評価する"
+              "新しいことへの挑戦",
+              "困難の克服",
+              "目標達成",
+              "起業家精神"
             ],
-            "interests": [],
+            "interests": [
+              "起業",
+              "ビジネス",
+              "自己成長"
+            ],
             "personality": [
-              "根暗（自己認識）",
-              "内向的（大人数での交流が苦手）",
-              "自己認識力がある",
-              "慎重（積極的に仲を深めることは稀）",
-              "信頼できる少数の友人と深い関係を築く傾向"
+              "挑戦的",
+              "目標志向",
+              "粘り強い"
             ],
             "thinking_patterns": [
-              "自己分析的"
+              "概念の定義付け"
             ],
             "communication_style": [
-              "特定の少人数グループ内でのコミュニケーションを好む",
-              "積極的に仲を深めることは稀"
+              "簡潔",
+              "オンラインコミュニケーションツールの利用"
             ],
             "contextual_info": {
-              "current_projects": [],
-              "tools_used": [
-                "LINEチャット"
+              "current_projects": [
+                "テストの実施"
               ],
-              "recent_learnings": []
+              "tools_used": [
+                "Discord",
+                "Markdown"
+              ],
+              "recent_learnings": [
+                "起業家精神の概念"
+              ]
             },
-            "confidence": 0.9,
+            "confidence": 0.6,
             "key_insights": [
-              "筆者は、自身の内向的な性格を理解し受け入れている。",
-              "少数の深い人間関係を重視し、長期的な友情を大切にする。",
-              "過去のコンプレックスを乗り越え、自分に合った交友スタイルを確立している。",
-              "友人の成功を素直に評価する一面を持つ。"
+              "起業家精神に強い関心があり、その定義を明確に捉えている",
+              "オンラインコミュニケーションツール（Discord）を日常的に利用している",
+              "何らかのテストを実施している"
             ]
           },
-          "processed_at": "2025-07-17T03:54:35.529Z",
+          "processed_at": "2025-07-18T17:00:09.767Z",
           "success": true
         }
       ],
@@ -360,8 +312,8 @@
       "intelligent_metrics": {
         "similarity_stats": {
           "core_values": {
-            "totalComparisons": 68,
-            "duplicateCount": 68,
+            "totalComparisons": 32,
+            "duplicateCount": 32,
             "newContentCount": 0,
             "similarPairCount": 0
           },
@@ -372,8 +324,8 @@
             "similarPairCount": 0
           },
           "thinking_patterns": {
-            "totalComparisons": 20,
-            "duplicateCount": 20,
+            "totalComparisons": 8,
+            "duplicateCount": 8,
             "newContentCount": 0,
             "similarPairCount": 0
           },
@@ -384,8 +336,8 @@
             "similarPairCount": 0
           },
           "communication_style": {
-            "totalComparisons": 18,
-            "duplicateCount": 18,
+            "totalComparisons": 12,
+            "duplicateCount": 12,
             "newContentCount": 0,
             "similarPairCount": 0
           },
@@ -412,7 +364,7 @@
           "quality": 0.02,
           "stability": 0.03,
           "trend": 0,
-          "context": -0.005,
+          "context": -0.02,
           "learning": 0
         },
         "stability_metrics": {
@@ -426,15 +378,15 @@
           "low": 0
         },
         "optimization_metrics": {
-          "totalSimilarityChecks": 106,
-          "duplicatesRemoved": 106,
+          "totalSimilarityChecks": 52,
+          "duplicatesRemoved": 52,
           "newContentAdded": 0,
-          "averagePriority": 0.7431317865787698
+          "averagePriority": 1.868504240087232
         }
       }
     }
   },
-  "cached_at": "2025-07-18T12:18:10.508Z",
+  "cached_at": "2025-07-19T01:28:13.808Z",
   "bot_version": "aimolt-v1.0.0",
   "cache_duration_hours": 12
 }

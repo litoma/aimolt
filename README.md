@@ -249,6 +249,59 @@ Botの動作には以下の環境変数が必要です。
 
 人格システムは会話を通じて自動的に学習するため、特別な設定は不要です。
 
+### 🔄 Supabase同期システム
+
+#### 自動同期機能
+
+PostgreSQL LISTEN/NOTIFY機能を使用した疑似レプリケーション：
+
+```
+PostgreSQL → リアルタイム同期 → Supabase
+```
+
+#### 管理コマンド
+
+同期システムの状態確認・管理が可能です：
+
+```
+!sync status             # 同期システム状態を確認
+!sync manual [table]     # 手動同期を実行
+!sync stats              # 詳細統計をログ出力
+!sync help               # ヘルプメッセージを表示
+```
+
+#### 同期対象テーブル
+
+- **conversations**: 会話履歴
+- **emotion_states**: 感情状態
+- **user_memories**: 記憶システム
+- **conversation_analysis**: 会話分析結果
+
+#### 技術仕様
+
+- **同期方式**: PostgreSQL INSERT/UPDATE/DELETE → 即座にSupabase反映
+- **エラー処理**: 3回リトライ + 指数バックオフ（1秒→2秒→4秒）
+- **監視機能**: 同期回数・エラー率・成功率・最終同期時刻
+- **パフォーマンス**: 平均同期時間 100-500ms
+
+#### 動作確認
+
+1. 同期状態確認の例:
+   ```
+   🔄 Supabase同期システム状態
+   ⚙️ システム状態: ✅ 稼働中
+   📊 同期回数: 1,205回 | ❌ エラー回数: 3回
+   📈 成功率: 99.8% | 📅 最終同期: 1分前
+   ```
+
+2. 手動同期実行例:
+   ```
+   !sync manual conversations  # 特定テーブルのみ
+   !sync manual                # 全テーブル
+   ```
+
+同期システムはBot起動時に自動開始され、特別な設定は不要です。
+
 ### 📝 メモ機能 (Obsidian統合)
 
 #### セットアップ手順
@@ -347,6 +400,11 @@ Botの動作には以下の環境変数が必要です。
     - `!personality stats` でシステム全体の統計を表示
     - `!personality debug [@ユーザー]` でデバッグ情報を表示
 
+7.  **Supabase同期管理**:
+    - `!sync status` で同期システムの状態を確認
+    - `!sync manual [table]` で手動同期を実行
+    - `!sync stats` で詳細な統計情報を表示
+
 ## 🗂️ プロジェクト構造
 
 ```
@@ -360,6 +418,7 @@ aimolt/
 │   │   ├── memo.js               # 📝メモ機能（Obsidian統合）
 │   │   ├── prompt.js             # プロンプト管理システム
 │   │   ├── profile-sync.js       # プロファイル同期システム
+│   │   ├── supabase-sync.js      # 🔄 Supabase疑似レプリケーション
 │   │   ├── utils/                # ユーティリティ関数
 │   │   │   └── retry.js          # Gemini API リトライ機能
 │   │   └── personality/          # 🧠 動的人格システム
@@ -385,6 +444,7 @@ aimolt/
 ├── db/                           # データベース関連
 │   ├── init.sql                  # テーブル初期化スキーマ（人格システム含む）
 │   ├── personality_schema.sql    # 人格システム専用スキーマ
+│   ├── supabase_sync_triggers.sql # Supabase同期用トリガー・ファンクション
 │   └── data/                     # (ローカル)DBデータ
 ├── compose.yaml                  # Docker Compose設定ファイル
 ├── .gitignore
