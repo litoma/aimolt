@@ -367,14 +367,18 @@ client.on('messageCreate', async (message) => {
                   { 
                     name: '🏷️ 主な特徴', 
                     value: snapshot.profile.topTraits.length > 0 
-                      ? snapshot.profile.topTraits.join(', ') 
+                      ? snapshot.profile.topTraits.map(trait => 
+                          typeof trait === 'string' ? trait : trait.trait || trait.name || JSON.stringify(trait)
+                        ).join(', ') 
                       : 'データ蓄積中...', 
                     inline: false 
                   },
                   { 
                     name: '💫 興味・関心', 
                     value: snapshot.profile.topInterests.length > 0 
-                      ? snapshot.profile.topInterests.slice(0, 3).join(', ') 
+                      ? snapshot.profile.topInterests.slice(0, 3).map(interest => 
+                          typeof interest === 'string' ? interest : interest.topic || interest.name || JSON.stringify(interest)
+                        ).join(', ') 
                       : 'データ蓄積中...', 
                     inline: false 
                   },
