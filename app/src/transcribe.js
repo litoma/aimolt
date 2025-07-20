@@ -2,7 +2,6 @@ const fs = require('fs').promises;
 const path = require('path');
 const https = require('https');
 const { prompts } = require('./prompt');
-const { personalityManager } = require('./personality/manager');
 const { retryGeminiApiCall } = require('./utils/retry');
 
 // 音声ファイルのダウンロード関数
@@ -94,29 +93,22 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
   try {
     await downloadAudio(targetAttachment.proxyUrl, filePath, targetAttachment.url);
 
-    // 動的文字起こしプロンプトを取得（人格システム統合）
+    // 静的文字起こしプロンプトを取得
     let systemInstruction;
     try {
-      systemInstruction = await prompts.getDynamicTranscribe(user.id, 'voice transcription');
-      console.log('動的文字起こしプロンプトを人格システムから取得');
+      systemInstruction = await prompts.getTranscribe();
+      console.log('静的文字起こしプロンプトを使用');
     } catch (error) {
-      console.error('動的文字起こしプロンプト取得エラー:', error.message);
-      // フォールバック：静的プロンプトを使用
-      try {
-        systemInstruction = await prompts.getTranscribe();
-        console.log('フォールバック：静的文字起こしプロンプトを使用');
-      } catch (fallbackError) {
-        console.error('フォールバック文字起こしプロンプト取得エラー:', fallbackError.message);
-        // フォールバック用のプロンプト
-        systemInstruction = `
+      console.error('文字起こしプロンプト取得エラー:', error.message);
+      // フォールバック用のプロンプト
+      systemInstruction = `
 音声を日本語のテキストに変換してください。以下の点に注意してください：
 - フィラー語（あー、えー、うー、んー、まあ、そのー等）は除去する
 - 意味のない繰り返しや言い直しは除去する
 - 自然で読みやすい文章にする
 - 句読点を適切に配置する
 - 重要な内容のみを抽出する
-        `;
-      }
+      `;
     }
 
     const transcriptionModel = genAI.getGenerativeModel({ 
@@ -149,15 +141,6 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
     // 追加の後処理でケバ取り
     transcription = removeFillerWords(transcription);
 
-    // 人格システムを更新（非同期で実行）
-    personalityManager.updatePersonalityFromConversation(
-      user.id, 
-      'voice transcription', 
-      transcription, 
-      message.id
-    ).catch(error => {
-      console.error('Error updating personality system:', error);
-    });
 
     await channel.send('🎉 文字起こしが完了したよ〜！');
     if (transcription.trim()) {

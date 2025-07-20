@@ -1,6 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
 const { prompts } = require('./prompt');
-const { personalityManager } = require('./personality/manager');
 const { retryGeminiApiCall } = require('./utils/retry');
 
 // Embed内容の抽出
@@ -66,22 +65,15 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
     const messageLink = `https://discord.com/channels/${message.guildId}/${channel.id}/${message.id}`;
     await channel.send(`${user} 🤔 投稿内容について詳しく解説するね〜！ちょっと待っててね\n📎 元メッセージ: ${messageLink}`);
 
-    // 動的解説プロンプトの読み込み（人格システム統合）
+    // 静的解説プロンプトの読み込み
     let explainPrompt;
     try {
-      explainPrompt = await prompts.getDynamicExplain(user.id, inputText);
-      console.log('動的解説プロンプトを人格システムから取得');
+      explainPrompt = await prompts.getExplain();
+      console.log('静的解説プロンプトを使用');
     } catch (error) {
-      console.error('動的解説プロンプト取得エラー:', error.message);
-      // フォールバック：静的プロンプトを使用
-      try {
-        explainPrompt = await prompts.getExplain();
-        console.log('フォールバック：静的解説プロンプトを使用');
-      } catch (fallbackError) {
-        console.error('フォールバック解説プロンプト取得エラー:', fallbackError.message);
-        await channel.send(`${user} ❌ プロンプトの読み込みに失敗しました。`);
-        return;
-      }
+      console.error('解説プロンプト取得エラー:', error.message);
+      await channel.send(`${user} ❌ プロンプトの読み込みに失敗しました。`);
+      return;
     }
 
     // Gemini APIで解説生成（会話履歴は使用しない）
@@ -108,15 +100,6 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
 
       // 会話履歴には保存しない（要件通り）
 
-      // 人格システムを更新（非同期で実行）
-      personalityManager.updatePersonalityFromConversation(
-        user.id, 
-        inputText, 
-        explanation, 
-        message.id
-      ).catch(error => {
-        console.error('Error updating personality system:', error);
-      });
 
       // 結果を送信
       const embed = new EmbedBuilder()

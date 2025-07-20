@@ -1,7 +1,4 @@
 const { EmbedBuilder } = require('discord.js');
-const { prompts } = require('./prompt');
-const { personalityManager } = require('./personality/manager');
-const { retryGeminiApiCall } = require('./utils/retry');
 const https = require('https');
 const http = require('http');
 
@@ -91,7 +88,7 @@ async function appendToObsidianDaily(content) {
 }
 
 // メモリアクション処理
-async function handleMemoReaction(message, channel, user, genAI) {
+async function handleMemoReaction(message, channel, user) {
   try {
     // 環境変数の確認
     console.log('環境変数確認:', {
@@ -111,6 +108,13 @@ async function handleMemoReaction(message, channel, user, genAI) {
 
     // メッセージ内容収集
     let inputText = message.content || '';
+    
+    // 引用ブロック（>>> テキスト）の処理
+    if (inputText.startsWith('>>> ')) {
+      inputText = inputText.substring(4); // ">>> "を除去
+      console.log('引用ブロック形式のテキストを処理');
+    }
+    
     const embedContent = extractEmbedContent(message);
     if (embedContent) {
       inputText += inputText ? `\n\n【Embed内容】\n${embedContent}` : embedContent;
@@ -124,72 +128,30 @@ async function handleMemoReaction(message, channel, user, genAI) {
 
     // 処理開始メッセージ
     const messageLink = `https://discord.com/channels/${message.guildId}/${channel.id}/${message.id}`;
-    const processingMsg = await channel.send(`${user} 📝 メッセージをObsidianのDailyメモに追加中...`);
+    const processingMsg = await channel.send(`${user} 📝 メッセージをObsidian Daily Noteに追加中...`);
 
-    // 動的メモプロンプトの読み込み（人格システム統合）
-    let memoPrompt;
+    // メタデータを付与してObsidianに追加
     try {
-      memoPrompt = await prompts.getDynamicMemo(user.id, inputText);
-      console.log('動的メモプロンプトを人格システムから取得');
-    } catch (error) {
-      console.error('動的メモプロンプト取得エラー:', error.message);
-      // フォールバック：静的プロンプトを使用
-      try {
-        memoPrompt = await prompts.getMemo();
-        console.log('フォールバック：静的メモプロンプトを使用');
-      } catch (fallbackError) {
-        console.error('フォールバックメモプロンプト取得エラー:', fallbackError.message);
-        // フォールバック用のプロンプト
-        memoPrompt = `
-メッセージ内容を自然で読みやすい形に整形してください。
-重要な情報は保持しつつ、不要な要素は除去してください。
-Obsidianのマークダウン形式で出力してください。
-        `;
-      }
-    }
-
-    // Gemini APIでメッセージを整形
-    try {
-      const model = genAI.getGenerativeModel({
-        model: 'gemini-2.5-flash',
-        systemInstruction: { parts: [{ text: memoPrompt }] },
-        generationConfig: { maxOutputTokens: 1000, temperature: 0.3 }
-      });
-
-      const chatSession = model.startChat({ history: [] });
-      
-      // リトライ機能付きでGemini API呼び出し
-      const result = await retryGeminiApiCall(
-        async () => await chatSession.sendMessage(inputText),
-        '📝 メモ整形',
-        { maxRetries: 3, baseDelay: 1000, maxDelay: 8000 }
-      );
-      let formattedContent = result.response.text();
-
-      // メタデータを付与
       const timeOnly = new Date().toLocaleString('ja-JP', { 
         timeZone: 'Asia/Tokyo',
         hour: '2-digit',
         minute: '2-digit'
       });
       
-      const finalContent = `[${timeOnly}](${messageLink}) ${formattedContent}\n\n`;
+      const finalContent = `[${timeOnly}](${messageLink}) ${inputText}\n\n`;
 
       // Obsidian REST APIを呼び出してDailyメモに追加
       await appendToObsidianDaily(finalContent);
 
-      // 人格システムを更新（非同期で実行）
-      personalityManager.updatePersonalityFromConversation(
-        user.id, 
-        inputText, 
-        formattedContent, 
-        message.id
-      ).catch(error => {
-        console.error('Error updating personality system:', error);
-      });
-
       // 成功メッセージ
-      await processingMsg.edit('✅ Obsidian Daily Note追加完了');
+      await processingMsg.edit({
+        content: '',
+        embeds: [{
+          title: '✅ Obsidian追加完了',
+          description: 'Daily Noteに追加しました。',
+          color: 0x00ff00
+        }]
+      });
 
     } catch (error) {
       console.error(`メモ処理エラー: ${error.message}`);
