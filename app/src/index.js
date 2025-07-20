@@ -9,8 +9,12 @@ const { transcribeAudio } = require('./transcribe');
 const { handleLikeReaction, getProfileStatus, forceRefreshProfile } = require('./like');
 const { handleExplainReaction } = require('./explain');
 const { handleMemoReaction } = require('./memo');
-const { personalityManager } = require('./personality/manager');
+const { personalityManagerV2 } = require('./personality/manager-v2');
+const { PersonalityCommandV2 } = require('./personality-command-v2');
 const { supabaseSync } = require('./supabase-sync');
+
+// 人格システムv2.0初期化
+const personalityCommandV2 = new PersonalityCommandV2();
 
 // クライアントの設定
 const client = new Client({
@@ -304,11 +308,11 @@ client.on('messageCreate', async (message) => {
     return;
   }
 
-  // 人格システム管理コマンド
+  // 人格システム管理コマンド (v2.0 - VAD + 関係性管理)
   if (message.content.startsWith('!personality')) {
     const args = message.content.split(' ').slice(1);
     const command = args[0]?.toLowerCase();
-
+    
     try {
       switch (command) {
         case 'status':
@@ -321,162 +325,12 @@ client.on('messageCreate', async (message) => {
             targetUserId = mentionedUser.id;
             targetUser = mentionedUser;
           }
-
-          const statusMsg = await message.reply('🧠 人格状態を取得中...');
           
-          try {
-            const snapshot = await personalityManager.getPersonalitySnapshot(targetUserId);
-            
-            if (!snapshot) {
-              await statusMsg.edit({
-                content: '',
-                embeds: [{
-                  title: '❌ 人格データなし',
-                  description: `${targetUser.displayName || targetUser.username}の人格データが見つかりません。`,
-                  color: 0xff0000,
-                  timestamp: new Date().toISOString(),
-                  footer: { text: 'AImolt Personality System' }
-                }]
-              });
-              return;
-            }
-
-            await statusMsg.edit({
-              content: '',
-              embeds: [{
-                title: '🧠 人格システム状態',
-                description: `${targetUser.displayName || targetUser.username}の現在の状態`,
-                color: 0x9b59b6,
-                fields: [
-                  { 
-                    name: '💭 感情状態', 
-                    value: `元気度: ${snapshot.emotion.energy}/100\n親密度: ${snapshot.emotion.intimacy}/100\n興味度: ${snapshot.emotion.interest}/100\nムード: ${snapshot.emotion.mood}`, 
-                    inline: true 
-                  },
-                  { 
-                    name: '📊 統計', 
-                    value: `会話数: ${snapshot.emotion.conversationCount}回\n記憶数: ${snapshot.recentMemories.length}件`, 
-                    inline: true 
-                  },
-                  { 
-                    name: '🏷️ 主な特徴', 
-                    value: snapshot.profile.topTraits.length > 0 
-                      ? snapshot.profile.topTraits.map(trait => 
-                          typeof trait === 'string' ? trait : trait.trait || trait.name || JSON.stringify(trait)
-                        ).join(', ') 
-                      : 'データ蓄積中...', 
-                    inline: false 
-                  },
-                  { 
-                    name: '💫 興味・関心', 
-                    value: snapshot.profile.topInterests.length > 0 
-                      ? snapshot.profile.topInterests.slice(0, 3).map(interest => 
-                          typeof interest === 'string' ? interest : interest.topic || interest.name || JSON.stringify(interest)
-                        ).join(', ') 
-                      : 'データ蓄積中...', 
-                    inline: false 
-                  },
-                  { 
-                    name: '📝 最近の記憶', 
-                    value: snapshot.recentMemories.length > 0 
-                      ? snapshot.recentMemories.slice(0, 2).map(m => `・${m.content}...`).join('\n') 
-                      : 'まだ記憶がありません', 
-                    inline: false 
-                  }
-                ],
-                timestamp: new Date().toISOString(),
-                footer: { text: 'AImolt Personality System' }
-              }]
-            });
-          } catch (error) {
-            await statusMsg.edit({
-              content: '',
-              embeds: [{
-                title: '❌ 取得エラー',
-                description: '人格状態の取得中にエラーが発生しました。',
-                color: 0xff0000,
-                fields: [
-                  { name: 'エラー', value: `\`${error.message}\``, inline: false }
-                ],
-                timestamp: new Date().toISOString(),
-                footer: { text: 'AImolt Personality System' }
-              }]
-            });
-          }
+          await personalityCommandV2.handleStatusCommand(message, targetUserId, targetUser);
           break;
 
         case 'stats':
-          const statsMsg = await message.reply('📊 システム統計を取得中...');
-          
-          try {
-            const stats = await personalityManager.getSystemStats();
-            
-            if (!stats) {
-              await statsMsg.edit({
-                content: '',
-                embeds: [{
-                  title: '❌ 統計取得失敗',
-                  description: 'システム統計の取得に失敗しました。',
-                  color: 0xff0000,
-                  timestamp: new Date().toISOString(),
-                  footer: { text: 'AImolt Personality System' }
-                }]
-              });
-              return;
-            }
-
-            await statsMsg.edit({
-              content: '',
-              embeds: [{
-                title: '📊 人格システム統計',
-                description: 'ボット全体の人格システム稼働状況',
-                color: 0x3498db,
-                fields: [
-                  { 
-                    name: '👥 登録ユーザー', 
-                    value: `${stats.totalUsers}人`, 
-                    inline: true 
-                  },
-                  { 
-                    name: '🧠 総記憶数', 
-                    value: `${stats.totalMemories}件`, 
-                    inline: true 
-                  },
-                  { 
-                    name: '📈 分析回数', 
-                    value: `${stats.totalAnalyses}回`, 
-                    inline: true 
-                  },
-                  { 
-                    name: '⚙️ システム状態', 
-                    value: stats.systemEnabled ? '✅ 有効' : '❌ 無効', 
-                    inline: true 
-                  },
-                  { 
-                    name: '🔄 処理中', 
-                    value: `${stats.activeProcessing}件`, 
-                    inline: true 
-                  }
-                ],
-                timestamp: new Date().toISOString(),
-                footer: { text: 'AImolt Personality System' }
-              }]
-            });
-          } catch (error) {
-            await statsMsg.edit({
-              content: '',
-              embeds: [{
-                title: '❌ 統計エラー',
-                description: 'システム統計の取得中にエラーが発生しました。',
-                color: 0xff0000,
-                fields: [
-                  { name: 'エラー', value: `\`${error.message}\``, inline: false }
-                ],
-                timestamp: new Date().toISOString(),
-                footer: { text: 'AImolt Personality System' }
-              }]
-            });
-          }
+          await personalityCommandV2.handleStatsCommand(message);
           break;
 
         case 'debug':
@@ -490,82 +344,25 @@ client.on('messageCreate', async (message) => {
             debugTargetUser = mentionedUser;
           }
 
-          const debugMsg = await message.reply('🔍 デバッグ情報を取得中...');
-          
-          try {
-            const debugInfo = await personalityManager.debugUser(debugTargetUserId);
-            
-            if (!debugInfo) {
-              await debugMsg.edit({
-                content: '',
-                embeds: [{
-                  title: '❌ デバッグ失敗',
-                  description: 'デバッグ情報の取得に失敗しました。',
-                  color: 0xff0000,
-                  timestamp: new Date().toISOString(),
-                  footer: { text: 'AImolt Personality System' }
-                }]
-              });
-              return;
-            }
-
-            await debugMsg.edit({
-              content: '',
-              embeds: [{
-                title: '🔍 デバッグ情報',
-                description: `${debugTargetUser.displayName || debugTargetUser.username}のシステム詳細`,
-                color: 0xe74c3c,
-                fields: [
-                  { 
-                    name: '💾 キャッシュ状況', 
-                    value: `感情: ${debugInfo.cacheStatus.emotionCached ? '✅' : '❌'}\n記憶: ${debugInfo.cacheStatus.memoryCached}件\n生成: ${debugInfo.cacheStatus.generatorCached}件`, 
-                    inline: true 
-                  },
-                  { 
-                    name: '🎯 最後の更新', 
-                    value: debugInfo.snapshot ? 
-                      `<t:${Math.floor(new Date(debugInfo.snapshot.lastUpdated).getTime() / 1000)}:R>` : 
-                      '未更新', 
-                    inline: true 
-                  }
-                ],
-                timestamp: new Date().toISOString(),
-                footer: { text: 'AImolt Personality System Debug' }
-              }]
-            });
-          } catch (error) {
-            await debugMsg.edit({
-              content: '',
-              embeds: [{
-                title: '❌ デバッグエラー',
-                description: 'デバッグ情報の取得中にエラーが発生しました。',
-                color: 0xff0000,
-                fields: [
-                  { name: 'エラー', value: `\`${error.message}\``, inline: false }
-                ],
-                timestamp: new Date().toISOString(),
-                footer: { text: 'AImolt Personality System' }
-              }]
-            });
-          }
+          await personalityCommandV2.handleDebugCommand(message, debugTargetUserId, debugTargetUser);
           break;
 
         case 'help':
         default:
           await message.reply({
             embeds: [{
-              title: '🧠 人格システム管理コマンド',
-              description: '動的人格システムの状態確認・管理コマンドです',
+              title: '🧠 人格システム管理コマンド v2.0',
+              description: 'VADモデル + 関係性管理による動的人格システムです',
               color: 0x9b59b6,
               fields: [
                 {
                   name: '`!personality status [@ユーザー]`',
-                  value: '自分（または指定ユーザー）の人格状態を表示します',
+                  value: '自分（または指定ユーザー）のVAD感情状態と関係性を表示します',
                   inline: false
                 },
                 {
                   name: '`!personality stats`',
-                  value: 'ボット全体の人格システム統計を表示します',
+                  value: 'ボット全体の人格システム統計（VAD平均値、関係性分布）を表示します',
                   inline: false
                 },
                 {
@@ -580,15 +377,14 @@ client.on('messageCreate', async (message) => {
                 }
               ],
               footer: { 
-                text: '人格システムは会話から学習し、個人化された応答を提供します' 
+                text: '人格システムv2.0 - VAD感情モデル + Big Five性格特性 + 関係性管理' 
               }
             }]
           });
           break;
       }
-
     } catch (error) {
-      console.error('Error in personality command:', error);
+      console.error('Error in personality command v2:', error);
       await message.reply('❌ 人格システムコマンドの実行中にエラーが発生しました。');
     }
     return;
@@ -767,7 +563,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
   const isUserMessage = reaction.message.author.id !== client.user.id;
   const isBotMessageWithAllowedReaction = 
     reaction.message.author.id === client.user.id && 
-    ['❓', '📝'].includes(reaction.emoji.name);
+    ['❓', '📝', '👍'].includes(reaction.emoji.name);
 
   if (isUserMessage || isBotMessageWithAllowedReaction) {
     const userId = user.id;

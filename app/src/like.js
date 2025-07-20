@@ -1,6 +1,6 @@
 const { prompts } = require('./prompt');
 const AimoltProfileSync = require('./profile-sync');
-const { personalityManager } = require('./personality/manager');
+const { personalityManagerV2 } = require('./personality/manager-v2');
 const { retryGeminiApiCall } = require('./utils/retry');
 
 // プロファイル同期インスタンス（グローバル）
@@ -94,8 +94,8 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
     // 会話履歴を保存
     await saveConversationHistory(userId, userMessage, reply);
 
-    // 人格システムを更新（非同期で実行）
-    personalityManager.updatePersonalityFromConversation(
+    // 人格システムv2.0を更新（非同期で実行）
+    personalityManagerV2.updatePersonalityFromConversation(
       userId, 
       userMessage, 
       reply, 

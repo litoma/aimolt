@@ -172,12 +172,13 @@ PostgreSQL → リアルタイム同期 → Supabase
 !sync help               # ヘルプメッセージを表示
 ```
 
-#### 同期対象テーブル
+#### 同期対象テーブル（v2.0対応）
 
 - **conversations**: 会話履歴
-- **emotion_states**: 感情状態
+- **emotion_states**: 感情状態（VADモデル対応）
 - **user_memories**: 記憶システム
 - **conversation_analysis**: 会話分析結果
+- **user_relationships**: 関係性管理（v2.0新機能）
 
 #### 技術仕様
 
@@ -313,9 +314,12 @@ aimolt/
 │   │   ├── supabase-sync.js         # 🔄 Supabase疑似レプリケーション
 │   │   ├── utils/                   # ユーティリティ関数
 │   │   │   └── retry.js             # Gemini API リトライ機能
-│   │   └── personality/             # 🧠 動的人格システム
-│   │       ├── manager.js           # 人格システム統合管理
-│   │       ├── emotion.js           # 感情状態管理
+│   │   └── personality/             # 🧠 v2.0動的人格システム
+│   │       ├── manager-v2.js        # v2.0統合人格マネージャー
+│   │       ├── vad-emotion.js       # VAD感情システム（valence/arousal/dominance）
+│   │       ├── relationship-manager.js # 関係性管理システム
+│   │       ├── core-personality.js  # Big Five人格特性管理
+│   │       ├── adaptive-response.js # 適応的応答エンジン
 │   │       ├── memory.js            # 記憶蓄積システム
 │   │       ├── analyzer.js          # 会話分析エンジン
 │   │       └── generator.js         # 動的プロンプト生成
@@ -327,16 +331,14 @@ aimolt/
 │   │   └── memo.txt                 # 📝メモ機能用
 │   ├── temp/                        # 音声ファイルの一時保存場所
 │   ├── profile/                     # プロファイルキャッシュ保存場所
-│   ├── initialize-personality.js    # 🧠 過去履歴分析スクリプト
+│   ├── initialize-personality-v2.js # 🧠 v2.0過去履歴分析スクリプト
 │   ├── .npmrc                       # npm設定
 │   ├── Dockerfile                   # アプリケーション用Dockerfile
 │   ├── ecosystem.config.js          # PM2設定ファイル
 │   ├── PERSONALITY_SETUP.md         # 人格システムセットアップガイド
 │   └── package.json
 ├── db/                              # データベース関連
-│   ├── init.sql                     # テーブル初期化スキーマ（人格システム含む）
-│   ├── personality_schema.sql       # 人格システム専用スキーマ
-│   ├── supabase_sync_triggers.sql   # Supabase同期用トリガー・ファンクション
+│   ├── init.sql                     # テーブル初期化スキーマ（v2.0人格システム統合済み）
 │   └── data/                        # (ローカル)DBデータ
 ├── compose.yaml                     # Docker Compose設定ファイル
 ├── .gitignore
@@ -382,17 +384,46 @@ CREATE TABLE IF NOT EXISTS conversations (
 );
 ```
 
-### **🧠 動的人格システム用テーブル**
+### **🧠 v2.0動的人格システム用テーブル**
 ```sql
--- emotion_states: 感情状態管理
+-- emotion_states: VADモデル対応感情状態管理
 CREATE TABLE IF NOT EXISTS emotion_states (
     user_id VARCHAR(20) PRIMARY KEY,
+    -- 旧システム（後方互換性）
     energy_level INTEGER DEFAULT 50,      -- 元気度 (0-100)
     intimacy_level INTEGER DEFAULT 0,     -- 親密度 (0-100)
     interest_level INTEGER DEFAULT 50,    -- 興味度 (0-100)
     mood_type VARCHAR(20) DEFAULT 'neutral',
+    -- VADモデル（v2.0新機能）
+    valence INTEGER DEFAULT 50,           -- 快不快 (0-100)
+    arousal INTEGER DEFAULT 50,           -- 覚醒度 (0-100)
+    dominance INTEGER DEFAULT 50,         -- 支配度 (0-100)
     conversation_count INTEGER DEFAULT 0,
     last_interaction TIMESTAMP DEFAULT NOW(),
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- user_relationships: 関係性管理（v2.0新機能）
+CREATE TABLE IF NOT EXISTS user_relationships (
+    user_id VARCHAR(20) PRIMARY KEY,
+    affection_level INTEGER DEFAULT 50,   -- 親密度 (0-100)
+    trust_level INTEGER DEFAULT 50,       -- 信頼度 (0-100)
+    respect_level INTEGER DEFAULT 70,     -- 敬意レベル (0-100)
+    comfort_level INTEGER DEFAULT 40,     -- 快適度 (0-100)
+    relationship_stage VARCHAR(20) DEFAULT 'stranger', -- stranger/acquaintance/friend/close_friend
+    conversation_count INTEGER DEFAULT 0,
+    meaningful_interactions INTEGER DEFAULT 0,
+    preferred_formality VARCHAR(15) DEFAULT 'casual',
+    communication_pace VARCHAR(15) DEFAULT 'normal',
+    humor_receptivity INTEGER DEFAULT 50,
+    known_interests TEXT[],
+    avoided_topics TEXT[],
+    positive_triggers TEXT[],
+    negative_triggers TEXT[],
+    first_interaction TIMESTAMP DEFAULT NOW(),
+    last_interaction TIMESTAMP DEFAULT NOW(),
+    last_mood_detected VARCHAR(20),
     created_at TIMESTAMP DEFAULT NOW(),
     updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -538,13 +569,33 @@ promptManager.clearCache('system');
 promptManager.clearCache();
 ```
 
-## 🧠 動的人格システム
+## 🧠 v2.0動的人格システム
 
-AImoltの最も革新的な機能の一つが、会話履歴から学習する動的人格システムです。
+AImoltの最も革新的な機能の一つが、最新の心理学研究に基づくv2.0動的人格システムです。
 
 ### **主な特徴**
 
-#### **1. 感情状態管理**
+#### **1. VAD感情モデル（v2.0新機能）**
+2024-2025年の感情心理学研究に基づく3次元感情モデル：
+- **Valence（快不快）**: ポジティブ-ネガティブ感情の軸 (0-100)
+- **Arousal（覚醒度）**: 興奮-平静の軸 (0-100)
+- **Dominance（支配度）**: 主導性-従属性の軸 (0-100)
+
+#### **2. Big Five人格特性モデル**
+- **Openness（開放性）**: 新しい経験への開放度
+- **Conscientiousness（誠実性）**: 責任感と組織性
+- **Extraversion（外向性）**: 社交性とエネルギッシュさ
+- **Agreeableness（協調性）**: 協力的で信頼的な傾向
+- **Neuroticism（神経症傾向）**: 感情的不安定性
+
+#### **3. 関係性管理システム（v2.0新機能）**
+- **関係段階**: stranger → acquaintance → friend → close_friend
+- **信頼度**: ユーザーとの信頼関係を数値化
+- **快適度**: 会話の居心地良さを管理
+- **コミュニケーション最適化**: 個人の好みに合わせたやり取りスタイル
+
+#### **4. 後方互換性**
+v1システムとの互換性を維持：
 - **元気度**: 会話の頻度とポジティブ度から算出
 - **親密度**: 長期的な関係性を数値化
 - **興味度**: 話題への関心レベルを管理
@@ -570,22 +621,32 @@ AImoltの最も革新的な機能の一つが、会話履歴から学習する�
 
 ### **初期化と運用**
 
-#### **過去履歴の分析**
-新規導入時に既存の会話履歴を分析し、初期人格を構築できます：
+#### **過去履歴の分析（v2.0対応）**
+新規導入時に既存の会話履歴を分析し、v2.0初期人格を構築できます：
 
 ```bash
-# 過去の全会話履歴を分析
-POSTGRES_HOST=localhost node initialize-personality.js
+# 過去の全会話履歴をv2.0システムで分析
+POSTGRES_HOST=localhost node initialize-personality-v2.js
 ```
 
-#### **システムの監視**
-人格システムの状態を確認できます：
+#### **人格システム管理コマンド（v2.0新機能）**
+
+```
+!personality              # 現在の人格状態を表示（VAD + 関係性）
+!personality help         # ヘルプメッセージを表示
+!personality analyze      # 詳細分析結果を表示
+```
+
+#### **システムの監視（v2.0対応）**
+v2.0人格システムの状態を確認できます：
 
 ```bash
-# PostgreSQL内で状態確認
-SELECT * FROM emotion_states WHERE user_id = 'YOUR_USER_ID';
+# PostgreSQL内でv2.0状態確認
+SELECT user_id, valence, arousal, dominance, energy_level, intimacy_level FROM emotion_states WHERE user_id = 'YOUR_USER_ID';
+SELECT user_id, relationship_stage, trust_level, affection_level, comfort_level FROM user_relationships WHERE user_id = 'YOUR_USER_ID';
 SELECT COUNT(*) FROM user_memories WHERE user_id = 'YOUR_USER_ID';
 SELECT COUNT(*) FROM conversation_analysis WHERE user_id = 'YOUR_USER_ID';
+SELECT COUNT(*) FROM relationship_history WHERE user_id = 'YOUR_USER_ID';
 ```
 
 ### **技術的な詳細**
@@ -594,6 +655,24 @@ SELECT COUNT(*) FROM conversation_analysis WHERE user_id = 'YOUR_USER_ID';
 - **非同期処理**: 応答速度に影響しない背景処理
 - **エラーハンドリング**: 人格システムの障害時も通常機能を維持
 - **データ整合性**: CHECK制約とトリガーでデータ品質を保証
+
+## 🔄 v2.0アップグレード情報
+
+### **v2.0の主な改善点**
+
+1. **科学的根拠に基づく感情モデル**: VAD（Valence-Arousal-Dominance）モデル採用
+2. **Big Five人格特性**: 心理学的に確立された5因子モデル統合
+3. **関係性管理**: ユーザーとの関係性を段階的に管理
+4. **適応的応答**: 個人の特性に合わせた柔軟な応答生成
+5. **後方互換性**: v1システムとの互換性を維持
+
+### **v2.0マイグレーション**
+
+既存のv1データを保持したままv2.0にアップグレード済み：
+- VAD列の追加（valence, arousal, dominance）
+- 関係性管理テーブルの追加（user_relationships, relationship_history）
+- Supabase同期システムの拡張
+- 既存データの完全保持
 
 詳細な設定方法は`PERSONALITY_SETUP.md`を参照してください。
 

@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
-const { personalityManager } = require('./personality/manager');
+// v2.0: personalityManagerV2に移行済み
 
 /**
  * プロンプト管理クラス

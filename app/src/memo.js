@@ -138,7 +138,7 @@ async function handleMemoReaction(message, channel, user) {
         minute: '2-digit'
       });
       
-      const finalContent = `[${timeOnly}](${messageLink}) ${inputText}\n\n`;
+      const finalContent = `- [${timeOnly}](${messageLink}) ${inputText}\n\n`;
 
       // Obsidian REST APIを呼び出してDailyメモに追加
       await appendToObsidianDaily(finalContent);

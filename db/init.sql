@@ -14,13 +14,19 @@ CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user
 
 -- ===== AImolt動的人格システム用テーブル =====
 
--- 感情状態管理テーブル
+-- 感情状態管理テーブル（v2.0: VADモデル対応）
 CREATE TABLE IF NOT EXISTS emotion_states (
     user_id VARCHAR(20) PRIMARY KEY,
+    -- 旧システム（後方互換性）
     energy_level INTEGER DEFAULT 50 CHECK (energy_level >= 0 AND energy_level <= 100),      -- 元気度 (0-100)
     intimacy_level INTEGER DEFAULT 0 CHECK (intimacy_level >= 0 AND intimacy_level <= 100), -- 親密度 (0-100)
     interest_level INTEGER DEFAULT 50 CHECK (interest_level >= 0 AND interest_level <= 100), -- 興味度 (0-100)
     mood_type VARCHAR(20) DEFAULT 'neutral',                                                  -- happy/sad/excited/tired/neutral等
+    -- VADモデル（v2.0新機能）
+    valence INTEGER DEFAULT 50 CHECK (valence >= 0 AND valence <= 100),                     -- 快不快 (0-100)
+    arousal INTEGER DEFAULT 50 CHECK (arousal >= 0 AND arousal <= 100),                     -- 覚醒度 (0-100)  
+    dominance INTEGER DEFAULT 50 CHECK (dominance >= 0 AND dominance <= 100),               -- 支配度 (0-100)
+    -- 共通フィールド
     conversation_count INTEGER DEFAULT 0,                                                     -- 会話回数
     last_interaction TIMESTAMP DEFAULT NOW(),                                                 -- 最後の相互作用
     created_at TIMESTAMP DEFAULT NOW(),
@@ -71,6 +77,48 @@ CREATE INDEX IF NOT EXISTS idx_conversation_analysis_user_id ON conversation_ana
 CREATE INDEX IF NOT EXISTS idx_conversation_analysis_analyzed_at ON conversation_analysis(analyzed_at);
 CREATE INDEX IF NOT EXISTS idx_conversation_analysis_keywords ON conversation_analysis USING GIN(keywords);
 
+-- ===== 人格システムv2.0: 関係性管理テーブル =====
+
+-- ユーザー関係性テーブル
+CREATE TABLE IF NOT EXISTS user_relationships (
+    user_id VARCHAR(20) PRIMARY KEY,
+    affection_level INTEGER DEFAULT 50 CHECK (affection_level >= 0 AND affection_level <= 100),    -- 親密度
+    trust_level INTEGER DEFAULT 50 CHECK (trust_level >= 0 AND trust_level <= 100),               -- 信頼度
+    respect_level INTEGER DEFAULT 70 CHECK (respect_level >= 0 AND respect_level <= 100),         -- 敬意レベル
+    comfort_level INTEGER DEFAULT 40 CHECK (comfort_level >= 0 AND comfort_level <= 100),         -- 快適度
+    relationship_stage VARCHAR(20) DEFAULT 'stranger',                                            -- stranger/acquaintance/friend/close_friend
+    conversation_count INTEGER DEFAULT 0,                                                         -- 会話回数
+    meaningful_interactions INTEGER DEFAULT 0,                                                    -- 有意義な交流回数
+    preferred_formality VARCHAR(15) DEFAULT 'casual',                                            -- formal/casual/friendly
+    communication_pace VARCHAR(15) DEFAULT 'normal',                                             -- slow/normal/fast
+    humor_receptivity INTEGER DEFAULT 50 CHECK (humor_receptivity >= 0 AND humor_receptivity <= 100), -- ユーモア受容度
+    known_interests TEXT[],                                                                       -- 既知の興味
+    avoided_topics TEXT[],                                                                        -- 避けるべき話題
+    positive_triggers TEXT[],                                                                     -- ポジティブトリガー
+    negative_triggers TEXT[],                                                                     -- ネガティブトリガー
+    first_interaction TIMESTAMP DEFAULT NOW(),                                                   -- 初回交流
+    last_interaction TIMESTAMP DEFAULT NOW(),                                                    -- 最後の交流
+    last_mood_detected VARCHAR(20),                                                             -- 最後に検出された気分
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- 関係性履歴テーブル
+CREATE TABLE IF NOT EXISTS relationship_history (
+    id SERIAL PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    old_stage TEXT,                                                                              -- 変更前の関係段階
+    new_stage TEXT,                                                                              -- 変更後の関係段階
+    affection_change DECIMAL(3,1),                                                             -- 親密度変化
+    trust_change DECIMAL(3,1),                                                                 -- 信頼度変化
+    comfort_change DECIMAL(3,1),                                                               -- 快適度変化
+    trigger_event TEXT,                                                                         -- トリガーイベント
+    event_type TEXT,                                                                           -- イベント種別
+    new_value TEXT,                                                                            -- 新しい値
+    trigger_message TEXT,                                                                      -- トリガーメッセージ
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- 自動更新トリガー（updated_atの自動更新）
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
@@ -82,3 +130,113 @@ $$ language 'plpgsql';
 
 CREATE TRIGGER update_emotion_states_updated_at BEFORE UPDATE
     ON emotion_states FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_user_relationships_updated_at BEFORE UPDATE
+    ON user_relationships FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- ===== インデックス追加（v2.0関係性管理用） =====
+
+CREATE INDEX IF NOT EXISTS idx_user_relationships_user_id ON user_relationships(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_relationships_stage ON user_relationships(relationship_stage);
+CREATE INDEX IF NOT EXISTS idx_user_relationships_last_interaction ON user_relationships(last_interaction);
+CREATE INDEX IF NOT EXISTS idx_user_relationships_known_interests ON user_relationships USING GIN(known_interests);
+
+CREATE INDEX IF NOT EXISTS idx_relationship_history_user_id ON relationship_history(user_id);
+CREATE INDEX IF NOT EXISTS idx_relationship_history_created_at ON relationship_history(created_at);
+
+-- ===== Supabase同期用TRIGGER関数とTRIGGER =====
+
+-- conversations同期用
+CREATE OR REPLACE FUNCTION notify_sync_conversations()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'DELETE' THEN
+    PERFORM pg_notify('sync_conversations', 'DELETE:' || OLD.id);
+    RETURN OLD;
+  ELSE
+    PERFORM pg_notify('sync_conversations', TG_OP || ':' || NEW.id);
+    RETURN NEW;
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trigger_sync_conversations ON conversations;
+CREATE TRIGGER trigger_sync_conversations
+  AFTER INSERT OR UPDATE OR DELETE ON conversations
+  FOR EACH ROW EXECUTE FUNCTION notify_sync_conversations();
+
+-- emotion_states同期用
+CREATE OR REPLACE FUNCTION notify_sync_emotion_states()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'DELETE' THEN
+    PERFORM pg_notify('sync_emotion_states', 'DELETE:' || OLD.user_id);
+    RETURN OLD;
+  ELSE
+    PERFORM pg_notify('sync_emotion_states', TG_OP || ':' || NEW.user_id);
+    RETURN NEW;
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trigger_sync_emotion_states ON emotion_states;
+CREATE TRIGGER trigger_sync_emotion_states
+  AFTER INSERT OR UPDATE OR DELETE ON emotion_states
+  FOR EACH ROW EXECUTE FUNCTION notify_sync_emotion_states();
+
+-- user_memories同期用
+CREATE OR REPLACE FUNCTION notify_sync_user_memories()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'DELETE' THEN
+    PERFORM pg_notify('sync_user_memories', 'DELETE:' || OLD.id);
+    RETURN OLD;
+  ELSE
+    PERFORM pg_notify('sync_user_memories', TG_OP || ':' || NEW.id);
+    RETURN NEW;
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trigger_sync_user_memories ON user_memories;
+CREATE TRIGGER trigger_sync_user_memories
+  AFTER INSERT OR UPDATE OR DELETE ON user_memories
+  FOR EACH ROW EXECUTE FUNCTION notify_sync_user_memories();
+
+-- conversation_analysis同期用
+CREATE OR REPLACE FUNCTION notify_sync_conversation_analysis()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'DELETE' THEN
+    PERFORM pg_notify('sync_conversation_analysis', 'DELETE:' || OLD.id);
+    RETURN OLD;
+  ELSE
+    PERFORM pg_notify('sync_conversation_analysis', TG_OP || ':' || NEW.id);
+    RETURN NEW;
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trigger_sync_conversation_analysis ON conversation_analysis;
+CREATE TRIGGER trigger_sync_conversation_analysis
+  AFTER INSERT OR UPDATE OR DELETE ON conversation_analysis
+  FOR EACH ROW EXECUTE FUNCTION notify_sync_conversation_analysis();
+
+-- user_relationships同期用
+CREATE OR REPLACE FUNCTION notify_sync_user_relationships()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF TG_OP = 'DELETE' THEN
+    PERFORM pg_notify('sync_user_relationships', 'DELETE:' || OLD.user_id);
+    RETURN OLD;
+  ELSE
+    PERFORM pg_notify('sync_user_relationships', TG_OP || ':' || NEW.user_id);
+    RETURN NEW;
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trigger_sync_user_relationships ON user_relationships;
+CREATE TRIGGER trigger_sync_user_relationships
+  AFTER INSERT OR UPDATE OR DELETE ON user_relationships
+  FOR EACH ROW EXECUTE FUNCTION notify_sync_user_relationships();

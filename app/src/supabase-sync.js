@@ -30,7 +30,7 @@ class SupabaseSync {
       'emotion_states': {
         channel: 'sync_emotion_states', 
         primaryKey: 'user_id',
-        columns: ['user_id', 'energy_level', 'intimacy_level', 'interest_level', 'mood_type', 'conversation_count', 'last_interaction', 'created_at', 'updated_at']
+        columns: ['user_id', 'energy_level', 'intimacy_level', 'interest_level', 'mood_type', 'conversation_count', 'last_interaction', 'created_at', 'updated_at', 'valence', 'arousal', 'dominance']
       },
       'user_memories': {
         channel: 'sync_user_memories',
@@ -41,6 +41,11 @@ class SupabaseSync {
         channel: 'sync_conversation_analysis',
         primaryKey: 'id',
         columns: ['id', 'user_id', 'message_id', 'user_message', 'sentiment', 'emotion_detected', 'topic_category', 'keywords', 'importance_score', 'confidence_score', 'analyzed_at']
+      },
+      'user_relationships': {
+        channel: 'sync_user_relationships',
+        primaryKey: 'user_id',
+        columns: ['user_id', 'affection_level', 'trust_level', 'respect_level', 'comfort_level', 'relationship_stage', 'conversation_count', 'meaningful_interactions', 'preferred_formality', 'communication_pace', 'humor_receptivity', 'known_interests', 'avoided_topics', 'positive_triggers', 'negative_triggers', 'first_interaction', 'last_interaction', 'last_mood_detected', 'created_at', 'updated_at']
       }
     };
     
