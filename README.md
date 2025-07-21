@@ -1,6 +1,6 @@
 # AImolt Discord Bot
 
-AImoltは、Gemini 2.5 FlashとSupabaseを活用した多機能Discordボットです。テキストメッセージへの応答、音声メッセージの文字起こし、コンテンツの解説など、多彩な機能を提供します。
+AImoltは、Gemini 2.5 Pro/FlashとSupabaseを活用した多機能Discordボットです。テキストメッセージへの応答、音声メッセージの文字起こし、コンテンツの解説など、多彩な機能を提供します。
 
 - **テキスト応答**: 👍リアクションに、会話履歴を考慮したAIが応答します。
 - **音声文字起こし**: 🎤リアクションを付けるだけで、`.ogg`形式の音声メッセージを文字に起こします（フィラー語除去）。
@@ -302,47 +302,47 @@ PostgreSQL → リアルタイム同期 → Supabase
 
 ```
 aimolt/
-├── app/                             # Node.jsアプリケーション
-│   ├── src/                         # ソースコード
-│   │   ├── index.js                 # Botのメインロジック
-│   │   ├── like.js                  # 👍リアクション処理
-│   │   ├── transcribe.js            # 🎤リアクション処理
-│   │   ├── explain.js               # ❓リアクション処理
-│   │   ├── memo.js                  # 📝メモ機能（Obsidian統合）
-│   │   ├── prompt.js                # プロンプト管理システム
-│   │   ├── profile-sync.js          # プロファイル同期システム
-│   │   ├── supabase-sync.js         # 🔄 Supabase疑似レプリケーション
-│   │   ├── utils/                   # ユーティリティ関数
-│   │   │   └── retry.js             # Gemini API リトライ機能
-│   │   └── personality/             # 🧠 v2.0動的人格システム
-│   │       ├── manager-v2.js        # v2.0統合人格マネージャー
-│   │       ├── vad-emotion.js       # VAD感情システム（valence/arousal/dominance）
-│   │       ├── relationship-manager.js # 関係性管理システム
-│   │       ├── core-personality.js  # Big Five人格特性管理
-│   │       ├── adaptive-response.js # 適応的応答エンジン
-│   │       ├── memory.js            # 記憶蓄積システム
-│   │       ├── analyzer.js          # 会話分析エンジン
-│   │       └── generator.js         # 動的プロンプト生成
-│   ├── prompt/                      # AIプロンプト（一元管理）
-│   │   ├── system.txt               # 基本システム指示
-│   │   ├── like.txt                 # 👍リアクション用
-│   │   ├── transcribe.txt           # 🎤音声文字起こし用
-│   │   ├── explain.txt              # ❓リアクション用
-│   │   └── memo.txt                 # 📝メモ機能用
-│   ├── temp/                        # 音声ファイルの一時保存場所
-│   ├── profile/                     # プロファイルキャッシュ保存場所
-│   ├── initialize-personality-v2.js # 🧠 v2.0過去履歴分析スクリプト
-│   ├── .npmrc                       # npm設定
-│   ├── Dockerfile                   # アプリケーション用Dockerfile
-│   ├── ecosystem.config.js          # PM2設定ファイル
-│   ├── PERSONALITY_SETUP.md         # 人格システムセットアップガイド
+├── app/                                 # Node.jsアプリケーション
+│   ├── src/                             # ソースコード
+│   │   ├── index.js                     # Botのメインロジック
+│   │   ├── like.js                      # 👍リアクション処理
+│   │   ├── transcribe.js                # 🎤リアクション処理
+│   │   ├── explain.js                   # ❓リアクション処理
+│   │   ├── memo.js                      # 📝メモ機能（Obsidian統合）
+│   │   ├── prompt.js                    # プロンプト管理システム
+│   │   ├── profile-sync.js              # プロファイル同期システム
+│   │   ├── supabase-sync.js             # 🔄 Supabase疑似レプリケーション
+│   │   ├── utils/                       # ユーティリティ関数
+│   │   │   └── retry.js                 # Gemini API リトライ機能
+│   │   └── personality/                 # 🧠 v2.0動的人格システム
+│   │       ├── manager-v2.js            # v2.0統合人格マネージャー
+│   │       ├── vad-emotion.js           # VAD感情システム（valence/arousal/dominance）
+│   │       ├── relationship-manager.js  # 関係性管理システム
+│   │       ├── core-personality.js      # Big Five人格特性管理
+│   │       ├── adaptive-response.js     # 適応的応答エンジン
+│   │       ├── memory.js                # 記憶蓄積システム
+│   │       ├── analyzer.js              # 会話分析エンジン
+│   │       └── generator.js             # 動的プロンプト生成
+│   ├── prompt/                          # AIプロンプト（一元管理）
+│   │   ├── system.txt                   # 基本システム指示
+│   │   ├── like.txt                     # 👍リアクション用
+│   │   ├── transcribe.txt               # 🎤音声文字起こし用
+│   │   ├── explain.txt                  # ❓リアクション用
+│   │   └── memo.txt                     # 📝メモ機能用
+│   ├── temp/                            # 音声ファイルの一時保存場所
+│   ├── profile/                         # プロファイルキャッシュ保存場所
+│   ├── initialize-personality-v2.js     # 🧠 v2.0過去履歴分析スクリプト
+│   ├── .npmrc                           # npm設定
+│   ├── Dockerfile                       # アプリケーション用Dockerfile
+│   ├── ecosystem.config.js              # PM2設定ファイル
+│   ├── PERSONALITY_SETUP.md             # 人格システムセットアップガイド
 │   └── package.json
-├── db/                              # データベース関連
-│   ├── init.sql                     # テーブル初期化スキーマ（v2.0人格システム統合済み）
-│   └── data/                        # (ローカル)DBデータ
-├── compose.yaml                     # Docker Compose設定ファイル
+├── db/                                  # データベース関連
+│   ├── init.sql                         # テーブル初期化スキーマ（v2.0人格システム統合済み）
+│   └── data/                            # (ローカル)DBデータ
+├── compose.yaml                         # Docker Compose設定ファイル
 ├── .gitignore
-└── README.md                        # このファイル
+└── README.md                            # このファイル
 ```
 
 ## 📦 利用可能なスクリプト

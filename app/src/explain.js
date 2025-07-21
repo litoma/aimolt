@@ -76,12 +76,16 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
       return;
     }
 
-    // Gemini APIで解説生成（会話履歴は使用しない）
+    // Gemini APIで解説生成（gemini-2.5-pro: 正確性と論理性重視）
     try {
       const model = genAI.getGenerativeModel({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-2.5-pro',
         systemInstruction: { parts: [{ text: explainPrompt }] },
-        generationConfig: { maxOutputTokens: 1500, temperature: 0.7 }
+        generationConfig: { 
+          maxOutputTokens: 1200,  // 的確で簡潔な解説
+          temperature: 0.6,       // 正確性重視
+          topP: 0.9              // 安定した解説品質
+        }
       });
 
       // 新しいチャットセッションを開始（履歴なし）

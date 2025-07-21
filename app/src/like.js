@@ -70,11 +70,15 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
       console.warn('⚠️ Profile load failed, using personality system only:', error.message);
     }
     
-    // Gemini APIで応答を生成
+    // Gemini APIで応答を生成 (gemini-2.5-pro: 高品質な推論と創造性)
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.5-pro',
       systemInstruction: `${systemInstruction}\n\n${finalPrompt}`,
-      generationConfig: { maxOutputTokens: 2000, temperature: 0.7 },
+      generationConfig: { 
+        maxOutputTokens: 2000,  // 文章の途中切れを防止
+        temperature: 1.0,       // デフォルト値: 創造性と自然さ重視
+        topP: 0.95             // 多様性確保
+      },
     });
     
     const chatSession = model.startChat({ history: await getConversationHistory(userId) });
