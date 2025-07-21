@@ -1,14 +1,96 @@
 {
   "profile": {
     "profile_metadata": {
-      "generated_at": "2025-07-21 03:04:05",
+      "generated_at": "2025-07-22 02:00:08",
       "source_files_count": 24,
-      "valid_analyses_count": 10,
-      "failed_analyses_count": 14,
-      "average_confidence": "0.72",
+      "valid_analyses_count": 1,
+      "failed_analyses_count": 0,
+      "average_confidence": "0.755",
       "average_quality": "0.57",
       "analysis_version": "2.0",
-      "update_mode": "full"
+      "update_mode": "incremental",
+      "incremental_files_count": 1,
+      "merge_metadata": {
+        "existing_files": 24,
+        "new_files": 1,
+        "merge_strategy": "intelligent_optimization",
+        "intelligent_metrics": {
+          "similarity_stats": {
+            "core_values": {
+              "totalComparisons": 30,
+              "duplicateCount": 30,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "personality_traits": {
+              "totalComparisons": 0,
+              "duplicateCount": 0,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "thinking_patterns": {
+              "totalComparisons": 63,
+              "duplicateCount": 63,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "interests_and_passions": {
+              "totalComparisons": 0,
+              "duplicateCount": 0,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "communication_style": {
+              "totalComparisons": 0,
+              "duplicateCount": 0,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "current_projects": {
+              "totalComparisons": 0,
+              "duplicateCount": 0,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "recent_learnings": {
+              "totalComparisons": 0,
+              "duplicateCount": 0,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            },
+            "preferred_tools": {
+              "totalComparisons": 0,
+              "duplicateCount": 0,
+              "newContentCount": 0,
+              "similarPairCount": 0
+            }
+          },
+          "confidence_adjustments": {
+            "quality": 0.02,
+            "stability": 0.03,
+            "trend": 0,
+            "context": -0.015,
+            "learning": 0
+          },
+          "stability_metrics": {
+            "volatility": 0,
+            "trend": 0,
+            "reliability": 1
+          },
+          "priority_distribution": {
+            "high": 1,
+            "medium": 0,
+            "low": 0
+          },
+          "optimization_metrics": {
+            "totalSimilarityChecks": 93,
+            "duplicatesRemoved": 93,
+            "newContentAdded": 0,
+            "averagePriority": 1.7002329243334615
+          }
+        },
+        "merge_timestamp": "2025-07-22 02:00:08"
+      }
     },
     "personal_characteristics": {
       "core_values": [
@@ -19,32 +101,7 @@
         "情報共有への積極性",
         "倫理観（情報公開前の許可取り）",
         "高い品質基準",
-        "妥協しない姿勢",
-        "快適な居住環境を重視する",
-        "環境の安定性を重視する"
-      ],
-      "interests_and_passions": [
-        "メモツールの機能",
-        "情報整理",
-        "ツールの機能検証",
-        "日常の記録",
-        "情報共有",
-        "タスク管理",
-        "進捗管理",
-        "家族（特に母親）",
-        "ガジェットや電子機器の機能・操作",
-        "技術的な問題解決",
-        "プログラミング/開発",
-        "効率化",
-        "自己成長",
-        "映画鑑賞",
-        "アクション映画",
-        "Linux (Ubuntu)",
-        "メモツール (Obsidian)",
-        "ソフトウェアのインストールと設定",
-        "鉄道",
-        "旅行",
-        "自身の生活史（特に居住環境の変遷）"
+        "妥協しない姿勢"
       ],
       "personality_traits": [
         "試行錯誤するタイプ",
@@ -84,20 +141,30 @@
         "影響分析（公開による影響を考察）",
         "構造化思考（チェックリストの利用）",
         "具体的な手順で思考を整理する",
-        "問題点と解決策を明確に認識する",
-        "情報を構造化して記録する",
-        "実用的な視点から物事を評価する",
-        "自己言及的な思考",
-        "日常のパターン認識",
-        "効率化志向",
-        "自己分析的",
-        "課題意識が高い",
-        "仮説検証型",
-        "経験学習型",
-        "問題解決志向",
-        "目標達成のために具体的な手段を講じる",
-        "居住環境の変化を評価する傾向がある",
-        "出来事の背景や原因を簡潔に説明する"
+        "問題点と解決策を明確に認識する"
+      ],
+      "interests_and_passions": [
+        "メモツールの機能",
+        "情報整理",
+        "ツールの機能検証",
+        "日常の記録",
+        "情報共有",
+        "タスク管理",
+        "進捗管理",
+        "家族（特に母親）",
+        "ガジェットや電子機器の機能・操作",
+        "技術的な問題解決",
+        "プログラミング/開発",
+        "効率化",
+        "自己成長",
+        "映画鑑賞",
+        "アクション映画",
+        "Linux (Ubuntu)",
+        "メモツール (Obsidian)",
+        "ソフトウェアのインストールと設定",
+        "鉄道",
+        "旅行",
+        "自身の生活史（特に居住環境の変遷）"
       ],
       "communication_style": [
         "簡潔",
@@ -122,6 +189,15 @@
         "プログラミング/開発作業",
         "ObsidianのUbuntu環境への導入"
       ],
+      "recent_learnings": [
+        "メモツールの機能（タグ付け、追記、階層構造）",
+        "使用しているメモツールの機能（特に改行の挙動）",
+        "OPSODIS1の「常に電源オン」設定方法",
+        "Raindrop.ioのTags Managerの一括削除機能",
+        "UbuntuにおけるObsidianインストールの最適な方法 (debパッケージ)",
+        "時にはAIや一般的な推奨に従うことの重要性",
+        "鉄道のチケット予約における特定の購入方法（10時打ち）"
+      ],
       "preferred_tools": [
         "Markdown形式のメモツール",
         "タグ付け機能のあるツール",
@@ -140,15 +216,6 @@
         "Discord",
         "Discord (コミュニケーション/情報共有)",
         "文字起こし関連ツール (テスト中)"
-      ],
-      "recent_learnings": [
-        "メモツールの機能（タグ付け、追記、階層構造）",
-        "使用しているメモツールの機能（特に改行の挙動）",
-        "OPSODIS1の「常に電源オン」設定方法",
-        "Raindrop.ioのTags Managerの一括削除機能",
-        "UbuntuにおけるObsidianインストールの最適な方法 (debパッケージ)",
-        "時にはAIや一般的な推奨に従うことの重要性",
-        "鉄道のチケット予約における特定の購入方法（10時打ち）"
       ]
     },
     "key_insights": [
@@ -186,816 +253,138 @@
     "debug_info": {
       "processed_files": [
         {
-          "path": "Journal/2025-05-19.md",
-          "wordCount": 20,
-          "charCount": 137
-        },
-        {
-          "path": "Journal/2025-05-20.md",
-          "wordCount": 10,
-          "charCount": 80
-        },
-        {
-          "path": "Journal/2025-05-21.md",
-          "wordCount": 35,
-          "charCount": 391
-        },
-        {
-          "path": "Journal/2025-05-22.md",
-          "wordCount": 32,
-          "charCount": 213
-        },
-        {
-          "path": "Journal/2025-05-23.md",
-          "wordCount": 28,
-          "charCount": 346
-        },
-        {
-          "path": "Journal/2025-05-24.md",
-          "wordCount": 25,
-          "charCount": 340
-        },
-        {
-          "path": "Journal/2025-05-25.md",
-          "wordCount": 9,
-          "charCount": 91
-        },
-        {
-          "path": "Journal/2025-05-26.md",
-          "wordCount": 45,
-          "charCount": 462
-        },
-        {
-          "path": "Journal/2025-05-28.md",
-          "wordCount": 56,
-          "charCount": 711
-        },
-        {
-          "path": "Journal/2025-05-29.md",
-          "wordCount": 17,
-          "charCount": 288
-        },
-        {
-          "path": "Journal/2025-05-30.md",
-          "wordCount": 66,
-          "charCount": 576
-        },
-        {
-          "path": "Journal/2025-05-31.md",
-          "wordCount": 16,
-          "charCount": 231
-        },
-        {
-          "path": "Journal/2025-06-01.md",
-          "wordCount": 50,
-          "charCount": 1245
-        },
-        {
-          "path": "Journal/2025-07-17.md",
-          "wordCount": 26,
-          "charCount": 379
-        },
-        {
-          "path": "Journal/2025-07-18.md",
-          "wordCount": 8,
-          "charCount": 266
-        },
-        {
-          "path": "Journal/2025-07-19.md",
-          "wordCount": 6,
-          "charCount": 268
-        },
-        {
-          "path": "Journal/2025-07-20.md",
-          "wordCount": 14,
-          "charCount": 1112
-        },
-        {
-          "path": "Note/00 今後書くこと.md",
-          "wordCount": 25,
-          "charCount": 217
-        },
-        {
-          "path": "Note/01 略歴.md",
-          "wordCount": 11,
-          "charCount": 237
-        },
-        {
-          "path": "Note/02 勉強.md",
-          "wordCount": 72,
-          "charCount": 1872
-        },
-        {
-          "path": "Note/03 家族.md",
-          "wordCount": 18,
-          "charCount": 334
-        },
-        {
-          "path": "Note/04 住居.md",
-          "wordCount": 23,
-          "charCount": 423
-        },
-        {
-          "path": "Note/05 交友.md",
-          "wordCount": 13,
-          "charCount": 569
-        },
-        {
-          "path": "Note/90 MBTI診断.md",
-          "wordCount": 71,
-          "charCount": 1614
+          "path": "Journal/2025-07-21.md",
+          "wordCount": 5,
+          "charCount": 147,
+          "content": "2025-07-21\n- [19:26](https://discord.com/channels/1385044127497977936/1388148828657680404/1396800427340730388) 現状では、AIは自分の鏡であり、自分の要求を超えることは実現できない\n\n",
+          "mtime": "2025-07-21T10:26:38.446Z"
         }
       ],
       "analysis_results": [
         {
-          "file": "Journal/2025-05-19.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [
-              "メモツールの機能",
-              "情報整理"
-            ],
-            "personality": [
-              "試行錯誤するタイプ"
-            ],
-            "thinking_patterns": [
-              "機能検証型"
-            ],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [
-                "日常の記録",
-                "新しいメモツールの試用"
-              ],
-              "tools_used": [
-                "Markdown形式のメモツール",
-                "タグ付け機能のあるツール"
-              ],
-              "recent_learnings": [
-                "メモツールの機能（タグ付け、追記、階層構造）"
-              ]
-            },
-            "confidence": 0.8,
-            "key_insights": [
-              "新しいメモツールを試用しており、その機能（タグ付け、追記、階層構造）を探求している。",
-              "日常の記録をつけようとしている。"
-            ]
-          },
-          "processed_at": "2025-07-21 03:00:10",
-          "success": true
-        },
-        {
-          "file": "Journal/2025-05-20.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [
-              "ツールの機能検証",
-              "日常の記録"
-            ],
-            "personality": [
-              "探求心がある",
-              "新しいものを試すことに抵抗がない",
-              "几帳面さがある"
-            ],
-            "thinking_patterns": [
-              "試行錯誤的",
-              "疑問を抱き、それを検証しようとする",
-              "記録を重視する"
-            ],
-            "communication_style": [
-              "簡潔",
-              "疑問を直接的に表現する"
-            ],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [
-                "パソコン",
-                "メモツール（またはエディタ）"
-              ],
-              "recent_learnings": [
-                "使用しているメモツールの機能（特に改行の挙動）"
-              ]
-            },
-            "confidence": 0.6,
-            "key_insights": [
-              "日常的にデジタルツールを利用し、その機能検証や記録に関心がある人物である。"
-            ]
-          },
-          "processed_at": "2025-07-21 03:00:18",
-          "success": true
-        },
-        {
-          "file": "Journal/2025-05-21.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:00:29",
-          "error": "All JSON parse attempts failed for Journal/2025-05-21.md",
-          "success": false
-        },
-        {
-          "file": "Journal/2025-05-22.md",
+          "file": "Journal/2025-07-21.md",
           "analysis": {
             "core_values": [
-              "透明性",
-              "情報共有"
+              "AIの能力に対する現実的な認識",
+              "人間の思考や要求がAIの限界を規定するという信念",
+              "自己認識の重要性（AIを「自分の鏡」と捉える点から）"
             ],
             "interests": [
-              "情報共有",
-              "タスク管理",
-              "進捗管理"
+              "人工知能 (AI)",
+              "技術哲学",
+              "自己認識"
             ],
             "personality": [
-              "疑問を抱きやすい",
-              "他者の意見を気にする傾向",
-              "計画性への関心"
-            ],
-            "thinking_patterns": [
-              "影響分析（公開による影響を考察）",
-              "構造化思考（チェックリストの利用）"
-            ],
-            "communication_style": [
-              "質問形式",
-              "簡潔"
-            ],
-            "contextual_info": {
-              "current_projects": [
-                "何らかのタスクやプロジェクト（具体的な内容は不明）"
-              ],
-              "tools_used": [
-                "メモアプリ（Markdown形式、チェックリスト機能）"
-              ],
-              "recent_learnings": []
-            },
-            "confidence": 0.8,
-            "key_insights": [
-              "情報の公開や共有に関心が高い",
-              "タスク管理や進捗管理を日常的に行っている",
-              "他者の意見や反応を気にする傾向がある"
-            ]
-          },
-          "processed_at": "2025-07-21 03:00:39",
-          "success": true
-        },
-        {
-          "file": "Journal/2025-05-23.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:00:49",
-          "error": "All JSON parse attempts failed for Journal/2025-05-23.md",
-          "success": false
-        },
-        {
-          "file": "Journal/2025-05-24.md",
-          "analysis": {
-            "core_values": [
-              "優しさや可愛らしさの評価",
-              "実用性・利便性の重視",
-              "情報共有への積極性",
-              "倫理観（情報公開前の許可取り）"
-            ],
-            "interests": [
-              "家族（特に母親）",
-              "ガジェットや電子機器の機能・操作",
-              "技術的な問題解決",
-              "プログラミング/開発",
-              "日常の記録"
-            ],
-            "personality": [
-              "観察力がある",
-              "問題解決志向",
-              "情報共有に積極的",
-              "几帳面（手順の記録）",
-              "ユーモアのセンスがある（父親の描写）",
-              "配慮がある（情報公開の許可取り）"
-            ],
-            "thinking_patterns": [
-              "具体的な手順で思考を整理する",
-              "問題点と解決策を明確に認識する",
-              "情報を構造化して記録する",
-              "実用的な視点から物事を評価する"
-            ],
-            "communication_style": [
-              "簡潔かつ直接的",
-              "具体的な情報を提供する",
-              "必要に応じて外部情報（サポート）を活用する",
-              "オープンに情報を共有する意向がある"
-            ],
-            "contextual_info": {
-              "current_projects": [
-                "プログラミング/開発作業",
-                "日常の記録"
-              ],
-              "tools_used": [
-                "OPSODIS1",
-                "コマンドラインインターフェース"
-              ],
-              "recent_learnings": [
-                "OPSODIS1の「常に電源オン」設定方法"
-              ]
-            },
-            "confidence": 0.8,
-            "key_insights": [
-              "技術的な関心と問題解決能力を持つ人物である。",
-              "家族や日常生活に目を向け、感情を表現する側面もある。",
-              "得た情報を他者と共有することに積極的で、倫理的な配慮も持ち合わせている。"
-            ]
-          },
-          "processed_at": "2025-07-21 03:01:00",
-          "success": true
-        },
-        {
-          "file": "Journal/2025-05-25.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [
-              "自己認識力がある",
-              "日常の観察力がある"
-            ],
-            "thinking_patterns": [
-              "自己言及的な思考",
-              "日常のパターン認識"
-            ],
-            "communication_style": [
-              "口語的な表現を使用"
-            ],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.5,
-            "key_insights": [
-              "日常の行動パターンを観察し、自己認識している",
-              "日常を記録しようとする意図がある"
-            ]
-          },
-          "processed_at": "2025-07-21 03:01:09",
-          "success": true
-        },
-        {
-          "file": "Journal/2025-05-26.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:01:20",
-          "error": "All JSON parse attempts failed for Journal/2025-05-26.md",
-          "success": false
-        },
-        {
-          "file": "Journal/2025-05-28.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:01:32",
-          "error": "All JSON parse attempts failed for Journal/2025-05-28.md",
-          "success": false
-        },
-        {
-          "file": "Journal/2025-05-29.md",
-          "analysis": {
-            "core_values": [
-              "高い品質基準",
-              "妥協しない姿勢"
-            ],
-            "interests": [
-              "情報整理",
-              "効率化",
-              "自己成長"
-            ],
-            "personality": [
-              "責任感が強い",
-              "自己反省的",
-              "勤勉"
-            ],
-            "thinking_patterns": [
-              "効率化志向",
-              "自己分析的",
-              "課題意識が高い"
-            ],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [
-                "Raindrop.io"
-              ],
-              "recent_learnings": [
-                "Raindrop.ioのTags Managerの一括削除機能"
-              ]
-            },
-            "confidence": 0.8,
-            "key_insights": [
-              "仕事の品質に対する高い意識と、自己の状況がそれに与える影響を深く考察する傾向がある。",
-              "効率的な情報管理に関心がある。"
-            ]
-          },
-          "processed_at": "2025-07-21 03:01:38",
-          "success": true
-        },
-        {
-          "file": "Journal/2025-05-30.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:01:49",
-          "error": "All JSON parse attempts failed for Journal/2025-05-30.md",
-          "success": false
-        },
-        {
-          "file": "Journal/2025-05-31.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [
-              "映画鑑賞",
-              "アクション映画",
-              "Linux (Ubuntu)",
-              "メモツール (Obsidian)",
-              "ソフトウェアのインストールと設定",
-              "技術的な問題解決"
-            ],
-            "personality": [
-              "試行錯誤をいとわない",
-              "探求心がある",
-              "独立志向",
+              "分析的",
               "現実的",
-              "学習意欲がある"
+              "内省的"
             ],
             "thinking_patterns": [
-              "仮説検証型",
-              "経験学習型",
-              "問題解決志向"
+              "概念的思考",
+              "限界思考",
+              "自己参照的思考"
             ],
             "communication_style": [],
-            "contextual_info": {
-              "current_projects": [
-                "ObsidianのUbuntu環境への導入"
-              ],
-              "tools_used": [
-                "Ubuntu",
-                "Obsidian",
-                "AI (アドバイス源)",
-                "snap",
-                "AppImage",
-                "debパッケージ"
-              ],
-              "recent_learnings": [
-                "UbuntuにおけるObsidianインストールの最適な方法 (debパッケージ)",
-                "時にはAIや一般的な推奨に従うことの重要性"
-              ]
-            },
-            "confidence": 0.8,
-            "key_insights": [
-              "技術的な問題解決において、自身の直感を信じて試行錯誤する傾向があるが、最終的には実用的な解決策を受け入れる現実的なアプローチを取る。",
-              "エンターテイメント（映画）にも関心がある。"
-            ]
-          },
-          "processed_at": "2025-07-21 03:02:00",
-          "success": true
-        },
-        {
-          "file": "Journal/2025-06-01.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:02:11",
-          "error": "All JSON parse attempts failed for Journal/2025-06-01.md",
-          "success": false
-        },
-        {
-          "file": "Journal/2025-07-17.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [
-              "丁寧語を使用する",
-              "簡潔な表現を用いる"
-            ],
             "contextual_info": {
               "current_projects": [],
               "tools_used": [
                 "Discord"
               ],
-              "recent_learnings": []
+              "recent_learnings": [
+                "AIの能力は人間の要求や思考に依存し、それを超えることはできないという洞察"
+              ]
             },
             "confidence": 0.6,
             "key_insights": [
-              "Discordプラットフォームを利用している",
-              "Discordの機能テストを行っている",
-              "丁寧な言葉遣いをする"
+              "AIの能力と限界について深く考察している人物である。",
+              "AIを単なるツールではなく、人間の思考や要求を反映するものとして捉えている。",
+              "技術に対して現実的かつ哲学的な視点を持っている。"
             ]
           },
-          "processed_at": "2025-07-21 03:02:18",
+          "processed_at": "2025-07-22 02:00:08",
           "success": true
-        },
-        {
-          "file": "Journal/2025-07-18.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:02:29",
-          "error": "All JSON parse attempts failed for Journal/2025-07-18.md",
-          "success": false
-        },
-        {
-          "file": "Journal/2025-07-19.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [
-              "鉄道",
-              "旅行"
-            ],
-            "personality": [
-              "計画的",
-              "達成志向",
-              "新しい経験に挑戦する意欲"
-            ],
-            "thinking_patterns": [
-              "目標達成のために具体的な手段を講じる"
-            ],
-            "communication_style": [
-              "丁寧語を使用する傾向がある"
-            ],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [
-                "Discord (コミュニケーション/情報共有)",
-                "文字起こし関連ツール (テスト中)"
-              ],
-              "recent_learnings": [
-                "鉄道のチケット予約における特定の購入方法（10時打ち）"
-              ]
-            },
-            "confidence": 0.7,
-            "key_insights": [
-              "鉄道や旅行に関心があり、計画的に行動し、新しい経験にも前向きに取り組む人物像がうかがえる。",
-              "デジタルツール（Discord）を利用し、文字起こしのような技術的なテストも行っている。"
-            ]
-          },
-          "processed_at": "2025-07-21 03:02:38",
-          "success": true
-        },
-        {
-          "file": "Journal/2025-07-20.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:02:48",
-          "error": "All JSON parse attempts failed for Journal/2025-07-20.md",
-          "success": false
-        },
-        {
-          "file": "Note/00 今後書くこと.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:03:00",
-          "error": "All JSON parse attempts failed for Note/00 今後書くこと.md",
-          "success": false
-        },
-        {
-          "file": "Note/01 略歴.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:03:11",
-          "error": "All JSON parse attempts failed for Note/01 略歴.md",
-          "success": false
-        },
-        {
-          "file": "Note/02 勉強.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:03:22",
-          "error": "All JSON parse attempts failed for Note/02 勉強.md",
-          "success": false
-        },
-        {
-          "file": "Note/03 家族.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:03:34",
-          "error": "All JSON parse attempts failed for Note/03 家族.md",
-          "success": false
-        },
-        {
-          "file": "Note/04 住居.md",
-          "analysis": {
-            "core_values": [
-              "快適な居住環境を重視する",
-              "環境の安定性を重視する"
-            ],
-            "interests": [
-              "自身の生活史（特に居住環境の変遷）"
-            ],
-            "personality": [
-              "記憶力が良い",
-              "過去の出来事を整理して記録する傾向がある",
-              "感謝の気持ちを持つ"
-            ],
-            "thinking_patterns": [
-              "居住環境の変化を評価する傾向がある",
-              "出来事の背景や原因を簡潔に説明する"
-            ],
-            "communication_style": [
-              "簡潔で事実に基づいた記述を好む"
-            ],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.8,
-            "key_insights": [
-              "幼少期から現在に至るまで、居住環境が複数回変化している。",
-              "居住環境の変化（特に改善や安定）をポジティブに捉える傾向がある。",
-              "家族の出来事が本人の生活に影響を与えている。"
-            ]
-          },
-          "processed_at": "2025-07-21 03:03:44",
-          "success": true
-        },
-        {
-          "file": "Note/05 交友.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:03:55",
-          "error": "All JSON parse attempts failed for Note/05 交友.md",
-          "success": false
-        },
-        {
-          "file": "Note/90 MBTI診断.md",
-          "analysis": {
-            "core_values": [],
-            "interests": [],
-            "personality": [],
-            "thinking_patterns": [],
-            "communication_style": [],
-            "contextual_info": {
-              "current_projects": [],
-              "tools_used": [],
-              "recent_learnings": []
-            },
-            "confidence": 0.1,
-            "key_insights": []
-          },
-          "processed_at": "2025-07-21 03:04:05",
-          "error": "All JSON parse attempts failed for Note/90 MBTI診断.md",
-          "success": false
         }
-      ]
+      ],
+      "merge_strategy": "intelligent_optimization",
+      "intelligent_enabled": true,
+      "intelligent_metrics": {
+        "similarity_stats": {
+          "core_values": {
+            "totalComparisons": 30,
+            "duplicateCount": 30,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "personality_traits": {
+            "totalComparisons": 0,
+            "duplicateCount": 0,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "thinking_patterns": {
+            "totalComparisons": 63,
+            "duplicateCount": 63,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "interests_and_passions": {
+            "totalComparisons": 0,
+            "duplicateCount": 0,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "communication_style": {
+            "totalComparisons": 0,
+            "duplicateCount": 0,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "current_projects": {
+            "totalComparisons": 0,
+            "duplicateCount": 0,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "recent_learnings": {
+            "totalComparisons": 0,
+            "duplicateCount": 0,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          },
+          "preferred_tools": {
+            "totalComparisons": 0,
+            "duplicateCount": 0,
+            "newContentCount": 0,
+            "similarPairCount": 0
+          }
+        },
+        "confidence_adjustments": {
+          "quality": 0.02,
+          "stability": 0.03,
+          "trend": 0,
+          "context": -0.015,
+          "learning": 0
+        },
+        "stability_metrics": {
+          "volatility": 0,
+          "trend": 0,
+          "reliability": 1
+        },
+        "priority_distribution": {
+          "high": 1,
+          "medium": 0,
+          "low": 0
+        },
+        "optimization_metrics": {
+          "totalSimilarityChecks": 93,
+          "duplicatesRemoved": 93,
+          "newContentAdded": 0,
+          "averagePriority": 1.7002329243334615
+        }
+      }
     }
   },
-  "cached_at": "2025-07-21T03:07:58.337Z",
+  "cached_at": "2025-07-21T22:56:13.939Z",
   "bot_version": "aimolt-v1.0.0",
   "cache_duration_hours": 12
 }

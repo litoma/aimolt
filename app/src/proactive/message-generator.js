@@ -97,11 +97,11 @@ class MessageGenerator {
     };
 
     try {
-      // 会話履歴の取得（直近20件）
+      // 会話履歴の取得（直近20件、プロアクティブメッセージ除外）
       const historyResult = await this.pgPool.query(
         `SELECT user_message, bot_response, created_at, message_type 
          FROM conversations 
-         WHERE user_id = $1 
+         WHERE user_id = $1 AND message_type != 'proactive'
          ORDER BY created_at DESC 
          LIMIT 20`,
         [userId]
@@ -129,8 +129,21 @@ class MessageGenerator {
 
       // v2.0人格システム状態の取得
       try {
-        context.personalityState = await personalityManagerV2.getCurrentPersonality(userId);
-        context.summary.hasPersonality = !!context.personalityState;
+        // 人格システムから現在の感情状態を取得
+        const { vadEmotionManager } = require('../personality/vad-emotion');
+        const { relationshipManager } = require('../personality/relationship-manager');
+        
+        const [emotionState, relationshipState] = await Promise.all([
+          vadEmotionManager.getCurrentEmotion(userId),
+          relationshipManager.getUserRelationship(userId)
+        ]);
+        
+        context.personalityState = {
+          emotion: emotionState,
+          relationship: relationshipState,
+          systemVersion: 'v2.0'
+        };
+        context.summary.hasPersonality = !!(emotionState || relationshipState);
       } catch (error) {
         console.warn('⚠️ 人格システム状態取得失敗:', error.message);
         context.summary.hasPersonality = false;
@@ -312,13 +325,13 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
     console.log('🚀 Gemini APIでメッセージ生成中...');
 
     try {
-      // Gemini を使用（環境変数から設定読み込み）
+      // Gemini を使用（固定設定）
       const model = this.genAI.getGenerativeModel({
-        model: process.env.PROACTIVE_AI_MODEL || 'gemini-2.0-flash-exp',
+        model: 'gemini-2.5-pro',
         systemInstruction: prompt.systemInstruction,
         generationConfig: {
-          maxOutputTokens: parseInt(process.env.PROACTIVE_MAX_OUTPUT_TOKENS) || 300,
-          temperature: parseFloat(process.env.PROACTIVE_TEMPERATURE) || 0.8,
+          maxOutputTokens: 1000,
+          temperature: 0.95,
           topP: 0.9
         }
       });

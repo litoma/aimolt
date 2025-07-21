@@ -18,7 +18,7 @@ class ProactiveDatabaseHelpers {
       const result = await this.pgPool.query(
         `SELECT MAX(created_at) as last_conversation 
          FROM conversations 
-         WHERE user_id = $1`,
+         WHERE user_id = $1 AND message_type != 'proactive'`,
         [userId]
       );
       
