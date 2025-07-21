@@ -123,6 +123,47 @@ class ProactiveDatabaseHelpers {
   }
 
   /**
+   * プロアクティブメッセージの対象ユーザーを自動選出
+   * @param {number} daysRange - 対象期間（日数、デフォルト30日）
+   * @returns {Promise<string|null>} 選出されたユーザーID、該当なしならnull
+   */
+  async getTargetUserForProactive(daysRange = 30) {
+    try {
+      const result = await this.pgPool.query(
+        `SELECT 
+           user_id,
+           COUNT(*) as conversation_count,
+           MAX(created_at) as last_conversation,
+           COUNT(CASE WHEN message_type = 'proactive' THEN 1 END) as proactive_count,
+           COUNT(CASE WHEN message_type = 'response_to_proactive' THEN 1 END) as response_count
+         FROM conversations 
+         WHERE created_at >= NOW() - INTERVAL '${daysRange} days'
+           AND message_type != 'proactive'  -- プロアクティブメッセージは除外
+         GROUP BY user_id
+         HAVING COUNT(*) >= 5  -- 最低5回の会話があるユーザー
+         ORDER BY 
+           last_conversation DESC,  -- 最近会話したユーザー優先
+           conversation_count DESC  -- 会話回数の多いユーザー優先
+         LIMIT 1`,
+        []
+      );
+
+      if (result.rows.length === 0) {
+        console.log('⚠️ プロアクティブメッセージ対象ユーザーが見つかりません');
+        return null;
+      }
+
+      const selectedUser = result.rows[0];
+      console.log(`✅ プロアクティブ対象ユーザー選出: ${selectedUser.user_id} (会話${selectedUser.conversation_count}回, 最終会話: ${selectedUser.last_conversation})`);
+      
+      return selectedUser.user_id;
+    } catch (error) {
+      console.error('❌ 対象ユーザー選出エラー:', error.message);
+      return null;
+    }
+  }
+
+  /**
    * プロアクティブメッセージ統計を取得
    * @param {string} userId - ユーザーID
    * @returns {Promise<Object>} 統計情報

@@ -4,10 +4,11 @@ const { ProactiveDatabaseHelpers } = require('./database-helpers');
  * プロアクティブメッセージ送信タイミング制御システム
  * 
  * 送信条件:
- * 1. 最後の会話から6時間以上経過 (優先条件)
- * 2. 最後のプロアクティブメッセージから24-72時間経過
- * 3. ターゲットユーザー: litoma
- * 4. ターゲットチャンネル: general
+ * 1. 自動選出されたアクティブユーザーを対象
+ * 2. 最後の会話から6時間以上経過 (優先条件)
+ * 3. 最後のプロアクティブメッセージから24-72時間経過
+ * 4. 前回のプロアクティブメッセージに対する応答があること
+ * 5. ターゲットチャンネル: general
  */
 class TimingController {
   constructor(pgPool) {
@@ -16,7 +17,6 @@ class TimingController {
     
     // 設定値（環境変数から読み込み、単位: ミリ秒）
     this.config = {
-      TARGET_USER_ID: process.env.PROACTIVE_TARGET_USER_ID || 'litoma',
       TARGET_CHANNEL_NAME: process.env.PROACTIVE_TARGET_CHANNEL || 'general',
       
       // タイミング制御
@@ -35,22 +35,31 @@ class TimingController {
   /**
    * プロアクティブメッセージ送信判定のメイン関数
    * @param {Client} discordClient - Discord.jsクライアント
-   * @returns {Promise<{shouldSend: boolean, reason: string, channel?: any}>}
+   * @returns {Promise<{shouldSend: boolean, reason: string, channel?: any, targetUser?: string}>}
    */
   async shouldSendProactiveMessage(discordClient) {
     const check = {
       shouldSend: false,
       reason: '',
       channel: null,
+      targetUser: null,
       debug: {
-        targetUser: this.config.TARGET_USER_ID,
         targetChannel: this.config.TARGET_CHANNEL_NAME,
         debugMode: this.config.DEBUG_MODE
       }
     };
 
     try {
-      // 1. ターゲットチャンネルの存在確認
+      // 1. ターゲットユーザーの自動選出
+      const targetUserId = await this.helpers.getTargetUserForProactive();
+      if (!targetUserId) {
+        check.reason = '❌ プロアクティブメッセージの対象ユーザーが見つかりません';
+        return check;
+      }
+      check.targetUser = targetUserId;
+      check.debug.targetUser = targetUserId;
+
+      // 2. ターゲットチャンネルの存在確認
       const channelCheck = await this._checkTargetChannel(discordClient);
       if (!channelCheck.exists) {
         check.reason = `❌ ターゲットチャンネル '${this.config.TARGET_CHANNEL_NAME}' が見つかりません`;
@@ -58,8 +67,8 @@ class TimingController {
       }
       check.channel = channelCheck.channel;
 
-      // 2. 会話履歴の確認
-      const conversationCheck = await this._checkConversationTiming();
+      // 3. 会話履歴の確認
+      const conversationCheck = await this._checkConversationTiming(targetUserId);
       if (!conversationCheck.valid) {
         check.reason = conversationCheck.reason;
         check.debug.lastConversation = conversationCheck.lastConversation;
@@ -67,8 +76,8 @@ class TimingController {
         return check;
       }
 
-      // 3. プロアクティブメッセージの履歴確認
-      const proactiveCheck = await this._checkProactiveTiming();
+      // 4. プロアクティブメッセージの履歴確認
+      const proactiveCheck = await this._checkProactiveTiming(targetUserId);
       if (!proactiveCheck.valid) {
         check.reason = proactiveCheck.reason;
         check.debug.lastProactive = proactiveCheck.lastProactive;
@@ -76,13 +85,22 @@ class TimingController {
         return check;
       }
 
+      // 5. 前回プロアクティブメッセージへの応答確認
+      const responseCheck = await this._checkProactiveResponse(targetUserId);
+      if (!responseCheck.valid) {
+        check.reason = responseCheck.reason;
+        check.debug.needsResponse = true;
+        return check;
+      }
+
       // すべての条件をクリア
       check.shouldSend = true;
-      check.reason = `✅ 送信条件を満たしています`;
+      check.reason = `✅ 送信条件を満たしています (対象: ${targetUserId})`;
       check.debug.lastConversation = conversationCheck.lastConversation;
       check.debug.lastProactive = proactiveCheck.lastProactive;
       check.debug.conversationGapHours = conversationCheck.gapHours;
       check.debug.proactiveGapHours = proactiveCheck.gapHours;
+      check.debug.hasResponse = responseCheck.hasResponse;
 
       return check;
 
@@ -116,11 +134,12 @@ class TimingController {
 
   /**
    * 会話タイミングの確認
+   * @param {string} userId - ユーザーID
    * @private
    */
-  async _checkConversationTiming() {
+  async _checkConversationTiming(userId) {
     try {
-      const lastConversation = await this.helpers.getLastConversationTime(this.config.TARGET_USER_ID);
+      const lastConversation = await this.helpers.getLastConversationTime(userId);
       const now = new Date();
       const gapMs = now.getTime() - lastConversation.getTime();
       
@@ -159,11 +178,12 @@ class TimingController {
 
   /**
    * プロアクティブメッセージタイミングの確認
+   * @param {string} userId - ユーザーID
    * @private
    */
-  async _checkProactiveTiming() {
+  async _checkProactiveTiming(userId) {
     try {
-      const lastProactive = await this.helpers.getLastProactiveMessageTime(this.config.TARGET_USER_ID);
+      const lastProactive = await this.helpers.getLastProactiveMessageTime(userId);
       const now = new Date();
       const gapMs = now.getTime() - lastProactive.getTime();
       
@@ -207,6 +227,69 @@ class TimingController {
         reason: `❌ プロアクティブ履歴の確認中にエラー: ${error.message}`,
         lastProactive: null,
         gapHours: 0
+      };
+    }
+  }
+
+  /**
+   * 前回プロアクティブメッセージへの応答確認
+   * @param {string} userId - ユーザーID
+   * @private
+   */
+  async _checkProactiveResponse(userId) {
+    try {
+      // 最後のプロアクティブメッセージを取得
+      const result = await this.pgPool.query(
+        `SELECT created_at 
+         FROM conversations 
+         WHERE user_id = $1 AND message_type = 'proactive'
+         ORDER BY created_at DESC 
+         LIMIT 1`,
+        [userId]
+      );
+
+      // プロアクティブメッセージがない場合は送信OK（初回）
+      if (result.rows.length === 0) {
+        return {
+          valid: true,
+          hasResponse: null,
+          reason: '初回プロアクティブメッセージ送信'
+        };
+      }
+
+      const lastProactiveTime = new Date(result.rows[0].created_at);
+
+      // 最後のプロアクティブメッセージ以降に応答があるかチェック
+      const responseResult = await this.pgPool.query(
+        `SELECT COUNT(*) as response_count
+         FROM conversations 
+         WHERE user_id = $1 
+           AND message_type = 'response_to_proactive'
+           AND created_at > $2`,
+        [userId, lastProactiveTime]
+      );
+
+      const responseCount = parseInt(responseResult.rows[0].response_count);
+      
+      if (responseCount === 0) {
+        return {
+          valid: false,
+          hasResponse: false,
+          reason: '❌ 前回のプロアクティブメッセージに対する応答がありません'
+        };
+      }
+
+      return {
+        valid: true,
+        hasResponse: true,
+        responseCount
+      };
+
+    } catch (error) {
+      return {
+        valid: false,
+        hasResponse: null,
+        reason: `❌ 応答確認中にエラー: ${error.message}`
       };
     }
   }

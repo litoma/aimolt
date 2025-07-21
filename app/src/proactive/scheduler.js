@@ -119,7 +119,7 @@ class ProactiveScheduler {
         console.log(`📍 理由: ${judgment.reason}`);
         
         // メッセージ生成・送信を実行
-        await this._triggerProactiveMessage(judgment.channel);
+        await this._triggerProactiveMessage(judgment.channel, judgment.targetUser);
         
       } else {
         console.log('⏰ プロアクティブメッセージ送信条件を満たしていません');
@@ -145,16 +145,16 @@ class ProactiveScheduler {
 
   /**
    * プロアクティブメッセージの送信トリガー
+   * @param {Object} channel - Discord チャンネル
+   * @param {string} targetUserId - 対象ユーザーID
    * @private
    */
-  async _triggerProactiveMessage(channel) {
+  async _triggerProactiveMessage(channel, targetUserId) {
     try {
       this.stats.messagesTriggered++;
       this.stats.lastTrigger = new Date();
 
-      console.log('🤖 プロアクティブメッセージ送信を開始...');
-      
-      const targetUserId = this.timingController.config.TARGET_USER_ID;
+      console.log(`🤖 プロアクティブメッセージ送信を開始... (対象: ${targetUserId})`);
       
       // Phase 4: チャンネル送信権限の確認
       const permissionCheck = await this.discordSender.checkChannelPermissions(channel);

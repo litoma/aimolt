@@ -97,13 +97,13 @@ class MessageGenerator {
     };
 
     try {
-      // 会話履歴の取得（直近20件、プロアクティブメッセージ除外）
+      // 会話履歴の取得（直近100件、プロアクティブメッセージ除外）
       const historyResult = await this.pgPool.query(
         `SELECT user_message, bot_response, created_at, message_type 
          FROM conversations 
          WHERE user_id = $1 AND message_type != 'proactive'
          ORDER BY created_at DESC 
-         LIMIT 20`,
+         LIMIT 100`,
         [userId]
       );
       
