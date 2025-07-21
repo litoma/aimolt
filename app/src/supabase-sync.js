@@ -25,7 +25,7 @@ class SupabaseSync {
       'conversations': {
         channel: 'sync_conversations',
         primaryKey: 'id',
-        columns: ['id', 'user_id', 'user_message', 'bot_response', 'created_at']
+        columns: ['id', 'user_id', 'user_message', 'bot_response', 'message_type', 'initiator', 'created_at']
       },
       'emotion_states': {
         channel: 'sync_emotion_states', 

@@ -12,9 +12,15 @@ const { handleMemoReaction } = require('./memo');
 const { personalityManagerV2 } = require('./personality/manager-v2');
 const { PersonalityCommandV2 } = require('./personality-command-v2');
 const { supabaseSync } = require('./supabase-sync');
+const { ProactiveScheduler } = require('./proactive/scheduler');
+const { ProactiveManagementCommands } = require('./proactive/management-commands');
 
 // 人格システムv2.0初期化
 const personalityCommandV2 = new PersonalityCommandV2();
+
+// プロアクティブメッセージシステム初期化（ボット起動後に設定）
+let proactiveScheduler = null;
+let proactiveCommands = null;
 
 // クライアントの設定
 const client = new Client({
@@ -97,6 +103,22 @@ client.on('ready', async () => {
     } catch (syncError) {
       console.error('Supabase sync system initialization error:', syncError.message);
     }
+
+    // プロアクティブメッセージシステムを初期化
+    try {
+      proactiveScheduler = new ProactiveScheduler(pgPool, client, genAI);
+      proactiveCommands = new ProactiveManagementCommands(proactiveScheduler);
+      
+      // 自動開始（環境変数で制御）
+      if (proactiveScheduler.autoStart) {
+        proactiveScheduler.start();
+        console.log('Proactive message system initialized and started successfully (auto-start)');
+      } else {
+        console.log('Proactive message system initialized (manual start required)');
+      }
+    } catch (proactiveError) {
+      console.error('Proactive message system initialization error:', proactiveError.message);
+    }
   } catch (error) {
     console.error('Database connection error:', error.message);
   }
@@ -146,18 +168,44 @@ async function saveConversationHistory(userId, userMessage, botResponse) {
     return;
   }
 
-  // ローカルPostgreSQLに保存（同期トリガーが自動でSupabaseに送信）
+  try {
+    // Phase 4: プロアクティブ応答処理システムを使用
+    if (proactiveScheduler && proactiveScheduler.getResponseHandler) {
+      const responseHandler = proactiveScheduler.getResponseHandler();
+      const saveResult = await responseHandler.saveUserMessage(userId, userMessage, botResponse);
+      
+      if (saveResult.success) {
+        console.log(`✅ 会話保存成功 - タイプ: ${saveResult.messageType}, 応答時間: ${saveResult.responseTime ? Math.round(saveResult.responseTime / 1000) + '秒' : 'N/A'}`);
+      } else {
+        console.error('❌ プロアクティブ応答処理での保存失敗:', saveResult.error);
+        // フォールバック: 従来の方法で保存
+        await _fallbackSaveConversation(userId, userMessage, botResponse);
+      }
+    } else {
+      // プロアクティブシステムが利用できない場合のフォールバック
+      await _fallbackSaveConversation(userId, userMessage, botResponse);
+    }
+  } catch (error) {
+    console.error('Error in enhanced conversation saving:', error.message);
+    // 最終フォールバック
+    await _fallbackSaveConversation(userId, userMessage, botResponse);
+  }
+
+  // キャッシュをクリア（次回取得時に最新データを読み込む）
+  conversationCache.delete(userId);
+}
+
+// フォールバック用の従来保存方法
+async function _fallbackSaveConversation(userId, userMessage, botResponse) {
   try {
     await pgPool.query(
       'INSERT INTO conversations (user_id, user_message, bot_response) VALUES ($1, $2, $3)',
       [userId, userMessage, botResponse]
     );
+    console.log('✅ フォールバック保存成功');
   } catch (error) {
-    console.error('Error saving conversation history:', error.message);
+    console.error('❌ フォールバック保存も失敗:', error.message);
   }
-
-  // キャッシュをクリア（次回取得時に最新データを読み込む）
-  conversationCache.delete(userId);
 }
 
 // プロファイル管理コマンドの処理
@@ -304,6 +352,23 @@ client.on('messageCreate', async (message) => {
     } catch (error) {
       console.error('Error in profile command:', error);
       await message.reply('❌ プロファイルコマンドの実行中にエラーが発生しました。');
+    }
+    return;
+  }
+
+  // プロアクティブメッセージ管理コマンド
+  if (message.content.startsWith('!proactive')) {
+    if (!proactiveCommands) {
+      await message.reply('❌ プロアクティブメッセージシステムが初期化されていません。');
+      return;
+    }
+    
+    const args = message.content.split(' ').slice(1);
+    try {
+      await proactiveCommands.handleProactiveCommand(message, args);
+    } catch (error) {
+      console.error('Error in proactive command:', error);
+      await message.reply('❌ プロアクティブコマンドの実行中にエラーが発生しました。');
     }
     return;
   }

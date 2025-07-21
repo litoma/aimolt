@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS conversations (
     user_id TEXT NOT NULL,
     user_message TEXT NOT NULL,
     bot_response TEXT NOT NULL,
+    message_type VARCHAR(30) DEFAULT 'user_initiated',  -- 'user_initiated', 'proactive', 'response_to_proactive'
+    initiator VARCHAR(10) DEFAULT 'user',              -- 'user', 'bot'
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
 );
@@ -11,6 +13,10 @@ CREATE TABLE IF NOT EXISTS conversations (
 -- インデックス作成
 CREATE INDEX IF NOT EXISTS idx_conversations_user_id ON conversations (user_id);
 CREATE INDEX IF NOT EXISTS idx_conversations_user_created ON conversations (user_id, created_at DESC);
+-- プロアクティブメッセージ用インデックス
+CREATE INDEX IF NOT EXISTS idx_conversations_message_type ON conversations(message_type);
+CREATE INDEX IF NOT EXISTS idx_conversations_user_message_type ON conversations(user_id, message_type);
+CREATE INDEX IF NOT EXISTS idx_conversations_proactive_created ON conversations(user_id, created_at DESC) WHERE message_type = 'proactive';
 
 -- ===== AImolt動的人格システム用テーブル =====
 
