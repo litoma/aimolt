@@ -180,7 +180,7 @@ class ProactiveScheduler {
       }
       
       // メンション付きの最終メッセージ
-      const finalMessage = `@${targetUserId} ${messageContent}`;
+      const finalMessage = `<@${targetUserId}> ${messageContent}`;
       
       // Phase 4: DiscordSenderで送信
       const sendResult = await this.discordSender.sendProactiveMessage(channel, finalMessage, {

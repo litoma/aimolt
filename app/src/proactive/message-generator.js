@@ -97,18 +97,9 @@ class MessageGenerator {
     };
 
     try {
-      // 会話履歴の取得（直近100件、プロアクティブメッセージ除外）
-      const historyResult = await this.pgPool.query(
-        `SELECT user_message, bot_response, created_at, message_type 
-         FROM conversations 
-         WHERE user_id = $1 AND message_type != 'proactive'
-         ORDER BY created_at DESC 
-         LIMIT 100`,
-        [userId]
-      );
-      
-      context.conversationHistory = historyResult.rows.reverse(); // 古い順に並び替え
-      context.summary.conversationCount = historyResult.rows.length;
+      // エンハンスド会話履歴の取得
+      context.conversationHistory = await this._collectEnhancedConversationHistory(userId);
+      context.summary.conversationCount = context.conversationHistory.length;
 
       // 話題キーワードの取得
       context.recentTopics = await helpers.getRecentTopicKeywords(userId, 14); // 過去2週間
@@ -135,7 +126,7 @@ class MessageGenerator {
         
         const [emotionState, relationshipState] = await Promise.all([
           vadEmotionManager.getCurrentEmotion(userId),
-          relationshipManager.getUserRelationship(userId)
+          relationshipManager.getRelationship(userId)
         ]);
         
         context.personalityState = {
@@ -213,6 +204,7 @@ ${topicsContext}
 メッセージを生成してください:`;
 
       console.log(`✅ AIプロンプト構築完了 (${finalPrompt.length}文字)`);
+      console.log(`🔍 プロンプト詳細（先頭500文字）: "${finalPrompt.substring(0, 500)}..."`);
       
       return {
         systemInstruction,
@@ -268,25 +260,37 @@ ${profile.bio.substring(0, 300)}...
   _buildPersonalityExtension(personalityState) {
     if (!personalityState) return '';
 
-    const { valence, arousal, dominance } = personalityState.vad;
-    
-    let moodDescription = '';
-    if (valence > 0.5) moodDescription += 'ポジティブな気分で ';
-    if (valence < -0.5) moodDescription += 'ネガティブな気分で ';
-    if (arousal > 0.5) moodDescription += '活発に ';
-    if (arousal < -0.5) moodDescription += '落ち着いて ';
-    if (dominance > 0.5) moodDescription += '自信を持って ';
-    if (dominance < -0.5) moodDescription += '控えめに ';
+    try {
+      // VAD感情データが存在するかチェック
+      if (!personalityState.emotion || !personalityState.emotion.vad) {
+        return `## 現在の人格状態
+関係性レベル: ${personalityState.relationship?.relationship_stage || '不明'}
+現在の感情状態: データなし（自然な調子で話しかけてください）`;
+      }
 
-    return `## 現在の人格状態
+      const { valence, arousal, dominance } = personalityState.emotion.vad;
+      
+      let moodDescription = '';
+      if (valence > 0.5) moodDescription += 'ポジティブな気分で ';
+      if (valence < -0.5) moodDescription += 'ネガティブな気分で ';
+      if (arousal > 0.5) moodDescription += '活発に ';
+      if (arousal < -0.5) moodDescription += '落ち着いて ';
+      if (dominance > 0.5) moodDescription += '自信を持って ';
+      if (dominance < -0.5) moodDescription += '控えめに ';
+
+      return `## 現在の人格状態
 VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${dominance.toFixed(2)}
 推奨な口調: ${moodDescription || '自然な調子で'}話しかけてください。
 
-関係性レベル: ${personalityState.relationshipLevel || '不明'}`;
+関係性レベル: ${personalityState.relationship?.relationship_stage || '不明'}`;
+    } catch (error) {
+      console.warn('⚠️ 人格拡張構築エラー:', error.message);
+      return '';
+    }
   }
 
   /**
-   * 会話履歴の整形
+   * エンハンスド会話履歴の整形
    * @private
    */
   _formatConversationHistory(history) {
@@ -294,13 +298,65 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
       return '（会話履歴なし）';
     }
 
-    // 直近5件の会話を要約
-    const recentHistory = history.slice(-5).map((conv, index) => {
-      const timeAgo = this._getTimeAgo(new Date(conv.created_at));
-      return `[${timeAgo}] ユーザー: "${conv.user_message.substring(0, 50)}..." → ボット: "${conv.bot_response.substring(0, 50)}..."`;
-    });
+    console.log(`📝 会話履歴整形開始: ${history.length}件`);
 
-    return recentHistory.join('\n');
+    // 重要度別に分類
+    const importantConvs = history.filter(conv => conv.source === 'important' || conv.score >= 5);
+    const recentConvs = history.filter(conv => conv.source === 'recent' && conv.score < 5);
+    const memoryConvs = history.filter(conv => conv.source === 'memory_related');
+
+    let formattedHistory = '';
+
+    // 重要な会話セクション
+    if (importantConvs.length > 0) {
+      formattedHistory += '【重要な会話】\n';
+      importantConvs.slice(0, 3).forEach(conv => {
+        const timeAgo = this._getTimeAgo(new Date(conv.created_at));
+        const sentiment = conv.sentiment ? `(${conv.sentiment})` : '';
+        formattedHistory += `[${timeAgo}] ${sentiment} ユーザー: "${this._truncateText(conv.user_message, 35)}" → ボット: "${this._truncateText(conv.bot_response, 35)}"\n`;
+      });
+      formattedHistory += '\n';
+    }
+
+    // 記憶関連会話セクション
+    if (memoryConvs.length > 0) {
+      formattedHistory += '【記憶関連会話】\n';
+      memoryConvs.slice(0, 2).forEach(conv => {
+        const timeAgo = this._getTimeAgo(new Date(conv.created_at));
+        formattedHistory += `[${timeAgo}] ユーザー: "${this._truncateText(conv.user_message, 30)}" → ボット: "${this._truncateText(conv.bot_response, 30)}"\n`;
+      });
+      formattedHistory += '\n';
+    }
+
+    // 直近の会話セクション
+    if (recentConvs.length > 0) {
+      formattedHistory += '【最近の会話】\n';
+      recentConvs.slice(-2).forEach(conv => {
+        const timeAgo = this._getTimeAgo(new Date(conv.created_at));
+        formattedHistory += `[${timeAgo}] ユーザー: "${this._truncateText(conv.user_message, 30)}" → ボット: "${this._truncateText(conv.bot_response, 30)}"\n`;
+      });
+    }
+
+    // フォールバック: 通常履歴がない場合
+    if (!formattedHistory.trim()) {
+      const latest = history.slice(-3);
+      formattedHistory = latest.map(conv => {
+        const timeAgo = this._getTimeAgo(new Date(conv.created_at));
+        return `[${timeAgo}] ユーザー: "${this._truncateText(conv.user_message, 40)}" → ボット: "${this._truncateText(conv.bot_response, 40)}"`;
+      }).join('\n');
+    }
+
+    console.log(`✅ 会話履歴整形完了: ${formattedHistory.length}文字`);
+    return formattedHistory.trim();
+  }
+
+  /**
+   * テキスト省略ヘルパー
+   * @private
+   */
+  _truncateText(text, maxLength) {
+    if (!text) return '';
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   }
 
   /**
@@ -318,6 +374,213 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
   }
 
   /**
+   * エンハンスド会話履歴収集
+   * 重要度・関連性・時系列を考慮した会話履歴を収集
+   * @param {string} userId - ユーザーID
+   * @param {number} totalLimit - 総履歴数制限（デフォルト: 12）
+   * @returns {Promise<Array>} エンハンスドな会話履歴配列
+   * @private
+   */
+  async _collectEnhancedConversationHistory(userId, totalLimit = 12) {
+    console.log('🧠 エンハンスド会話履歴収集開始...');
+    
+    try {
+      const enhancedHistory = [];
+
+      // 1. 直近の重要な会話（conversation_analysis から）
+      const importantConversations = await this._getImportantConversations(userId, 6);
+      enhancedHistory.push(...importantConversations);
+      console.log(`📈 重要な会話: ${importantConversations.length}件`);
+
+      // 2. 直近の一般会話（基本履歴）
+      const recentConversations = await this._getRecentConversations(userId, 4);
+      enhancedHistory.push(...recentConversations);
+      console.log(`⏰ 直近の会話: ${recentConversations.length}件`);
+
+      // 3. 記憶システムから関連する会話
+      const memoryBasedConversations = await this._getMemoryRelatedConversations(userId, 2);
+      enhancedHistory.push(...memoryBasedConversations);
+      console.log(`🧠 記憶関連会話: ${memoryBasedConversations.length}件`);
+
+      // 4. 重複排除・スコア順ソート・制限適用
+      const uniqueHistory = this._deduplicateAndScore(enhancedHistory, totalLimit);
+      
+      console.log(`✅ エンハンスド履歴収集完了: ${uniqueHistory.length}件`);
+      return uniqueHistory;
+
+    } catch (error) {
+      console.error('❌ エンハンスド履歴収集エラー:', error.message);
+      // フォールバック: 従来の方式
+      return await this._getFallbackHistory(userId, totalLimit);
+    }
+  }
+
+  /**
+   * 重要な会話の取得（conversation_analysis基準）
+   * @private
+   */
+  async _getImportantConversations(userId, limit) {
+    try {
+      const result = await this.pgPool.query(
+        `SELECT c.user_message, c.bot_response, c.created_at, c.message_type,
+                ca.importance_score, ca.sentiment, ca.topic_category
+         FROM conversations c
+         JOIN conversation_analysis ca ON c.user_id = ca.user_id 
+           AND c.user_message = ca.user_message
+         WHERE c.user_id = $1 
+           AND c.message_type != 'proactive'
+           AND ca.importance_score >= 5
+           AND ca.confidence_score >= 0.6
+         ORDER BY ca.importance_score DESC, c.created_at DESC
+         LIMIT $2`,
+        [userId, limit]
+      );
+
+      return result.rows.map(row => ({
+        ...row,
+        source: 'important',
+        score: row.importance_score || 5
+      }));
+    } catch (error) {
+      console.warn('⚠️ 重要な会話取得失敗:', error.message);
+      return [];
+    }
+  }
+
+  /**
+   * 直近の一般会話取得
+   * @private
+   */
+  async _getRecentConversations(userId, limit) {
+    try {
+      const result = await this.pgPool.query(
+        `SELECT user_message, bot_response, created_at, message_type
+         FROM conversations 
+         WHERE user_id = $1 
+           AND message_type != 'proactive'
+         ORDER BY created_at DESC 
+         LIMIT $2`,
+        [userId, limit]
+      );
+
+      return result.rows.map(row => ({
+        ...row,
+        source: 'recent',
+        score: 3 // 基本スコア
+      }));
+    } catch (error) {
+      console.warn('⚠️ 直近会話取得失敗:', error.message);
+      return [];
+    }
+  }
+
+  /**
+   * 記憶関連会話の取得
+   * @private
+   */
+  async _getMemoryRelatedConversations(userId, limit) {
+    try {
+      // 高重要度の記憶からキーワード抽出
+      const memoryResult = await this.pgPool.query(
+        `SELECT keywords, content, importance_score
+         FROM user_memories 
+         WHERE user_id = $1 
+           AND importance_score >= 4
+           AND memory_type IN ('important_event', 'fact', 'preference')
+         ORDER BY importance_score DESC, created_at DESC
+         LIMIT 5`,
+        [userId]
+      );
+
+      if (memoryResult.rows.length === 0) return [];
+
+      // キーワードを集約
+      const allKeywords = memoryResult.rows
+        .flatMap(row => row.keywords || [])
+        .filter(keyword => keyword && keyword.length > 1);
+
+      if (allKeywords.length === 0) return [];
+
+      // キーワードマッチする会話を検索
+      const conversationResult = await this.pgPool.query(
+        `SELECT user_message, bot_response, created_at, message_type
+         FROM conversations 
+         WHERE user_id = $1 
+           AND message_type != 'proactive'
+           AND (user_message ILIKE ANY($2) OR bot_response ILIKE ANY($2))
+         ORDER BY created_at DESC
+         LIMIT $3`,
+        [userId, allKeywords.map(k => `%${k}%`), limit]
+      );
+
+      return conversationResult.rows.map(row => ({
+        ...row,
+        source: 'memory_related',
+        score: 4 // 記憶関連は高スコア
+      }));
+    } catch (error) {
+      console.warn('⚠️ 記憶関連会話取得失敗:', error.message);
+      return [];
+    }
+  }
+
+  /**
+   * 重複排除・スコア計算・制限適用
+   * @private
+   */
+  _deduplicateAndScore(conversations, limit) {
+    // 重複排除（user_message + created_at でユニーク化）
+    const uniqueMap = new Map();
+    
+    conversations.forEach(conv => {
+      const key = `${conv.user_message}_${conv.created_at}`;
+      const existing = uniqueMap.get(key);
+      
+      if (!existing || existing.score < conv.score) {
+        uniqueMap.set(key, conv);
+      }
+    });
+
+    // スコア順でソート、時系列順に変換
+    const sortedConversations = Array.from(uniqueMap.values())
+      .sort((a, b) => {
+        // 1. スコア順 2. 新しさ順
+        if (b.score !== a.score) return b.score - a.score;
+        return new Date(b.created_at) - new Date(a.created_at);
+      })
+      .slice(0, limit)
+      .sort((a, b) => new Date(a.created_at) - new Date(b.created_at)); // 古い順に並び替え
+
+    return sortedConversations;
+  }
+
+  /**
+   * フォールバック履歴取得（従来方式）
+   * @private
+   */
+  async _getFallbackHistory(userId, limit) {
+    try {
+      const result = await this.pgPool.query(
+        `SELECT user_message, bot_response, created_at, message_type
+         FROM conversations 
+         WHERE user_id = $1 AND message_type != 'proactive'
+         ORDER BY created_at DESC 
+         LIMIT $2`,
+        [userId, limit]
+      );
+      
+      return result.rows.reverse().map(row => ({
+        ...row,
+        source: 'fallback',
+        score: 2
+      }));
+    } catch (error) {
+      console.error('❌ フォールバック履歴取得失敗:', error.message);
+      return [];
+    }
+  }
+
+  /**
    * AI でメッセージ生成
    * @private
    */
@@ -326,14 +589,33 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
 
     try {
       // Gemini を使用（固定設定）
+      const { HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
       const model = this.genAI.getGenerativeModel({
         model: 'gemini-2.5-pro',
         systemInstruction: prompt.systemInstruction,
         generationConfig: {
-          maxOutputTokens: 1000,
+          maxOutputTokens: 2000,
           temperature: 0.95,
           topP: 0.9
-        }
+        },
+        safetySettings: [
+          {
+            category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          },
+          {
+            category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+            threshold: HarmBlockThreshold.BLOCK_NONE
+          }
+        ]
       });
 
       // リトライ機能付きでAPI呼び出し
@@ -343,7 +625,16 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
         { maxRetries: 3, baseDelay: 1000, maxDelay: 5000 }
       );
 
+      // Gemini応答の詳細ログ
+      console.log('🔍 Gemini応答詳細:', {
+        candidates: result.response.candidates?.length || 0,
+        safetyRatings: result.response.candidates?.[0]?.safetyRatings,
+        finishReason: result.response.candidates?.[0]?.finishReason,
+        blocked: result.response.promptFeedback?.blockReason
+      });
+
       const generatedText = result.response.text();
+      console.log(`🔍 生成された元テキスト: "${generatedText}" (長さ: ${generatedText?.length || 0}文字)`);
       
       // 生成されたテキストの後処理
       const processedMessage = this._postProcessMessage(generatedText);
@@ -370,6 +661,8 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
   _postProcessMessage(text) {
     if (!text) throw new Error('空のメッセージが生成されました');
 
+    console.log(`🔍 後処理前: "${text}" (長さ: ${text.length}文字)`);
+
     // 基本的なクリーンアップ
     let processed = text
       .trim()
@@ -379,6 +672,8 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
       .replace(/\*(.*?)\*/g, '$1') // イタリック削除
       .trim();
 
+    console.log(`🔍 後処理中: "${processed}" (長さ: ${processed.length}文字)`);
+
     // 長すぎる場合は短縮
     if (processed.length > 200) {
       processed = processed.substring(0, 197) + '...';
@@ -386,9 +681,11 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
 
     // 空の場合はフォールバック
     if (!processed) {
+      console.error(`❌ 後処理後に空文字: 元テキスト="${text}"`);
       throw new Error('後処理後にメッセージが空になりました');
     }
 
+    console.log(`🔍 後処理後: "${processed}" (長さ: ${processed.length}文字)`);
     return processed;
   }
 
