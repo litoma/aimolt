@@ -8,7 +8,7 @@
       "average_confidence": "0.755",
       "average_quality": "0.57",
       "analysis_version": "2.0",
-      "update_mode": "incremental",
+      "update_mode": "metadata-only",
       "incremental_files_count": 1,
       "merge_metadata": {
         "existing_files": 24,
@@ -90,7 +90,8 @@
           }
         },
         "merge_timestamp": "2025-07-22 02:00:08"
-      }
+      },
+      "last_checked": "2025-07-24 02:00:00"
     },
     "personal_characteristics": {
       "core_values": [
@@ -384,7 +385,7 @@
       }
     }
   },
-  "cached_at": "2025-07-21T22:56:13.939Z",
+  "cached_at": "2025-07-24T00:04:13.052Z",
   "bot_version": "aimolt-v1.0.0",
   "cache_duration_hours": 12
 }
