@@ -1,0 +1,36 @@
+name: Supabase Health Check
+
+on:
+  schedule:
+    # 毎日午前0時UTC (日本時間午前9時) に実行
+    - cron: '0 0 * * *'
+  # 手動実行も可能
+  workflow_dispatch:
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: 'app/package-lock.json'
+    
+    - name: Install dependencies
+      run: |
+        cd app
+        npm ci
+    
+    - name: Run Supabase health check
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      run: |
+        cd app
+        node ../scripts/supabase-health-check.js
