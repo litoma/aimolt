@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd app
-        npm ci
+        npm install
     
     - name: Run Supabase health check
       env:
