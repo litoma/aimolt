@@ -921,6 +921,66 @@ AImoltは、Gemini APIの一時的な障害に対して自動的にリトライ�
 ✅ 👍 Like応答生成 成功
 ```
 
+## 🏥 ヘルスチェック機能
+
+### **Supabase Health Check**
+
+AImoltは、Supabaseデータベースの接続状態を定期的に監視するヘルスチェック機能を提供します。
+
+#### **GitHub Actions 自動ヘルスチェック**
+
+毎日午前0時UTC（日本時間午前9時）に自動実行される定期ヘルスチェック：
+
+- **実行内容**: conversationsテーブルから最新5件のレコードを取得
+- **スケジュール**: `cron: '0 0 * * *'` による毎日実行
+- **通知**: 失敗時にGitHubメール通知で異常を検知
+- **手動実行**: GitHub Actions画面から手動トリガー可能
+
+#### **ヘルスチェック出力例**
+
+```bash
+🚀 Supabase Health Check 開始
+📅 実行時刻: 2025-08-02T13:18:07.289Z
+🔗 Supabase接続を開始...
+✅ Supabase接続成功
+📊 取得レコード数: 5件
+📄 最新レコード情報:
+  1. ID: 145, User: 493069905059381255, 作成日時: 2025-08-02T10:54:12.301+00:00
+  2. ID: 144, User: 493069905059381255, 作成日時: 2025-07-29T03:00:24.609+00:00
+  3. ID: 143, User: 493069905059381255, 作成日時: 2025-07-25T13:59:52.326+00:00
+  4. ID: 139, User: 493069905059381255, 作成日時: 2025-07-24T13:10:00.246+00:00
+  5. ID: 138, User: 493069905059381255, 作成日時: 2025-07-24T00:04:27.73+00:00
+📈 conversationsテーブル総レコード数: 145件
+🎉 ヘルスチェック完了: すべて正常
+✨ ヘルスチェック正常終了
+```
+
+#### **ローカル実行**
+
+開発・デバッグ目的でローカルでヘルスチェックを実行することも可能：
+
+```bash
+# 環境変数を設定してローカル実行
+SUPABASE_URL="your_supabase_url" SUPABASE_KEY="your_supabase_key" node scripts/supabase-health-check.js
+```
+
+#### **技術仕様**
+
+- **ワークフローファイル**: `.github/workflows/supabase-health-check.yml`
+- **スクリプト**: `scripts/supabase-health-check.js`
+- **環境変数**: GitHub Secrets の `SUPABASE_URL`, `SUPABASE_KEY`
+- **Node.js**: v22.x
+- **依存関係**: `@supabase/supabase-js`
+
+#### **監視対象**
+
+- **接続性**: Supabaseへの基本接続確認
+- **データ取得**: conversationsテーブルからのクエリ実行
+- **レコード状態**: 最新レコードの存在確認
+- **テーブル統計**: 総レコード数の取得
+
+この機能により、Supabaseの接続障害やデータの異常を早期に検知し、システムの安定性を確保しています。
+
 ## 🚀 今後の改善案
 
 詳細な改善案は [GitHub Issues](https://github.com/litoma/aimolt/issues) で管理しています。
