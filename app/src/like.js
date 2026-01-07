@@ -39,7 +39,7 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
   try {
     // システム指示を取得
     const systemInstruction = await prompts.getSystem();
-    
+
     // 個人プロファイルを取得（like.js実行時のみ、適応型）
     let profileExtension = '';
     try {
@@ -69,30 +69,30 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
     } catch (error) {
       console.warn('⚠️ Profile load failed, using personality system only:', error.message);
     }
-    
+
     // Gemini APIで応答を生成 (gemini-2.5-pro: 高品質な推論と創造性)
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.5-pro',
+      model: 'gemini-flash-latest',
       systemInstruction: `${systemInstruction}\n\n${finalPrompt}`,
-      generationConfig: { 
+      generationConfig: {
         maxOutputTokens: 2000,  // 文章の途中切れを防止
         temperature: 1.0,       // デフォルト値: 創造性と自然さ重視
         topP: 0.95             // 多様性確保
       },
     });
-    
+
     const chatSession = model.startChat({ history: await getConversationHistory(userId) });
 
     // プロンプトにユーザーメッセージを埋め込む
     const promptWithMessage = `ユーザーのメッセージに対するポジティブな応答を生成してください。メッセージ: ${userMessage}`;
-    
+
     // リトライ機能付きでGemini API呼び出し
     const result = await retryGeminiApiCall(
       async () => await chatSession.sendMessage(promptWithMessage),
       '👍 Like応答生成',
       { maxRetries: 3, baseDelay: 1000, maxDelay: 8000 }
     );
-    
+
     const reply = sanitizeText(result.response.text());
 
     // 会話履歴を保存
@@ -100,9 +100,9 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
 
     // 人格システムv2.0を更新（非同期で実行）
     personalityManagerV2.updatePersonalityFromConversation(
-      userId, 
-      userMessage, 
-      reply, 
+      userId,
+      userMessage,
+      reply,
       message.id
     ).catch(error => {
       console.error('Error updating personality system:', error);
@@ -127,7 +127,7 @@ async function forceRefreshProfile() {
   return await profileSync.forceRefresh();
 }
 
-module.exports = { 
+module.exports = {
   handleLikeReaction,
   getProfileStatus,
   forceRefreshProfile

@@ -14,7 +14,7 @@ class MessageGenerator {
     this.pgPool = pgPool;
     this.genAI = genAI;
     this.profileSync = new AimoltProfileSync();
-    
+
     // 生成統計
     this.stats = {
       generated: 0,
@@ -37,19 +37,19 @@ class MessageGenerator {
     try {
       // 1. コンテキスト情報の収集
       const context = await this._collectContext(userId, helpers);
-      
+
       // 2. AI プロンプトの構築
       const prompt = await this._buildAIPrompt(context);
-      
+
       // 3. Gemini API でメッセージ生成
       const generatedMessage = await this._generateWithAI(prompt, context);
-      
+
       // 4. 生成後処理
       const processingTime = Date.now() - startTime;
       this._updateStats(processingTime, true);
-      
+
       console.log(`✅ プロアクティブメッセージ生成成功 (${processingTime}ms)`);
-      
+
       return {
         success: true,
         message: generatedMessage.content,
@@ -64,9 +64,9 @@ class MessageGenerator {
     } catch (error) {
       const processingTime = Date.now() - startTime;
       this._updateStats(processingTime, false);
-      
+
       console.error(`❌ プロアクティブメッセージ生成失敗 (${processingTime}ms):`, error.message);
-      
+
       return {
         success: false,
         error: error.message,
@@ -84,7 +84,7 @@ class MessageGenerator {
    */
   async _collectContext(userId, helpers) {
     console.log('📊 コンテキスト情報収集中...');
-    
+
     const context = {
       userId,
       timestamp: new Date(),
@@ -123,12 +123,12 @@ class MessageGenerator {
         // 人格システムから現在の感情状態を取得
         const { vadEmotionManager } = require('../personality/vad-emotion');
         const { relationshipManager } = require('../personality/relationship-manager');
-        
+
         const [emotionState, relationshipState] = await Promise.all([
           vadEmotionManager.getCurrentEmotion(userId),
           relationshipManager.getRelationship(userId)
         ]);
-        
+
         context.personalityState = {
           emotion: emotionState,
           relationship: relationshipState,
@@ -159,25 +159,25 @@ class MessageGenerator {
     try {
       // システム指示を取得
       const systemInstruction = await prompts.getSystem();
-      
+
       // ベースプロンプト構築
       let proactivePrompt = await this._buildBasePrompt(context);
-      
+
       // プロファイル拡張
       if (context.userProfile) {
         const profileExtension = this._buildProfileExtension(context.userProfile);
         proactivePrompt += `\n\n${profileExtension}`;
       }
-      
+
       // 人格システム拡張
       if (context.personalityState) {
         const personalityExtension = this._buildPersonalityExtension(context.personalityState);
         proactivePrompt += `\n\n${personalityExtension}`;
       }
-      
+
       // 会話履歴の整形
       const historyContext = this._formatConversationHistory(context.conversationHistory);
-      
+
       // 話題キーワード整形
       const topicsContext = this._formatRecentTopics(context.recentTopics);
 
@@ -205,7 +205,7 @@ ${topicsContext}
 
       console.log(`✅ AIプロンプト構築完了 (${finalPrompt.length}文字)`);
       console.log(`🔍 プロンプト詳細（先頭500文字）: "${finalPrompt.substring(0, 500)}..."`);
-      
+
       return {
         systemInstruction,
         userPrompt: finalPrompt,
@@ -269,7 +269,7 @@ ${profile.bio.substring(0, 300)}...
       }
 
       const { valence, arousal, dominance } = personalityState.emotion.vad;
-      
+
       let moodDescription = '';
       if (valence > 0.5) moodDescription += 'ポジティブな気分で ';
       if (valence < -0.5) moodDescription += 'ネガティブな気分で ';
@@ -368,7 +368,7 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
       return '（最近の話題キーワードなし）';
     }
 
-    return topics.slice(0, 5).map(topic => 
+    return topics.slice(0, 5).map(topic =>
       `"${topic.keyword}" (${topic.count}回)`
     ).join(', ');
   }
@@ -383,7 +383,7 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
    */
   async _collectEnhancedConversationHistory(userId, totalLimit = 12) {
     console.log('🧠 エンハンスド会話履歴収集開始...');
-    
+
     try {
       const enhancedHistory = [];
 
@@ -404,7 +404,7 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
 
       // 4. 重複排除・スコア順ソート・制限適用
       const uniqueHistory = this._deduplicateAndScore(enhancedHistory, totalLimit);
-      
+
       console.log(`✅ エンハンスド履歴収集完了: ${uniqueHistory.length}件`);
       return uniqueHistory;
 
@@ -531,11 +531,11 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
   _deduplicateAndScore(conversations, limit) {
     // 重複排除（user_message + created_at でユニーク化）
     const uniqueMap = new Map();
-    
+
     conversations.forEach(conv => {
       const key = `${conv.user_message}_${conv.created_at}`;
       const existing = uniqueMap.get(key);
-      
+
       if (!existing || existing.score < conv.score) {
         uniqueMap.set(key, conv);
       }
@@ -568,7 +568,7 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
          LIMIT $2`,
         [userId, limit]
       );
-      
+
       return result.rows.reverse().map(row => ({
         ...row,
         source: 'fallback',
@@ -591,7 +591,7 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
       // Gemini を使用（固定設定）
       const { HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
       const model = this.genAI.getGenerativeModel({
-        model: 'gemini-2.5-pro',
+        model: 'gemini-flash-latest',
         systemInstruction: prompt.systemInstruction,
         generationConfig: {
           maxOutputTokens: 2000,
@@ -635,7 +635,7 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
 
       const generatedText = result.response.text();
       console.log(`🔍 生成された元テキスト: "${generatedText}" (長さ: ${generatedText?.length || 0}文字)`);
-      
+
       // 生成されたテキストの後処理
       const processedMessage = this._postProcessMessage(generatedText);
 
@@ -695,11 +695,11 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
    */
   _updateStats(processingTime, success) {
     this.stats.lastGeneration = new Date();
-    
+
     if (success) {
       this.stats.generated++;
       // 移動平均でprocessingTimeを更新
-      this.stats.averageGenerationTime = 
+      this.stats.averageGenerationTime =
         (this.stats.averageGenerationTime * (this.stats.generated - 1) + processingTime) / this.stats.generated;
     } else {
       this.stats.errors++;
@@ -727,7 +727,7 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
   getStats() {
     return {
       ...this.stats,
-      successRate: this.stats.generated > 0 
+      successRate: this.stats.generated > 0
         ? ((this.stats.generated / (this.stats.generated + this.stats.errors)) * 100).toFixed(1)
         : '0.0'
     };

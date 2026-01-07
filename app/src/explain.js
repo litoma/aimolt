@@ -79,9 +79,9 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
     // Gemini APIで解説生成（gemini-2.5-pro: 正確性と論理性重視）
     try {
       const model = genAI.getGenerativeModel({
-        model: 'gemini-2.5-pro',
+        model: 'gemini-flash-latest',
         systemInstruction: { parts: [{ text: explainPrompt }] },
-        generationConfig: { 
+        generationConfig: {
           maxOutputTokens: 1200,  // 的確で簡潔な解説
           temperature: 0.6,       // 正確性重視
           topP: 0.9              // 安定した解説品質
@@ -90,7 +90,7 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
 
       // 新しいチャットセッションを開始（履歴なし）
       const chatSession = model.startChat({ history: [] });
-      
+
       // リトライ機能付きでGemini API呼び出し
       const result = await retryGeminiApiCall(
         async () => await chatSession.sendMessage(inputText),
