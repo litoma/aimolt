@@ -70,9 +70,9 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
       console.warn('⚠️ Profile load failed, using personality system only:', error.message);
     }
 
-    // Gemini APIで応答を生成 (gemini-2.5-pro: 高品質な推論と創造性)
+    // Gemini APIで応答を生成
     const model = genAI.getGenerativeModel({
-      model: 'gemini-flash-latest',
+      model: 'gemini-3-flash-preview',
       systemInstruction: `${systemInstruction}\n\n${finalPrompt}`,
       generationConfig: {
         maxOutputTokens: 2000,  // 文章の途中切れを防止
