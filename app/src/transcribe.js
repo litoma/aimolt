@@ -112,7 +112,7 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
     }
 
     const transcriptionModel = genAI.getGenerativeModel({ 
-      model: 'gemini-2.5-flash', 
+      model: 'gemini-3-flash-preview', 
       systemInstruction: systemInstruction 
     });
     
