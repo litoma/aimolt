@@ -38583,3 +38583,1183 @@
 2026-01-19T14:22:45:   delay: 4000
 2026-01-19T14:22:45: }
 2026-01-19T14:23:29: ✅ 🎤 音声文字起こし 成功
+2026-01-19T14:46:44: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:46:44: Require stack:
+2026-01-19T14:46:44: - /app/src/explain.js
+2026-01-19T14:46:44: - /app/src/index.js
+2026-01-19T14:46:44:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:46:44:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:46:44:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:46:44:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:46:44:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:46:44:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:46:44:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:46:44:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:46:44:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:46:44:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:46:44:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:46:44:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:46:44: }
+2026-01-19T14:46:49: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:46:49: Require stack:
+2026-01-19T14:46:49: - /app/src/explain.js
+2026-01-19T14:46:49: - /app/src/index.js
+2026-01-19T14:46:49:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:46:49:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:46:49:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:46:49:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:46:49:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:46:49:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:46:49:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:46:49:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:46:49:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:46:49:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:46:49:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:46:49:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:46:49: }
+2026-01-19T14:46:54: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:46:54: Require stack:
+2026-01-19T14:46:54: - /app/src/explain.js
+2026-01-19T14:46:54: - /app/src/index.js
+2026-01-19T14:46:54:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:46:54:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:46:54:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:46:54:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:46:54:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:46:54:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:46:54:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:46:54:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:46:54:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:46:54:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:46:54:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:46:54:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:46:54: }
+2026-01-19T14:46:59: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:46:59: Require stack:
+2026-01-19T14:46:59: - /app/src/explain.js
+2026-01-19T14:46:59: - /app/src/index.js
+2026-01-19T14:46:59:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:46:59:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:46:59:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:46:59:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:46:59:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:46:59:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:46:59:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:46:59:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:46:59:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:46:59:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:46:59:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:46:59:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:46:59: }
+2026-01-19T14:47:04: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:47:04: Require stack:
+2026-01-19T14:47:04: - /app/src/explain.js
+2026-01-19T14:47:04: - /app/src/index.js
+2026-01-19T14:47:04:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:47:04:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:47:04:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:47:04:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:47:04:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:47:04:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:47:04:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:47:04:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:47:04:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:47:04:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:47:04:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:47:04:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:47:04: }
+2026-01-19T14:47:08: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:47:08: Require stack:
+2026-01-19T14:47:08: - /app/src/explain.js
+2026-01-19T14:47:08: - /app/src/index.js
+2026-01-19T14:47:08:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:47:08:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:47:08:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:47:08:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:47:08:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:47:08:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:47:08:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:47:08:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:47:08:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:47:08:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:47:08:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:47:08:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:47:08: }
+2026-01-19T14:47:13: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:47:13: Require stack:
+2026-01-19T14:47:13: - /app/src/explain.js
+2026-01-19T14:47:13: - /app/src/index.js
+2026-01-19T14:47:13:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:47:13:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:47:13:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:47:13:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:47:13:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:47:13:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:47:13:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:47:13:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:47:13:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:47:13:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:47:13:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:47:13:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:47:13: }
+2026-01-19T14:47:18: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:47:18: Require stack:
+2026-01-19T14:47:18: - /app/src/explain.js
+2026-01-19T14:47:18: - /app/src/index.js
+2026-01-19T14:47:18:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:47:18:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:47:18:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:47:18:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:47:18:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:47:18:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:47:18:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:47:18:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:47:18:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:47:18:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:47:18:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:47:18:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:47:18: }
+2026-01-19T14:47:22: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:47:22: Require stack:
+2026-01-19T14:47:22: - /app/src/explain.js
+2026-01-19T14:47:22: - /app/src/index.js
+2026-01-19T14:47:22:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:47:22:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:47:22:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:47:22:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:47:22:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:47:22:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:47:22:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:47:22:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:47:22:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:47:22:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:47:22:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:47:22:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:47:22: }
+2026-01-19T14:47:27: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:47:27: Require stack:
+2026-01-19T14:47:27: - /app/src/explain.js
+2026-01-19T14:47:27: - /app/src/index.js
+2026-01-19T14:47:27:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:47:27:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:47:27:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:47:27:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:47:27:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:47:27:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:47:27:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:47:27:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:47:27:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:47:27:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:47:27:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:47:27:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:47:27: }
+2026-01-19T14:47:32: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:47:32: Require stack:
+2026-01-19T14:47:32: - /app/src/explain.js
+2026-01-19T14:47:32: - /app/src/index.js
+2026-01-19T14:47:32:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:47:32:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:47:32:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:47:32:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:47:32:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:47:32:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:47:32:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:47:32:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:47:32:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:47:32:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:47:32:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:47:32:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:47:32: }
+2026-01-19T14:47:36: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:47:36: Require stack:
+2026-01-19T14:47:36: - /app/src/explain.js
+2026-01-19T14:47:36: - /app/src/index.js
+2026-01-19T14:47:36:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:47:36:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:47:36:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:47:36:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:47:36:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:47:36:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:47:36:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:47:36:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:47:36:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:47:36:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:47:36:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:47:36:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:47:36: }
+2026-01-19T14:47:41: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:47:41: Require stack:
+2026-01-19T14:47:41: - /app/src/explain.js
+2026-01-19T14:47:41: - /app/src/index.js
+2026-01-19T14:47:41:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:47:41:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:47:41:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:47:41:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:47:41:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:47:41:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:47:41:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:47:41:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:47:41:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:47:41:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:47:41:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:47:41:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:47:41: }
+2026-01-19T14:47:46: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:47:46: Require stack:
+2026-01-19T14:47:46: - /app/src/explain.js
+2026-01-19T14:47:46: - /app/src/index.js
+2026-01-19T14:47:46:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:47:46:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:47:46:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:47:46:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:47:46:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:47:46:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:47:46:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:47:46:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:47:46:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:47:46:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:47:46:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:47:46:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:47:46: }
+2026-01-19T14:47:51: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:47:51: Require stack:
+2026-01-19T14:47:51: - /app/src/explain.js
+2026-01-19T14:47:51: - /app/src/index.js
+2026-01-19T14:47:51:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:47:51:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:47:51:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:47:51:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:47:51:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:47:51:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:47:51:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:47:51:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:47:51:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:47:51:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:47:51:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:47:51:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:47:51: }
+2026-01-19T14:47:55: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:47:55: Require stack:
+2026-01-19T14:47:55: - /app/src/explain.js
+2026-01-19T14:47:55: - /app/src/index.js
+2026-01-19T14:47:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:47:55:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:47:55:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:47:55:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:47:55:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:47:55:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:47:55:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:47:55:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:47:55:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:47:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:47:55:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:47:55:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:47:55: }
+2026-01-19T14:48:00: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:00: Require stack:
+2026-01-19T14:48:00: - /app/src/explain.js
+2026-01-19T14:48:00: - /app/src/index.js
+2026-01-19T14:48:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:00:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:00:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:00:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:00:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:00:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:00:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:00:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:00:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:00:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:00:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:00: }
+2026-01-19T14:48:05: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:05: Require stack:
+2026-01-19T14:48:05: - /app/src/explain.js
+2026-01-19T14:48:05: - /app/src/index.js
+2026-01-19T14:48:05:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:05:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:05:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:05:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:05:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:05:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:05:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:05:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:05:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:05:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:05:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:05:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:05: }
+2026-01-19T14:48:10: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:10: Require stack:
+2026-01-19T14:48:10: - /app/src/explain.js
+2026-01-19T14:48:10: - /app/src/index.js
+2026-01-19T14:48:10:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:10:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:10:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:10:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:10:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:10:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:10:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:10:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:10:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:10:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:10:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:10:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:10: }
+2026-01-19T14:48:14: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:14: Require stack:
+2026-01-19T14:48:14: - /app/src/explain.js
+2026-01-19T14:48:14: - /app/src/index.js
+2026-01-19T14:48:14:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:14:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:14:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:14:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:14:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:14:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:14:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:14:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:14:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:14:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:14:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:14:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:14: }
+2026-01-19T14:48:19: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:19: Require stack:
+2026-01-19T14:48:19: - /app/src/explain.js
+2026-01-19T14:48:19: - /app/src/index.js
+2026-01-19T14:48:19:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:19:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:19:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:19:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:19:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:19:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:19:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:19:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:19:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:19:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:19:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:19:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:19: }
+2026-01-19T14:48:24: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:24: Require stack:
+2026-01-19T14:48:24: - /app/src/explain.js
+2026-01-19T14:48:24: - /app/src/index.js
+2026-01-19T14:48:24:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:24:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:24:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:24:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:24:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:24:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:24:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:24:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:24:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:24:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:24:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:24:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:24: }
+2026-01-19T14:48:29: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:29: Require stack:
+2026-01-19T14:48:29: - /app/src/explain.js
+2026-01-19T14:48:29: - /app/src/index.js
+2026-01-19T14:48:29:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:29:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:29:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:29:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:29:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:29:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:29:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:29:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:29:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:29:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:29:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:29:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:29: }
+2026-01-19T14:48:33: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:33: Require stack:
+2026-01-19T14:48:33: - /app/src/explain.js
+2026-01-19T14:48:33: - /app/src/index.js
+2026-01-19T14:48:33:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:33:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:33:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:33:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:33:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:33:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:33:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:33:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:33:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:33:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:33:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:33:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:33: }
+2026-01-19T14:48:38: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:38: Require stack:
+2026-01-19T14:48:38: - /app/src/explain.js
+2026-01-19T14:48:38: - /app/src/index.js
+2026-01-19T14:48:38:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:38:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:38:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:38:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:38:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:38:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:38:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:38:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:38:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:38:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:38:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:38:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:38: }
+2026-01-19T14:48:43: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:43: Require stack:
+2026-01-19T14:48:43: - /app/src/explain.js
+2026-01-19T14:48:43: - /app/src/index.js
+2026-01-19T14:48:43:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:43:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:43:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:43:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:43:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:43:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:43:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:43:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:43:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:43:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:43:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:43:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:43: }
+2026-01-19T14:48:48: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:48: Require stack:
+2026-01-19T14:48:48: - /app/src/explain.js
+2026-01-19T14:48:48: - /app/src/index.js
+2026-01-19T14:48:48:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:48:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:48:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:48:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:48:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:48:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:48:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:48:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:48:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:48:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:48:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:48:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:48: }
+2026-01-19T14:48:52: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:52: Require stack:
+2026-01-19T14:48:52: - /app/src/explain.js
+2026-01-19T14:48:52: - /app/src/index.js
+2026-01-19T14:48:52:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:52:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:52:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:52:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:52:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:52:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:52:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:52:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:52:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:52:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:52:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:52:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:52: }
+2026-01-19T14:48:57: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:48:57: Require stack:
+2026-01-19T14:48:57: - /app/src/explain.js
+2026-01-19T14:48:57: - /app/src/index.js
+2026-01-19T14:48:57:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:48:57:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:48:57:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:48:57:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:48:57:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:48:57:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:48:57:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:48:57:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:48:57:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:48:57:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:48:57:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:48:57:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:48:57: }
+2026-01-19T14:49:02: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:02: Require stack:
+2026-01-19T14:49:02: - /app/src/explain.js
+2026-01-19T14:49:02: - /app/src/index.js
+2026-01-19T14:49:02:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:02:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:02:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:02:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:02:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:02:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:02:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:02:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:02:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:02:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:02:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:02:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:02: }
+2026-01-19T14:49:07: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:07: Require stack:
+2026-01-19T14:49:07: - /app/src/explain.js
+2026-01-19T14:49:07: - /app/src/index.js
+2026-01-19T14:49:07:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:07:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:07:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:07:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:07:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:07:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:07:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:07:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:07:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:07:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:07:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:07:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:07: }
+2026-01-19T14:49:11: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:11: Require stack:
+2026-01-19T14:49:11: - /app/src/explain.js
+2026-01-19T14:49:11: - /app/src/index.js
+2026-01-19T14:49:11:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:11:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:11:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:11:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:11:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:11:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:11:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:11:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:11:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:11:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:11:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:11:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:11: }
+2026-01-19T14:49:16: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:16: Require stack:
+2026-01-19T14:49:16: - /app/src/explain.js
+2026-01-19T14:49:16: - /app/src/index.js
+2026-01-19T14:49:16:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:16:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:16:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:16:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:16:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:16:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:16:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:16:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:16:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:16:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:16:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:16:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:16: }
+2026-01-19T14:49:21: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:21: Require stack:
+2026-01-19T14:49:21: - /app/src/explain.js
+2026-01-19T14:49:21: - /app/src/index.js
+2026-01-19T14:49:21:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:21:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:21:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:21:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:21:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:21:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:21:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:21:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:21:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:21:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:21:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:21:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:21: }
+2026-01-19T14:49:25: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:25: Require stack:
+2026-01-19T14:49:25: - /app/src/explain.js
+2026-01-19T14:49:25: - /app/src/index.js
+2026-01-19T14:49:25:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:25:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:25:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:25:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:25:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:25:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:25:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:25:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:25:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:25:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:25:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:25:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:25: }
+2026-01-19T14:49:30: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:30: Require stack:
+2026-01-19T14:49:30: - /app/src/explain.js
+2026-01-19T14:49:30: - /app/src/index.js
+2026-01-19T14:49:30:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:30:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:30:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:30:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:30:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:30:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:30:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:30:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:30:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:30:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:30:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:30:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:30: }
+2026-01-19T14:49:35: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:35: Require stack:
+2026-01-19T14:49:35: - /app/src/explain.js
+2026-01-19T14:49:35: - /app/src/index.js
+2026-01-19T14:49:35:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:35:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:35:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:35:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:35:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:35:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:35:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:35:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:35:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:35:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:35:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:35:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:35: }
+2026-01-19T14:49:40: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:40: Require stack:
+2026-01-19T14:49:40: - /app/src/explain.js
+2026-01-19T14:49:40: - /app/src/index.js
+2026-01-19T14:49:40:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:40:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:40:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:40:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:40:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:40:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:40:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:40:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:40:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:40:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:40:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:40:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:40: }
+2026-01-19T14:49:44: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:44: Require stack:
+2026-01-19T14:49:44: - /app/src/explain.js
+2026-01-19T14:49:44: - /app/src/index.js
+2026-01-19T14:49:44:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:44:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:44:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:44:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:44:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:44:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:44:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:44:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:44:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:44:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:44:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:44:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:44: }
+2026-01-19T14:49:49: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:49: Require stack:
+2026-01-19T14:49:49: - /app/src/explain.js
+2026-01-19T14:49:49: - /app/src/index.js
+2026-01-19T14:49:49:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:49:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:49:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:49:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:49:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:49:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:49:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:49:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:49:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:49:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:49:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:49:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:49: }
+2026-01-19T14:49:54: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:54: Require stack:
+2026-01-19T14:49:54: - /app/src/explain.js
+2026-01-19T14:49:54: - /app/src/index.js
+2026-01-19T14:49:54:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:54:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:54:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:54:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:54:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:54:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:54:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:54:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:54:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:54:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:54:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:54:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:54: }
+2026-01-19T14:49:58: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:49:58: Require stack:
+2026-01-19T14:49:58: - /app/src/explain.js
+2026-01-19T14:49:58: - /app/src/index.js
+2026-01-19T14:49:58:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:49:58:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:49:58:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:49:58:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:49:58:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:49:58:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:49:58:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:49:58:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:49:58:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:49:58:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:49:58:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:49:58:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:49:58: }
+2026-01-19T14:50:03: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:50:03: Require stack:
+2026-01-19T14:50:03: - /app/src/explain.js
+2026-01-19T14:50:03: - /app/src/index.js
+2026-01-19T14:50:03:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:50:03:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:50:03:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:50:03:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:50:03:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:50:03:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:50:03:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:50:03:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:50:03:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:50:03:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:50:03:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:50:03:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:50:03: }
+2026-01-19T14:50:08: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:50:08: Require stack:
+2026-01-19T14:50:08: - /app/src/explain.js
+2026-01-19T14:50:08: - /app/src/index.js
+2026-01-19T14:50:08:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:50:08:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:50:08:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:50:08:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:50:08:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:50:08:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:50:08:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:50:08:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:50:08:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:50:08:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:50:08:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:50:08:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:50:08: }
+2026-01-19T14:50:13: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:50:13: Require stack:
+2026-01-19T14:50:13: - /app/src/explain.js
+2026-01-19T14:50:13: - /app/src/index.js
+2026-01-19T14:50:13:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:50:13:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:50:13:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:50:13:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:50:13:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:50:13:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:50:13:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:50:13:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:50:13:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:50:13:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:50:13:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:50:13:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:50:13: }
+2026-01-19T14:50:17: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:50:17: Require stack:
+2026-01-19T14:50:17: - /app/src/explain.js
+2026-01-19T14:50:17: - /app/src/index.js
+2026-01-19T14:50:17:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:50:17:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:50:17:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:50:17:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:50:17:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:50:17:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:50:17:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:50:17:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:50:17:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:50:17:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:50:17:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:50:17:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:50:17: }
+2026-01-19T14:50:22: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:50:22: Require stack:
+2026-01-19T14:50:22: - /app/src/explain.js
+2026-01-19T14:50:22: - /app/src/index.js
+2026-01-19T14:50:22:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:50:22:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:50:22:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:50:22:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:50:22:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:50:22:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:50:22:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:50:22:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:50:22:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:50:22:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:50:22:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:50:22:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:50:22: }
+2026-01-19T14:50:27: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:50:27: Require stack:
+2026-01-19T14:50:27: - /app/src/explain.js
+2026-01-19T14:50:27: - /app/src/index.js
+2026-01-19T14:50:27:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:50:27:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:50:27:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:50:27:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:50:27:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:50:27:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:50:27:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:50:27:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:50:27:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:50:27:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:50:27:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:50:27:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:50:27: }
+2026-01-19T14:50:31: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:50:31: Require stack:
+2026-01-19T14:50:31: - /app/src/explain.js
+2026-01-19T14:50:31: - /app/src/index.js
+2026-01-19T14:50:31:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:50:31:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:50:31:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:50:31:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:50:31:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:50:31:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:50:31:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:50:31:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:50:31:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:50:31:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:50:31:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:50:31:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:50:31: }
+2026-01-19T14:50:36: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:50:36: Require stack:
+2026-01-19T14:50:36: - /app/src/explain.js
+2026-01-19T14:50:36: - /app/src/index.js
+2026-01-19T14:50:36:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:50:36:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:50:36:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:50:36:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:50:36:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:50:36:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:50:36:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:50:36:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:50:36:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:50:36:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:50:36:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:50:36:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:50:36: }
+2026-01-19T14:50:41: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:50:41: Require stack:
+2026-01-19T14:50:41: - /app/src/explain.js
+2026-01-19T14:50:41: - /app/src/index.js
+2026-01-19T14:50:41:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:50:41:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:50:41:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:50:41:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:50:41:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:50:41:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:50:41:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:50:41:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:50:41:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:50:41:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:50:41:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:50:41:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:50:41: }
+2026-01-19T14:50:45: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:50:45: Require stack:
+2026-01-19T14:50:45: - /app/src/explain.js
+2026-01-19T14:50:45: - /app/src/index.js
+2026-01-19T14:50:45:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:50:45:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:50:45:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:50:45:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:50:45:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:50:45:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:50:45:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:50:45:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:50:45:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:50:45:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:50:45:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:50:45:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:50:45: }
+2026-01-19T14:50:50: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:50:50: Require stack:
+2026-01-19T14:50:50: - /app/src/explain.js
+2026-01-19T14:50:50: - /app/src/index.js
+2026-01-19T14:50:50:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:50:50:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:50:50:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:50:50:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:50:50:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:50:50:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:50:50:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:50:50:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:50:50:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:50:50:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:50:50:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:50:50:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:50:50: }
+2026-01-19T14:50:55: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:50:55: Require stack:
+2026-01-19T14:50:55: - /app/src/explain.js
+2026-01-19T14:50:55: - /app/src/index.js
+2026-01-19T14:50:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:50:55:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:50:55:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:50:55:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:50:55:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:50:55:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:50:55:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:50:55:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:50:55:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:50:55:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:50:55:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:50:55:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:50:55: }
+2026-01-19T14:51:00: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:00: Require stack:
+2026-01-19T14:51:00: - /app/src/explain.js
+2026-01-19T14:51:00: - /app/src/index.js
+2026-01-19T14:51:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:00:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:00:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:00:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:00:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:00:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:00:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:00:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:00:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:00:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:00:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:00:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:00: }
+2026-01-19T14:51:04: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:04: Require stack:
+2026-01-19T14:51:04: - /app/src/explain.js
+2026-01-19T14:51:04: - /app/src/index.js
+2026-01-19T14:51:04:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:04:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:04:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:04:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:04:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:04:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:04:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:04:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:04:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:04:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:04:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:04:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:04: }
+2026-01-19T14:51:09: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:09: Require stack:
+2026-01-19T14:51:09: - /app/src/explain.js
+2026-01-19T14:51:09: - /app/src/index.js
+2026-01-19T14:51:09:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:09:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:09:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:09:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:09:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:09:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:09:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:09:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:09:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:09:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:09:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:09:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:09: }
+2026-01-19T14:51:14: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:14: Require stack:
+2026-01-19T14:51:14: - /app/src/explain.js
+2026-01-19T14:51:14: - /app/src/index.js
+2026-01-19T14:51:14:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:14:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:14:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:14:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:14:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:14:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:14:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:14:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:14:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:14:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:14:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:14:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:14: }
+2026-01-19T14:51:19: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:19: Require stack:
+2026-01-19T14:51:19: - /app/src/explain.js
+2026-01-19T14:51:19: - /app/src/index.js
+2026-01-19T14:51:19:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:19:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:19:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:19:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:19:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:19:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:19:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:19:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:19:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:19:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:19:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:19:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:19: }
+2026-01-19T14:51:23: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:23: Require stack:
+2026-01-19T14:51:23: - /app/src/explain.js
+2026-01-19T14:51:23: - /app/src/index.js
+2026-01-19T14:51:23:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:23:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:23:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:23:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:23:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:23:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:23:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:23:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:23:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:23:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:23:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:23:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:23: }
+2026-01-19T14:51:28: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:28: Require stack:
+2026-01-19T14:51:28: - /app/src/explain.js
+2026-01-19T14:51:28: - /app/src/index.js
+2026-01-19T14:51:28:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:28:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:28:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:28:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:28:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:28:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:28:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:28:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:28:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:28:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:28:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:28:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:28: }
+2026-01-19T14:51:33: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:33: Require stack:
+2026-01-19T14:51:33: - /app/src/explain.js
+2026-01-19T14:51:33: - /app/src/index.js
+2026-01-19T14:51:33:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:33:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:33:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:33:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:33:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:33:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:33:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:33:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:33:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:33:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:33:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:33:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:33: }
+2026-01-19T14:51:38: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:38: Require stack:
+2026-01-19T14:51:38: - /app/src/explain.js
+2026-01-19T14:51:38: - /app/src/index.js
+2026-01-19T14:51:38:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:38:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:38:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:38:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:38:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:38:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:38:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:38:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:38:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:38:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:38:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:38:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:38: }
+2026-01-19T14:51:42: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:42: Require stack:
+2026-01-19T14:51:42: - /app/src/explain.js
+2026-01-19T14:51:42: - /app/src/index.js
+2026-01-19T14:51:42:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:42:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:42:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:42:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:42:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:42:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:42:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:42:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:42:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:42:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:42:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:42:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:42: }
+2026-01-19T14:51:47: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:47: Require stack:
+2026-01-19T14:51:47: - /app/src/explain.js
+2026-01-19T14:51:47: - /app/src/index.js
+2026-01-19T14:51:47:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:47:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:47:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:47:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:47:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:47:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:47:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:47:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:47:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:47:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:47:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:47:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:47: }
+2026-01-19T14:51:52: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:52: Require stack:
+2026-01-19T14:51:52: - /app/src/explain.js
+2026-01-19T14:51:52: - /app/src/index.js
+2026-01-19T14:51:52:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:52:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:52:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:52:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:52:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:52:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:52:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:52:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:52:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:52:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:52:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:52:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:52: }
+2026-01-19T14:51:57: Error: Cannot find module './utils/json-cleaner'
+2026-01-19T14:51:57: Require stack:
+2026-01-19T14:51:57: - /app/src/explain.js
+2026-01-19T14:51:57: - /app/src/index.js
+2026-01-19T14:51:57:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-01-19T14:51:57:     at Hook._require.Module.require (/usr/local/lib/node_modules/pm2/node_modules/require-in-the-middle/index.js:81:25)
+2026-01-19T14:51:57:     at require (node:internal/modules/helpers:135:16)
+2026-01-19T14:51:57:     at Object.<anonymous> (/app/src/explain.js:3:31)
+2026-01-19T14:51:57:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-01-19T14:51:57:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-01-19T14:51:57:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-01-19T14:51:57:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-01-19T14:51:57:     at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2026-01-19T14:51:57:     at wrapModuleLoad (node:internal/modules/cjs/loader:235:24) {
+2026-01-19T14:51:57:   code: 'MODULE_NOT_FOUND',
+2026-01-19T14:51:57:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
+2026-01-19T14:51:57: }
+2026-01-19T14:52:04: Logged in as AImolt#9122!
+2026-01-19T14:52:04: PostgreSQL connection successful
+2026-01-19T14:52:04: Prompt system initialized successfully
+2026-01-19T14:52:04: System instruction loaded: 361 characters
+2026-01-19T14:52:04: 🚀 Starting Supabase sync system...
+2026-01-19T14:52:04: ✅ PostgreSQL connection successful
+2026-01-19T14:52:06: ✅ Supabase connection successful
+2026-01-19T14:52:06: 🔊 Listening to channel: sync_conversations (table: conversations)
+2026-01-19T14:52:06: 🔊 Listening to channel: sync_emotion_states (table: emotion_states)
+2026-01-19T14:52:06: 🔊 Listening to channel: sync_user_memories (table: user_memories)
+2026-01-19T14:52:06: 🔊 Listening to channel: sync_conversation_analysis (table: conversation_analysis)
+2026-01-19T14:52:06: 🔊 Listening to channel: sync_user_relationships (table: user_relationships)
+2026-01-19T14:52:06: ✅ Supabase sync system started successfully
+2026-01-19T14:52:06: 📊 Monitoring 5 tables: conversations, emotion_states, user_memories, conversation_analysis, user_relationships
+2026-01-19T14:52:06: Supabase sync system started successfully
+2026-01-19T14:52:06: 🎯 ProactiveResponseHandler 初期化完了
+2026-01-19T14:52:06: 🚀 プロアクティブメッセージスケジューラーが開始されました
+2026-01-19T14:52:06: 📅 チェック間隔: 0 */1 * * * (Asia/Tokyo)
+2026-01-19T14:52:06: Proactive message system initialized and started successfully (auto-start)
+2026-01-19T14:54:48: 静的文字起こしプロンプトを使用
+2026-01-19T14:54:48: 🔄 🎤 音声文字起こし 実行中...
+2026-01-19T14:54:48: ❌ 🎤 音声文字起こし 失敗 (全4回試行後): [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent: [404 Not Found] models/gemini-3-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-01-19T14:59:28: Logged in as AImolt#9122!
+2026-01-19T14:59:28: PostgreSQL connection successful
+2026-01-19T14:59:28: Prompt system initialized successfully
+2026-01-19T14:59:28: System instruction loaded: 361 characters
+2026-01-19T14:59:28: 🚀 Starting Supabase sync system...
+2026-01-19T14:59:28: ✅ PostgreSQL connection successful
+2026-01-19T14:59:28: ✅ Supabase connection successful
+2026-01-19T14:59:28: 🔊 Listening to channel: sync_conversations (table: conversations)
+2026-01-19T14:59:28: 🔊 Listening to channel: sync_emotion_states (table: emotion_states)
+2026-01-19T14:59:28: 🔊 Listening to channel: sync_user_memories (table: user_memories)
+2026-01-19T14:59:28: 🔊 Listening to channel: sync_conversation_analysis (table: conversation_analysis)
+2026-01-19T14:59:28: 🔊 Listening to channel: sync_user_relationships (table: user_relationships)
+2026-01-19T14:59:28: ✅ Supabase sync system started successfully
+2026-01-19T14:59:28: 📊 Monitoring 5 tables: conversations, emotion_states, user_memories, conversation_analysis, user_relationships
+2026-01-19T14:59:28: Supabase sync system started successfully
+2026-01-19T14:59:28: 🎯 ProactiveResponseHandler 初期化完了
+2026-01-19T14:59:28: 🚀 プロアクティブメッセージスケジューラーが開始されました
+2026-01-19T14:59:28: 📅 チェック間隔: 0 */1 * * * (Asia/Tokyo)
+2026-01-19T14:59:28: Proactive message system initialized and started successfully (auto-start)

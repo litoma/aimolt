@@ -38109,3 +38109,43 @@
 2026-01-19T14:22:25: 静的文字起こしプロンプトを使用
 2026-01-19T14:22:25: 🔄 🎤 音声文字起こし 実行中...
 2026-01-19T14:23:29: ✅ 🎤 音声文字起こし 成功
+2026-01-19T14:52:04: Logged in as AImolt#9122!
+2026-01-19T14:52:04: PostgreSQL connection successful
+2026-01-19T14:52:04: Prompt system initialized successfully
+2026-01-19T14:52:04: System instruction loaded: 361 characters
+2026-01-19T14:52:04: 🚀 Starting Supabase sync system...
+2026-01-19T14:52:04: ✅ PostgreSQL connection successful
+2026-01-19T14:52:06: ✅ Supabase connection successful
+2026-01-19T14:52:06: 🔊 Listening to channel: sync_conversations (table: conversations)
+2026-01-19T14:52:06: 🔊 Listening to channel: sync_emotion_states (table: emotion_states)
+2026-01-19T14:52:06: 🔊 Listening to channel: sync_user_memories (table: user_memories)
+2026-01-19T14:52:06: 🔊 Listening to channel: sync_conversation_analysis (table: conversation_analysis)
+2026-01-19T14:52:06: 🔊 Listening to channel: sync_user_relationships (table: user_relationships)
+2026-01-19T14:52:06: ✅ Supabase sync system started successfully
+2026-01-19T14:52:06: 📊 Monitoring 5 tables: conversations, emotion_states, user_memories, conversation_analysis, user_relationships
+2026-01-19T14:52:06: Supabase sync system started successfully
+2026-01-19T14:52:06: 🎯 ProactiveResponseHandler 初期化完了
+2026-01-19T14:52:06: 🚀 プロアクティブメッセージスケジューラーが開始されました
+2026-01-19T14:52:06: 📅 チェック間隔: 0 */1 * * * (Asia/Tokyo)
+2026-01-19T14:52:06: Proactive message system initialized and started successfully (auto-start)
+2026-01-19T14:54:48: 静的文字起こしプロンプトを使用
+2026-01-19T14:54:48: 🔄 🎤 音声文字起こし 実行中...
+2026-01-19T14:59:28: Logged in as AImolt#9122!
+2026-01-19T14:59:28: PostgreSQL connection successful
+2026-01-19T14:59:28: Prompt system initialized successfully
+2026-01-19T14:59:28: System instruction loaded: 361 characters
+2026-01-19T14:59:28: 🚀 Starting Supabase sync system...
+2026-01-19T14:59:28: ✅ PostgreSQL connection successful
+2026-01-19T14:59:28: ✅ Supabase connection successful
+2026-01-19T14:59:28: 🔊 Listening to channel: sync_conversations (table: conversations)
+2026-01-19T14:59:28: 🔊 Listening to channel: sync_emotion_states (table: emotion_states)
+2026-01-19T14:59:28: 🔊 Listening to channel: sync_user_memories (table: user_memories)
+2026-01-19T14:59:28: 🔊 Listening to channel: sync_conversation_analysis (table: conversation_analysis)
+2026-01-19T14:59:28: 🔊 Listening to channel: sync_user_relationships (table: user_relationships)
+2026-01-19T14:59:28: ✅ Supabase sync system started successfully
+2026-01-19T14:59:28: 📊 Monitoring 5 tables: conversations, emotion_states, user_memories, conversation_analysis, user_relationships
+2026-01-19T14:59:28: Supabase sync system started successfully
+2026-01-19T14:59:28: 🎯 ProactiveResponseHandler 初期化完了
+2026-01-19T14:59:28: 🚀 プロアクティブメッセージスケジューラーが開始されました
+2026-01-19T14:59:28: 📅 チェック間隔: 0 */1 * * * (Asia/Tokyo)
+2026-01-19T14:59:28: Proactive message system initialized and started successfully (auto-start)

@@ -1,6 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
 const { prompts } = require('./prompt');
-const { cleanJsonResponse } = require('./utils/json-cleaner');
 const { retryGeminiApiCall } = require('./utils/retry');
 const { GEMINI_MODEL } = require('./config');
 
