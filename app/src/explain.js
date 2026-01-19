@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { prompts } = require('./prompt');
 const { retryGeminiApiCall } = require('./utils/retry');
+const { GEMINI_MODELS } = require('./config');
 
 // Embed内容の抽出
 function extractEmbedContent(message) {
@@ -79,7 +80,7 @@ async function handleExplainReaction(message, channel, user, genAI, getConversat
     // Gemini APIで解説生成（gemini-2.5-pro: 正確性と論理性重視）
     try {
       const model = genAI.getGenerativeModel({
-        model: 'gemini-flash-latest',
+        model: GEMINI_MODELS.FAST,
         systemInstruction: { parts: [{ text: explainPrompt }] },
         generationConfig: {
           maxOutputTokens: 1200,  // 的確で簡潔な解説

@@ -3,19 +3,20 @@ const path = require('path');
 const https = require('https');
 const { prompts } = require('./prompt');
 const { retryGeminiApiCall } = require('./utils/retry');
+const { GEMINI_MODELS } = require('./config');
 
 // 音声ファイルのダウンロード関数
 async function downloadAudio(url, filePath, fallbackUrl) {
   return new Promise((resolve, reject) => {
     const downloadUrl = url || fallbackUrl;
     const file = require('fs').createWriteStream(filePath);
-    
+
     https.get(downloadUrl, (response) => {
       if (response.statusCode !== 200) {
         reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
         return;
       }
-      
+
       response.pipe(file);
       file.on('finish', () => {
         file.close();
@@ -111,11 +112,11 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
       `;
     }
 
-    const transcriptionModel = genAI.getGenerativeModel({ 
-      model: 'gemini-3-flash-preview', 
-      systemInstruction: systemInstruction 
+    const transcriptionModel = genAI.getGenerativeModel({
+      model: GEMINI_MODELS.FLASH_2_5,
+      systemInstruction: systemInstruction
     });
-    
+
     const chatSession = transcriptionModel.startChat();
 
     const audioData = await fs.readFile(filePath);
@@ -125,7 +126,7 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
         mimeType,
       },
     };
-    
+
     // リトライ機能付きでGemini API呼び出し
     const result = await retryGeminiApiCall(
       async () => await chatSession.sendMessage([
@@ -135,9 +136,9 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
       '🎤 音声文字起こし',
       { maxRetries: 3, baseDelay: 2000, maxDelay: 12000 }
     );
-    
+
     let transcription = result.response.text();
-    
+
     // 追加の後処理でケバ取り
     transcription = removeFillerWords(transcription);
 
@@ -146,7 +147,7 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
     if (transcription.trim()) {
       // 引用ブロックで囲んで送信
       const quotedText = `>>> ${transcription}`;
-      
+
       for (let i = 0; i < quotedText.length; i += 1000) {
         await channel.send(quotedText.slice(i, i + 1000));
         await new Promise(resolve => setTimeout(resolve, 1000));
