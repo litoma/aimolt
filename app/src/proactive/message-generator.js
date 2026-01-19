@@ -2,7 +2,7 @@ const { prompts } = require('../prompt');
 const { personalityManagerV2 } = require('../personality/manager-v2');
 const AimoltProfileSync = require('../profile-sync');
 const { retryGeminiApiCall } = require('../utils/retry');
-const { GEMINI_MODELS } = require('../config');
+const { GEMINI_MODEL } = require('../config');
 
 /**
  * プロアクティブメッセージ生成エンジン
@@ -592,7 +592,7 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
       // Gemini を使用（固定設定）
       const { HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
       const model = this.genAI.getGenerativeModel({
-        model: GEMINI_MODELS.FAST,
+        model: GEMINI_MODEL,
         systemInstruction: prompt.systemInstruction,
         generationConfig: {
           maxOutputTokens: 2000,
@@ -644,7 +644,7 @@ VAD感情モデル: V=${valence.toFixed(2)}, A=${arousal.toFixed(2)}, D=${domina
 
       return {
         content: processedMessage,
-        model: GEMINI_MODELS.EXPERIMENTAL,
+        model: GEMINI_MODEL,
         originalLength: generatedText.length,
         processedLength: processedMessage.length
       };

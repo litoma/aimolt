@@ -2,7 +2,7 @@ const { prompts } = require('./prompt');
 const AimoltProfileSync = require('./profile-sync');
 const { personalityManagerV2 } = require('./personality/manager-v2');
 const { retryGeminiApiCall } = require('./utils/retry');
-const { GEMINI_MODELS } = require('./config');
+const { GEMINI_MODEL } = require('./config');
 
 // プロファイル同期インスタンス（グローバル）
 const profileSync = new AimoltProfileSync();
@@ -73,7 +73,7 @@ async function handleLikeReaction(reaction, user, genAI, getConversationHistory,
 
     // Gemini APIで応答を生成
     const model = genAI.getGenerativeModel({
-      model: GEMINI_MODELS.PREVIEW_3,
+      model: GEMINI_MODEL,
       systemInstruction: `${systemInstruction}\n\n${finalPrompt}`,
       generationConfig: {
         maxOutputTokens: 2000,  // 文章の途中切れを防止

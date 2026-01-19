@@ -3,7 +3,7 @@ const path = require('path');
 const https = require('https');
 const { prompts } = require('./prompt');
 const { retryGeminiApiCall } = require('./utils/retry');
-const { GEMINI_MODELS } = require('./config');
+const { GEMINI_MODEL } = require('./config');
 
 // 音声ファイルのダウンロード関数
 async function downloadAudio(url, filePath, fallbackUrl) {
@@ -113,7 +113,7 @@ async function transcribeAudio(message, channel, user, genAI, getConversationHis
     }
 
     const transcriptionModel = genAI.getGenerativeModel({
-      model: GEMINI_MODELS.FLASH_2_5,
+      model: GEMINI_MODEL,
       systemInstruction: systemInstruction
     });
 
