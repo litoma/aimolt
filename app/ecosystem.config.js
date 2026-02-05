@@ -1,8 +1,8 @@
 module.exports = {
   apps: [{
     name: 'aimolt',
-    script: './src/index.js',
-    cwd: '/app',
+    script: './dist/main.js',
+    // cwd: '/app', // Docker環境用設定。ローカル実行時はコメントアウト推奨
     instances: 1,
     exec_mode: 'fork',
     autorestart: true,

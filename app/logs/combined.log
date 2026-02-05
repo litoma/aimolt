@@ -44030,3 +44030,379 @@
 2026-02-05T12:37:23:   syscall: 'getaddrinfo',
 2026-02-05T12:37:23:   hostname: 'postgres'
 2026-02-05T12:37:23: }
+2026-02-05T21:39:31: Logged in as AImolt#9122!
+2026-02-05T21:39:32: ✅ Supabase connection successful
+2026-02-05T21:39:32: Prompt system initialized successfully
+2026-02-05T21:39:32: System instruction loaded: 361 characters
+2026-02-05T21:40:49: Bot personality fetch warning: relation "public.bot_personality" does not exist
+2026-02-05T12:40:54: Error in personality status: Error: getaddrinfo EAI_AGAIN postgres
+2026-02-05T12:40:54:     at /app/node_modules/pg-pool/index.js:45:11
+2026-02-05T12:40:54:     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-02-05T12:40:54:     at async PersonalityCommandV2.getEmotionState (/app/src/personality-command-v2.js:194:20)
+2026-02-05T12:40:54:     at async Promise.all (index 0)
+2026-02-05T12:40:54:     at async PersonalityCommandV2.handleStatusCommand (/app/src/personality-command-v2.js:23:55)
+2026-02-05T12:40:54:     at async Client.<anonymous> (/app/src/index.js:394:11) {
+2026-02-05T12:40:54:   errno: -3001,
+2026-02-05T12:40:54:   code: 'EAI_AGAIN',
+2026-02-05T12:40:54:   syscall: 'getaddrinfo',
+2026-02-05T12:40:54:   hostname: 'postgres'
+2026-02-05T12:40:54: }
+2026-02-05T21:40:59: Bot personality fetch warning: relation "public.bot_personality" does not exist
+2026-02-05T12:41:03: Error in personality status: Error: getaddrinfo EAI_AGAIN postgres
+2026-02-05T12:41:03:     at /app/node_modules/pg-pool/index.js:45:11
+2026-02-05T12:41:03:     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-02-05T12:41:03:     at async PersonalityCommandV2.getEmotionState (/app/src/personality-command-v2.js:194:20)
+2026-02-05T12:41:03:     at async Promise.all (index 0)
+2026-02-05T12:41:03:     at async PersonalityCommandV2.handleStatusCommand (/app/src/personality-command-v2.js:23:55)
+2026-02-05T12:41:03:     at async Client.<anonymous> (/app/src/index.js:394:11) {
+2026-02-05T12:41:03:   errno: -3001,
+2026-02-05T12:41:03:   code: 'EAI_AGAIN',
+2026-02-05T12:41:03:   syscall: 'getaddrinfo',
+2026-02-05T12:41:03:   hostname: 'postgres'
+2026-02-05T12:41:03: }
+2026-02-05T21:45:57: Logged in as AImolt#9122!
+2026-02-05T21:45:57: ✅ Supabase connection successful
+2026-02-05T21:45:57: Prompt system initialized successfully
+2026-02-05T21:45:57: System instruction loaded: 361 characters
+2026-02-05T21:46:40: Bot personality fetch warning: relation "public.bot_personality" does not exist
+2026-02-05T12:46:44: Error in personality status: Error: getaddrinfo EAI_AGAIN postgres
+2026-02-05T12:46:44:     at /app/node_modules/pg-pool/index.js:45:11
+2026-02-05T12:46:44:     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-02-05T12:46:44:     at async PersonalityCommandV2.getEmotionState (/app/src/personality-command-v2.js:194:20)
+2026-02-05T12:46:44:     at async Promise.all (index 0)
+2026-02-05T12:46:44:     at async PersonalityCommandV2.handleStatusCommand (/app/src/personality-command-v2.js:23:55)
+2026-02-05T12:46:44:     at async Client.<anonymous> (/app/src/index.js:394:11) {
+2026-02-05T12:46:44:   errno: -3001,
+2026-02-05T12:46:44:   code: 'EAI_AGAIN',
+2026-02-05T12:46:44:   syscall: 'getaddrinfo',
+2026-02-05T12:46:44:   hostname: 'postgres'
+2026-02-05T12:46:44: }
+2026-02-05T21:48:14: Bot personality fetch warning: relation "public.bot_personality" does not exist
+2026-02-05T21:51:03: Error loading dynamic like prompt: prompts.getDynamicLike is not a function
+2026-02-05T21:51:03: 📡 Fetching personal profile from GitHub...
+2026-02-05T21:51:04: ✅ Personal profile fetched successfully
+2026-02-05T21:51:04: 💾 Personal profile cached locally (12h cache)
+2026-02-05T21:51:04: 📋 Personal profile applied to like reaction (adaptive mode)
+2026-02-05T21:51:04: 💾 Using cached personal profile (0h old)
+2026-02-05T21:51:04: 📋 Personal profile applied to like reaction (adaptive mode)
+2026-02-05T21:51:04: 🔄 👍 Like応答生成 実行中...
+2026-02-05T21:51:11: ✅ 👍 Like応答生成 成功
+2026-02-05T21:51:11: ❌ フォールバック保存失敗 (Supabase): duplicate key value violates unique constraint "conversations_pkey"
+2026-02-05T21:51:12: Personality v2.0 updated for user 493069905059381255 (VAD: 58/50/50)
+2026-02-05T22:03:54: 静的文字起こしプロンプトを使用
+2026-02-05T22:03:54: 🔄 🎤 音声文字起こし 実行中...
+2026-02-05T22:04:20: ✅ 🎤 音声文字起こし 成功
+2026-02-05T22:13:51: Logged in as AImolt#9122!
+2026-02-05T22:13:52: ✅ Supabase connection successful
+2026-02-05T22:13:52: Prompt system initialized successfully
+2026-02-05T22:13:52: System instruction loaded: 361 characters
+2026-02-05T22:14:03: Logged in as AImolt#9122!
+2026-02-05T22:14:03: ✅ Supabase connection successful
+2026-02-05T22:14:03: Prompt system initialized successfully
+2026-02-05T22:14:03: System instruction loaded: 361 characters
+2026-02-05T22:14:30: Bot personality fetch warning: relation "public.bot_personality" does not exist
+2026-02-05T22:18:18: Logged in as AImolt#9122!
+2026-02-05T22:18:19: ✅ Supabase connection successful
+2026-02-05T22:18:19: Prompt system initialized successfully
+2026-02-05T22:18:19: System instruction loaded: 361 characters
+2026-02-05T22:18:59: Error loading dynamic like prompt: prompts.getDynamicLike is not a function
+2026-02-05T22:18:59: 💾 Using cached personal profile (0h old)
+2026-02-05T22:18:59: 📋 Personal profile applied to like reaction (adaptive mode)
+2026-02-05T22:18:59: 💾 Using cached personal profile (0h old)
+2026-02-05T22:18:59: 📋 Personal profile applied to like reaction (adaptive mode)
+2026-02-05T22:18:59: 🔄 👍 Like応答生成 実行中...
+2026-02-05T22:19:04: ✅ 👍 Like応答生成 成功
+2026-02-05T22:19:04: ❌ フォールバック保存失敗 (Supabase): duplicate key value violates unique constraint "conversations_pkey"
+2026-02-05T22:19:04: Personality v2.0 updated for user 493069905059381255 (VAD: 50/50/50)
+2026-02-05T22:21:06: Logged in as AImolt#9122!
+2026-02-05T22:21:07: ✅ Supabase connection successful
+2026-02-05T22:21:07: Prompt system initialized successfully
+2026-02-05T22:21:07: System instruction loaded: 361 characters
+2026-02-05T22:26:07: 環境変数確認: { OBSIDIAN_URL: 'http://100.69.32.99:27123', OBSIDIAN_API_KEY: '設定済み' }
+2026-02-06T07:05:20: Logged in as AImolt#9122!
+2026-02-06T07:05:21: ✅ Supabase connection successful
+2026-02-06T07:05:21: Prompt system initialized successfully
+2026-02-06T07:05:21: System instruction loaded: 361 characters
+2026-02-06T07:35:56: 静的文字起こしプロンプトを使用
+2026-02-06T07:35:56: 🔄 🎤 音声文字起こし 実行中...
+2026-02-06T07:35:59: ✅ 🎤 音声文字起こし 成功
+2026-02-06T07:39:17: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:39:17:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:39:17:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:39:17:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:39:17:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:39:17:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:39:17:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:39:17:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:39:17:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:39:17:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:39:17:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:39:17:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:39:17:   requireStack: []
+2026-02-06T07:39:17: }
+2026-02-06T07:39:21: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:39:21:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:39:21:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:39:21:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:39:21:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:39:21:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:39:21:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:39:21:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:39:21:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:39:21:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:39:21:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:39:21:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:39:21:   requireStack: []
+2026-02-06T07:39:21: }
+2026-02-06T07:39:25: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:39:25:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:39:25:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:39:25:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:39:25:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:39:25:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:39:25:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:39:25:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:39:25:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:39:25:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:39:25:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:39:25:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:39:25:   requireStack: []
+2026-02-06T07:39:25: }
+2026-02-06T07:39:29: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:39:29:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:39:29:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:39:29:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:39:29:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:39:29:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:39:29:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:39:29:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:39:29:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:39:29:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:39:29:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:39:29:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:39:29:   requireStack: []
+2026-02-06T07:39:29: }
+2026-02-06T07:39:33: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:39:33:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:39:33:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:39:33:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:39:33:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:39:33:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:39:33:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:39:33:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:39:33:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:39:33:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:39:33:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:39:33:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:39:33:   requireStack: []
+2026-02-06T07:39:33: }
+2026-02-06T07:39:38: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:39:38:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:39:38:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:39:38:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:39:38:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:39:38:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:39:38:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:39:38:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:39:38:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:39:38:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:39:38:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:39:38:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:39:38:   requireStack: []
+2026-02-06T07:39:38: }
+2026-02-06T07:39:42: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:39:42:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:39:42:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:39:42:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:39:42:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:39:42:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:39:42:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:39:42:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:39:42:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:39:42:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:39:42:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:39:42:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:39:42:   requireStack: []
+2026-02-06T07:39:42: }
+2026-02-06T07:39:46: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:39:46:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:39:46:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:39:46:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:39:46:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:39:46:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:39:46:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:39:46:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:39:46:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:39:46:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:39:46:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:39:46:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:39:46:   requireStack: []
+2026-02-06T07:39:46: }
+2026-02-06T07:39:50: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:39:50:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:39:50:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:39:50:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:39:50:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:39:50:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:39:50:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:39:50:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:39:50:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:39:50:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:39:50:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:39:50:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:39:50:   requireStack: []
+2026-02-06T07:39:50: }
+2026-02-06T07:39:54: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:39:54:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:39:54:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:39:54:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:39:54:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:39:54:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:39:54:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:39:54:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:39:54:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:39:54:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:39:54:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:39:54:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:39:54:   requireStack: []
+2026-02-06T07:39:54: }
+2026-02-06T07:47:49: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:47:49:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:47:49:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:47:49:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:47:49:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:47:49:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:47:49:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:47:49:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:47:49:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:47:49:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:47:49:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:47:49:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:47:49:   requireStack: []
+2026-02-06T07:47:49: }
+2026-02-06T07:47:53: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:47:53:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:47:53:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:47:53:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:47:53:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:47:53:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:47:53:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:47:53:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:47:53:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:47:53:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:47:53:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:47:53:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:47:53:   requireStack: []
+2026-02-06T07:47:53: }
+2026-02-06T07:47:57: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:47:57:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:47:57:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:47:57:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:47:57:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:47:57:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:47:57:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:47:57:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:47:57:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:47:57:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:47:57:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:47:57:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:47:57:   requireStack: []
+2026-02-06T07:47:57: }
+2026-02-06T07:48:01: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:48:01:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:48:01:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:48:01:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:48:01:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:48:01:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:48:01:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:48:01:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:48:01:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:48:01:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:48:01:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:48:01:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:48:01:   requireStack: []
+2026-02-06T07:48:01: }
+2026-02-06T07:48:05: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:48:05:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:48:05:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:48:05:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:48:05:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:48:05:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:48:05:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:48:05:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:48:05:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:48:05:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:48:05:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:48:05:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:48:05:   requireStack: []
+2026-02-06T07:48:05: }
+2026-02-06T07:48:10: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:48:10:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:48:10:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:48:10:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:48:10:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:48:10:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:48:10:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:48:10:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:48:10:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:48:10:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:48:10:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:48:10:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:48:10:   requireStack: []
+2026-02-06T07:48:10: }
+2026-02-06T07:48:14: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:48:14:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:48:14:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:48:14:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:48:14:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:48:14:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:48:14:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:48:14:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:48:14:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:48:14:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:48:14:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:48:14:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:48:14:   requireStack: []
+2026-02-06T07:48:14: }
+2026-02-06T07:48:18: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:48:18:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:48:18:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:48:18:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:48:18:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:48:18:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:48:18:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:48:18:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:48:18:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:48:18:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:48:18:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:48:18:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:48:18:   requireStack: []
+2026-02-06T07:48:18: }
+2026-02-06T07:48:22: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:48:22:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:48:22:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:48:22:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:48:22:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:48:22:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:48:22:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:48:22:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:48:22:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:48:22:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:48:22:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:48:22:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:48:22:   requireStack: []
+2026-02-06T07:48:22: }
+2026-02-06T07:48:26: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T07:48:26:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T07:48:26:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T07:48:26:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T07:48:26:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T07:48:26:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T07:48:26:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T07:48:26:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T07:48:26:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T07:48:26:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T07:48:26:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T07:48:26:   code: 'MODULE_NOT_FOUND',
+2026-02-06T07:48:26:   requireStack: []
+2026-02-06T07:48:26: }

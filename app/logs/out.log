@@ -42333,3 +42333,54 @@
 2026-02-05T12:16:33: 静的文字起こしプロンプトを使用
 2026-02-05T12:16:33: 🔄 🎤 音声文字起こし 実行中...
 2026-02-05T12:16:41: ✅ 🎤 音声文字起こし 成功
+2026-02-05T21:39:31: Logged in as AImolt#9122!
+2026-02-05T21:39:32: ✅ Supabase connection successful
+2026-02-05T21:39:32: Prompt system initialized successfully
+2026-02-05T21:39:32: System instruction loaded: 361 characters
+2026-02-05T21:45:57: Logged in as AImolt#9122!
+2026-02-05T21:45:57: ✅ Supabase connection successful
+2026-02-05T21:45:57: Prompt system initialized successfully
+2026-02-05T21:45:57: System instruction loaded: 361 characters
+2026-02-05T21:51:03: 📡 Fetching personal profile from GitHub...
+2026-02-05T21:51:04: ✅ Personal profile fetched successfully
+2026-02-05T21:51:04: 💾 Personal profile cached locally (12h cache)
+2026-02-05T21:51:04: 📋 Personal profile applied to like reaction (adaptive mode)
+2026-02-05T21:51:04: 💾 Using cached personal profile (0h old)
+2026-02-05T21:51:04: 📋 Personal profile applied to like reaction (adaptive mode)
+2026-02-05T21:51:04: 🔄 👍 Like応答生成 実行中...
+2026-02-05T21:51:11: ✅ 👍 Like応答生成 成功
+2026-02-05T21:51:12: Personality v2.0 updated for user 493069905059381255 (VAD: 58/50/50)
+2026-02-05T22:03:54: 静的文字起こしプロンプトを使用
+2026-02-05T22:03:54: 🔄 🎤 音声文字起こし 実行中...
+2026-02-05T22:04:20: ✅ 🎤 音声文字起こし 成功
+2026-02-05T22:13:51: Logged in as AImolt#9122!
+2026-02-05T22:13:52: ✅ Supabase connection successful
+2026-02-05T22:13:52: Prompt system initialized successfully
+2026-02-05T22:13:52: System instruction loaded: 361 characters
+2026-02-05T22:14:03: Logged in as AImolt#9122!
+2026-02-05T22:14:03: ✅ Supabase connection successful
+2026-02-05T22:14:03: Prompt system initialized successfully
+2026-02-05T22:14:03: System instruction loaded: 361 characters
+2026-02-05T22:18:18: Logged in as AImolt#9122!
+2026-02-05T22:18:19: ✅ Supabase connection successful
+2026-02-05T22:18:19: Prompt system initialized successfully
+2026-02-05T22:18:19: System instruction loaded: 361 characters
+2026-02-05T22:18:59: 💾 Using cached personal profile (0h old)
+2026-02-05T22:18:59: 📋 Personal profile applied to like reaction (adaptive mode)
+2026-02-05T22:18:59: 💾 Using cached personal profile (0h old)
+2026-02-05T22:18:59: 📋 Personal profile applied to like reaction (adaptive mode)
+2026-02-05T22:18:59: 🔄 👍 Like応答生成 実行中...
+2026-02-05T22:19:04: ✅ 👍 Like応答生成 成功
+2026-02-05T22:19:04: Personality v2.0 updated for user 493069905059381255 (VAD: 50/50/50)
+2026-02-05T22:21:06: Logged in as AImolt#9122!
+2026-02-05T22:21:07: ✅ Supabase connection successful
+2026-02-05T22:21:07: Prompt system initialized successfully
+2026-02-05T22:21:07: System instruction loaded: 361 characters
+2026-02-05T22:26:07: 環境変数確認: { OBSIDIAN_URL: 'http://100.69.32.99:27123', OBSIDIAN_API_KEY: '設定済み' }
+2026-02-06T07:05:20: Logged in as AImolt#9122!
+2026-02-06T07:05:21: ✅ Supabase connection successful
+2026-02-06T07:05:21: Prompt system initialized successfully
+2026-02-06T07:05:21: System instruction loaded: 361 characters
+2026-02-06T07:35:56: 静的文字起こしプロンプトを使用
+2026-02-06T07:35:56: 🔄 🎤 音声文字起こし 実行中...
+2026-02-06T07:35:59: ✅ 🎤 音声文字起こし 成功
