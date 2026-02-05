@@ -3,18 +3,13 @@
  * VAD感情モデル + 関係性管理システム対応
  */
 
-const { Pool } = require('pg');
-
-const pgPool = new Pool({
-  host: process.env.POSTGRES_HOST || 'localhost',
-  port: process.env.POSTGRES_PORT || 5432,
-  user: process.env.POSTGRES_USER || 'postgres',
-  password: process.env.POSTGRES_PASSWORD || '',
-  database: process.env.POSTGRES_DB || 'aimolt',
-});
+const { supabase } = require('./utils/supabase');
+const { personalityManagerV2 } = require('./personality/manager-v2');
+const { vadEmotionManager } = require('./personality/vad-emotion');
+const { relationshipManager } = require('./personality/relationship-manager');
 
 class PersonalityCommandV2 {
-  
+
   /**
    * !personality status コマンドの処理
    */
@@ -69,11 +64,12 @@ class PersonalityCommandV2 {
    */
   async handleStatsCommand(message) {
     try {
-      const [systemStats, relationshipDistribution, emotionAverages] = await Promise.all([
-        this.getSystemStats(),
-        this.getRelationshipDistribution(),
-        this.getEmotionAverages()
-      ]);
+      // Managerから統計情報を一括取得
+      const stats = await personalityManagerV2.getSystemStats();
+
+      if (!stats) {
+        throw new Error('Failed to retrieve system stats');
+      }
 
       const embed = {
         title: '📊 人格システム全体統計',
@@ -82,26 +78,27 @@ class PersonalityCommandV2 {
           {
             name: '🔧 システム統計',
             value: [
-              `👥 総ユーザー数: ${systemStats.totalUsers}人`,
-              `💬 総会話数: ${systemStats.totalConversations}回`,
-              `🧠 記憶データ: ${systemStats.totalMemories}件`,
-              `📈 分析データ: ${systemStats.totalAnalyses}件`
+              `👥 総ユーザー数: ${stats.totalUsers}人`,
+              `💬 総会話数: ${stats.totalConversations}回`,
+              // ManagerのgetSystemStatsはmemories/analysesを現在返していないため省略、または追加実装が必要
+              // ここでは返されたものだけ表示
+              `⚙️ システム状態: ${stats.systemEnabled ? '稼働中' : '停止中'}`
             ].join('\n'),
             inline: true
           },
           {
             name: '🤝 関係性分布',
-            value: relationshipDistribution.map(r => 
+            value: (stats.relationshipDistribution || []).map(r =>
               `${this.getRelationshipEmoji(r.relationship_stage)} ${r.relationship_stage}: ${r.count}人`
-            ).join('\n'),
+            ).join('\n') || 'データなし',
             inline: true
           },
           {
             name: '😊 平均感情状態 (VAD)',
             value: [
-              `😄 快適度 (Valence): ${emotionAverages.avg_valence}/100`,
-              `⚡ 覚醒度 (Arousal): ${emotionAverages.avg_arousal}/100`,
-              `💪 主導性 (Dominance): ${emotionAverages.avg_dominance}/100`
+              `😄 快適度 (Valence): ${stats.vadAverages?.avg_valence || 50}/100`,
+              `⚡ 覚醒度 (Arousal): ${stats.vadAverages?.avg_arousal || 50}/100`,
+              `💪 主導性 (Dominance): ${stats.vadAverages?.avg_dominance || 50}/100`
             ].join('\n'),
             inline: false
           }
@@ -191,83 +188,47 @@ class PersonalityCommandV2 {
 
   // データ取得メソッド
   async getEmotionState(userId) {
-    const result = await pgPool.query(
-      'SELECT * FROM emotion_states WHERE user_id = $1',
-      [userId]
-    );
-    return result.rows[0] || null;
+    // Managerのキャッシュ付きメソッドを使用
+    return await vadEmotionManager.getCurrentEmotion(userId);
   }
 
   async getRelationship(userId) {
-    const result = await pgPool.query(
-      'SELECT * FROM user_relationships WHERE user_id = $1',
-      [userId]
-    );
-    return result.rows[0] || null;
+    // Managerのキャッシュ付きメソッドを使用
+    return await relationshipManager.getRelationship(userId);
   }
 
   async getBotPersonality() {
-    const result = await pgPool.query(
-      'SELECT * FROM bot_personality WHERE bot_instance = $1',
-      ['aimolt']
-    );
-    return result.rows[0] || null;
-  }
+    try {
+      const { data, error } = await supabase
+        .from('bot_personality')
+        .select('*')
+        .eq('bot_instance', 'aimolt')
+        .maybeSingle();
 
-  async getSystemStats() {
-    const [users, conversations, memories, analyses] = await Promise.all([
-      pgPool.query('SELECT COUNT(DISTINCT user_id) as count FROM user_relationships'),
-      pgPool.query('SELECT COUNT(*) as count FROM conversations'),
-      pgPool.query('SELECT COUNT(*) as count FROM user_memories'),
-      pgPool.query('SELECT COUNT(*) as count FROM conversation_analysis')
-    ]);
-
-    return {
-      totalUsers: parseInt(users.rows[0].count),
-      totalConversations: parseInt(conversations.rows[0].count),
-      totalMemories: parseInt(memories.rows[0].count),
-      totalAnalyses: parseInt(analyses.rows[0].count)
-    };
-  }
-
-  async getRelationshipDistribution() {
-    const result = await pgPool.query(`
-      SELECT relationship_stage, COUNT(*) as count 
-      FROM user_relationships 
-      GROUP BY relationship_stage 
-      ORDER BY count DESC
-    `);
-    return result.rows;
-  }
-
-  async getEmotionAverages() {
-    const result = await pgPool.query(`
-      SELECT 
-        ROUND(AVG(valence)) as avg_valence,
-        ROUND(AVG(arousal)) as avg_arousal,
-        ROUND(AVG(dominance)) as avg_dominance
-      FROM emotion_states
-    `);
-    return result.rows[0] || { avg_valence: 50, avg_arousal: 50, avg_dominance: 50 };
+      if (error) {
+        // テーブルが存在しない等のエラーは無視してnullを返す
+        console.warn('Bot personality fetch warning:', error.message);
+        return null;
+      }
+      return data;
+    } catch (e) {
+      return null;
+    }
   }
 
   async getRecentConversations(userId) {
-    const result = await pgPool.query(`
-      SELECT user_message, created_at 
-      FROM conversations 
-      WHERE user_id = $1 
-      ORDER BY created_at DESC 
-      LIMIT 5
-    `, [userId]);
-    return result.rows;
+    const { data } = await supabase
+      .from('conversations')
+      .select('user_message, created_at')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(5);
+    return data || [];
   }
 
   async getKnownInterests(userId) {
-    const result = await pgPool.query(
-      'SELECT known_interests FROM user_relationships WHERE user_id = $1',
-      [userId]
-    );
-    return result.rows[0]?.known_interests || [];
+    const relationship = await relationshipManager.getRelationship(userId);
+    return relationship?.known_interests || [];
   }
 
   // 表示用ヘルパーメソッド
@@ -317,14 +278,17 @@ class PersonalityCommandV2 {
   }
 
   async buildStatsField(userId) {
-    const firstConversation = await pgPool.query(
-      'SELECT created_at FROM conversations WHERE user_id = $1 ORDER BY created_at ASC LIMIT 1',
-      [userId]
-    );
+    const { data } = await supabase
+      .from('conversations')
+      .select('created_at')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: true })
+      .limit(1)
+      .maybeSingle();
 
     let daysSinceFirst = 0;
-    if (firstConversation.rows.length > 0) {
-      const diffMs = Date.now() - new Date(firstConversation.rows[0].created_at).getTime();
+    if (data) {
+      const diffMs = Date.now() - new Date(data.created_at).getTime();
       daysSinceFirst = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     }
 
@@ -342,7 +306,7 @@ class PersonalityCommandV2 {
   // ユーティリティメソッド
   mapVADToEmotion(vad) {
     const { valence, arousal, dominance } = vad;
-    
+
     if (valence >= 70 && arousal >= 70 && dominance >= 60) return 'excitement';
     if (valence >= 70 && arousal >= 50) return 'joy';
     if (valence >= 60 && arousal <= 40) return 'serenity';
@@ -353,7 +317,7 @@ class PersonalityCommandV2 {
     if (valence <= 35 && arousal >= 50 && dominance >= 50) return 'disgust';
     if (valence >= 60 && arousal <= 50 && dominance <= 50) return 'trust';
     if (valence >= 55 && arousal >= 60 && dominance >= 45) return 'anticipation';
-    
+
     return 'neutral';
   }
 
@@ -369,7 +333,7 @@ class PersonalityCommandV2 {
 
   getRelationshipEmoji(stage) {
     const emojis = {
-      stranger: '👋', acquaintance: '🙂', 
+      stranger: '👋', acquaintance: '🙂',
       friend: '😊', close_friend: '🥰'
     };
     return emojis[stage] || '👋';
@@ -406,7 +370,7 @@ class PersonalityCommandV2 {
 
   getEmbedColor(emotion, relationship) {
     if (!emotion) return 0x95a5a6;
-    
+
     if (emotion.valence >= 70) return 0x2ecc71; // Green
     if (emotion.valence <= 30) return 0xe74c3c; // Red
     return 0x3498db; // Blue
@@ -423,11 +387,11 @@ class PersonalityCommandV2 {
 
   analyzeRecentPattern(conversations) {
     if (conversations.length === 0) return 'データなし';
-    
+
     const avgLength = conversations.reduce((sum, c) => sum + c.user_message.length, 0) / conversations.length;
     const hasQuestions = conversations.some(c => c.user_message.includes('?') || c.user_message.includes('？'));
     const recentDays = Math.ceil((Date.now() - new Date(conversations[0].created_at).getTime()) / (1000 * 60 * 60 * 24));
-    
+
     return [
       `平均メッセージ長: ${Math.round(avgLength)}文字`,
       `質問含有: ${hasQuestions ? 'あり' : 'なし'}`,

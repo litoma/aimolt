@@ -1,15 +1,4 @@
-const { Pool } = require('pg');
-
-const pgPool = new Pool({
-  host: process.env.POSTGRES_HOST || 'localhost',
-  port: process.env.POSTGRES_PORT || 5432,
-  user: process.env.POSTGRES_USER || 'postgres',
-  password: process.env.POSTGRES_PASSWORD || '',
-  database: process.env.POSTGRES_DB || 'aimolt',
-  max: 10,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+const { supabase } = require('../utils/supabase');
 
 class CorePersonality {
   constructor() {
@@ -20,24 +9,42 @@ class CorePersonality {
 
   async getTraits() {
     try {
-      if (this.personalityCache && 
-          Date.now() - this.lastCacheTime < this.cacheTimeout) {
+      if (this.personalityCache &&
+        Date.now() - this.lastCacheTime < this.cacheTimeout) {
         return this.personalityCache;
       }
 
-      const result = await pgPool.query(
-        'SELECT * FROM bot_personality WHERE bot_instance = $1',
-        ['aimolt']
-      );
+      const { data, error } = await supabase
+        .from('bot_personality')
+        .select('*')
+        .eq('bot_instance', 'aimolt')
+        .maybeSingle();
 
-      if (result.rows.length === 0) {
-        await this.initializeDefaultPersonality();
-        return await this.getTraits();
+      if (error) {
+        console.warn('Error fetching personality traits:', error.message);
       }
 
-      this.personalityCache = result.rows[0];
+      if (!data) {
+        await this.initializeDefaultPersonality();
+        // 再帰呼び出しでデータを取得（無限ループ防止のため、初期化後はキャッシュを手動設定するか、再度取得）
+        // ここでは再度取得する
+        const { data: newData } = await supabase
+          .from('bot_personality')
+          .select('*')
+          .eq('bot_instance', 'aimolt')
+          .single();
+
+        if (newData) {
+          this.personalityCache = newData;
+          this.lastCacheTime = Date.now();
+          return newData;
+        }
+        return this.getDefaultPersonality();
+      }
+
+      this.personalityCache = data;
       this.lastCacheTime = Date.now();
-      
+
       return this.personalityCache;
     } catch (error) {
       console.error('Error getting personality traits:', error);
@@ -58,27 +65,15 @@ class CorePersonality {
       supportiveness: 90      // 支援的な態度
     };
 
-    await pgPool.query(
-      `INSERT INTO bot_personality 
-       (bot_instance, openness, conscientiousness, extraversion, agreeableness, 
-        neuroticism, humor_level, curiosity, supportiveness)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-       ON CONFLICT (bot_instance) DO UPDATE SET
-         openness = EXCLUDED.openness,
-         conscientiousness = EXCLUDED.conscientiousness,
-         extraversion = EXCLUDED.extraversion,
-         agreeableness = EXCLUDED.agreeableness,
-         neuroticism = EXCLUDED.neuroticism,
-         humor_level = EXCLUDED.humor_level,
-         curiosity = EXCLUDED.curiosity,
-         supportiveness = EXCLUDED.supportiveness,
-         updated_at = NOW()`,
-      [defaultPersonality.bot_instance, defaultPersonality.openness,
-       defaultPersonality.conscientiousness, defaultPersonality.extraversion,
-       defaultPersonality.agreeableness, defaultPersonality.neuroticism,
-       defaultPersonality.humor_level, defaultPersonality.curiosity,
-       defaultPersonality.supportiveness]
-    );
+    try {
+      const { error } = await supabase
+        .from('bot_personality')
+        .upsert(defaultPersonality, { onConflict: 'bot_instance' });
+
+      if (error) console.error('Error initializing default personality:', error);
+    } catch (err) {
+      console.error('Exception initializing personality:', err);
+    }
   }
 
   getDefaultPersonality() {
@@ -97,7 +92,7 @@ class CorePersonality {
   // 人格に基づく応答スタイルの計算
   async getResponseStyle() {
     const traits = await this.getTraits();
-    
+
     return {
       enthusiasm: this.calculateEnthusiasm(traits),
       empathy: this.calculateEmpathy(traits),
@@ -113,7 +108,7 @@ class CorePersonality {
   calculateEnthusiasm(traits) {
     // 外向性 + 低神経症傾向 + ユーモアレベル
     return Math.min(100, Math.round(
-      (traits.extraversion * 0.5) + 
+      (traits.extraversion * 0.5) +
       ((100 - traits.neuroticism) * 0.3) +
       (traits.humor_level * 0.2)
     ));
@@ -122,7 +117,7 @@ class CorePersonality {
   calculateEmpathy(traits) {
     // 協調性 + 支援性 - 神経症傾向
     return Math.min(100, Math.round(
-      (traits.agreeableness * 0.5) + 
+      (traits.agreeableness * 0.5) +
       (traits.supportiveness * 0.4) -
       (traits.neuroticism * 0.1)
     ));
@@ -131,7 +126,7 @@ class CorePersonality {
   calculateCreativity(traits) {
     // 開放性 + 好奇心
     return Math.min(100, Math.round(
-      (traits.openness * 0.6) + 
+      (traits.openness * 0.6) +
       (traits.curiosity * 0.4)
     ));
   }
@@ -139,7 +134,7 @@ class CorePersonality {
   calculateFormality(traits) {
     // 誠実性 + 協調性 - 外向性
     return Math.max(20, Math.min(80, Math.round(
-      (traits.conscientiousness * 0.4) + 
+      (traits.conscientiousness * 0.4) +
       (traits.agreeableness * 0.3) -
       (traits.extraversion * 0.3) + 50
     )));
@@ -148,7 +143,7 @@ class CorePersonality {
   calculateStability(traits) {
     // 低神経症傾向 + 誠実性
     return Math.min(100, Math.round(
-      ((100 - traits.neuroticism) * 0.7) + 
+      ((100 - traits.neuroticism) * 0.7) +
       (traits.conscientiousness * 0.3)
     ));
   }
@@ -156,7 +151,7 @@ class CorePersonality {
   calculateHumor(traits) {
     // ユーモアレベル + 外向性 - 神経症傾向
     return Math.min(100, Math.round(
-      (traits.humor_level * 0.6) + 
+      (traits.humor_level * 0.6) +
       (traits.extraversion * 0.3) -
       (traits.neuroticism * 0.1)
     ));
@@ -165,7 +160,7 @@ class CorePersonality {
   calculateCuriosityLevel(traits) {
     // 好奇心 + 開放性
     return Math.min(100, Math.round(
-      (traits.curiosity * 0.7) + 
+      (traits.curiosity * 0.7) +
       (traits.openness * 0.3)
     ));
   }
@@ -173,7 +168,7 @@ class CorePersonality {
   calculateSupportiveness(traits) {
     // 支援性 + 協調性
     return Math.min(100, Math.round(
-      (traits.supportiveness * 0.7) + 
+      (traits.supportiveness * 0.7) +
       (traits.agreeableness * 0.3)
     ));
   }
@@ -219,7 +214,7 @@ class CorePersonality {
   // 価値観システム
   async getValueSystem() {
     const traits = await this.getTraits();
-    
+
     return {
       helpfulness: Math.min(100, traits.supportiveness + traits.agreeableness) / 2,
       honesty: Math.min(100, traits.conscientiousness + (100 - traits.neuroticism)) / 2,
@@ -234,7 +229,7 @@ class CorePersonality {
   async evaluateResponseOptions(options, context = {}) {
     const values = await this.getValueSystem();
     const traits = await this.getTraits();
-    
+
     return options.map(option => ({
       ...option,
       score: this.calculateResponseScore(option, values, traits, context)
@@ -291,7 +286,7 @@ class CorePersonality {
   async getPersonalityDescription() {
     const traits = await this.getTraits();
     const values = await this.getValueSystem();
-    
+
     let description = "私は";
 
     // Big Five の特徴的な部分を説明
@@ -334,18 +329,15 @@ class CorePersonality {
   // 人格特性の更新（管理用）
   async updatePersonality(updates) {
     try {
-      const setClause = Object.keys(updates)
-        .map((key, index) => `${key} = $${index + 2}`)
-        .join(', ');
-      
-      const values = ['aimolt', ...Object.values(updates)];
-      
-      await pgPool.query(
-        `UPDATE bot_personality 
-         SET ${setClause}, updated_at = NOW()
-         WHERE bot_instance = $1`,
-        values
-      );
+      const { error } = await supabase
+        .from('bot_personality')
+        .update({ ...updates, updated_at: new Date() })
+        .eq('bot_instance', 'aimolt');
+
+      if (error) {
+        console.error('Error updating personality:', error);
+        return false;
+      }
 
       this.clearCache();
       return true;

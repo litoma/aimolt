@@ -1671,3 +1671,27 @@
 2026-02-03T13:02:58: Error loading dynamic like prompt: prompts.getDynamicLike is not a function
 2026-02-05T11:25:28: ❌ PostgreSQL LISTEN client error: Connection terminated unexpectedly
 2026-02-05T12:00:05: ❌ 対象ユーザー選出エラー: getaddrinfo EAI_AGAIN postgres
+2026-02-05T12:17:18: Error in personality status: Error: getaddrinfo EAI_AGAIN postgres
+2026-02-05T12:17:18:     at /app/node_modules/pg-pool/index.js:45:11
+2026-02-05T12:17:18:     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-02-05T12:17:18:     at async PersonalityCommandV2.getEmotionState (/app/src/personality-command-v2.js:194:20)
+2026-02-05T12:17:18:     at async Promise.all (index 0)
+2026-02-05T12:17:18:     at async PersonalityCommandV2.handleStatusCommand (/app/src/personality-command-v2.js:23:55)
+2026-02-05T12:17:18:     at async Client.<anonymous> (/app/src/index.js:394:11) {
+2026-02-05T12:17:18:   errno: -3001,
+2026-02-05T12:17:18:   code: 'EAI_AGAIN',
+2026-02-05T12:17:18:   syscall: 'getaddrinfo',
+2026-02-05T12:17:18:   hostname: 'postgres'
+2026-02-05T12:17:18: }
+2026-02-05T12:37:23: Error in personality status: Error: getaddrinfo EAI_AGAIN postgres
+2026-02-05T12:37:23:     at /app/node_modules/pg-pool/index.js:45:11
+2026-02-05T12:37:23:     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-02-05T12:37:23:     at async PersonalityCommandV2.getRelationship (/app/src/personality-command-v2.js:202:20)
+2026-02-05T12:37:23:     at async Promise.all (index 1)
+2026-02-05T12:37:23:     at async PersonalityCommandV2.handleStatusCommand (/app/src/personality-command-v2.js:23:55)
+2026-02-05T12:37:23:     at async Client.<anonymous> (/app/src/index.js:394:11) {
+2026-02-05T12:37:23:   errno: -3001,
+2026-02-05T12:37:23:   code: 'EAI_AGAIN',
+2026-02-05T12:37:23:   syscall: 'getaddrinfo',
+2026-02-05T12:37:23:   hostname: 'postgres'
+2026-02-05T12:37:23: }
