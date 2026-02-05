@@ -27,7 +27,7 @@ class PersonalityManagerV2 {
       // VAD分析データがない場合は生成
       let analysis = analysisData;
       let vadData = null;
-      
+
       if (!analysis && message) {
         // 簡易VAD分析を実行
         vadData = vadEmotionManager.calculateVAD(message);
@@ -53,8 +53,8 @@ class PersonalityManagerV2 {
       };
 
       const personalizedPrompt = await adaptiveResponseEngine.generateAdaptivePrompt(
-        userId, 
-        basePrompt, 
+        userId,
+        basePrompt,
         context
       );
 
@@ -84,7 +84,7 @@ class PersonalityManagerV2 {
       try {
         // 1. VAD分析
         const vadData = vadEmotionManager.calculateVAD(userMessage);
-        
+
         // 2. 分析データ生成
         const analysisData = {
           user_message: userMessage,
@@ -98,7 +98,7 @@ class PersonalityManagerV2 {
         await Promise.all([
           // VAD感情状態更新
           vadEmotionManager.updateEmotion(userId, analysisData, vadData),
-          
+
           // 関係性更新
           relationshipManager.updateRelationship(userId, {
             userMessage,
@@ -135,7 +135,7 @@ class PersonalityManagerV2 {
       return {
         userId,
         systemVersion: this.systemVersion,
-        
+
         // VAD感情状態
         emotion: {
           valence: emotion.valence || 50,
@@ -146,7 +146,7 @@ class PersonalityManagerV2 {
             arousal: emotion.arousal || 50,
             dominance: emotion.dominance || 50
           }),
-          
+
           // 後方互換性
           energy: emotion.energy_level,
           intimacy: emotion.intimacy_level,
@@ -155,7 +155,7 @@ class PersonalityManagerV2 {
           conversationCount: emotion.conversation_count,
           description: vadEmotionManager.getEmotionDescription(emotion)
         },
-        
+
         // 関係性情報
         relationship: {
           stage: relationship.relationship_stage,
@@ -168,7 +168,7 @@ class PersonalityManagerV2 {
           knownInterests: relationship.known_interests,
           positiveTrigers: relationship.positive_triggers
         },
-        
+
         // コア人格特性
         corePersonality: {
           openness: coreTraits.openness,
@@ -180,10 +180,10 @@ class PersonalityManagerV2 {
           curiosity: coreTraits.curiosity,
           supportiveness: coreTraits.supportiveness
         },
-        
+
         // 現在の応答スタイル
         currentResponseStyle: responseStyle,
-        
+
         lastUpdated: new Date()
       };
     } catch (error) {
@@ -195,50 +195,70 @@ class PersonalityManagerV2 {
   // システム統計情報
   async getSystemStats() {
     try {
-      const { Pool } = require('pg');
-      const pgPool = new Pool({
-        host: process.env.POSTGRES_HOST || 'localhost',
-        port: process.env.POSTGRES_PORT || 5432,
-        user: process.env.POSTGRES_USER || 'postgres',
-        password: process.env.POSTGRES_PASSWORD || '',
-        database: process.env.POSTGRES_DB || 'aimolt',
-      });
+      const { supabase } = require('../utils/supabase');
 
-      const [emotionsResult, relationshipsResult, conversationsResult] = await Promise.all([
-        pgPool.query('SELECT COUNT(*) as count FROM emotion_states'),
-        pgPool.query('SELECT COUNT(*) as count FROM user_relationships'),
-        pgPool.query('SELECT COUNT(*) as count FROM conversations')
-      ]);
+      const { count: emotionsCount, error: emotionsError } = await supabase
+        .from('emotion_states')
+        .select('*', { count: 'exact', head: true });
 
-      const relationshipDistribution = await pgPool.query(`
-        SELECT relationship_stage, COUNT(*) as count 
-        FROM user_relationships 
-        GROUP BY relationship_stage 
-        ORDER BY count DESC
-      `);
+      const { count: relationshipsCount, error: relationshipsError } = await supabase
+        .from('user_relationships')
+        .select('*', { count: 'exact', head: true });
 
-      const vadAverages = await pgPool.query(`
-        SELECT 
-          ROUND(AVG(valence)) as avg_valence,
-          ROUND(AVG(arousal)) as avg_arousal,
-          ROUND(AVG(dominance)) as avg_dominance
-        FROM emotion_states 
-        WHERE valence IS NOT NULL
-      `);
+      const { count: conversationsCount, error: conversationsError } = await supabase
+        .from('conversations')
+        .select('*', { count: 'exact', head: true });
+
+      // Supabase JSクライアントでは複雑なGROUP BYを直接行いにくいため、
+      // 必要なカラムだけ取得してJS側で集計する（データ量が多い場合はRPCを検討すべき）
+      const { data: relationshipData } = await supabase
+        .from('user_relationships')
+        .select('relationship_stage');
+
+      const relationshipDistributionMap = {};
+      if (relationshipData) {
+        relationshipData.forEach(item => {
+          relationshipDistributionMap[item.relationship_stage] = (relationshipDistributionMap[item.relationship_stage] || 0) + 1;
+        });
+      }
+
+      const relationshipDistribution = Object.entries(relationshipDistributionMap)
+        .map(([stage, count]) => ({ relationship_stage: stage, count }))
+        .sort((a, b) => b.count - a.count);
+
+      const { data: vadData } = await supabase
+        .from('emotion_states')
+        .select('valence, arousal, dominance')
+        .not('valence', 'is', null);
+
+      let vadAverages = { avg_valence: 50, avg_arousal: 50, avg_dominance: 50 };
+      if (vadData && vadData.length > 0) {
+        const sum = vadData.reduce((acc, curr) => ({
+          valence: acc.valence + (curr.valence || 0),
+          arousal: acc.arousal + (curr.arousal || 0),
+          dominance: acc.dominance + (curr.dominance || 0)
+        }), { valence: 0, arousal: 0, dominance: 0 });
+
+        vadAverages = {
+          avg_valence: Math.round(sum.valence / vadData.length),
+          avg_arousal: Math.round(sum.arousal / vadData.length),
+          avg_dominance: Math.round(sum.dominance / vadData.length)
+        };
+      }
+
+      if (emotionsError) console.error('Emotions count error:', emotionsError);
 
       return {
         systemVersion: this.systemVersion,
-        totalUsers: parseInt(emotionsResult.rows[0].count),
-        totalRelationships: parseInt(relationshipsResult.rows[0].count),
-        totalConversations: parseInt(conversationsResult.rows[0].count),
+        totalUsers: emotionsCount || 0,
+        totalRelationships: relationshipsCount || 0,
+        totalConversations: conversationsCount || 0,
         systemEnabled: this.isEnabled,
         activeProcessing: this.processingQueue.size,
-        
-        relationshipDistribution: relationshipDistribution.rows,
-        vadAverages: vadAverages.rows[0] || { 
-          avg_valence: 50, avg_arousal: 50, avg_dominance: 50 
-        },
-        
+
+        relationshipDistribution: relationshipDistribution,
+        vadAverages: vadAverages,
+
         timestamp: new Date()
       };
     } catch (error) {

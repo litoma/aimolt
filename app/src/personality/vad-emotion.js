@@ -1,15 +1,4 @@
-const { Pool } = require('pg');
-
-const pgPool = new Pool({
-  host: process.env.POSTGRES_HOST || 'localhost',
-  port: process.env.POSTGRES_PORT || 5432,
-  user: process.env.POSTGRES_USER || 'postgres',
-  password: process.env.POSTGRES_PASSWORD || '',
-  database: process.env.POSTGRES_DB || 'aimolt',
-  max: 10,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+const { supabase } = require('../utils/supabase');
 
 class VADEmotionManager {
   constructor() {
@@ -21,21 +10,24 @@ class VADEmotionManager {
     try {
       const cacheKey = userId;
       const cached = this.emotionCache.get(cacheKey);
-      
+
       if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
         return cached.emotion;
       }
 
-      const result = await pgPool.query(
-        'SELECT * FROM emotion_states WHERE user_id = $1',
-        [userId]
-      );
+      const { data, error } = await supabase
+        .from('emotion_states')
+        .select('*')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      if (error) throw error;
 
       let emotion;
-      if (result.rows.length === 0) {
+      if (!data) {
         emotion = await this.createInitialEmotion(userId);
       } else {
-        emotion = result.rows[0];
+        emotion = data;
         emotion = await this.applyTimeDecay(emotion);
       }
 
@@ -65,19 +57,15 @@ class VADEmotionManager {
         dominance: 50         // VAD - 支配感
       };
 
-      const result = await pgPool.query(
-        `INSERT INTO emotion_states 
-         (user_id, energy_level, intimacy_level, interest_level, mood_type, 
-          conversation_count, valence, arousal, dominance)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-         RETURNING *`,
-        [userId, defaultEmotion.energy_level, defaultEmotion.intimacy_level, 
-         defaultEmotion.interest_level, defaultEmotion.mood_type, 
-         defaultEmotion.conversation_count, defaultEmotion.valence,
-         defaultEmotion.arousal, defaultEmotion.dominance]
-      );
+      const { data, error } = await supabase
+        .from('emotion_states')
+        .insert([defaultEmotion])
+        .select()
+        .single();
 
-      return result.rows[0];
+      if (error) throw error;
+
+      return data;
     } catch (error) {
       console.error('Error creating initial emotion:', error);
       return this.getDefaultEmotion(userId);
@@ -87,7 +75,7 @@ class VADEmotionManager {
   async updateEmotion(userId, analysisData, vadValues = null) {
     try {
       const currentEmotion = await this.getCurrentEmotion(userId);
-      
+
       // VAD値が直接提供されていない場合は計算
       if (!vadValues) {
         vadValues = this.calculateVAD(analysisData.user_message || '');
@@ -95,21 +83,29 @@ class VADEmotionManager {
 
       const newEmotion = this.calculateEmotionUpdate(currentEmotion, analysisData, vadValues);
 
-      const result = await pgPool.query(
-        `UPDATE emotion_states 
-         SET energy_level = $2, intimacy_level = $3, interest_level = $4, 
-             mood_type = $5, conversation_count = conversation_count + 1, 
-             last_interaction = NOW(),
-             valence = $6, arousal = $7, dominance = $8
-         WHERE user_id = $1
-         RETURNING *`,
-        [userId, newEmotion.energy_level, newEmotion.intimacy_level, 
-         newEmotion.interest_level, newEmotion.mood_type,
-         newEmotion.valence, newEmotion.arousal, newEmotion.dominance]
-      );
+      const updates = {
+        energy_level: newEmotion.energy_level,
+        intimacy_level: newEmotion.intimacy_level,
+        interest_level: newEmotion.interest_level,
+        mood_type: newEmotion.mood_type,
+        conversation_count: currentEmotion.conversation_count + 1,
+        last_interaction: new Date(),
+        valence: newEmotion.valence,
+        arousal: newEmotion.arousal,
+        dominance: newEmotion.dominance
+      };
+
+      const { data, error } = await supabase
+        .from('emotion_states')
+        .update(updates)
+        .eq('user_id', userId)
+        .select()
+        .single();
+
+      if (error) throw error;
 
       this.emotionCache.delete(userId);
-      return result.rows[0];
+      return data;
     } catch (error) {
       console.error('Error updating emotion:', error);
       return null;
@@ -130,7 +126,7 @@ class VADEmotionManager {
       /やった|成功|達成|完了|クリア|解決|できた|よかった|安心/gi,
       /笑|www|ｗ|爆笑|へー|すごい|さすが|いいね|オッケー|OK/gi
     ];
-    
+
     const negativePatterns = [
       /悲しい|つらい|辛い|嫌|ダメ|最悪|ひどい|むかつく|腹立つ|怒り/gi,
       /疲れた|しんどい|きつい|大変|困った|難しい|無理|失敗|負け/gi,
@@ -138,12 +134,12 @@ class VADEmotionManager {
     ];
 
     let score = 50; // ニュートラルベース
-    
+
     positivePatterns.forEach(pattern => {
       const matches = message.match(pattern);
       if (matches) score += matches.length * 8;
     });
-    
+
     negativePatterns.forEach(pattern => {
       const matches = message.match(pattern);
       if (matches) score -= matches.length * 8;
@@ -157,18 +153,18 @@ class VADEmotionManager {
       /！|!|やった|すごい|びっくり|急いで|興奮|テンション|盛り上がる/gi,
       /熱い|燃える|アツい|ワクワク|ドキドキ|はやく|今すぐ/gi
     ];
-    
+
     const lowArousalPatterns = [
       /疲れた|眠い|ゆっくり|落ち着く|静か|穏やか|のんびり|リラックス/gi
     ];
 
     let score = 50;
-    
+
     highArousalPatterns.forEach(pattern => {
       const matches = message.match(pattern);
       if (matches) score += matches.length * 10;
     });
-    
+
     lowArousalPatterns.forEach(pattern => {
       const matches = message.match(pattern);
       if (matches) score -= matches.length * 8;
@@ -187,19 +183,19 @@ class VADEmotionManager {
       /決める|指示|命令|やってください|しなければ|すべき|必要|重要/gi,
       /私が|僕が|確信|絶対|間違いない|当然|明らか|決定/gi
     ];
-    
+
     const lowDominancePatterns = [
       /お願い|助けて|わからない|困った|どうしよう|教えて|聞きたい/gi,
       /すみません|申し訳|恐縮|もしよろしければ|できれば/gi
     ];
 
     let score = 50;
-    
+
     highDominancePatterns.forEach(pattern => {
       const matches = message.match(pattern);
       if (matches) score += matches.length * 12;
     });
-    
+
     lowDominancePatterns.forEach(pattern => {
       const matches = message.match(pattern);
       if (matches) score -= matches.length * 10;
@@ -218,14 +214,14 @@ class VADEmotionManager {
 
     // 後方互換性のために旧システムの値も更新
     newEmotion.energy_level = this.smoothUpdate(
-      currentEmotion.energy_level, 
-      this.mapArousalToEnergy(newEmotion.arousal, newEmotion.valence), 
+      currentEmotion.energy_level,
+      this.mapArousalToEnergy(newEmotion.arousal, newEmotion.valence),
       0.2
     );
 
     newEmotion.interest_level = this.smoothUpdate(
-      currentEmotion.interest_level, 
-      this.mapToInterest(newEmotion.arousal, analysisData.importance_score || 5), 
+      currentEmotion.interest_level,
+      this.mapToInterest(newEmotion.arousal, analysisData.importance_score || 5),
       0.2
     );
 
@@ -261,7 +257,7 @@ class VADEmotionManager {
     if (valence <= 35 && arousal >= 50 && dominance >= 50) return 'disgusted';
     if (valence >= 60 && arousal <= 50 && dominance <= 50) return 'trusting';
     if (valence >= 55 && arousal >= 60 && dominance >= 45) return 'anticipating';
-    
+
     return 'neutral';
   }
 
@@ -280,14 +276,14 @@ class VADEmotionManager {
 
     // VAD値の時間減衰
     const decayAmount = Math.min(hoursSinceLastInteraction / 24 * 5, 10);
-    
+
     emotion.valence = this.adjustValue(emotion.valence, 0, 40, 60); // 中性に戻る
     emotion.arousal = this.adjustValue(emotion.arousal, -decayAmount, 30, 70);
     emotion.dominance = this.adjustValue(emotion.dominance, 0, 40, 60);
 
     // 後方互換性
     emotion.energy_level = this.adjustValue(emotion.energy_level, -decayAmount, 30, 100);
-    emotion.interest_level = this.adjustValue(emotion.interest_level, -decayAmount/2, 30, 100);
+    emotion.interest_level = this.adjustValue(emotion.interest_level, -decayAmount / 2, 30, 100);
 
     if (hoursSinceLastInteraction > 24) {
       emotion.mood_type = 'neutral';
@@ -320,7 +316,7 @@ class VADEmotionManager {
 
   getEmotionDescription(emotion) {
     const vadMood = this.determineVADMood(emotion.valence || 50, emotion.arousal || 50, emotion.dominance || 50);
-    
+
     const descriptions = {
       'excited': '今日はとても元気で興奮していて、新しいことに積極的です！',
       'happy': '気分が良くて、楽しい話をしたい気分です',
@@ -346,16 +342,16 @@ class VADEmotionManager {
         valence: emotion.valence || 50,
         arousal: emotion.arousal || 50,
         dominance: emotion.dominance || 50,
-        
+
         // 後方互換性
         energy: emotion.energy_level,
         intimacy: emotion.intimacy_level,
         interest: emotion.interest_level,
-        
+
         mood: emotion.mood_type,
         conversationCount: emotion.conversation_count,
         description: this.getEmotionDescription(emotion),
-        
+
         // VADベースの感情
         vadEmotion: this.mapVADToEmotion({
           valence: emotion.valence || 50,

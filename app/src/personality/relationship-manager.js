@@ -1,15 +1,4 @@
-const { Pool } = require('pg');
-
-const pgPool = new Pool({
-  host: process.env.POSTGRES_HOST || 'localhost',
-  port: process.env.POSTGRES_PORT || 5432,
-  user: process.env.POSTGRES_USER || 'postgres',
-  password: process.env.POSTGRES_PASSWORD || '',
-  database: process.env.POSTGRES_DB || 'aimolt',
-  max: 10,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+const { supabase } = require('../utils/supabase');
 
 class RelationshipManager {
   constructor() {
@@ -42,11 +31,14 @@ class RelationshipManager {
   }
 
   async loadFromDatabase(userId) {
-    const result = await pgPool.query(
-      'SELECT * FROM user_relationships WHERE user_id = $1',
-      [userId]
-    );
-    return result.rows[0] || null;
+    const { data, error } = await supabase
+      .from('user_relationships')
+      .select('*')
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
   }
 
   async createInitialRelationship(userId) {
@@ -69,24 +61,15 @@ class RelationshipManager {
         negative_triggers: []
       };
 
-      const result = await pgPool.query(
-        `INSERT INTO user_relationships 
-         (user_id, affection_level, trust_level, respect_level, comfort_level,
-          relationship_stage, conversation_count, meaningful_interactions,
-          preferred_formality, communication_pace, humor_receptivity,
-          known_interests, avoided_topics, positive_triggers, negative_triggers)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
-         RETURNING *`,
-        [userId, defaultRelationship.affection_level, defaultRelationship.trust_level,
-         defaultRelationship.respect_level, defaultRelationship.comfort_level,
-         defaultRelationship.relationship_stage, defaultRelationship.conversation_count,
-         defaultRelationship.meaningful_interactions, defaultRelationship.preferred_formality,
-         defaultRelationship.communication_pace, defaultRelationship.humor_receptivity,
-         defaultRelationship.known_interests, defaultRelationship.avoided_topics,
-         defaultRelationship.positive_triggers, defaultRelationship.negative_triggers]
-      );
+      const { data, error } = await supabase
+        .from('user_relationships')
+        .insert([defaultRelationship])
+        .select()
+        .single();
 
-      return result.rows[0];
+      if (error) throw error;
+
+      return data;
     } catch (error) {
       console.error('Error creating initial relationship:', error);
       return this.getDefaultRelationship(userId);
@@ -97,7 +80,7 @@ class RelationshipManager {
     try {
       const relationship = await this.getRelationship(userId);
       const updates = this.calculateRelationshipChanges(relationship, conversationData, analysisData, vadData);
-      
+
       if (Object.keys(updates).length > 0) {
         await this.saveRelationshipChanges(userId, updates);
         await this.logRelationshipHistory(userId, updates, conversationData.userMessage);
@@ -111,27 +94,29 @@ class RelationshipManager {
     }
   }
 
+  // ... calculation methods kept as is ...
+
   calculateRelationshipChanges(relationship, conversationData, analysisData, vadData) {
     const updates = {};
 
     // 好感度の変化
     const affectionChange = this.calculateAffectionChange(analysisData, conversationData, vadData);
     if (affectionChange !== 0) {
-      updates.affection_level = Math.max(0, Math.min(100, 
+      updates.affection_level = Math.max(0, Math.min(100,
         relationship.affection_level + affectionChange));
     }
 
     // 信頼度の変化
     const trustChange = this.calculateTrustChange(analysisData, conversationData, vadData);
     if (trustChange !== 0) {
-      updates.trust_level = Math.max(0, Math.min(100, 
+      updates.trust_level = Math.max(0, Math.min(100,
         relationship.trust_level + trustChange));
     }
 
     // 親しみやすさの変化
     const comfortChange = this.calculateComfortChange(analysisData, relationship, vadData);
     if (comfortChange !== 0) {
-      updates.comfort_level = Math.max(0, Math.min(100, 
+      updates.comfort_level = Math.max(0, Math.min(100,
         relationship.comfort_level + comfortChange));
     }
 
@@ -157,14 +142,14 @@ class RelationshipManager {
       updates.comfort_level || relationship.comfort_level,
       relationship.conversation_count + 1
     );
-    
+
     if (newStage !== relationship.relationship_stage) {
       updates.relationship_stage = newStage;
     }
 
     // カウンターの更新
     updates.conversation_count = relationship.conversation_count + 1;
-    
+
     if (analysisData.importance_score >= 7) {
       updates.meaningful_interactions = relationship.meaningful_interactions + 1;
     }
@@ -237,8 +222,8 @@ class RelationshipManager {
     }
 
     // ユーモアがある交流
-    if (analysisData.emotion_detected === 'joy' || 
-        analysisData.user_message.match(/笑|www|ｗ|面白い/gi)) {
+    if (analysisData.emotion_detected === 'joy' ||
+      analysisData.user_message.match(/笑|www|ｗ|面白い/gi)) {
       change += 2;
     }
 
@@ -252,11 +237,11 @@ class RelationshipManager {
 
   updateKnownInterests(message, relationship) {
     const updates = {};
-    
+
     // 興味・関心の抽出
     const interestPatterns = /好き.*|趣味.*|興味.*|愛用.*|お気に入り.*/gi;
     const interests = message.match(interestPatterns);
-    
+
     if (interests) {
       const currentInterests = new Set(relationship.known_interests || []);
       interests.forEach(interest => {
@@ -265,7 +250,7 @@ class RelationshipManager {
           currentInterests.add(cleanInterest);
         }
       });
-      
+
       if (currentInterests.size > (relationship.known_interests || []).length) {
         updates.known_interests = Array.from(currentInterests).slice(0, 20); // 最大20個
       }
@@ -280,7 +265,7 @@ class RelationshipManager {
           currentTriggers.add(word);
         }
       });
-      
+
       if (currentTriggers.size > (relationship.positive_triggers || []).length) {
         updates.positive_triggers = Array.from(currentTriggers).slice(0, 15); // 最大15個
       }
@@ -292,10 +277,10 @@ class RelationshipManager {
   assessFormalityLevel(message) {
     const formalPatterns = /です|ます|である|いたします|いただき|お疲れ様|失礼/gi;
     const casualPatterns = /だよ|だね|〜じゃん|〜かな|ちょっと|なんか/gi;
-    
+
     const formalCount = (message.match(formalPatterns) || []).length;
     const casualCount = (message.match(casualPatterns) || []).length;
-    
+
     if (formalCount > casualCount + 1) return 'formal';
     if (casualCount > formalCount + 1) return 'casual';
     return 'polite';
@@ -314,31 +299,34 @@ class RelationshipManager {
   }
 
   async saveRelationshipChanges(userId, updates) {
-    const setClause = Object.keys(updates)
-      .map((key, index) => `${key} = $${index + 2}`)
-      .join(', ');
-    
-    const values = [userId, ...Object.values(updates)];
-    
-    await pgPool.query(
-      `UPDATE user_relationships 
-       SET ${setClause}, updated_at = NOW()
-       WHERE user_id = $1`,
-      values
-    );
+    const { error } = await supabase
+      .from('user_relationships')
+      .update({ ...updates, updated_at: new Date() })
+      .eq('user_id', userId);
+
+    if (error) throw error;
   }
 
   async logRelationshipHistory(userId, updates, triggerMessage) {
     try {
+      const events = [];
       for (const [key, value] of Object.entries(updates)) {
         if (key === 'conversation_count' || key === 'last_interaction') continue;
-        
-        await pgPool.query(
-          `INSERT INTO relationship_history 
-           (user_id, event_type, new_value, trigger_message)
-           VALUES ($1, $2, $3, $4)`,
-          [userId, `${key}_change`, value.toString(), triggerMessage.substring(0, 200)]
-        );
+
+        events.push({
+          user_id: userId,
+          event_type: `${key}_change`,
+          new_value: value.toString(),
+          trigger_message: triggerMessage.substring(0, 200)
+        });
+      }
+
+      if (events.length > 0) {
+        const { error } = await supabase
+          .from('relationship_history')
+          .insert(events);
+
+        if (error) throw error;
       }
     } catch (error) {
       console.error('Error logging relationship history:', error);

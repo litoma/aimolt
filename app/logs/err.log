@@ -1612,3 +1612,62 @@
 2026-01-19T14:51:57:   requireStack: [ '/app/src/explain.js', '/app/src/index.js' ]
 2026-01-19T14:51:57: }
 2026-01-19T14:54:48: ❌ 🎤 音声文字起こし 失敗 (全4回試行後): [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent: [404 Not Found] models/gemini-3-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-01-20T13:26:17: ❌ 🎤 音声文字起こし 失敗 (全4回試行後): [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent: fetch failed
+2026-01-20T13:32:09: ❌ 🎤 音声文字起こし 失敗 (全4回試行後): [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent: fetch failed
+2026-01-20T13:32:28: Gemini API リトライ 1/3 - 2000ms 待機中... {
+2026-01-20T13:32:28:   error: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.',
+2026-01-20T13:32:28:   attempt: 1,
+2026-01-20T13:32:28:   delay: 2000
+2026-01-20T13:32:28: }
+2026-01-20T13:39:06: Gemini API リトライ 1/3 - 2000ms 待機中... {
+2026-01-20T13:39:06:   error: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.',
+2026-01-20T13:39:06:   attempt: 1,
+2026-01-20T13:39:06:   delay: 2000
+2026-01-20T13:39:06: }
+2026-01-20T13:39:43: Gemini API リトライ 2/3 - 4000ms 待機中... {
+2026-01-20T13:39:43:   error: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.',
+2026-01-20T13:39:43:   attempt: 2,
+2026-01-20T13:39:43:   delay: 4000
+2026-01-20T13:39:43: }
+2026-01-20T13:44:48: ❌ 🎤 音声文字起こし 失敗 (全4回試行後): [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent: fetch failed
+2026-01-20T13:47:35: Gemini API リトライ 1/3 - 2000ms 待機中... {
+2026-01-20T13:47:35:   error: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.',
+2026-01-20T13:47:35:   attempt: 1,
+2026-01-20T13:47:35:   delay: 2000
+2026-01-20T13:47:35: }
+2026-01-21T13:41:34: Gemini API リトライ 1/3 - 2000ms 待機中... {
+2026-01-21T13:41:34:   error: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.',
+2026-01-21T13:41:34:   attempt: 1,
+2026-01-21T13:41:34:   delay: 2000
+2026-01-21T13:41:34: }
+2026-01-27T10:49:37: Gemini API リトライ 1/3 - 2000ms 待機中... {
+2026-01-27T10:49:37:   error: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.',
+2026-01-27T10:49:37:   attempt: 1,
+2026-01-27T10:49:37:   delay: 2000
+2026-01-27T10:49:37: }
+2026-01-27T10:49:43: Gemini API リトライ 2/3 - 4000ms 待機中... {
+2026-01-27T10:49:43:   error: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.',
+2026-01-27T10:49:43:   attempt: 2,
+2026-01-27T10:49:43:   delay: 4000
+2026-01-27T10:49:43: }
+2026-01-27T10:49:50: Gemini API リトライ 3/3 - 8000ms 待機中... {
+2026-01-27T10:49:50:   error: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.',
+2026-01-27T10:49:50:   attempt: 3,
+2026-01-27T10:49:50:   delay: 8000
+2026-01-27T10:49:50: }
+2026-01-27T10:50:02: ❌ 🎤 音声文字起こし 失敗 (全4回試行後): [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.
+2026-01-27T10:50:35: Gemini API リトライ 1/3 - 2000ms 待機中... {
+2026-01-27T10:50:35:   error: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.',
+2026-01-27T10:50:35:   attempt: 1,
+2026-01-27T10:50:35:   delay: 2000
+2026-01-27T10:50:35: }
+2026-01-27T10:50:40: Gemini API リトライ 2/3 - 4000ms 待機中... {
+2026-01-27T10:50:40:   error: '[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.',
+2026-01-27T10:50:40:   attempt: 2,
+2026-01-27T10:50:40:   delay: 4000
+2026-01-27T10:50:40: }
+2026-01-31T12:46:52: ❌ PostgreSQL LISTEN client error: terminating connection due to administrator command
+2026-01-31T12:46:52: ❌ PostgreSQL LISTEN client error: Connection terminated unexpectedly
+2026-02-03T13:02:58: Error loading dynamic like prompt: prompts.getDynamicLike is not a function
+2026-02-05T11:25:28: ❌ PostgreSQL LISTEN client error: Connection terminated unexpectedly
+2026-02-05T12:00:05: ❌ 対象ユーザー選出エラー: getaddrinfo EAI_AGAIN postgres

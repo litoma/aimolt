@@ -109,7 +109,7 @@ class ConversationAnalyzer {
 
   detectEmotion(message) {
     const emotions = {};
-    
+
     Object.entries(this.emotionPatterns).forEach(([emotion, pattern]) => {
       const matches = message.match(pattern);
       if (matches) {
@@ -120,12 +120,12 @@ class ConversationAnalyzer {
     if (Object.keys(emotions).length === 0) return 'neutral';
 
     return Object.entries(emotions)
-      .sort(([,a], [,b]) => b - a)[0][0];
+      .sort(([, a], [, b]) => b - a)[0][0];
   }
 
   categorizeMessage(message) {
     const categories = {};
-    
+
     Object.entries(this.topicCategories).forEach(([category, pattern]) => {
       const matches = message.match(pattern);
       if (matches) {
@@ -136,7 +136,7 @@ class ConversationAnalyzer {
     if (Object.keys(categories).length === 0) return 'general';
 
     return Object.entries(categories)
-      .sort(([,a], [,b]) => b - a)[0][0];
+      .sort(([, a], [, b]) => b - a)[0][0];
   }
 
   extractKeywords(message) {
@@ -165,13 +165,13 @@ class ConversationAnalyzer {
     if (message.length > 200) score += 2;
 
     if (message.match(/質問|聞きたい|教えて|どうして|なぜ|わからない/gi)) score += 3;
-    
+
     if (message.match(/ありがと|感謝|助かる|おかげ/gi)) score += 2;
-    
+
     if (message.match(/悩み|相談|困った|辛い|悲しい/gi)) score += 4;
-    
+
     if (message.match(/！|!|\?|？/g)) score += 1;
-    
+
     if (message.match(/すごい|最高|素晴らしい|やばい|マジ/gi)) score += 2;
 
     return Math.min(score, 10);
@@ -190,17 +190,9 @@ class ConversationAnalyzer {
 
   async saveAnalysis(analysis) {
     try {
-      await pgPool.query(
-        `INSERT INTO conversation_analysis 
-         (user_id, message_id, user_message, sentiment, emotion_detected, 
-          topic_category, keywords, importance_score, confidence_score)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-        [
-          analysis.user_id, analysis.message_id, analysis.user_message,
-          analysis.sentiment, analysis.emotion_detected, analysis.topic_category,
-          analysis.keywords, analysis.importance_score, analysis.confidence_score
-        ]
-      );
+      await supabase
+        .from('conversation_analysis')
+        .insert([analysis]);
     } catch (error) {
       console.error('Error saving analysis:', error);
     }
@@ -208,15 +200,15 @@ class ConversationAnalyzer {
 
   async getRecentAnalysis(userId, limit = 10) {
     try {
-      const result = await pgPool.query(
-        `SELECT * FROM conversation_analysis 
-         WHERE user_id = $1 
-         ORDER BY analyzed_at DESC 
-         LIMIT $2`,
-        [userId, limit]
-      );
+      const { data, error } = await supabase
+        .from('conversation_analysis')
+        .select('*')
+        .eq('user_id', userId)
+        .order('analyzed_at', { ascending: false })
+        .limit(limit);
 
-      return result.rows;
+      if (error) throw error;
+      return data;
     } catch (error) {
       console.error('Error getting recent analysis:', error);
       return [];
@@ -225,22 +217,47 @@ class ConversationAnalyzer {
 
   async getUserTrends(userId, days = 7) {
     try {
-      const result = await pgPool.query(
-        `SELECT 
-           sentiment,
-           emotion_detected,
-           topic_category,
-           AVG(importance_score) as avg_importance,
-           COUNT(*) as count
-         FROM conversation_analysis 
-         WHERE user_id = $1 
-           AND analyzed_at >= NOW() - INTERVAL '${days} days'
-         GROUP BY sentiment, emotion_detected, topic_category
-         ORDER BY count DESC`,
-        [userId]
-      );
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - days);
 
-      return result.rows;
+      const { data, error } = await supabase
+        .from('conversation_analysis')
+        .select('sentiment, emotion_detected, topic_category, importance_score')
+        .eq('user_id', userId)
+        .gte('analyzed_at', startDate.toISOString());
+
+      if (error) throw error;
+      if (!data || data.length === 0) return [];
+
+      // クライアント側で集計
+      // グルーピングキー: sentiment + emotion + topic
+      const groups = {};
+
+      data.forEach(item => {
+        const key = `${item.sentiment}|${item.emotion_detected}|${item.topic_category}`;
+        if (!groups[key]) {
+          groups[key] = {
+            sentiment: item.sentiment,
+            emotion_detected: item.emotion_detected,
+            topic_category: item.topic_category,
+            totalImportance: 0,
+            count: 0
+          };
+        }
+        groups[key].count++;
+        groups[key].totalImportance += item.importance_score;
+      });
+
+      return Object.values(groups)
+        .map(g => ({
+          sentiment: g.sentiment,
+          emotion_detected: g.emotion_detected,
+          topic_category: g.topic_category,
+          avg_importance: g.totalImportance / g.count,
+          count: g.count
+        }))
+        .sort((a, b) => b.count - a.count);
+
     } catch (error) {
       console.error('Error getting user trends:', error);
       return [];
