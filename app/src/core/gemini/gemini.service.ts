@@ -12,8 +12,11 @@ export class GeminiService {
         if (!apiKey) throw new Error('GEMINI_API_KEY is not defined');
 
         this.genAI = new GoogleGenerativeAI(apiKey);
+        // Default to gemini-3-flash-preview as requested by user
+        const modelId = this.configService.get<string>('GEMINI_AI_MODEL') || 'gemini-3-flash-preview';
+
         this.model = this.genAI.getGenerativeModel({
-            model: 'gemini-1.5-flash', // Hardcoded or config
+            model: modelId,
             generationConfig: {
                 maxOutputTokens: 2000,
                 temperature: 1.0,
@@ -24,13 +27,9 @@ export class GeminiService {
 
     async generateText(systemPrompt: string, userPrompt: string): Promise<string> {
         try {
-            // Gemini 1.5 style system instruction via model config if feasible, 
-            // or prepend to prompt. Using prepend for broad compatibility here or getGenerativeModel config.
-            // Re-instantiating model here to allow dynamic system prompt per call if needed, 
-            // or use chat session.
-
+            const modelName = this.configService.get<string>('GEMINI_AI_MODEL') || 'gemini-3-flash-preview';
             const model = this.genAI.getGenerativeModel({
-                model: 'gemini-1.5-flash',
+                model: modelName,
                 systemInstruction: systemPrompt,
             });
 
@@ -45,8 +44,9 @@ export class GeminiService {
 
     async generateTextWithParts(systemPrompt: string, parts: any[]): Promise<string> {
         try {
+            const modelName = this.configService.get<string>('GEMINI_AI_MODEL') || 'gemini-3-flash-preview';
             const model = this.genAI.getGenerativeModel({
-                model: 'gemini-1.5-flash',
+                model: modelName,
                 systemInstruction: systemPrompt,
             });
 
@@ -60,8 +60,9 @@ export class GeminiService {
     }
 
     async startChat(systemPrompt: string, history: any[]) {
+        const modelName = this.configService.get<string>('GEMINI_AI_MODEL') || 'gemini-3-flash-preview';
         const model = this.genAI.getGenerativeModel({
-            model: 'gemini-1.5-flash',
+            model: modelName,
             systemInstruction: systemPrompt
         });
         return model.startChat({ history });

@@ -15,9 +15,14 @@ export class ReactionGateway implements OnModuleInit {
     ) { }
 
     onModuleInit() {
+        if (!this.discordService.client) {
+            console.error('[ReactionGateway] Discord Client not found!');
+            return;
+        }
         this.discordService.client.on('messageReactionAdd', (reaction, user) =>
             this.handleReaction(reaction, user)
         );
+        console.log('[ReactionGateway] Subscribed to messageReactionAdd events');
     }
 
     async handleReaction(

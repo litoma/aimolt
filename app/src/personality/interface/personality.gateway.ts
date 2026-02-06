@@ -13,13 +13,20 @@ export class PersonalityGateway implements OnModuleInit {
     ) { }
 
     onModuleInit() {
+        if (!this.discordService.client) {
+            console.error('[PersonlityGateway] Discord Client not found!');
+            return;
+        }
         this.discordService.client.on('messageCreate', (message) => this.handleMessage(message));
+        console.log('[PersonalityGateway] Subscribed to messageCreate events');
     }
 
     async handleMessage(message: Message) {
+        console.log(`[DEBUG] PersonalityGateway saw message: ${message.content}`);
         if (message.author.bot) return;
 
         if (message.content.startsWith('!personality status')) {
+            console.log('[DEBUG] Matched !personality status command');
             await this.handleStatus(message);
         }
     }
@@ -28,6 +35,8 @@ export class PersonalityGateway implements OnModuleInit {
         // Determine target user (mentioned or author)
         const targetUser = message.mentions.users.first() || message.author;
         const targetUserId = targetUser.id;
+
+        const stopTyping = this.discordService.startTyping(message.channel);
 
         try {
             const [emotion, relationship] = await Promise.all([
@@ -56,6 +65,8 @@ export class PersonalityGateway implements OnModuleInit {
         } catch (error) {
             console.error('Error handling personality status:', error);
             await message.reply('❌ An error occurred while fetching user status.');
+        } finally {
+            stopTyping();
         }
     }
 }

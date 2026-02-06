@@ -44,7 +44,6 @@ NestJSフレームワークを使用し、ドメイン駆動設計（DDD）に�
 - **Discord Bot Token**: [Discord Developer Portal](https://discord.com/developers/applications) で取得
 - **Gemini API Key**: [Google AI Studio](https://makersuite.google.com/) で取得
 - **Supabase Project**: [Supabase](https://supabase.com/) でプロジェクトを作成
-- **GitHub Personal Access Token** (プロファイル連携用・オプション): [GitHub Settings](https://github.com/settings/tokens) で取得
 
 ## 🛠️ セットアップ
 
@@ -121,7 +120,6 @@ Botの動作には以下の環境変数が必要です。
 | `SUPABASE_URL` | SupabaseプロジェクトのURL | `https://xxx.supabase.co` | ✅ |
 | `SUPABASE_KEY` | SupabaseのAnonキー | `eyxxxxxx` | ✅ |
 | `CONVERSATION_LIMIT` | 参照する会話履歴の最大件数 | `1000` | ✅ |
-| `GITHUB_TOKEN` | GitHub Personal Access Token (プロファイル連携用) | `ghp_xxxxxxxxxxxxxxxx` | ❌ |
 | `OBSIDIAN_URL` | Obsidian REST API URL | `http://localhost:27123` | ❌ |
 | `OBSIDIAN_API` | Obsidian REST API キー | `your_api_key_here` | ❌ |
 
@@ -152,10 +150,8 @@ Botの動作には以下の環境変数が必要です。
 3.  **メモ機能**:
     - メッセージに📝リアクションを付けます。
 
-4.  **人格＆プロファイル管理**:
+4.  **人格管理**:
     - `!personality status`: 感情・関係性状態の確認
-    - `!profile status`: プロファイル同期状態の確認
-    - `!profile refresh`: プロファイルの強制更新
 
 ## 🗂️ プロジェクト構造 (NestJS)
 
@@ -166,9 +162,9 @@ aimolt/
 │   │   ├── main.ts                    # エントリーポイント
 │   │   ├── app.module.ts              # メインモジュール
 │   │   ├── core/                      # コアモジュール (Config, Gemini, Supabase)
-│   │   ├── personality/               # 人格・感情・プロファイル管理
+│   │   ├── personality/               # 人格・感情管理
 │   │   │   ├── domain/                # エンティティ定義
-│   │   │   ├── application/           # サービスロジック (VAD, ProfileSync)
+│   │   │   ├── application/           # サービスロジック (VAD)
 │   │   │   ├── infrastructure/        # リポジトリ実装
 │   │   │   └── interface/             # Discord Gateway, Commands
 │   │   ├── interaction/               # インタラクション (Like, Memo, Transcribe)
@@ -193,6 +189,7 @@ npm run start            # NestJS起動
 npm run start:dev        # 開発モード (Watch)
 npm run start:prod       # 本番モード (dist/main.js実行)
 npm run pm2:start        # PM2で起動
+npm run test             # テスト実行
 ```
 
 ### 📄 ライセンス

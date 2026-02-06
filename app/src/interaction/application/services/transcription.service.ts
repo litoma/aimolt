@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { GeminiService } from '../../../core/gemini/gemini.service';
 import { PromptService } from '../../../core/prompt/prompt.service';
+import { DiscordService } from '../../../discord/discord.service';
 import { Message, TextChannel, DMChannel, NewsChannel, ThreadChannel } from 'discord.js';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -15,6 +16,7 @@ export class TranscriptionService {
     constructor(
         private readonly geminiService: GeminiService,
         private readonly promptService: PromptService,
+        private readonly discordService: DiscordService,
     ) {
         // Ensure temp directory exists
         const tempDir = path.join(process.cwd(), 'temp');
@@ -51,6 +53,9 @@ export class TranscriptionService {
         const tempDir = path.join(process.cwd(), 'temp');
         const filePath = path.join(tempDir, `original_${timestamp}_${targetAttachment.name}`);
         const downloadUrl = targetAttachment.proxyURL || targetAttachment.url;
+
+        // Start typing indicator
+        const stopTyping = this.discordService.startTyping(message.channel);
 
         try {
             await this.downloadAudio(downloadUrl, filePath);
@@ -89,6 +94,9 @@ export class TranscriptionService {
             console.error('Transcription Error:', error);
             await this.sendMessage(message, `<@${userId}> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: ${error.message}`);
         } finally {
+            // Stop typing indicator
+            stopTyping();
+
             // Cleanup
             if (fs.existsSync(filePath)) {
                 await unlinkAsync(filePath).catch(err => console.error('Cleanup error:', err));
