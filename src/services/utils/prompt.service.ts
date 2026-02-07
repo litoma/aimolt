@@ -38,32 +38,45 @@ export class PromptService {
 
     async loadFromFiles() {
         try {
-            const promptDir = join(Deno.cwd(), "prompt");
+            const cwd = Deno.cwd();
+            console.log(`📂 Current Working Directory: ${cwd}`);
+
+            const promptDir = join(cwd, "prompt");
+            console.log(`📂 Target Prompt Directory: ${promptDir}`);
+
+            // Debug: List files in prompt dir if possible
+            try {
+                for await (const dirEntry of Deno.readDir(promptDir)) {
+                    console.log(`📄 Found file in prompt dir: ${dirEntry.name}`);
+                }
+            } catch (e) {
+                console.warn(`⚠️ Could not list files in ${promptDir}:`, e);
+            }
 
             // System Prompt
             try {
                 this.systemPrompt = await Deno.readTextFile(join(promptDir, "system.txt"));
                 console.log("📄 Loaded system prompt from file");
-            } catch {
-                console.warn("Failed to load system.txt");
+            } catch (e) {
+                console.warn("⚠️ Failed to load system.txt:", e);
             }
 
             // Like Prompt
             try {
                 this.likePrompt = await Deno.readTextFile(join(promptDir, "like.txt"));
                 console.log("📄 Loaded like prompt from file");
-            } catch {
-                // Ignore
+            } catch (e) {
+                console.warn("⚠️ Failed to load like.txt:", e);
             }
 
             // Transcribe Prompt
             try {
                 this.transcribePrompt = await Deno.readTextFile(join(promptDir, "transcribe.txt"));
-            } catch {
-                // Ignore
+            } catch (e) {
+                console.warn("⚠️ Failed to load transcribe.txt:", e);
             }
         } catch (error) {
-            console.error("❌ Failed to load prompts from files:", error);
+            console.error("❌ Failed to load prompts from files (Critical):", error);
         }
     }
 
