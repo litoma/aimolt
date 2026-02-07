@@ -5,7 +5,14 @@ import { messageCreate } from "./src/events/messageCreate.ts";
 import { promptService } from "./src/services/utils/prompt.service.ts";
 
 // Initialize Services
-await promptService.refreshPrompts();
+console.log("[Main] Initializing services...");
+try {
+    console.log("[Main] Fetching prompts...");
+    await promptService.refreshPrompts();
+    console.log("[Main] Prompts loaded.");
+} catch (error) {
+    console.error("[Main] Failed to load prompts:", error);
+}
 
 const bot = createBot({
     token: config.DISCORD_TOKEN,
