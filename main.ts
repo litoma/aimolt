@@ -32,7 +32,7 @@ console.log("[Main] Starting Deno Bot...");
 console.log("[KeepAlive] System started");
 setInterval(() => {
     console.log("🔄 Bot is active! (Keep-Alive via setInterval)");
-}, 1 * 60 * 1000);
+}, 10 * 1000);
 
 // Start Discord Bot (Background)
 bot.start().catch((err) => {
