@@ -43,8 +43,22 @@ bot.start().catch((err) => {
     console.error("[Fatal] Discord Bot crashed:", err);
 });
 
+// Keep track of last run
+let lastCronRun = "Never";
+
 // Start HTTP Server (Required for Deno Deploy health checks)
-Deno.serve({ port: 8000 }, (_req) => {
+Deno.serve({ port: 8000 }, (req) => {
+    const url = new URL(req.url);
+    if (url.pathname === "/health") {
+        return new Response(JSON.stringify({
+            status: "ok",
+            last_cron: lastCronRun,
+            uptime: performance.now(),
+            memory: Deno.memoryUsage()
+        }), {
+            headers: { "Content-Type": "application/json" }
+        });
+    }
     return new Response("Discord Bot is running 🤖");
 });
 
@@ -52,11 +66,13 @@ Deno.serve({ port: 8000 }, (_req) => {
 try {
     console.log("[Main] Scheduling Cron job...");
     Deno.cron("KeepAlive", "* * * * *", () => {
-        console.log("🔄 Bot is active! (Cron execution)");
+        lastCronRun = new Date().toISOString();
+        console.log(`[Cron] Executed at ${lastCronRun}`);
     });
 } catch (e) {
     console.warn("Deno.cron not supported in this environment, falling back to interval.");
     setInterval(() => {
-        console.log("🔄 Bot is active! (Interval fallback)");
+        lastCronRun = new Date().toISOString();
+        console.log(`[Interval] Executed at ${lastCronRun}`);
     }, 60 * 1000);
 }
