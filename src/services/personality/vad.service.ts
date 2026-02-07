@@ -51,7 +51,10 @@ export class VADService {
             .select()
             .single();
 
-        if (error) throw error;
+        if (error) {
+            console.error("[VADService] Save Error:", JSON.stringify(error, null, 2));
+            throw error;
+        }
         return data as Emotion;
     }
 
@@ -63,7 +66,10 @@ export class VADService {
             .select()
             .single();
 
-        if (error) throw error;
+        if (error) {
+            console.error("[VADService] Update Error:", JSON.stringify(error, null, 2));
+            throw error;
+        }
         return data as Emotion;
     }
 

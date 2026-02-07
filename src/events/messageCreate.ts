@@ -42,8 +42,20 @@ export const messageCreate = async (bot: Bot, message: any) => {
                 }
             });
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error fetching personality status:", error);
+            // serialized error
+            try {
+                const errObj = JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error)));
+                console.error("Error Details:", errObj);
+                if (error?.message) console.error("Error Message:", error.message);
+                if (error?.code) console.error("Error Code:", error.code);
+                if (error?.details) console.error("Error Details:", error.details);
+                if (error?.hint) console.error("Error Hint:", error.hint);
+            } catch (e) {
+                console.error("Could not serialize error:", e);
+            }
+
             await bot.helpers.sendMessage(message.channelId, {
                 content: "❌ Failed to retrieve personality status."
             });
