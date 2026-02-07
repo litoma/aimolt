@@ -1,7 +1,8 @@
 {
   "tasks": {
     "start": "deno run --allow-net --allow-read --allow-env --allow-write main.ts",
-    "dev": "deno run --watch --allow-net --allow-read --allow-env --allow-write main.ts"
+    "dev": "deno run --watch --allow-net --allow-read --allow-env --allow-write main.ts",
+    "tunnel": "deno run --tunnel --allow-net --allow-read --allow-env --allow-write main.ts"
   },
   "imports": {
     "@discordeno/bot": "npm:@discordeno/bot@^21.0.0",
@@ -12,5 +13,9 @@
     "@std/path": "jsr:@std/path@^0.224.0",
     "@std/fs": "jsr:@std/fs@^0.224.0",
     "@std/encoding": "jsr:@std/encoding@^1.0.0"
+  },
+  "deploy": {
+    "org": "litoma",
+    "app": "aimolt"
   }
 }

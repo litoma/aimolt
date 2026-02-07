@@ -1,7 +1,7 @@
 import { load } from "@std/dotenv";
 
 // Load environment variables from .env file
-await load({ export: true, path: "./.env" });
+await load({ export: true });
 
 export const config = {
     // Application
