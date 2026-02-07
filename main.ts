@@ -20,8 +20,8 @@ const bot = createBot({
 });
 
 // Assign events after bot creation to handle circular dependency and strict grouping
-bot.events.reactionAdd = (payload) => reactionAdd(bot, payload);
-bot.events.messageCreate = (message) => messageCreate(bot, message);
+bot.events.reactionAdd = (bot, payload) => reactionAdd(bot, payload);
+bot.events.messageCreate = (bot, message) => messageCreate(bot, message);
 bot.events.ready = (_bot, { user }) => {
     console.log(`[Main] Logged in as ${user.username}! (Deno)`);
 };
