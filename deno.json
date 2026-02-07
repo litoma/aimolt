@@ -17,5 +17,8 @@
   "deploy": {
     "org": "litoma",
     "app": "aimolt"
-  }
+  },
+  "unstable": [
+    "cron"
+  ]
 }
