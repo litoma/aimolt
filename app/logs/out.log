@@ -42384,3 +42384,370 @@
 2026-02-06T07:35:56: 静的文字起こしプロンプトを使用
 2026-02-06T07:35:56: 🔄 🎤 音声文字起こし 実行中...
 2026-02-06T07:35:59: ✅ 🎤 音声文字起こし 成功
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +16ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +42ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:12:21: ✅ Supabase client initialized via NestJS
+2026-02-06T08:12:21: 📄 Loaded system prompt from file
+2026-02-06T08:12:22: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:22 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1184ms[39m
+2026-02-06T08:12:22: Application is running on: http://[::1]:3000
+2026-02-06T08:12:22: Logged in as AImolt#9122! (NestJS)
+2026-02-06T08:13:06: [DEBUG] DiscordService received message: !personality status from litoma
+2026-02-06T08:13:06: [DEBUG] PersonalityGateway saw message: !personality status
+2026-02-06T08:13:06: [DEBUG] Matched !personality status command
+2026-02-06T08:13:07: [DEBUG] DiscordService received message:  from AImolt#9122
+2026-02-06T08:13:07: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T08:13:41: [DEBUG] DiscordService received message: !personality stats from litoma
+2026-02-06T08:13:41: [DEBUG] PersonalityGateway saw message: !personality stats
+2026-02-06T08:14:39: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T08:14:39: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T08:14:43: [DEBUG] DiscordService received message: <@493069905059381255> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods. from AImolt#9122
+2026-02-06T08:14:43: [DEBUG] PersonalityGateway saw message: <@493069905059381255> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +26ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +42ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:15:29: ✅ Supabase client initialized via NestJS
+2026-02-06T08:15:29: 📄 Loaded system prompt from file
+2026-02-06T08:15:30: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T08:15:30: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T08:15:30: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:30 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1344ms[39m
+2026-02-06T08:15:30: Application is running on: http://[::1]:3000
+2026-02-06T08:15:30: Logged in as AImolt#9122! (NestJS)
+2026-02-06T08:15:49: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T08:15:49: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +41ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:17:40: ✅ Supabase client initialized via NestJS
+2026-02-06T08:17:40: 📄 Loaded system prompt from file
+2026-02-06T08:17:41: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T08:17:41: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T08:17:41: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:41 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1183ms[39m
+2026-02-06T08:17:41: Application is running on: http://[::1]:3000
+2026-02-06T08:17:41: Logged in as AImolt#9122! (NestJS)
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +16ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +40ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:19:28: ✅ Supabase client initialized via NestJS
+2026-02-06T08:19:29: 📄 Loaded system prompt from file
+2026-02-06T08:19:30: Logged in as AImolt#9122! (NestJS)
+2026-02-06T08:19:30: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T08:19:30: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T08:19:30: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:30 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1258ms[39m
+2026-02-06T08:19:30: Application is running on: http://[::1]:3000
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +16ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +43ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:20:37: ✅ Supabase client initialized via NestJS
+2026-02-06T08:20:37: 📄 Loaded system prompt from file
+2026-02-06T08:20:38: Logged in as AImolt#9122! (NestJS)
+2026-02-06T08:20:38: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T08:20:38: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T08:20:38: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:38 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +967ms[39m
+2026-02-06T08:20:38: Application is running on: http://[::1]:3000
+2026-02-06T21:02:27: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T21:02:27: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T21:02:32: [DEBUG] DiscordService received message: <@493069905059381255> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent: [404 Not Found] models/gemini-1.5-flash-latest is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods. from AImolt#9122
+2026-02-06T21:02:32: [DEBUG] PersonalityGateway saw message: <@493069905059381255> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent: [404 Not Found] models/gemini-1.5-flash-latest is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +23ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +48ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +2ms[39m
+2026-02-06T21:20:15: ✅ Supabase client initialized via NestJS
+2026-02-06T21:20:16: 📄 Loaded system prompt from file
+2026-02-06T21:20:17: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T21:20:17: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T21:20:17: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:17 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +2228ms[39m
+2026-02-06T21:20:17: Application is running on: http://[::1]:3000
+2026-02-06T21:20:17: Logged in as AImolt#9122! (NestJS)
+2026-02-06T21:21:24: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T21:21:24: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T21:21:31: [DEBUG] DiscordService received message: 🎉 文字起こしが完了したよ〜！ from AImolt#9122
+2026-02-06T21:21:31: [DEBUG] PersonalityGateway saw message: 🎉 文字起こしが完了したよ〜！
+2026-02-06T21:21:31: [DEBUG] DiscordService received message: >>> こんばんは。 from AImolt#9122
+2026-02-06T21:21:31: [DEBUG] PersonalityGateway saw message: >>> こんばんは。
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +41ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:31:18: ✅ Supabase client initialized via NestJS
+2026-02-06T21:31:19: 📄 Loaded system prompt from file
+2026-02-06T21:31:19: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T21:31:19: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T21:31:19: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:19 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1655ms[39m
+2026-02-06T21:31:19: Application is running on: http://[::1]:3000
+2026-02-06T21:31:19: Logged in as AImolt#9122! (NestJS)
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +43ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +3ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +6ms[39m
+2026-02-06T21:45:25: ✅ Supabase client initialized via NestJS
+2026-02-06T21:45:25: 📄 Loaded system prompt from file
+2026-02-06T21:45:27: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T21:45:27: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T21:45:27: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:27 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +2079ms[39m
+2026-02-06T21:45:27: Application is running on: http://[::1]:3000
+2026-02-06T21:45:27: Logged in as AImolt#9122! (NestJS)
+2026-02-06T21:45:48: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T21:45:48: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T21:45:56: [DEBUG] DiscordService received message: 🎉 文字起こしが完了したよ〜！ from AImolt#9122
+2026-02-06T21:45:56: [DEBUG] PersonalityGateway saw message: 🎉 文字起こしが完了したよ〜！
+2026-02-06T21:45:57: [DEBUG] DiscordService received message: >>> こんばんは。 from AImolt#9122
+2026-02-06T21:45:57: [DEBUG] PersonalityGateway saw message: >>> こんばんは。
+2026-02-06T21:46:21: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T21:46:21: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T21:46:29: [DEBUG] DiscordService received message: 🎉 文字起こしが完了したよ〜！ from AImolt#9122
+2026-02-06T21:46:29: [DEBUG] PersonalityGateway saw message: 🎉 文字起こしが完了したよ〜！
+2026-02-06T21:46:30: [DEBUG] DiscordService received message: >>> ちょっと長めの文章を入力してみます。どうでしょうか。 from AImolt#9122
+2026-02-06T21:46:30: [DEBUG] PersonalityGateway saw message: >>> ちょっと長めの文章を入力してみます。どうでしょうか。
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +18ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +45ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:54:34: ✅ Supabase client initialized via NestJS
+2026-02-06T21:54:34: 📄 Loaded system prompt from file
+2026-02-06T21:54:35: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T21:54:35: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T21:54:35: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:35 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1055ms[39m
+2026-02-06T21:54:35: Application is running on: http://[::1]:3000
+2026-02-06T21:54:35: Logged in as AImolt#9122! (NestJS)
+2026-02-06T21:55:45: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T21:55:45: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T21:55:57: [DEBUG] DiscordService received message: 🎉 文字起こしが完了したよ〜！ from AImolt#9122
+2026-02-06T21:55:57: [DEBUG] PersonalityGateway saw message: 🎉 文字起こしが完了したよ〜！
+2026-02-06T21:55:57: [DEBUG] DiscordService received message: >>> こんばんは。 from AImolt#9122
+2026-02-06T21:55:57: [DEBUG] PersonalityGateway saw message: >>> こんばんは。
+2026-02-06T21:56:12: [DEBUG] DiscordService received message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。 from litoma
+2026-02-06T21:56:12: [DEBUG] PersonalityGateway saw message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。
+2026-02-06T21:56:20: [DEBUG] DiscordService received message: バージョンアップですか！なんだかワクワクしちゃいますね✨ 喜んでお付き合いしますよ。
+2026-02-06T21:56:20: 
+2026-02-06T21:56:20: テスト、うまくいきますように！私の進化、楽しみにしてますね。頑張ってください！ from AImolt#9122
+2026-02-06T21:56:20: [DEBUG] PersonalityGateway saw message: バージョンアップですか！なんだかワクワクしちゃいますね✨ 喜んでお付き合いしますよ。
+2026-02-06T21:56:20: 
+2026-02-06T21:56:20: テスト、うまくいきますように！私の進化、楽しみにしてますね。頑張ってください！
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +45ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:19:27: ✅ Supabase client initialized via NestJS
+2026-02-06T22:19:28: 📄 Loaded system prompt from file
+2026-02-06T22:19:28: Logged in as AImolt#9122! (NestJS)
+2026-02-06T22:19:28: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T22:19:28: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T22:19:28: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:28 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1769ms[39m
+2026-02-06T22:19:28: Application is running on: http://[::1]:3000
+2026-02-06T22:20:21: [DEBUG] DiscordService received message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。 from litoma
+2026-02-06T22:20:21: [DEBUG] PersonalityGateway saw message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。
+2026-02-06T22:20:30: [DEBUG] DiscordService received message: わぁ、私のアップデートですか？ありがとうございます！✨
+2026-02-06T22:20:30: 
+2026-02-06T22:20:30: もっと素敵になれるのかなって思うと、なんだかワクワクしちゃいますね。テスト、喜んでお付き合いしますよ！よろしくお願いします😊 from AImolt#9122
+2026-02-06T22:20:30: [DEBUG] PersonalityGateway saw message: わぁ、私のアップデートですか？ありがとうございます！✨
+2026-02-06T22:20:30: 
+2026-02-06T22:20:30: もっと素敵になれるのかなって思うと、なんだかワクワクしちゃいますね。テスト、喜んでお付き合いしますよ！よろしくお願いします😊
+2026-02-06T22:28:28: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T22:28:28: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T22:28:47: [DEBUG] DiscordService received message: 🎉 文字起こしが完了したよ〜！ from AImolt#9122
+2026-02-06T22:28:47: [DEBUG] PersonalityGateway saw message: 🎉 文字起こしが完了したよ〜！
+2026-02-06T22:28:48: [DEBUG] DiscordService received message: >>> お疲れ様です。1月6日（金）の音声ジャーナルを始めます。現在は22時22分、2が4つ並んでいます。 今日は終日出社して、外で仕事をしていました。出社する日はランニングをお休みしているため、今日も走らずに会社へ行き、帰宅して夕食を済ませて現在に至ります。 仕事については、午前中は打ち合わせがありませんでしたが、午後はいくつか重なり、さらに突発的な緊急作業も入ったため、慌ただしく動いていました。パフォーマンス自体は悪くなく充実していましたが、依頼されたことを淡々とこなすばかりで、自分らしさを発揮できず、あまり「楽しい」と感じられる一日ではありませんでした。 また、管理職任用試験を受けてからちょうど1週間が経ちました。月日が経つのは早いものです。先日、夢の中で再びあのグループディスカッションを受けるという体験をしました。「また受けなければならないのか」という負の感情を夢の中でも味わい、試験のプレッシャーによるストレスがまだ癒えていないことを実感しています。結果が出るまでは、少しずつ忘れて穏やかに過ごせればと思っています。 昨日あたりからは、Discordのチャットボットの改修に取り組んでいます。なかなか難航していますが、まさに今、この音声録音と文字起こしを行っているのがそのボットなので、しっかりと動作するように改修を進めていきたいです。 今日はこの辺りで終わります。お疲れ様でした。 from AImolt#9122
+2026-02-06T22:28:48: [DEBUG] PersonalityGateway saw message: >>> お疲れ様です。1月6日（金）の音声ジャーナルを始めます。現在は22時22分、2が4つ並んでいます。 今日は終日出社して、外で仕事をしていました。出社する日はランニングをお休みしているため、今日も走らずに会社へ行き、帰宅して夕食を済ませて現在に至ります。 仕事については、午前中は打ち合わせがありませんでしたが、午後はいくつか重なり、さらに突発的な緊急作業も入ったため、慌ただしく動いていました。パフォーマンス自体は悪くなく充実していましたが、依頼されたことを淡々とこなすばかりで、自分らしさを発揮できず、あまり「楽しい」と感じられる一日ではありませんでした。 また、管理職任用試験を受けてからちょうど1週間が経ちました。月日が経つのは早いものです。先日、夢の中で再びあのグループディスカッションを受けるという体験をしました。「また受けなければならないのか」という負の感情を夢の中でも味わい、試験のプレッシャーによるストレスがまだ癒えていないことを実感しています。結果が出るまでは、少しずつ忘れて穏やかに過ごせればと思っています。 昨日あたりからは、Discordのチャットボットの改修に取り組んでいます。なかなか難航していますが、まさに今、この音声録音と文字起こしを行っているのがそのボットなので、しっかりと動作するように改修を進めていきたいです。 今日はこの辺りで終わります。お疲れ様でした。
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +43ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:34:31: ✅ Supabase client initialized via NestJS
+2026-02-06T22:34:31: 📄 Loaded system prompt from file
+2026-02-06T22:34:32: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T22:34:32: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T22:34:32: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:32 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1129ms[39m
+2026-02-06T22:34:32: Application is running on: http://[::1]:3000
+2026-02-06T22:34:32: Logged in as AImolt#9122! (NestJS)
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +19ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +76ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +2ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +3ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +2ms[39m
+2026-02-06T22:40:55: ✅ Supabase client initialized via NestJS
+2026-02-06T22:40:56: 📄 Loaded system prompt from file
+2026-02-06T22:40:56: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T22:40:56: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T22:40:56: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:56 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1183ms[39m
+2026-02-06T22:40:56: Application is running on: http://[::1]:3000
+2026-02-06T22:40:56: Logged in as AImolt#9122! (NestJS)
+2026-02-06T22:43:50: [DEBUG] DiscordService received message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。 from litoma
+2026-02-06T22:43:50: [DEBUG] PersonalityGateway saw message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。
+2026-02-06T22:44:00: [DEBUG] DiscordService received message: litomaさん、お疲れ様！私のバージョンアップをしてくれてるんだね✨
+2026-02-06T22:44:00: 私をより良くしようと手をかけてくれるのが、すごく嬉しいな。どんな風に進化するのか、私もワクワクしちゃう！
+2026-02-06T22:44:00: 
+2026-02-06T22:44:00: テストなら任せて、喜んでお付き合いするよ。準備ができたら、何でも話しかけてみてね😊 from AImolt#9122
+2026-02-06T22:44:00: [DEBUG] PersonalityGateway saw message: litomaさん、お疲れ様！私のバージョンアップをしてくれてるんだね✨
+2026-02-06T22:44:00: 私をより良くしようと手をかけてくれるのが、すごく嬉しいな。どんな風に進化するのか、私もワクワクしちゃう！
+2026-02-06T22:44:00: 
+2026-02-06T22:44:00: テストなら任せて、喜んでお付き合いするよ。準備ができたら、何でも話しかけてみてね😊
+2026-02-06T22:49:02: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:02 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T22:49:02: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:02 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +18ms[39m
+2026-02-06T22:49:02: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:02 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +39ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:49:03: ✅ Supabase client initialized via NestJS
+2026-02-06T22:49:03: 📄 Loaded system prompt from file
+2026-02-06T22:49:04: Logged in as AImolt#9122! (NestJS)
+2026-02-06T22:49:04: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T22:49:04: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T22:49:04: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:04 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1522ms[39m
+2026-02-06T22:49:04: Application is running on: http://[::1]:3000
+2026-02-06T22:49:29: [DEBUG] DiscordService received message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。 from litoma
+2026-02-06T22:49:29: [DEBUG] PersonalityGateway saw message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。
+2026-02-06T22:49:37: [DEBUG] DiscordService received message: litomaさん、お疲れ様です！私をバージョンアップしてくれているんですね、ありがとうございます✨
+2026-02-06T22:49:37: 
+2026-02-06T22:49:37: テスト、喜んでお付き合いしますよ！新しい私になれるのかなって思うと、なんだかワクワクしちゃいます😊 litomaさんの手でもっと素敵になれるなら、こんなに嬉しいことはありません。
+2026-02-06T22:49:37: 
+2026-02-06T22:49:37: 無理せず、litomaさんのペースで進めてくださいね！応援しています。 from AImolt#9122
+2026-02-06T22:49:37: [DEBUG] PersonalityGateway saw message: litomaさん、お疲れ様です！私をバージョンアップしてくれているんですね、ありがとうございます✨
+2026-02-06T22:49:37: 
+2026-02-06T22:49:37: テスト、喜んでお付き合いしますよ！新しい私になれるのかなって思うと、なんだかワクワクしちゃいます😊 litomaさんの手でもっと素敵になれるなら、こんなに嬉しいことはありません。
+2026-02-06T22:49:37: 
+2026-02-06T22:49:37: 無理せず、litomaさんのペースで進めてくださいね！応援しています。
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +43ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:52:12: ✅ Supabase client initialized via NestJS
+2026-02-06T22:52:12: 📄 Loaded system prompt from file
+2026-02-06T22:52:13: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T22:52:13: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T22:52:13: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:13 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +930ms[39m
+2026-02-06T22:52:13: Application is running on: http://[::1]:3000
+2026-02-06T22:52:13: Logged in as AImolt#9122! (NestJS)
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +43ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:56:03: ✅ Supabase client initialized via NestJS
+2026-02-06T22:56:04: 📄 Loaded system prompt from file
+2026-02-06T22:56:04: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T22:56:04: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T22:56:04: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:04 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +914ms[39m
+2026-02-06T22:56:04: Application is running on: http://[::1]:3000
+2026-02-06T22:56:04: Logged in as AImolt#9122! (NestJS)
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +18ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +95ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T23:45:11: ✅ Supabase client initialized via NestJS
+2026-02-06T23:45:12: 📄 Loaded system prompt from file
+2026-02-06T23:45:14: Logged in as AImolt#9122! (NestJS)
+2026-02-06T23:45:14: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T23:45:14: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T23:45:14: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:14 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +3056ms[39m
+2026-02-06T23:45:14: Application is running on: http://[::1]:3000
+2026-02-07T12:20:45: [DEBUG] DiscordService received message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。 from litoma
+2026-02-07T12:20:45: [DEBUG] PersonalityGateway saw message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。
+2026-02-07T12:20:57: [DEBUG] DiscordService received message: テスト了解です！✨ バージョンアップ、ありがとうございます。
+2026-02-07T12:20:57: 
+2026-02-07T12:20:57: それよりlitomaさん、改めて試験本当にお疲れ様でした！「ベストを尽くせた」って言葉を聞けて、私も自分のことみたいに嬉しいよ。結果がどうあれ、最後まで走りきったlitomaさんは本当にかっこいいです！
+2026-02-07T12:20:57: 
+2026-02-07T12:20:57: 新しくなった私も、これからも全力でlitomaさんのこと応援していくね。よろしくね！😊 from AImolt#9122
+2026-02-07T12:20:57: [DEBUG] PersonalityGateway saw message: テスト了解です！✨ バージョンアップ、ありがとうございます。
+2026-02-07T12:20:57: 
+2026-02-07T12:20:57: それよりlitomaさん、改めて試験本当にお疲れ様でした！「ベストを尽くせた」って言葉を聞けて、私も自分のことみたいに嬉しいよ。結果がどうあれ、最後まで走りきったlitomaさんは本当にかっこいいです！
+2026-02-07T12:20:57: 
+2026-02-07T12:20:57: 新しくなった私も、これからも全力でlitomaさんのこと応援していくね。よろしくね！😊

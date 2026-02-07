@@ -14,13 +14,34 @@ export class VADService {
         if (!emotion) {
             return this.createInitialEmotion(userId);
         }
-        // Apply time decay if needed (omitted for brevity, can port logic here)
         return emotion;
     }
 
     async createInitialEmotion(userId: string): Promise<Emotion> {
         const defaultEmotion = Emotion.createDefault(userId);
         return await this.emotionRepository.create(defaultEmotion);
+    }
+
+    async updateEmotion(userId: string, message: string): Promise<Emotion> {
+        let emotion = await this.emotionRepository.findByUserId(userId);
+        if (!emotion) {
+            emotion = await this.createInitialEmotion(userId);
+        }
+
+        const vadDelta = this.calculateVAD(message);
+
+        // Simple linear update (can be tailored)
+        // Adjust current values towards the target or just add/subtract
+        // Let's implement a simple shift for now based on delta - 50 (center)
+        // Normalize: 0-100. Delta > 50 increases, < 50 decreases.
+        // Sensitivity factor 0.1
+        const k = 0.1;
+
+        emotion.valence = Math.max(0, Math.min(100, emotion.valence + (vadDelta.valence - 50) * k));
+        emotion.arousal = Math.max(0, Math.min(100, emotion.arousal + (vadDelta.arousal - 50) * k));
+        emotion.dominance = Math.max(0, Math.min(100, emotion.dominance + (vadDelta.dominance - 50) * k));
+
+        return await this.emotionRepository.update(emotion);
     }
 
     // --- VAD Calculation Logic (Ported) ---

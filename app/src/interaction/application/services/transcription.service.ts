@@ -54,8 +54,7 @@ export class TranscriptionService {
         const filePath = path.join(tempDir, `original_${timestamp}_${targetAttachment.name}`);
         const downloadUrl = targetAttachment.proxyURL || targetAttachment.url;
 
-        // Start typing indicator
-        const stopTyping = this.discordService.startTyping(message.channel);
+        // Typing indicator is now handled by ReactionGateway
 
         try {
             await this.downloadAudio(downloadUrl, filePath);
@@ -94,9 +93,6 @@ export class TranscriptionService {
             console.error('Transcription Error:', error);
             await this.sendMessage(message, `<@${userId}> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: ${error.message}`);
         } finally {
-            // Stop typing indicator
-            stopTyping();
-
             // Cleanup
             if (fs.existsSync(filePath)) {
                 await unlinkAsync(filePath).catch(err => console.error('Cleanup error:', err));

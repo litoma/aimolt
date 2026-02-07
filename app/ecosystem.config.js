@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name: 'aimolt',
     script: './dist/main.js',
-    // cwd: '/app', // Docker環境用設定。ローカル実行時はコメントアウト推奨
+    cwd: '/home/ubuntu/discord/app',
     instances: 1,
     exec_mode: 'fork',
     autorestart: true,

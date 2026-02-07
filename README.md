@@ -194,4 +194,45 @@ npm run test             # テスト実行
 
 ### 📄 ライセンス
 
-このプロジェクトはISCライセンスです。
+
+## 🦕 Deno Migration (v3.0)
+
+2026年2月、アーキテクチャを **Deno + Discordeno** に移行しました。
+旧NestJS版は `app/` ディレクトリに残されていますが、現在の推奨環境は `discord/deno-bot/` です。
+
+### 主な変更点
+- **Runtime**: Node.js -> Deno v2.x
+- **Framework**: NestJS -> Discordeno v21
+- **Platform**: Deno Deploy へのデプロイを想定
+
+### Deno版のディレクトリ構造
+```
+aimolt/
+├── deno-bot/                  # Deno版ソースコード
+│   ├── main.ts                # エントリーポイント
+│   ├── deno.json              # 設定・依存関係
+│   ├── src/                   # ソースコード
+│   │   ├── services/          # ビジネスロジック
+│   │   ├── events/            # イベントハンドラ
+│   │   └── config.ts          # 環境変数設定
+│   └── DEPLOYMENT.md          # デプロイ手順書
+└── app/                       # (旧) NestJS版ソースコード
+```
+
+### Deno版の起動方法
+
+1. **Denoのインストール**:
+   https://docs.deno.com/runtime/manual
+
+2. **ディレクトリ移動**:
+   ```bash
+   cd deno-bot
+   ```
+
+3. **起動**:
+   ```bash
+   deno task start
+   ```
+
+### デプロイ
+Deno Deploy へのデプロイ方法は `deno-bot/DEPLOYMENT.md` を参照してください。

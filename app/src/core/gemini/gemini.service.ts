@@ -1,13 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
+import { CommonService } from '../common/common.service';
 
 @Injectable()
 export class GeminiService {
     private genAI: GoogleGenerativeAI;
     private model: GenerativeModel;
 
-    constructor(private configService: ConfigService) {
+    constructor(
+        private configService: ConfigService,
+        private commonService: CommonService
+    ) {
         const apiKey = this.configService.get<string>('GEMINI_API_KEY');
         if (!apiKey) throw new Error('GEMINI_API_KEY is not defined');
 
@@ -26,7 +30,7 @@ export class GeminiService {
     }
 
     async generateText(systemPrompt: string, userPrompt: string): Promise<string> {
-        try {
+        return this.commonService.retry(async () => {
             const modelName = this.configService.get<string>('GEMINI_AI_MODEL') || 'gemini-3-flash-preview';
             const model = this.genAI.getGenerativeModel({
                 model: modelName,
@@ -36,14 +40,11 @@ export class GeminiService {
             const result = await model.generateContent(userPrompt);
             const response = await result.response;
             return response.text();
-        } catch (error) {
-            console.error('Gemini API Error:', error);
-            throw error;
-        }
+        }, 3, 1000, 10000, 'Gemini Text Generation');
     }
 
     async generateTextWithParts(systemPrompt: string, parts: any[]): Promise<string> {
-        try {
+        return this.commonService.retry(async () => {
             const modelName = this.configService.get<string>('GEMINI_AI_MODEL') || 'gemini-3-flash-preview';
             const model = this.genAI.getGenerativeModel({
                 model: modelName,
@@ -53,10 +54,7 @@ export class GeminiService {
             const result = await model.generateContent(parts);
             const response = await result.response;
             return response.text();
-        } catch (error) {
-            console.error('Gemini API Error (Multimodal):', error);
-            throw error;
-        }
+        }, 3, 1000, 10000, 'Gemini Multimodal Generation');
     }
 
     async startChat(systemPrompt: string, history: any[]) {

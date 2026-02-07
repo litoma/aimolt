@@ -3,7 +3,6 @@ export class Relationship {
     affection_level: number; // 0-100
     trust_level: number; // 0-100
     comfort_level: number; // 0-100
-    interaction_streak: number;
     last_interaction: Date;
     relationship_stage: 'stranger' | 'acquaintance' | 'friend' | 'close_friend';
     known_interests: string[];
@@ -21,7 +20,6 @@ export class Relationship {
         this.affection_level = this.affection_level ?? 30;
         this.trust_level = this.trust_level ?? 20;
         this.comfort_level = this.comfort_level ?? 20;
-        this.interaction_streak = this.interaction_streak ?? 0;
         this.last_interaction = this.last_interaction ?? new Date();
         this.relationship_stage = this.relationship_stage ?? 'stranger';
         this.known_interests = this.known_interests ?? [];

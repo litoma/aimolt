@@ -52,23 +52,34 @@ export class ReactionGateway implements OnModuleInit {
         const fullUser = user as User;
         const fullReaction = reaction as MessageReaction;
 
-        if (fullReaction.emoji.name === '👍') {
-            const message = await fullReaction.message.fetch();
-            if (!message.author.bot) {
-                await this.likeService.handleLike(message, fullUser.id);
+        // Start typing indicator for any handled reaction
+        const stopTyping = this.discordService.startTyping(fullReaction.message.channel);
+
+        try {
+            if (fullReaction.emoji.name === '👍') {
+                const message = await fullReaction.message.fetch();
+                if (!message.author.bot) {
+                    await this.likeService.handleLike(message, fullUser.id);
+                }
             }
-        }
 
-        // Memo Feature
-        if (fullReaction.emoji.name === '📝') {
-            const message = await fullReaction.message.fetch();
-            await this.memoService.handleMemo(message, fullUser.id);
-        }
+            // Memo Feature
+            if (fullReaction.emoji.name === '📝') {
+                const message = await fullReaction.message.fetch();
+                await this.memoService.handleMemo(message, fullUser.id);
+            }
 
-        // Transcription Feature
-        if (fullReaction.emoji.name === '🎤') {
-            const message = await fullReaction.message.fetch();
-            await this.transcriptionService.handleTranscription(message, fullUser.id);
+            // Transcription Feature
+            if (fullReaction.emoji.name === '🎤') {
+                const message = await fullReaction.message.fetch();
+                await this.transcriptionService.handleTranscription(message, fullUser.id);
+            }
+
+        } catch (error) {
+            console.error('[ReactionGateway] Error processing reaction:', error);
+        } finally {
+            // Stop typing indicator ensuring it stops regardless of success/fail
+            stopTyping();
         }
     }
 }

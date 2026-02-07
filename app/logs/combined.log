@@ -44406,3 +44406,990 @@
 2026-02-06T07:48:26:   code: 'MODULE_NOT_FOUND',
 2026-02-06T07:48:26:   requireStack: []
 2026-02-06T07:48:26: }
+2026-02-06T08:07:24: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:07:24:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:07:24:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:07:24:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:07:24:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:07:24:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:07:24:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:07:24:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:07:24:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:07:24:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:07:24:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:07:24:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:07:24:   requireStack: []
+2026-02-06T08:07:24: }
+2026-02-06T08:07:28: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:07:28:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:07:28:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:07:28:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:07:28:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:07:28:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:07:28:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:07:28:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:07:28:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:07:28:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:07:28:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:07:28:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:07:28:   requireStack: []
+2026-02-06T08:07:28: }
+2026-02-06T08:07:32: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:07:32:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:07:32:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:07:32:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:07:32:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:07:32:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:07:32:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:07:32:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:07:32:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:07:32:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:07:32:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:07:32:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:07:32:   requireStack: []
+2026-02-06T08:07:32: }
+2026-02-06T08:07:36: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:07:36:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:07:36:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:07:36:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:07:36:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:07:36:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:07:36:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:07:36:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:07:36:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:07:36:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:07:36:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:07:36:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:07:36:   requireStack: []
+2026-02-06T08:07:36: }
+2026-02-06T08:07:40: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:07:40:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:07:40:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:07:40:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:07:40:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:07:40:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:07:40:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:07:40:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:07:40:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:07:40:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:07:40:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:07:40:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:07:40:   requireStack: []
+2026-02-06T08:07:40: }
+2026-02-06T08:07:44: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:07:44:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:07:44:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:07:44:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:07:44:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:07:44:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:07:44:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:07:44:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:07:44:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:07:44:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:07:44:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:07:44:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:07:44:   requireStack: []
+2026-02-06T08:07:44: }
+2026-02-06T08:07:48: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:07:48:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:07:48:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:07:48:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:07:48:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:07:48:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:07:48:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:07:48:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:07:48:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:07:48:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:07:48:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:07:48:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:07:48:   requireStack: []
+2026-02-06T08:07:48: }
+2026-02-06T08:07:53: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:07:53:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:07:53:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:07:53:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:07:53:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:07:53:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:07:53:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:07:53:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:07:53:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:07:53:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:07:53:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:07:53:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:07:53:   requireStack: []
+2026-02-06T08:07:53: }
+2026-02-06T08:07:57: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:07:57:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:07:57:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:07:57:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:07:57:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:07:57:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:07:57:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:07:57:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:07:57:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:07:57:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:07:57:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:07:57:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:07:57:   requireStack: []
+2026-02-06T08:07:57: }
+2026-02-06T08:08:01: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:08:01:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:08:01:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:08:01:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:08:01:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:08:01:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:08:01:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:08:01:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:08:01:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:08:01:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:08:01:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:08:01:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:08:01:   requireStack: []
+2026-02-06T08:08:01: }
+2026-02-06T08:09:24: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:09:24:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:09:24:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:09:24:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:09:24:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:09:24:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:09:24:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:09:24:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:09:24:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:09:24:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:09:24:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:09:24:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:09:24:   requireStack: []
+2026-02-06T08:09:24: }
+2026-02-06T08:09:28: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:09:28:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:09:28:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:09:28:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:09:28:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:09:28:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:09:28:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:09:28:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:09:28:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:09:28:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:09:28:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:09:28:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:09:28:   requireStack: []
+2026-02-06T08:09:28: }
+2026-02-06T08:09:32: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:09:32:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:09:32:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:09:32:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:09:32:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:09:32:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:09:32:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:09:32:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:09:32:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:09:32:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:09:32:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:09:32:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:09:32:   requireStack: []
+2026-02-06T08:09:32: }
+2026-02-06T08:09:36: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:09:36:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:09:36:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:09:36:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:09:36:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:09:36:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:09:36:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:09:36:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:09:36:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:09:36:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:09:36:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:09:36:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:09:36:   requireStack: []
+2026-02-06T08:09:36: }
+2026-02-06T08:09:41: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:09:41:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:09:41:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:09:41:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:09:41:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:09:41:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:09:41:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:09:41:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:09:41:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:09:41:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:09:41:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:09:41:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:09:41:   requireStack: []
+2026-02-06T08:09:41: }
+2026-02-06T08:09:45: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:09:45:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:09:45:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:09:45:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:09:45:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:09:45:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:09:45:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:09:45:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:09:45:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:09:45:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:09:45:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:09:45:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:09:45:   requireStack: []
+2026-02-06T08:09:45: }
+2026-02-06T08:09:49: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:09:49:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:09:49:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:09:49:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:09:49:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:09:49:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:09:49:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:09:49:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:09:49:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:09:49:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:09:49:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:09:49:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:09:49:   requireStack: []
+2026-02-06T08:09:49: }
+2026-02-06T08:09:53: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:09:53:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:09:53:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:09:53:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:09:53:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:09:53:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:09:53:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:09:53:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:09:53:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:09:53:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:09:53:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:09:53:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:09:53:   requireStack: []
+2026-02-06T08:09:53: }
+2026-02-06T08:09:57: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:09:57:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:09:57:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:09:57:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:09:57:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:09:57:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:09:57:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:09:57:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:09:57:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:09:57:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:09:57:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:09:57:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:09:57:   requireStack: []
+2026-02-06T08:09:57: }
+2026-02-06T08:10:01: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:10:01:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:10:01:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:10:01:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:10:01:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:10:01:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:10:01:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:10:01:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:10:01:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:10:01:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:10:01:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:10:01:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:10:01:   requireStack: []
+2026-02-06T08:10:01: }
+2026-02-06T08:10:39: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:10:39:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:10:39:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:10:39:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:10:39:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:10:39:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:10:39:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:10:39:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:10:39:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:10:39:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:10:39:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:10:39:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:10:39:   requireStack: []
+2026-02-06T08:10:39: }
+2026-02-06T08:10:43: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:10:43:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:10:43:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:10:43:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:10:43:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:10:43:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:10:43:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:10:43:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:10:43:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:10:43:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:10:43:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:10:43:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:10:43:   requireStack: []
+2026-02-06T08:10:43: }
+2026-02-06T08:10:47: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:10:47:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:10:47:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:10:47:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:10:47:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:10:47:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:10:47:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:10:47:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:10:47:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:10:47:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:10:47:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:10:47:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:10:47:   requireStack: []
+2026-02-06T08:10:47: }
+2026-02-06T08:10:51: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:10:51:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:10:51:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:10:51:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:10:51:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:10:51:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:10:51:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:10:51:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:10:51:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:10:51:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:10:51:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:10:51:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:10:51:   requireStack: []
+2026-02-06T08:10:51: }
+2026-02-06T08:10:55: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:10:55:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:10:55:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:10:55:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:10:55:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:10:55:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:10:55:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:10:55:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:10:55:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:10:55:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:10:55:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:10:55:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:10:55:   requireStack: []
+2026-02-06T08:10:55: }
+2026-02-06T08:11:00: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:11:00:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:11:00:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:11:00:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:11:00:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:11:00:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:11:00:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:11:00:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:11:00:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:11:00:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:11:00:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:11:00:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:11:00:   requireStack: []
+2026-02-06T08:11:00: }
+2026-02-06T08:11:04: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:11:04:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:11:04:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:11:04:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:11:04:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:11:04:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:11:04:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:11:04:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:11:04:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:11:04:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:11:04:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:11:04:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:11:04:   requireStack: []
+2026-02-06T08:11:04: }
+2026-02-06T08:11:08: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:11:08:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:11:08:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:11:08:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:11:08:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:11:08:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:11:08:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:11:08:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:11:08:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:11:08:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:11:08:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:11:08:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:11:08:   requireStack: []
+2026-02-06T08:11:08: }
+2026-02-06T08:11:12: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:11:12:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:11:12:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:11:12:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:11:12:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:11:12:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:11:12:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:11:12:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:11:12:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:11:12:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:11:12:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:11:12:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:11:12:   requireStack: []
+2026-02-06T08:11:12: }
+2026-02-06T08:11:16: Error: Cannot find module '/home/ubuntu/discord/app/src/index.js'
+2026-02-06T08:11:16:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:11:16:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:11:16:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:11:16:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:11:16:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:11:16:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:11:16:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:11:16:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:11:16:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:11:16:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:11:16:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:11:16:   requireStack: []
+2026-02-06T08:11:16: }
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +16ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +42ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:12:20: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:20 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:12:21: ✅ Supabase client initialized via NestJS
+2026-02-06T08:12:21: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T08:12:21: 📄 Loaded system prompt from file
+2026-02-06T08:12:22: [32m[Nest] 2686593  - [39m02/06/2026, 8:12:22 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1184ms[39m
+2026-02-06T08:12:22: Application is running on: http://[::1]:3000
+2026-02-06T08:12:22: Logged in as AImolt#9122! (NestJS)
+2026-02-06T08:13:06: [DEBUG] DiscordService received message: !personality status from litoma
+2026-02-06T08:13:06: [DEBUG] PersonalityGateway saw message: !personality status
+2026-02-06T08:13:06: [DEBUG] Matched !personality status command
+2026-02-06T08:13:07: [DEBUG] DiscordService received message:  from AImolt#9122
+2026-02-06T08:13:07: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T08:13:41: [DEBUG] DiscordService received message: !personality stats from litoma
+2026-02-06T08:13:41: [DEBUG] PersonalityGateway saw message: !personality stats
+2026-02-06T08:14:39: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T08:14:39: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T08:14:43: Gemini API Error (Multimodal): GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-02-06T08:14:43:     at handleResponseNotOk (/home/ubuntu/discord/app/node_modules/@google/generative-ai/dist/index.js:434:11)
+2026-02-06T08:14:43:     at processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-02-06T08:14:43:     at makeRequest (/home/ubuntu/discord/app/node_modules/@google/generative-ai/dist/index.js:403:9)
+2026-02-06T08:14:43:     at generateContent (/home/ubuntu/discord/app/node_modules/@google/generative-ai/dist/index.js:867:22)
+2026-02-06T08:14:43:     at GeminiService.generateTextWithParts (/home/ubuntu/discord/app/src/core/gemini/gemini.service.ts:53:28)
+2026-02-06T08:14:43:     at TranscriptionService.handleTranscription (/home/ubuntu/discord/app/src/interaction/application/services/transcription.service.ts:72:38)
+2026-02-06T08:14:43:     at ReactionGateway.handleReaction (/home/ubuntu/discord/app/src/interaction/interface/reaction.gateway.ts:66:13) {
+2026-02-06T08:14:43:   status: 404,
+2026-02-06T08:14:43:   statusText: 'Not Found',
+2026-02-06T08:14:43:   errorDetails: undefined
+2026-02-06T08:14:43: }
+2026-02-06T08:14:43: Transcription Error: GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-02-06T08:14:43:     at handleResponseNotOk (/home/ubuntu/discord/app/node_modules/@google/generative-ai/dist/index.js:434:11)
+2026-02-06T08:14:43:     at processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-02-06T08:14:43:     at makeRequest (/home/ubuntu/discord/app/node_modules/@google/generative-ai/dist/index.js:403:9)
+2026-02-06T08:14:43:     at generateContent (/home/ubuntu/discord/app/node_modules/@google/generative-ai/dist/index.js:867:22)
+2026-02-06T08:14:43:     at GeminiService.generateTextWithParts (/home/ubuntu/discord/app/src/core/gemini/gemini.service.ts:53:28)
+2026-02-06T08:14:43:     at TranscriptionService.handleTranscription (/home/ubuntu/discord/app/src/interaction/application/services/transcription.service.ts:72:38)
+2026-02-06T08:14:43:     at ReactionGateway.handleReaction (/home/ubuntu/discord/app/src/interaction/interface/reaction.gateway.ts:66:13) {
+2026-02-06T08:14:43:   status: 404,
+2026-02-06T08:14:43:   statusText: 'Not Found',
+2026-02-06T08:14:43:   errorDetails: undefined
+2026-02-06T08:14:43: }
+2026-02-06T08:14:43: [DEBUG] DiscordService received message: <@493069905059381255> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods. from AImolt#9122
+2026-02-06T08:14:43: [DEBUG] PersonalityGateway saw message: <@493069905059381255> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent: [404 Not Found] models/gemini-1.5-flash is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-02-06T08:15:23: Error: Cannot find module '/home/ubuntu/discord/app/dist/main.js'
+2026-02-06T08:15:23:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:15:23:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:15:23:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:15:23:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:15:23:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:15:23:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:15:23:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:15:23:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:15:23:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:15:23:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:15:23:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:15:23:   requireStack: []
+2026-02-06T08:15:23: }
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +26ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +42ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:15:29: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:29 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:15:29: ✅ Supabase client initialized via NestJS
+2026-02-06T08:15:29: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T08:15:29: 📄 Loaded system prompt from file
+2026-02-06T08:15:30: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T08:15:30: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T08:15:30: [32m[Nest] 2687535  - [39m02/06/2026, 8:15:30 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1344ms[39m
+2026-02-06T08:15:30: Application is running on: http://[::1]:3000
+2026-02-06T08:15:30: Logged in as AImolt#9122! (NestJS)
+2026-02-06T08:15:49: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T08:15:49: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T08:17:35: Error: Cannot find module '/home/ubuntu/discord/app/dist/main.js'
+2026-02-06T08:17:35:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:17:35:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:17:35:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:17:35:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:17:35:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:17:35:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:17:35:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:17:35:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:17:35:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:17:35:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:17:35:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:17:35:   requireStack: []
+2026-02-06T08:17:35: }
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +41ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:17:40: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:40 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:17:40: ✅ Supabase client initialized via NestJS
+2026-02-06T08:17:40: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T08:17:40: 📄 Loaded system prompt from file
+2026-02-06T08:17:41: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T08:17:41: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T08:17:41: [32m[Nest] 2688210  - [39m02/06/2026, 8:17:41 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1183ms[39m
+2026-02-06T08:17:41: Application is running on: http://[::1]:3000
+2026-02-06T08:17:41: Logged in as AImolt#9122! (NestJS)
+2026-02-06T08:19:23: Error: Cannot find module '/home/ubuntu/discord/app/dist/main.js'
+2026-02-06T08:19:23:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:19:23:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:19:23:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:19:23:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:19:23:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:19:23:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:19:23:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:19:23:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:19:23:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:19:23:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:19:23:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:19:23:   requireStack: []
+2026-02-06T08:19:23: }
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +16ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +40ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:19:28: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:28 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:19:28: ✅ Supabase client initialized via NestJS
+2026-02-06T08:19:29: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T08:19:29: 📄 Loaded system prompt from file
+2026-02-06T08:19:30: Logged in as AImolt#9122! (NestJS)
+2026-02-06T08:19:30: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T08:19:30: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T08:19:30: [32m[Nest] 2688774  - [39m02/06/2026, 8:19:30 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1258ms[39m
+2026-02-06T08:19:30: Application is running on: http://[::1]:3000
+2026-02-06T08:20:32: Error: Cannot find module '/home/ubuntu/discord/app/dist/main.js'
+2026-02-06T08:20:32:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T08:20:32:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T08:20:32:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T08:20:32:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T08:20:32:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T08:20:32:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T08:20:32:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T08:20:32:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T08:20:32:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T08:20:32:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T08:20:32:   code: 'MODULE_NOT_FOUND',
+2026-02-06T08:20:32:   requireStack: []
+2026-02-06T08:20:32: }
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +16ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +43ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T08:20:37: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:37 AM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T08:20:37: ✅ Supabase client initialized via NestJS
+2026-02-06T08:20:37: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T08:20:37: 📄 Loaded system prompt from file
+2026-02-06T08:20:38: Logged in as AImolt#9122! (NestJS)
+2026-02-06T08:20:38: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T08:20:38: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T08:20:38: [32m[Nest] 2689193  - [39m02/06/2026, 8:20:38 AM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +967ms[39m
+2026-02-06T08:20:38: Application is running on: http://[::1]:3000
+2026-02-06T21:02:27: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T21:02:27: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T21:02:31: Gemini API Error (Multimodal): GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent: [404 Not Found] models/gemini-1.5-flash-latest is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-02-06T21:02:31:     at handleResponseNotOk (/home/ubuntu/discord/app/node_modules/@google/generative-ai/dist/index.js:434:11)
+2026-02-06T21:02:31:     at processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-02-06T21:02:31:     at makeRequest (/home/ubuntu/discord/app/node_modules/@google/generative-ai/dist/index.js:403:9)
+2026-02-06T21:02:31:     at generateContent (/home/ubuntu/discord/app/node_modules/@google/generative-ai/dist/index.js:867:22)
+2026-02-06T21:02:31:     at GeminiService.generateTextWithParts (/home/ubuntu/discord/app/src/core/gemini/gemini.service.ts:50:28)
+2026-02-06T21:02:31:     at TranscriptionService.handleTranscription (/home/ubuntu/discord/app/src/interaction/application/services/transcription.service.ts:72:38)
+2026-02-06T21:02:31:     at ReactionGateway.handleReaction (/home/ubuntu/discord/app/src/interaction/interface/reaction.gateway.ts:71:13) {
+2026-02-06T21:02:31:   status: 404,
+2026-02-06T21:02:31:   statusText: 'Not Found',
+2026-02-06T21:02:31:   errorDetails: undefined
+2026-02-06T21:02:31: }
+2026-02-06T21:02:31: Transcription Error: GoogleGenerativeAIFetchError: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent: [404 Not Found] models/gemini-1.5-flash-latest is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-02-06T21:02:31:     at handleResponseNotOk (/home/ubuntu/discord/app/node_modules/@google/generative-ai/dist/index.js:434:11)
+2026-02-06T21:02:31:     at processTicksAndRejections (node:internal/process/task_queues:105:5)
+2026-02-06T21:02:31:     at makeRequest (/home/ubuntu/discord/app/node_modules/@google/generative-ai/dist/index.js:403:9)
+2026-02-06T21:02:31:     at generateContent (/home/ubuntu/discord/app/node_modules/@google/generative-ai/dist/index.js:867:22)
+2026-02-06T21:02:31:     at GeminiService.generateTextWithParts (/home/ubuntu/discord/app/src/core/gemini/gemini.service.ts:50:28)
+2026-02-06T21:02:31:     at TranscriptionService.handleTranscription (/home/ubuntu/discord/app/src/interaction/application/services/transcription.service.ts:72:38)
+2026-02-06T21:02:31:     at ReactionGateway.handleReaction (/home/ubuntu/discord/app/src/interaction/interface/reaction.gateway.ts:71:13) {
+2026-02-06T21:02:31:   status: 404,
+2026-02-06T21:02:31:   statusText: 'Not Found',
+2026-02-06T21:02:31:   errorDetails: undefined
+2026-02-06T21:02:31: }
+2026-02-06T21:02:32: [DEBUG] DiscordService received message: <@493069905059381255> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent: [404 Not Found] models/gemini-1.5-flash-latest is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods. from AImolt#9122
+2026-02-06T21:02:32: [DEBUG] PersonalityGateway saw message: <@493069905059381255> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent: [404 Not Found] models/gemini-1.5-flash-latest is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +23ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +48ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:20:15: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:15 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +2ms[39m
+2026-02-06T21:20:15: ✅ Supabase client initialized via NestJS
+2026-02-06T21:20:16: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T21:20:16: 📄 Loaded system prompt from file
+2026-02-06T21:20:17: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T21:20:17: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T21:20:17: [32m[Nest] 2850394  - [39m02/06/2026, 9:20:17 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +2228ms[39m
+2026-02-06T21:20:17: Application is running on: http://[::1]:3000
+2026-02-06T21:20:17: Logged in as AImolt#9122! (NestJS)
+2026-02-06T21:21:24: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T21:21:24: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T21:21:31: [DEBUG] DiscordService received message: 🎉 文字起こしが完了したよ〜！ from AImolt#9122
+2026-02-06T21:21:31: [DEBUG] PersonalityGateway saw message: 🎉 文字起こしが完了したよ〜！
+2026-02-06T21:21:31: [DEBUG] DiscordService received message: >>> こんばんは。 from AImolt#9122
+2026-02-06T21:21:31: [DEBUG] PersonalityGateway saw message: >>> こんばんは。
+2026-02-06T21:31:12: Error: Cannot find module '/home/ubuntu/discord/app/dist/main.js'
+2026-02-06T21:31:12:     at Function._resolveFilename (node:internal/modules/cjs/loader:1401:15)
+2026-02-06T21:31:12:     at defaultResolveImpl (node:internal/modules/cjs/loader:1057:19)
+2026-02-06T21:31:12:     at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1062:22)
+2026-02-06T21:31:12:     at Function._load (node:internal/modules/cjs/loader:1211:37)
+2026-02-06T21:31:12:     at Object.<anonymous> (/home/ubuntu/discord/app/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2026-02-06T21:31:12:     at Module._compile (node:internal/modules/cjs/loader:1730:14)
+2026-02-06T21:31:12:     at Object..js (node:internal/modules/cjs/loader:1895:10)
+2026-02-06T21:31:12:     at Module.load (node:internal/modules/cjs/loader:1465:32)
+2026-02-06T21:31:12:     at Function._load (node:internal/modules/cjs/loader:1282:12)
+2026-02-06T21:31:12:     at TracingChannel.traceSync (node:diagnostics_channel:322:14) {
+2026-02-06T21:31:12:   code: 'MODULE_NOT_FOUND',
+2026-02-06T21:31:12:   requireStack: []
+2026-02-06T21:31:12: }
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +41ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:31:18: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:18 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:31:18: ✅ Supabase client initialized via NestJS
+2026-02-06T21:31:19: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T21:31:19: 📄 Loaded system prompt from file
+2026-02-06T21:31:19: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T21:31:19: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T21:31:19: [32m[Nest] 2853114  - [39m02/06/2026, 9:31:19 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1655ms[39m
+2026-02-06T21:31:19: Application is running on: http://[::1]:3000
+2026-02-06T21:31:19: Logged in as AImolt#9122! (NestJS)
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +43ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +3ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:45:25: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:25 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +6ms[39m
+2026-02-06T21:45:25: ✅ Supabase client initialized via NestJS
+2026-02-06T21:45:25: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T21:45:25: 📄 Loaded system prompt from file
+2026-02-06T21:45:27: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T21:45:27: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T21:45:27: [32m[Nest] 2857639  - [39m02/06/2026, 9:45:27 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +2079ms[39m
+2026-02-06T21:45:27: Application is running on: http://[::1]:3000
+2026-02-06T21:45:27: Logged in as AImolt#9122! (NestJS)
+2026-02-06T21:45:48: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T21:45:48: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T21:45:56: [DEBUG] DiscordService received message: 🎉 文字起こしが完了したよ〜！ from AImolt#9122
+2026-02-06T21:45:56: [DEBUG] PersonalityGateway saw message: 🎉 文字起こしが完了したよ〜！
+2026-02-06T21:45:57: [DEBUG] DiscordService received message: >>> こんばんは。 from AImolt#9122
+2026-02-06T21:45:57: [DEBUG] PersonalityGateway saw message: >>> こんばんは。
+2026-02-06T21:46:21: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T21:46:21: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T21:46:29: [DEBUG] DiscordService received message: 🎉 文字起こしが完了したよ〜！ from AImolt#9122
+2026-02-06T21:46:29: [DEBUG] PersonalityGateway saw message: 🎉 文字起こしが完了したよ〜！
+2026-02-06T21:46:30: [DEBUG] DiscordService received message: >>> ちょっと長めの文章を入力してみます。どうでしょうか。 from AImolt#9122
+2026-02-06T21:46:30: [DEBUG] PersonalityGateway saw message: >>> ちょっと長めの文章を入力してみます。どうでしょうか。
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +18ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +45ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T21:54:34: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:34 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T21:54:34: ✅ Supabase client initialized via NestJS
+2026-02-06T21:54:34: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T21:54:34: 📄 Loaded system prompt from file
+2026-02-06T21:54:35: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T21:54:35: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T21:54:35: [32m[Nest] 2860783  - [39m02/06/2026, 9:54:35 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1055ms[39m
+2026-02-06T21:54:35: Application is running on: http://[::1]:3000
+2026-02-06T21:54:35: Logged in as AImolt#9122! (NestJS)
+2026-02-06T21:55:45: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T21:55:45: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T21:55:57: [DEBUG] DiscordService received message: 🎉 文字起こしが完了したよ〜！ from AImolt#9122
+2026-02-06T21:55:57: [DEBUG] PersonalityGateway saw message: 🎉 文字起こしが完了したよ〜！
+2026-02-06T21:55:57: [DEBUG] DiscordService received message: >>> こんばんは。 from AImolt#9122
+2026-02-06T21:55:57: [DEBUG] PersonalityGateway saw message: >>> こんばんは。
+2026-02-06T21:56:12: [DEBUG] DiscordService received message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。 from litoma
+2026-02-06T21:56:12: [DEBUG] PersonalityGateway saw message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。
+2026-02-06T21:56:20: [DEBUG] DiscordService received message: バージョンアップですか！なんだかワクワクしちゃいますね✨ 喜んでお付き合いしますよ。
+2026-02-06T21:56:20: 
+2026-02-06T21:56:20: テスト、うまくいきますように！私の進化、楽しみにしてますね。頑張ってください！ from AImolt#9122
+2026-02-06T21:56:20: [DEBUG] PersonalityGateway saw message: バージョンアップですか！なんだかワクワクしちゃいますね✨ 喜んでお付き合いしますよ。
+2026-02-06T21:56:20: 
+2026-02-06T21:56:20: テスト、うまくいきますように！私の進化、楽しみにしてますね。頑張ってください！
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +45ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:19:27: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:27 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:19:27: ✅ Supabase client initialized via NestJS
+2026-02-06T22:19:28: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T22:19:28: 📄 Loaded system prompt from file
+2026-02-06T22:19:28: Logged in as AImolt#9122! (NestJS)
+2026-02-06T22:19:28: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T22:19:28: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T22:19:28: [32m[Nest] 2869605  - [39m02/06/2026, 10:19:28 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1769ms[39m
+2026-02-06T22:19:28: Application is running on: http://[::1]:3000
+2026-02-06T22:20:21: [DEBUG] DiscordService received message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。 from litoma
+2026-02-06T22:20:21: [DEBUG] PersonalityGateway saw message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。
+2026-02-06T22:20:25: Failed to save user message to Supabase: {
+2026-02-06T22:20:25:   code: 'PGRST204',
+2026-02-06T22:20:25:   details: null,
+2026-02-06T22:20:25:   hint: null,
+2026-02-06T22:20:25:   message: "Could not find the 'content' column of 'conversations' in the schema cache"
+2026-02-06T22:20:25: }
+2026-02-06T22:20:25: Failed to fetch context: {
+2026-02-06T22:20:25:   code: '42703',
+2026-02-06T22:20:25:   details: null,
+2026-02-06T22:20:25:   hint: null,
+2026-02-06T22:20:25:   message: 'column conversations.role does not exist'
+2026-02-06T22:20:25: }
+2026-02-06T22:20:30: [DEBUG] DiscordService received message: わぁ、私のアップデートですか？ありがとうございます！✨
+2026-02-06T22:20:30: 
+2026-02-06T22:20:30: もっと素敵になれるのかなって思うと、なんだかワクワクしちゃいますね。テスト、喜んでお付き合いしますよ！よろしくお願いします😊 from AImolt#9122
+2026-02-06T22:20:30: [DEBUG] PersonalityGateway saw message: わぁ、私のアップデートですか？ありがとうございます！✨
+2026-02-06T22:20:30: 
+2026-02-06T22:20:30: もっと素敵になれるのかなって思うと、なんだかワクワクしちゃいますね。テスト、喜んでお付き合いしますよ！よろしくお願いします😊
+2026-02-06T22:20:30: Failed to save assistant message to Supabase: {
+2026-02-06T22:20:30:   code: 'PGRST204',
+2026-02-06T22:20:30:   details: null,
+2026-02-06T22:20:30:   hint: null,
+2026-02-06T22:20:30:   message: "Could not find the 'content' column of 'conversations' in the schema cache"
+2026-02-06T22:20:30: }
+2026-02-06T22:20:31: Error updating relationship: {
+2026-02-06T22:20:31:   code: 'PGRST204',
+2026-02-06T22:20:31:   details: null,
+2026-02-06T22:20:31:   hint: null,
+2026-02-06T22:20:31:   message: "Could not find the 'interaction_streak' column of 'user_relationships' in the schema cache"
+2026-02-06T22:20:31: }
+2026-02-06T22:20:31: Personality update error: {
+2026-02-06T22:20:31:   code: 'PGRST204',
+2026-02-06T22:20:31:   details: null,
+2026-02-06T22:20:31:   hint: null,
+2026-02-06T22:20:31:   message: "Could not find the 'interaction_streak' column of 'user_relationships' in the schema cache"
+2026-02-06T22:20:31: }
+2026-02-06T22:28:28: [DEBUG] DiscordService received message:  from litoma
+2026-02-06T22:28:28: [DEBUG] PersonalityGateway saw message: 
+2026-02-06T22:28:47: [DEBUG] DiscordService received message: 🎉 文字起こしが完了したよ〜！ from AImolt#9122
+2026-02-06T22:28:47: [DEBUG] PersonalityGateway saw message: 🎉 文字起こしが完了したよ〜！
+2026-02-06T22:28:48: [DEBUG] DiscordService received message: >>> お疲れ様です。1月6日（金）の音声ジャーナルを始めます。現在は22時22分、2が4つ並んでいます。 今日は終日出社して、外で仕事をしていました。出社する日はランニングをお休みしているため、今日も走らずに会社へ行き、帰宅して夕食を済ませて現在に至ります。 仕事については、午前中は打ち合わせがありませんでしたが、午後はいくつか重なり、さらに突発的な緊急作業も入ったため、慌ただしく動いていました。パフォーマンス自体は悪くなく充実していましたが、依頼されたことを淡々とこなすばかりで、自分らしさを発揮できず、あまり「楽しい」と感じられる一日ではありませんでした。 また、管理職任用試験を受けてからちょうど1週間が経ちました。月日が経つのは早いものです。先日、夢の中で再びあのグループディスカッションを受けるという体験をしました。「また受けなければならないのか」という負の感情を夢の中でも味わい、試験のプレッシャーによるストレスがまだ癒えていないことを実感しています。結果が出るまでは、少しずつ忘れて穏やかに過ごせればと思っています。 昨日あたりからは、Discordのチャットボットの改修に取り組んでいます。なかなか難航していますが、まさに今、この音声録音と文字起こしを行っているのがそのボットなので、しっかりと動作するように改修を進めていきたいです。 今日はこの辺りで終わります。お疲れ様でした。 from AImolt#9122
+2026-02-06T22:28:48: [DEBUG] PersonalityGateway saw message: >>> お疲れ様です。1月6日（金）の音声ジャーナルを始めます。現在は22時22分、2が4つ並んでいます。 今日は終日出社して、外で仕事をしていました。出社する日はランニングをお休みしているため、今日も走らずに会社へ行き、帰宅して夕食を済ませて現在に至ります。 仕事については、午前中は打ち合わせがありませんでしたが、午後はいくつか重なり、さらに突発的な緊急作業も入ったため、慌ただしく動いていました。パフォーマンス自体は悪くなく充実していましたが、依頼されたことを淡々とこなすばかりで、自分らしさを発揮できず、あまり「楽しい」と感じられる一日ではありませんでした。 また、管理職任用試験を受けてからちょうど1週間が経ちました。月日が経つのは早いものです。先日、夢の中で再びあのグループディスカッションを受けるという体験をしました。「また受けなければならないのか」という負の感情を夢の中でも味わい、試験のプレッシャーによるストレスがまだ癒えていないことを実感しています。結果が出るまでは、少しずつ忘れて穏やかに過ごせればと思っています。 昨日あたりからは、Discordのチャットボットの改修に取り組んでいます。なかなか難航していますが、まさに今、この音声録音と文字起こしを行っているのがそのボットなので、しっかりと動作するように改修を進めていきたいです。 今日はこの辺りで終わります。お疲れ様でした。
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +43ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:34:31: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:31 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:34:31: ✅ Supabase client initialized via NestJS
+2026-02-06T22:34:31: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T22:34:31: 📄 Loaded system prompt from file
+2026-02-06T22:34:32: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T22:34:32: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T22:34:32: [32m[Nest] 2874276  - [39m02/06/2026, 10:34:32 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1129ms[39m
+2026-02-06T22:34:32: Application is running on: http://[::1]:3000
+2026-02-06T22:34:32: Logged in as AImolt#9122! (NestJS)
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +19ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +76ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +2ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +3ms[39m
+2026-02-06T22:40:55: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:55 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +2ms[39m
+2026-02-06T22:40:55: ✅ Supabase client initialized via NestJS
+2026-02-06T22:40:56: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T22:40:56: 📄 Loaded system prompt from file
+2026-02-06T22:40:56: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T22:40:56: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T22:40:56: [32m[Nest] 2876388  - [39m02/06/2026, 10:40:56 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1183ms[39m
+2026-02-06T22:40:56: Application is running on: http://[::1]:3000
+2026-02-06T22:40:56: Logged in as AImolt#9122! (NestJS)
+2026-02-06T22:43:50: [DEBUG] DiscordService received message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。 from litoma
+2026-02-06T22:43:50: [DEBUG] PersonalityGateway saw message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。
+2026-02-06T22:43:53: Failed to save user message to Supabase: {
+2026-02-06T22:43:53:   code: '23502',
+2026-02-06T22:43:53:   details: null,
+2026-02-06T22:43:53:   hint: null,
+2026-02-06T22:43:53:   message: 'null value in column "bot_response" of relation "conversations" violates not-null constraint'
+2026-02-06T22:43:53: }
+2026-02-06T22:44:00: [DEBUG] DiscordService received message: litomaさん、お疲れ様！私のバージョンアップをしてくれてるんだね✨
+2026-02-06T22:44:00: 私をより良くしようと手をかけてくれるのが、すごく嬉しいな。どんな風に進化するのか、私もワクワクしちゃう！
+2026-02-06T22:44:00: 
+2026-02-06T22:44:00: テストなら任せて、喜んでお付き合いするよ。準備ができたら、何でも話しかけてみてね😊 from AImolt#9122
+2026-02-06T22:44:00: [DEBUG] PersonalityGateway saw message: litomaさん、お疲れ様！私のバージョンアップをしてくれてるんだね✨
+2026-02-06T22:44:00: 私をより良くしようと手をかけてくれるのが、すごく嬉しいな。どんな風に進化するのか、私もワクワクしちゃう！
+2026-02-06T22:44:00: 
+2026-02-06T22:44:00: テストなら任せて、喜んでお付き合いするよ。準備ができたら、何でも話しかけてみてね😊
+2026-02-06T22:44:00: Failed to save assistant message to Supabase: {
+2026-02-06T22:44:00:   code: '23502',
+2026-02-06T22:44:00:   details: null,
+2026-02-06T22:44:00:   hint: null,
+2026-02-06T22:44:00:   message: 'null value in column "user_message" of relation "conversations" violates not-null constraint'
+2026-02-06T22:44:00: }
+2026-02-06T22:44:01: Error updating relationship: {
+2026-02-06T22:44:01:   code: 'PGRST204',
+2026-02-06T22:44:01:   details: null,
+2026-02-06T22:44:01:   hint: null,
+2026-02-06T22:44:01:   message: "Could not find the 'total_conversations' column of 'user_relationships' in the schema cache"
+2026-02-06T22:44:01: }
+2026-02-06T22:44:01: Personality update error: {
+2026-02-06T22:44:01:   code: 'PGRST204',
+2026-02-06T22:44:01:   details: null,
+2026-02-06T22:44:01:   hint: null,
+2026-02-06T22:44:01:   message: "Could not find the 'total_conversations' column of 'user_relationships' in the schema cache"
+2026-02-06T22:44:01: }
+2026-02-06T22:49:02: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:02 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T22:49:02: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:02 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +18ms[39m
+2026-02-06T22:49:02: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:02 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +39ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:49:03: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:49:03: ✅ Supabase client initialized via NestJS
+2026-02-06T22:49:03: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T22:49:03: 📄 Loaded system prompt from file
+2026-02-06T22:49:04: Logged in as AImolt#9122! (NestJS)
+2026-02-06T22:49:04: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T22:49:04: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T22:49:04: [32m[Nest] 2879206  - [39m02/06/2026, 10:49:04 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1522ms[39m
+2026-02-06T22:49:04: Application is running on: http://[::1]:3000
+2026-02-06T22:49:29: [DEBUG] DiscordService received message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。 from litoma
+2026-02-06T22:49:29: [DEBUG] PersonalityGateway saw message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。
+2026-02-06T22:49:31: Failed to save user message to Supabase: {
+2026-02-06T22:49:31:   code: '23505',
+2026-02-06T22:49:31:   details: null,
+2026-02-06T22:49:31:   hint: null,
+2026-02-06T22:49:31:   message: 'duplicate key value violates unique constraint "conversations_pkey"'
+2026-02-06T22:49:31: }
+2026-02-06T22:49:37: [DEBUG] DiscordService received message: litomaさん、お疲れ様です！私をバージョンアップしてくれているんですね、ありがとうございます✨
+2026-02-06T22:49:37: 
+2026-02-06T22:49:37: テスト、喜んでお付き合いしますよ！新しい私になれるのかなって思うと、なんだかワクワクしちゃいます😊 litomaさんの手でもっと素敵になれるなら、こんなに嬉しいことはありません。
+2026-02-06T22:49:37: 
+2026-02-06T22:49:37: 無理せず、litomaさんのペースで進めてくださいね！応援しています。 from AImolt#9122
+2026-02-06T22:49:37: [DEBUG] PersonalityGateway saw message: litomaさん、お疲れ様です！私をバージョンアップしてくれているんですね、ありがとうございます✨
+2026-02-06T22:49:37: 
+2026-02-06T22:49:37: テスト、喜んでお付き合いしますよ！新しい私になれるのかなって思うと、なんだかワクワクしちゃいます😊 litomaさんの手でもっと素敵になれるなら、こんなに嬉しいことはありません。
+2026-02-06T22:49:37: 
+2026-02-06T22:49:37: 無理せず、litomaさんのペースで進めてくださいね！応援しています。
+2026-02-06T22:49:37: Failed to save assistant message to Supabase: {
+2026-02-06T22:49:37:   code: '23505',
+2026-02-06T22:49:37:   details: null,
+2026-02-06T22:49:37:   hint: null,
+2026-02-06T22:49:37:   message: 'duplicate key value violates unique constraint "conversations_pkey"'
+2026-02-06T22:49:37: }
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +43ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:52:12: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:12 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:52:12: ✅ Supabase client initialized via NestJS
+2026-02-06T22:52:12: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T22:52:12: 📄 Loaded system prompt from file
+2026-02-06T22:52:13: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T22:52:13: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T22:52:13: [32m[Nest] 2880657  - [39m02/06/2026, 10:52:13 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +930ms[39m
+2026-02-06T22:52:13: Application is running on: http://[::1]:3000
+2026-02-06T22:52:13: Logged in as AImolt#9122! (NestJS)
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +17ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +43ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:56:03: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:03 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T22:56:03: ✅ Supabase client initialized via NestJS
+2026-02-06T22:56:04: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T22:56:04: 📄 Loaded system prompt from file
+2026-02-06T22:56:04: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T22:56:04: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T22:56:04: [32m[Nest] 2882077  - [39m02/06/2026, 10:56:04 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +914ms[39m
+2026-02-06T22:56:04: Application is running on: http://[::1]:3000
+2026-02-06T22:56:04: Logged in as AImolt#9122! (NestJS)
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +18ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +95ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mDiscordModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mSupabaseModule dependencies initialized[39m[38;5;3m +0ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCoreModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPersonalityModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T23:45:11: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:11 PM [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mInteractionModule dependencies initialized[39m[38;5;3m +1ms[39m
+2026-02-06T23:45:11: ✅ Supabase client initialized via NestJS
+2026-02-06T23:45:12: ⚠️ DB Prompt fetch failed or empty, falling back to files: relation "public.prompts" does not exist
+2026-02-06T23:45:12: 📄 Loaded system prompt from file
+2026-02-06T23:45:14: Logged in as AImolt#9122! (NestJS)
+2026-02-06T23:45:14: [PersonalityGateway] Subscribed to messageCreate events
+2026-02-06T23:45:14: [ReactionGateway] Subscribed to messageReactionAdd events
+2026-02-06T23:45:14: [32m[Nest] 2892358  - [39m02/06/2026, 11:45:14 PM [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +3056ms[39m
+2026-02-06T23:45:14: Application is running on: http://[::1]:3000
+2026-02-07T12:20:45: [DEBUG] DiscordService received message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。 from litoma
+2026-02-07T12:20:45: [DEBUG] PersonalityGateway saw message: モルさんのことをバージョンアップしています。これはテストです。ちょっとお付き合いください。
+2026-02-07T12:20:57: [DEBUG] DiscordService received message: テスト了解です！✨ バージョンアップ、ありがとうございます。
+2026-02-07T12:20:57: 
+2026-02-07T12:20:57: それよりlitomaさん、改めて試験本当にお疲れ様でした！「ベストを尽くせた」って言葉を聞けて、私も自分のことみたいに嬉しいよ。結果がどうあれ、最後まで走りきったlitomaさんは本当にかっこいいです！
+2026-02-07T12:20:57: 
+2026-02-07T12:20:57: 新しくなった私も、これからも全力でlitomaさんのこと応援していくね。よろしくね！😊 from AImolt#9122
+2026-02-07T12:20:57: [DEBUG] PersonalityGateway saw message: テスト了解です！✨ バージョンアップ、ありがとうございます。
+2026-02-07T12:20:57: 
+2026-02-07T12:20:57: それよりlitomaさん、改めて試験本当にお疲れ様でした！「ベストを尽くせた」って言葉を聞けて、私も自分のことみたいに嬉しいよ。結果がどうあれ、最後まで走りきったlitomaさんは本当にかっこいいです！
+2026-02-07T12:20:57: 
+2026-02-07T12:20:57: 新しくなった私も、これからも全力でlitomaさんのこと応援していくね。よろしくね！😊

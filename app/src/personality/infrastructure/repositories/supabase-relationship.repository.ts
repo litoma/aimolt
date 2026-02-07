@@ -23,13 +23,22 @@ export class SupabaseRelationshipRepository implements IRelationshipRepository {
             throw error;
         }
 
-        return data ? new Relationship(data) : null;
+        if (!data) return null;
+
+        // Map DB columns to Entity properties
+        const entity = new Relationship(data);
+        if (data.conversation_count !== undefined) {
+            entity.total_conversations = data.conversation_count;
+        }
+        return entity;
     }
 
     async create(relationship: Relationship): Promise<Relationship> {
+        const payload = this.toDbPayload(relationship);
+
         const { data, error } = await this.client
             .from('user_relationships')
-            .insert([relationship])
+            .insert([payload])
             .select()
             .single();
 
@@ -38,11 +47,12 @@ export class SupabaseRelationshipRepository implements IRelationshipRepository {
             throw error;
         }
 
-        return new Relationship(data);
+        return this.toEntity(data);
     }
 
     async update(relationship: Relationship): Promise<Relationship> {
-        const { user_id, ...updates } = relationship;
+        const payload = this.toDbPayload(relationship);
+        const { user_id, ...updates } = payload;
 
         const { data, error } = await this.client
             .from('user_relationships')
@@ -56,6 +66,22 @@ export class SupabaseRelationshipRepository implements IRelationshipRepository {
             throw error;
         }
 
-        return new Relationship(data);
+        return this.toEntity(data);
+    }
+
+    private toDbPayload(relationship: Relationship): any {
+        const { total_conversations, ...rest } = relationship;
+        return {
+            ...rest,
+            conversation_count: total_conversations, // Map property to column
+        };
+    }
+
+    private toEntity(data: any): Relationship {
+        const entity = new Relationship(data);
+        if (data.conversation_count !== undefined) {
+            entity.total_conversations = data.conversation_count;
+        }
+        return entity;
     }
 }
