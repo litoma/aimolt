@@ -20,8 +20,10 @@ const bot = createBot({
 });
 
 // Assign events after bot creation to handle circular dependency and strict grouping
-bot.events.reactionAdd = (payload) => reactionAdd(bot, payload);
-bot.events.messageCreate = (message) => messageCreate(bot, message);
+// Assign events after bot creation to handle circular dependency and strict grouping
+// Note: We cast to 'any' because Discordeno types expect (payload) => void, but runtime passes (bot, payload)
+(bot.events.reactionAdd as any) = reactionAdd;
+(bot.events.messageCreate as any) = messageCreate;
 bot.events.ready = (_bot, { user }) => {
     console.log(`[Main] Logged in as ${user.username}! (Deno)`);
 };
