@@ -88,12 +88,4 @@ Deno.serve({ port: 8000 }, (req) => {
     return new Response("Discord Bot is running 🤖");
 });
 
-// Keep-alive via Interval (Reliable fallback for serverless)
-console.log("[Main] Starting Keep-Alive Interval...");
-setInterval(() => {
-    lastCronRun = new Date().toISOString();
-    console.log(`[Interval] Keep-Alive Tick at ${lastCronRun}`);
 
-    // Optional: Check if bot is connected?
-    // This simple log keeps the isolate busy if it's not frozen.
-}, 60 * 1000); // Every 1 minute

@@ -4,6 +4,7 @@
     "jsr:@std/assert@0.224": "0.224.0",
     "jsr:@std/dotenv@0.224": "0.224.2",
     "jsr:@std/encoding@1": "1.0.10",
+    "jsr:@std/fs@0.224": "0.224.0",
     "jsr:@std/path@0.224": "0.224.0",
     "jsr:@supabase/functions-js@^0.0.0-automated": "0.0.0-jsr-test.1",
     "jsr:@supabase/supabase-js@^2.39.0": "2.95.3",
@@ -13,7 +14,8 @@
     "npm:@supabase/auth-js@2.95.3": "2.95.3",
     "npm:@supabase/postgrest-js@2.95.3": "2.95.3",
     "npm:@supabase/realtime-js@2.95.3": "2.95.3",
-    "npm:@supabase/storage-js@2.95.3": "2.95.3"
+    "npm:@supabase/storage-js@2.95.3": "2.95.3",
+    "npm:dotenv@^17.2.4": "17.2.4"
   },
   "jsr": {
     "@std/assert@0.224.0": {
@@ -24,6 +26,13 @@
     },
     "@std/encoding@1.0.10": {
       "integrity": "8783c6384a2d13abd5e9e87a7ae0520a30e9f56aeeaa3bdf910a3eaaf5c811a1"
+    },
+    "@std/fs@0.224.0": {
+      "integrity": "52a5ec89731ac0ca8f971079339286f88c571a4d61686acf75833f03a89d8e69",
+      "dependencies": [
+        "jsr:@std/assert",
+        "jsr:@std/path"
+      ]
     },
     "@std/path@0.224.0": {
       "integrity": "55bca6361e5a6d158b9380e82d4981d82d338ec587de02951e2b7c3a24910ee6",
@@ -128,6 +137,9 @@
         "@types/node"
       ]
     },
+    "dotenv@17.2.4": {
+      "integrity": "sha512-mudtfb4zRB4bVvdj0xRo+e6duH1csJRM8IukBqfTRvHotn9+LBXB8ynAidP9zHqoRC/fsllXgk4kCKlR21fIhw=="
+    },
     "fzstd@0.1.1": {
       "integrity": "sha512-dkuVSOKKwh3eas5VkJy1AW1vFpet8TA/fGmVA5krThl8YcOVE/8ZIoEA1+U1vEn5ckxxhLirSdY837azmbaNHA=="
     },
@@ -154,6 +166,11 @@
       "npm:@discordeno/bot@21",
       "npm:@discordeno/types@21",
       "npm:@google/generative-ai@0.12"
-    ]
+    ],
+    "packageJson": {
+      "dependencies": [
+        "npm:dotenv@^17.2.4"
+      ]
+    }
   }
 }
