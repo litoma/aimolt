@@ -1,8 +1,8 @@
-import { Bot, EventHandlers } from "@discordeno/bot";
+import { Bot } from "@discordeno/bot";
 import { vadService } from "../services/personality/vad.service.ts";
 
-export const messageCreate: EventHandlers["messageCreate"] = async (bot: Bot, message) => {
-    console.log(`[MessageCreate] Received message: ${message.content} from ${message.authorId}, isBot: ${message.isBot}`);
+export const messageCreate = async (bot: Bot, message: any) => {
+    console.log(`[MessageCreate] Received message: ${message?.content} from ${message?.authorId}`);
 
     // Ignore bot's own messages
     if (message.isBot) return;
