@@ -1,6 +1,6 @@
 import { createBot, Intents } from "@discordeno/bot";
 import { config } from "./src/config.ts";
-// import { reactionAdd } from "./src/events/reactionAdd.ts";
+import { reactionAdd } from "./src/events/reactionAdd.ts";
 import { messageCreate } from "./src/events/messageCreate.ts";
 import { promptService } from "./src/services/utils/prompt.service.ts";
 
