@@ -18,46 +18,41 @@ try {
 const bot = createBot({
     token: config.DISCORD_TOKEN,
     intents: Intents.Guilds | Intents.GuildMessages | Intents.GuildMessageReactions | Intents.MessageContent,
+    desiredProperties: {
+        interaction: {
+            id: true,
+            type: true,
+            data: true,
+            token: true,
+            user: true,
+            member: true,
+        },
+        message: {
+            id: true,
+            content: true,
+            author: true,
+            channelId: true,
+            guildId: true,
+            timestamp: true,
+        },
+        user: {
+            id: true,
+            username: true,
+            discriminator: true,
+            bot: true,
+        }
+    },
 });
 
-// Assign events with explicit wrappers to inject the 'bot' instance
-// Discordeno v21 passes (payload) to the handler, so we must inject 'bot' ourselves.
-// @ts-ignore
-bot.events.messageCreate = (...args: any[]) => {
-    console.log(`[Debug] messageCreate args length: ${args.length}`);
-    if (args.length > 0) {
-        // Inspect first argument (shallow)
-        const arg0 = args[0];
-        console.log(`[Debug] Arg[0] keys: ${Object.keys(arg0 || {}).join(", ")}`);
-        // Check if it looks like a Bot or a Message
-        if (arg0.events) console.log("[Debug] Arg[0] looks like Bot");
-        if (arg0.content !== undefined) console.log("[Debug] Arg[0] looks like Message");
-    }
-    if (args.length > 1) {
-        const arg1 = args[1];
-        console.log(`[Debug] Arg[1] keys: ${Object.keys(arg1 || {}).join(", ")}`);
-        if (arg1.content !== undefined) console.log("[Debug] Arg[1] looks like Message");
-    }
-
-    // Attempt to route based on inspection
-    if (args.length === 1 && args[0].content !== undefined) {
-        // It is (message)
-        return messageCreate(bot, args[0]);
-    } else if (args.length >= 2 && args[1]?.content !== undefined) {
-        // It is (bot, message)
-        return messageCreate(args[0], args[1]);
-    } else {
-        console.warn("[Debug] Could not map arguments to messageCreate handler.");
-    }
+// Assign events
+// Discordeno v21 passes (message) to the handler.
+bot.events.reactionAdd = (payload) => reactionAdd(bot, payload);
+bot.events.messageCreate = (message) => {
+    // console.log(`[Debug] Message: ${message.id} from ${message.author?.id}`);
+    return messageCreate(bot, message);
 };
 
-bot.events.reactionAdd = (...args: any[]) => {
-    // Just simple mapping for now, assuming same pattern strictly
-    if (args.length === 1) return reactionAdd(bot, args[0]);
-    if (args.length >= 2) return reactionAdd(args[0], args[1]);
-};
-
-console.log("[Main] Event handlers assigned with bot injection.");
+console.log("[Main] Event handlers assigned.");
 
 bot.events.ready = (_bot, { user }) => {
     console.log(`[Main] Logged in as ${user.username}! (Deno)`);
