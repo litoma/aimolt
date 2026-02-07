@@ -26,10 +26,10 @@ Deno.serve({ port: 8000 }, (_req) => {
     return new Response("Discord Bot is running 🤖");
 });
 
-// Keep-alive interval (every 3 minutes)
-// Note: Deno.cron requires --unstable-cron, so we use setInterval for compatibility
+// Keep-alive interval (every 1 minute for debugging)
+console.log("[KeepAlive] System started");
 setInterval(() => {
     console.log("🔄 Bot is active! (Keep-Alive via setInterval)");
-}, 3 * 60 * 1000);
+}, 1 * 60 * 1000);
 
 await bot.start();
