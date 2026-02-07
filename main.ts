@@ -34,104 +34,25 @@ bot.events.debug = (data) => {
     }
 };
 
-// Start HTTP Server (Required for Deno Deploy)
-// We start this first to ensure health checks pass regardless of Gateway lock
+// Start Discord Bot (Background)
+bot.start().catch((err) => {
+    console.error("[Fatal] Discord Bot crashed:", err);
+});
+
+// Start HTTP Server (Required for Deno Deploy health checks)
 Deno.serve({ port: 8000 }, (_req) => {
     return new Response("Discord Bot is running 🤖");
 });
 
-// Singleton Gateway Management via Supabase
-async function startBotSingleton() {
-    try {
-        const lockId = "gateway_shard_0";
-        const instanceId = crypto.randomUUID();
-        const heartbeatInterval = 10_000; // 10s
-        const lockTTL = 25_000; // 25s expiration
-
-        console.log(`[Main] Instance ${instanceId} attempting to acquire Gateway lock (Supabase)...`);
-
-        const attemptLock = async () => {
-            const now = new Date();
-            const threshold = new Date(now.getTime() - lockTTL).toISOString();
-
-            // 1. Try to fetch existing lock
-            const { data: currentLock, error: fetchError } = await supabase
-                .from("bot_locks")
-                .select("*")
-                .eq("id", lockId)
-                .single();
-
-            if (fetchError && fetchError.code !== "PGRST116") { // Ignore "Row not found"
-                console.error("[Main] Lock fetch error:", fetchError.message);
-                return false;
-            }
-
-            let shouldTake = false;
-            if (!currentLock) {
-                // No lock exists, try to insert
-                const { error: insertError } = await supabase
-                    .from("bot_locks")
-                    .insert([{ id: lockId, instance_id: instanceId, last_seen_at: new Date().toISOString() }]);
-
-                if (!insertError) shouldTake = true;
-            } else if (currentLock.last_seen_at < threshold || currentLock.instance_id === instanceId) {
-                // Lock expired or we already own it (restart case), try to update
-                const { error: updateError } = await supabase
-                    .from("bot_locks")
-                    .update({ instance_id: instanceId, last_seen_at: new Date().toISOString() })
-                    .eq("id", lockId)
-                    .select("*"); // verify?
-
-                if (!updateError) shouldTake = true;
-            }
-
-            if (shouldTake) {
-                console.log(`[Main] 👑 Lock acquired! Starting Gateway.`);
-                startGateway();
-
-                // Start heartbeat
-                setInterval(async () => {
-                    await supabase
-                        .from("bot_locks")
-                        .update({ last_seen_at: new Date().toISOString() })
-                        .eq("id", lockId)
-                        .eq("instance_id", instanceId); // Only update if we still own it
-                }, heartbeatInterval);
-                return true;
-            }
-
-            return false;
-        };
-
-        // Try immediately
-        await attemptLock();
-
-        // Periodic check for takeover
-        setInterval(async () => {
-            // If gateway not started, try to acquire
-            if (!gatewayStarted) {
-                await attemptLock();
-            }
-        }, heartbeatInterval);
-
-    } catch (err) {
-        console.error("[Main] Locking Error:", err);
-        // Fallback: dangerous
-        // startGateway(); 
-    }
-}
-
-let gatewayStarted = false;
-function startGateway() {
-    if (gatewayStarted) return;
-    gatewayStarted = true;
-
-    console.log("[Main] Starting Deno Bot...");
-    bot.start().catch((err) => {
-        console.error("[Fatal] Discord Bot crashed:", err);
-        // If crash, maybe release lock?
+// Keep-alive via Deno.cron (as requested by user)
+// Note: execution requires --unstable-cron flag locally if using older Deno, but standard on Deploy.
+try {
+    Deno.cron("KeepAlive", "*/3 * * * *", () => {
+        console.log("🔄 Bot is active! (Cron execution)");
     });
+} catch (e) {
+    console.warn("Deno.cron not supported in this environment, falling back to interval.");
+    setInterval(() => {
+        console.log("🔄 Bot is active! (Interval fallback)");
+    }, 3 * 60 * 1000);
 }
-
-// Start the singleton logic
-startBotSingleton();
