@@ -25,6 +25,12 @@ bot.events.messageCreate = (message) => messageCreate(bot, message);
 bot.events.ready = (_bot, { user }) => {
     console.log(`[Main] Logged in as ${user.username}! (Deno)`);
 };
+bot.events.debug = (data) => {
+    // Filter for relevant debug events to avoid noise
+    if (data.includes("MESSAGE_CREATE") || data.includes("Dispatch")) {
+        console.log(`[Debug] ${data}`);
+    }
+};
 
 console.log("[Main] Starting Deno Bot...");
 
