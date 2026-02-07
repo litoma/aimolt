@@ -16,49 +16,32 @@ LegacyなNestJS版コードは `app/` ディレクトリにアーカイブされ
 
 ```
 aimolt/
-├── deno-bot/                  # [推奨] Deno版ソースコード
-│   ├── main.ts                # エントリーポイント
-│   ├── src/
-│   │   ├── services/          # ビジネスロジック (Gemini, Supabase, etc.)
-│   │   ├── events/            # Discordイベントハンドラ
-│   │   └── config.ts          # 設定ファイル
-│   ├── prompt/                # AIプロンプト定義
-│   └── DEPLOYMENT.md          # デプロイ手順書
-│
-└── app/                       # [旧] NestJS版 (Legacy)
+├── main.ts                # Deno Entrypoint
+├── deno.json              # Deno Config
+├── src/                   # Deno Source Code
+├── app/                   # Legacy NestJS App (Archive)
+└── README.md
 ```
 
 ## 🦕 Deno版のセットアップ
 
 ### 必須環境
 - [Deno](https://docs.deno.com/runtime/manual) v2.x 以上
-- Supabase プロジェクト
-- Google Gemini API Key
-- Discord Bot Token
 
 ### 起動方法
 
-1. **ディレクトリ移動**:
-   ```bash
-   cd deno-bot
-   ```
+1. **環境変数設定**:
+   `.env` ファイルを作成してください。
 
-2. **環境変数設定**:
-   `app/.env` を参考に、Deno Deployの環境変数設定または `.env` ファイルを作成してください。
-   (ローカル実行時は `.env` を自動読み込みします)
-
-3. **起動**:
+2. **起動**:
    ```bash
    deno task start
    ```
 
 ## ☁️ デプロイ (Deno Deploy)
 
-本番環境は **Deno Deploy** を推奨します。
-詳細な手順は `deno-bot/DEPLOYMENT.md` を参照してください。
-
-- **GitHub連携**: リポジトリを連携するだけで自動デプロイ可能です。
-- **環境変数**: Deno Deployのダッシュボードで設定が必要です。
+**Entrypoint**: `main.ts` (ルート直下)
+詳細は `DEPLOYMENT.md` を参照してください。
 
 ## 🛠️ 開発・テスト
 

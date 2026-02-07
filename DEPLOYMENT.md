@@ -28,7 +28,7 @@ You must set the following names in your Deno Deploy Project Settings:
 2. Go to [Deno Deploy Dashboard](https://dash.deno.com).
 3. Click **"New Project"**.
 4. Select **"Git Hub"** and choose your repository.
-5. Select **Entrypoint**: `main.ts` (inside `deno-bot` folder).
+5. Select **Entrypoint**: `main.ts` (Repository Root).
 6. Click **"Link"**.
 7. Go to **Settings** -> **Environment Variables** and add the keys listed above.
 
