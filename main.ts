@@ -18,4 +18,10 @@ const bot = createBot({
 });
 
 console.log("[Main] Starting Deno Bot...");
+
+// Deno Deploy requires an HTTP server to keep the deployment alive/healthy
+Deno.serve({ port: 8000 }, (_req) => {
+    return new Response("Discord Bot is running 🤖");
+});
+
 await bot.start();
