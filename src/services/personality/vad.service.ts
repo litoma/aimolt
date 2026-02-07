@@ -35,7 +35,7 @@ export class VADService {
 
     private async findByUserId(userId: string): Promise<Emotion | null> {
         const { data, error } = await supabase
-            .from("emotions")
+            .from("emotion_states")
             .select("*")
             .eq("user_id", userId)
             .single();
@@ -46,7 +46,7 @@ export class VADService {
 
     private async save(emotion: Emotion): Promise<Emotion> {
         const { data, error } = await supabase
-            .from("emotions")
+            .from("emotion_states")
             .insert([emotion])
             .select()
             .single();
@@ -60,7 +60,7 @@ export class VADService {
 
     private async update(emotion: Emotion): Promise<Emotion> {
         const { data, error } = await supabase
-            .from("emotions")
+            .from("emotion_states")
             .update(emotion)
             .eq("user_id", emotion.user_id)
             .select()
