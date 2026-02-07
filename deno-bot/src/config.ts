@@ -16,7 +16,7 @@ export const config = {
 
     // Gemini
     GEMINI_API_KEY: Deno.env.get("GEMINI_API_KEY") || "",
-    GEMINI_AI_MODEL: Deno.env.get("GEMINI_AI_MODEL") || "gemini-pro",
+    GEMINI_AI_MODEL: Deno.env.get("GEMINI_AI_MODEL") || "gemini-3-flash-preview",
 
     // Obsidian
     OBSIDIAN_URL: Deno.env.get("OBSIDIAN_URL") || "",

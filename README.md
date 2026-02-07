@@ -1,6 +1,6 @@
 # AImolt Discord Bot (Deno)
 
-AImoltは、Gemini 1.5 FlashとSupabaseを活用した多機能Discordボットです。
+AImoltは、Gemini 3 Flash PreviewとSupabaseを活用した多機能Discordボットです。
 2026年2月より、**Deno + Discordeno** アーキテクチャに全面移行しました。
 
 LegacyなNestJS版コードは `app/` ディレクトリにアーカイブされています。
