@@ -2,6 +2,8 @@ import { Bot, EventHandlers } from "@discordeno/bot";
 import { vadService } from "../services/personality/vad.service.ts";
 
 export const messageCreate: EventHandlers["messageCreate"] = async (bot: Bot, message) => {
+    console.log(`[MessageCreate] Received message: ${message.content} from ${message.authorId}, isBot: ${message.isBot}`);
+
     // Ignore bot's own messages
     if (message.isBot) return;
 
@@ -9,6 +11,7 @@ export const messageCreate: EventHandlers["messageCreate"] = async (bot: Bot, me
 
     // Command: !personality status
     if (content === "!personality status") {
+        console.log("[MessageCreate] Command detected!");
         try {
             const userId = message.authorId.toString();
             const emotion = await vadService.getCurrentEmotion(userId);
