@@ -1,6 +1,7 @@
 import { createBot, Intents } from "@discordeno/bot";
 import { config } from "./src/config.ts";
 import { reactionAdd } from "./src/events/reactionAdd.ts";
+import { messageCreate } from "./src/events/messageCreate.ts";
 import { promptService } from "./src/services/utils/prompt.service.ts";
 
 // Initialize Services
@@ -11,6 +12,7 @@ const bot = createBot({
     intents: Intents.Guilds | Intents.GuildMessages | Intents.GuildMessageReactions | Intents.MessageContent,
     events: {
         reactionAdd,
+        messageCreate,
         ready: (_bot, { user }) => {
             console.log(`[Main] Logged in as ${user.username}! (Deno)`);
         }
