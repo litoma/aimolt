@@ -21,15 +21,20 @@ const bot = createBot({
 
 console.log("[Main] Starting Deno Bot...");
 
-// Deno Deploy requires an HTTP server to keep the deployment alive/healthy
-Deno.serve({ port: 8000 }, (_req) => {
-    return new Response("Discord Bot is running 🤖");
-});
-
-// Keep-alive interval (every 1 minute for debugging)
+// 1. Setup Keep-Alive (setInterval)
 console.log("[KeepAlive] System started");
 setInterval(() => {
     console.log("🔄 Bot is active! (Keep-Alive via setInterval)");
 }, 1 * 60 * 1000);
 
-await bot.start();
+// 2. Start Discord Bot (Background)
+// Don't await here, so Deno.serve can start immediately after
+bot.start().catch((err) => {
+    console.error("[Fatal] Discord Bot crashed:", err);
+});
+
+// 3. Start HTTP Server (Required for Deno Deploy)
+// This might block the main thread depending on environment, so we put it last
+Deno.serve({ port: 8000 }, (_req) => {
+    return new Response("Discord Bot is running 🤖");
+});
