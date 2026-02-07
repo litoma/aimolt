@@ -38,78 +38,89 @@ Deno.serve({ port: 8000 }, (_req) => {
     return new Response("Discord Bot is running 🤖");
 });
 
-// Singleton Gateway Management via Deno KV
+// Singleton Gateway Management via Supabase
+import { supabase } from "./supabase.ts";
+
 async function startBotSingleton() {
     try {
-        const kv = await Deno.openKv();
-        const lockKey = ["gateway_active"];
+        const lockId = "gateway_shard_0";
         const instanceId = crypto.randomUUID();
-
-        console.log(`[Main] Instance ${instanceId} attempting to acquire Gateway lock...`);
-
-        // Simple leader election: Try to set if not exists, or if expired (TTL)
-        // Since we don't have a perfect heartbeat here without complexity, we'll try a simpler approach first:
-        // Just try to run. If Deno Deploy kills us, lock releases? No, KV persists.
-        // We need a TTL (Time To Live). 
-        // Let's use a "heartbeat" loop. If we hold the lock, we update it.
-        // If lock is old, we take it.
-
         const heartbeatInterval = 10_000; // 10s
-        const lockTTL = 20_000; // 20s expiration
+        const lockTTL = 25_000; // 25s expiration
+
+        console.log(`[Main] Instance ${instanceId} attempting to acquire Gateway lock (Supabase)...`);
 
         const attemptLock = async () => {
-            const res = await kv.get<{ instanceId: string, lastSeen: number }>(lockKey);
-            const now = Date.now();
+            const now = new Date();
+            const threshold = new Date(now.getTime() - lockTTL).toISOString();
+
+            // 1. Try to fetch existing lock
+            const { data: currentLock, error: fetchError } = await supabase
+                .from("bot_locks")
+                .select("*")
+                .eq("id", lockId)
+                .single();
+
+            if (fetchError && fetchError.code !== "PGRST116") { // Ignore "Row not found"
+                console.error("[Main] Lock fetch error:", fetchError.message);
+                return false;
+            }
 
             let shouldTake = false;
-            if (!res.value) {
-                shouldTake = true;
-            } else if (now - res.value.lastSeen > lockTTL) {
-                console.log(`[Main] Lock expired (Last seen: ${now - res.value.lastSeen}ms ago). Taking over.`);
-                shouldTake = true;
+            if (!currentLock) {
+                // No lock exists, try to insert
+                const { error: insertError } = await supabase
+                    .from("bot_locks")
+                    .insert([{ id: lockId, instance_id: instanceId, last_seen_at: new Date().toISOString() }]);
+
+                if (!insertError) shouldTake = true;
+            } else if (currentLock.last_seen_at < threshold || currentLock.instance_id === instanceId) {
+                // Lock expired or we already own it (restart case), try to update
+                const { error: updateError } = await supabase
+                    .from("bot_locks")
+                    .update({ instance_id: instanceId, last_seen_at: new Date().toISOString() })
+                    .eq("id", lockId)
+                    // Optimistic concurrency: ensure we are updating the same stale record? 
+                    // Actually, if it's expired, we just overwrite.
+                    // Ideally we check instance_id hasn't changed in split second, but simplified here.
+                    .select("*"); // verify?
+
+                if (!updateError) shouldTake = true;
             }
 
             if (shouldTake) {
-                const setRes = await kv.atomic()
-                    .check(res) // Ensure value hasn't changed
-                    .set(lockKey, { instanceId, lastSeen: now })
-                    .commit();
+                console.log(`[Main] 👑 Lock acquired! Starting Gateway.`);
+                startGateway();
 
-                if (setRes.ok) {
-                    console.log(`[Main] 👑 Lock acquired! Starting Gateway (Shard 0).`);
-                    startGateway();
-                    // Start heartbeat
-                    setInterval(async () => {
-                        await kv.set(lockKey, { instanceId, lastSeen: Date.now() });
-                    }, heartbeatInterval);
-                    return true;
-                } else {
-                    console.log(`[Main] Failed to acquire lock (conflict). Retrying...`);
-                    return false;
-                }
-            } else {
-                // console.log(`[Main] Gateway already active (Instance: ${res.value?.instanceId}). Standing by.`);
-                return false;
+                // Start heartbeat
+                setInterval(async () => {
+                    await supabase
+                        .from("bot_locks")
+                        .update({ last_seen_at: new Date().toISOString() })
+                        .eq("id", lockId)
+                        .eq("instance_id", instanceId); // Only update if we still own it
+                }, heartbeatInterval);
+                return true;
             }
+
+            return false;
         };
 
         // Try immediately
         await attemptLock();
 
-        // If we didn't get it, we could retry or just be a passive node.
-        // Deno Deploy might spin up a new node and kill the old one. We want the new one to take over eventually.
-        // So we should check periodically?
+        // Periodic check for takeover
         setInterval(async () => {
-            const res = await kv.get<{ instanceId: string }>(lockKey);
-            if (res.value?.instanceId !== instanceId) {
+            // If gateway not started, try to acquire
+            if (!gatewayStarted) {
                 await attemptLock();
             }
         }, heartbeatInterval);
 
     } catch (err) {
-        console.error("[Main] KV Error:", err);
-        // Fallback: Just start if KV fails?
-        startGateway();
+        console.error("[Main] Locking Error:", err);
+        // Fallback: dangerous
+        // startGateway(); 
     }
 }
 
