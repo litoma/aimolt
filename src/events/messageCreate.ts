@@ -1,4 +1,3 @@
-```typescript
 import { Bot } from "@discordeno/bot";
 import { vadService } from "../services/personality/vad.service.ts";
 import { relationshipService } from "../services/personality/relationship.service.ts";
@@ -112,4 +111,3 @@ await bot.helpers.sendMessage(message.channelId, {
 }
     }
 };
-```
