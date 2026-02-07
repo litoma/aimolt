@@ -32,20 +32,98 @@ bot.events.debug = (data) => {
     }
 };
 
-console.log("[Main] Starting Deno Bot...");
-
-// Keep-alive interval (every 1 minute for debugging)
-console.log("[KeepAlive] System started");
-setInterval(() => {
-    console.log("🔄 Bot is active! (Keep-Alive via setInterval)");
-}, 10 * 1000);
-
-// Start Discord Bot (Background)
-bot.start().catch((err) => {
-    console.error("[Fatal] Discord Bot crashed:", err);
-});
-
 // Start HTTP Server (Required for Deno Deploy)
+// We start this first to ensure health checks pass regardless of Gateway lock
 Deno.serve({ port: 8000 }, (_req) => {
     return new Response("Discord Bot is running 🤖");
 });
+
+// Singleton Gateway Management via Deno KV
+async function startBotSingleton() {
+    try {
+        const kv = await Deno.openKv();
+        const lockKey = ["gateway_active"];
+        const instanceId = crypto.randomUUID();
+
+        console.log(`[Main] Instance ${instanceId} attempting to acquire Gateway lock...`);
+
+        // Simple leader election: Try to set if not exists, or if expired (TTL)
+        // Since we don't have a perfect heartbeat here without complexity, we'll try a simpler approach first:
+        // Just try to run. If Deno Deploy kills us, lock releases? No, KV persists.
+        // We need a TTL (Time To Live). 
+        // Let's use a "heartbeat" loop. If we hold the lock, we update it.
+        // If lock is old, we take it.
+
+        const heartbeatInterval = 10_000; // 10s
+        const lockTTL = 20_000; // 20s expiration
+
+        const attemptLock = async () => {
+            const res = await kv.get<{ instanceId: string, lastSeen: number }>(lockKey);
+            const now = Date.now();
+
+            let shouldTake = false;
+            if (!res.value) {
+                shouldTake = true;
+            } else if (now - res.value.lastSeen > lockTTL) {
+                console.log(`[Main] Lock expired (Last seen: ${now - res.value.lastSeen}ms ago). Taking over.`);
+                shouldTake = true;
+            }
+
+            if (shouldTake) {
+                const setRes = await kv.atomic()
+                    .check(res) // Ensure value hasn't changed
+                    .set(lockKey, { instanceId, lastSeen: now })
+                    .commit();
+
+                if (setRes.ok) {
+                    console.log(`[Main] 👑 Lock acquired! Starting Gateway (Shard 0).`);
+                    startGateway();
+                    // Start heartbeat
+                    setInterval(async () => {
+                        await kv.set(lockKey, { instanceId, lastSeen: Date.now() });
+                    }, heartbeatInterval);
+                    return true;
+                } else {
+                    console.log(`[Main] Failed to acquire lock (conflict). Retrying...`);
+                    return false;
+                }
+            } else {
+                // console.log(`[Main] Gateway already active (Instance: ${res.value?.instanceId}). Standing by.`);
+                return false;
+            }
+        };
+
+        // Try immediately
+        await attemptLock();
+
+        // If we didn't get it, we could retry or just be a passive node.
+        // Deno Deploy might spin up a new node and kill the old one. We want the new one to take over eventually.
+        // So we should check periodically?
+        setInterval(async () => {
+            const res = await kv.get<{ instanceId: string }>(lockKey);
+            if (res.value?.instanceId !== instanceId) {
+                await attemptLock();
+            }
+        }, heartbeatInterval);
+
+    } catch (err) {
+        console.error("[Main] KV Error:", err);
+        // Fallback: Just start if KV fails?
+        startGateway();
+    }
+}
+
+let gatewayStarted = false;
+function startGateway() {
+    if (gatewayStarted) return;
+    gatewayStarted = true;
+
+    console.log("[Main] Starting Deno Bot...");
+    bot.start().catch((err) => {
+        console.error("[Fatal] Discord Bot crashed:", err);
+        // If crash, maybe release lock?
+    });
+}
+
+// Start the singleton logic
+startBotSingleton();
