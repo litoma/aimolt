@@ -20,13 +20,20 @@ const bot = createBot({
     intents: Intents.Guilds | Intents.GuildMessages | Intents.GuildMessageReactions | Intents.MessageContent,
 });
 
-// Assign events with explicit wrappers to ensure correct argument mapping
-// @ts-ignore: Discordeno type definition mismatch with runtime behavior
-bot.events.reactionAdd = (b, p) => reactionAdd(b, p);
-// @ts-ignore: Discordeno type definition mismatch with runtime behavior
-bot.events.messageCreate = (b, m) => messageCreate(b, m);
+// Assign events with explicit wrappers to inject the 'bot' instance
+// Discordeno v21 passes (payload) to the handler, so we must inject 'bot' ourselves.
+// @ts-ignore: Discordeno type definition mismatch
+bot.events.reactionAdd = (payload) => {
+    // console.log("[Debug] reactionAdd payload:", payload);
+    return reactionAdd(bot, payload);
+};
+// @ts-ignore: Discordeno type definition mismatch
+bot.events.messageCreate = (payload) => {
+    console.log("[Debug] messageCreate triggered. Injecting bot instance.");
+    return messageCreate(bot, payload);
+};
 
-console.log("[Main] Event handlers assigned.");
+console.log("[Main] Event handlers assigned with bot injection.");
 
 bot.events.ready = (_bot, { user }) => {
     console.log(`[Main] Logged in as ${user.username}! (Deno)`);
