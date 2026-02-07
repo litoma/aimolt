@@ -27,7 +27,11 @@ export class PromptService {
             });
             console.log("✅ Prompts refreshed from DB");
         } else {
-            console.warn("⚠️ DB Prompt fetch failed or empty, falling back to files:", error?.message);
+            // Debug: Check which URL we are connecting to
+            const dbUrl = Deno.env.get("SUPABASE_URL") || "UNKNOWN";
+            const maskedUrl = dbUrl.length > 10 ? `${dbUrl.slice(0, 8)}...` : dbUrl;
+            console.warn(`⚠️ DB Prompt fetch failed or empty (URL: ${maskedUrl}), falling back to files:`, error?.message);
+
             await this.loadFromFiles();
         }
     }
@@ -46,7 +50,7 @@ export class PromptService {
 
             // Like Prompt
             try {
-                this.likePrompt = await Deno.readTextFile(join(promptDir, "like_reaction.txt"));
+                this.likePrompt = await Deno.readTextFile(join(promptDir, "like.txt"));
                 console.log("📄 Loaded like prompt from file");
             } catch {
                 // Ignore
