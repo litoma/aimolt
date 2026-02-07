@@ -2,18 +2,25 @@ import { Bot } from "@discordeno/bot";
 import { vadService } from "../services/personality/vad.service.ts";
 
 export const messageCreate = async (bot: Bot, message: any) => {
-    console.log(`[MessageCreate] Received message: ${message?.content} from ${message?.authorId}`);
+    // Determine author ID correctly from v21 structure (message.author.id)
+    const authorId = message.author?.id ?? message.authorId;
+    const authorName = message.author?.username ?? "Unknown";
+
+    console.log(`[MessageCreate] Received message: ${message?.content} from ${authorName} (${authorId})`);
 
     // Ignore bot's own messages
-    if (message.isBot) return;
+    if (message.author?.bot || message.isBot) return;
 
-    const content = message.content.trim();
+    const content = message.content?.trim();
+    if (!content) return;
 
     // Command: !personality status
     if (content === "!personality status") {
         console.log("[MessageCreate] Command detected!");
         try {
-            const userId = message.authorId.toString();
+            if (!authorId) throw new Error("Author ID not found in message object.");
+
+            const userId = authorId.toString();
             const emotion = await vadService.getCurrentEmotion(userId);
 
             const statusMessage = [
