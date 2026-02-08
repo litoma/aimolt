@@ -41,7 +41,19 @@ export class TranscriptionService {
         try {
             const audioBuffer = await this.downloadAudio(downloadUrl);
             const systemInstruction = this.promptService.getTranscribePrompt();
-            const mimeType = targetAttachment.contentType || 'audio/ogg';
+
+            // Determine MIME type
+            let mimeType = targetAttachment.contentType;
+            if (!mimeType) {
+                const ext = (targetAttachment.name || '').toLowerCase().split('.').pop();
+                switch (ext) {
+                    case 'mp3': mimeType = 'audio/mpeg'; break;
+                    case 'wav': mimeType = 'audio/wav'; break;
+                    case 'm4a': mimeType = 'audio/mp4'; break;
+                    case 'ogg': mimeType = 'audio/ogg'; break;
+                    default: mimeType = 'audio/ogg'; // Default fallback
+                }
+            }
 
             const parts = [
                 '以下の音声を日本語のテキストに変換し、フィラー語を除去して自然な文章にしてください。',
