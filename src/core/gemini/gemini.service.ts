@@ -16,8 +16,9 @@ export class GeminiService {
         if (!apiKey) throw new Error('GEMINI_API_KEY is not defined');
 
         this.genAI = new GoogleGenerativeAI(apiKey);
-        // Default to gemini-3-flash-preview as requested by user
-        const modelId = this.configService.get<string>('GEMINI_AI_MODEL') || 'gemini-3-flash-preview';
+
+        const modelId = this.configService.get<string>('GEMINI_AI_MODEL');
+        if (!modelId) throw new Error('GEMINI_AI_MODEL is not defined');
 
         this.model = this.genAI.getGenerativeModel({
             model: modelId,
@@ -31,7 +32,9 @@ export class GeminiService {
 
     async generateText(systemPrompt: string, userPrompt: string): Promise<string> {
         return this.commonService.retry(async () => {
-            const modelName = this.configService.get<string>('GEMINI_AI_MODEL') || 'gemini-3-flash-preview';
+            const modelName = this.configService.get<string>('GEMINI_AI_MODEL');
+            if (!modelName) throw new Error('GEMINI_AI_MODEL is not defined');
+
             const model = this.genAI.getGenerativeModel({
                 model: modelName,
                 systemInstruction: systemPrompt,
@@ -45,7 +48,9 @@ export class GeminiService {
 
     async generateTextWithParts(systemPrompt: string, parts: any[]): Promise<string> {
         return this.commonService.retry(async () => {
-            const modelName = this.configService.get<string>('GEMINI_AI_MODEL') || 'gemini-3-flash-preview';
+            const modelName = this.configService.get<string>('GEMINI_AI_MODEL');
+            if (!modelName) throw new Error('GEMINI_AI_MODEL is not defined');
+
             const model = this.genAI.getGenerativeModel({
                 model: modelName,
                 systemInstruction: systemPrompt,
@@ -58,7 +63,9 @@ export class GeminiService {
     }
 
     async startChat(systemPrompt: string, history: any[]) {
-        const modelName = this.configService.get<string>('GEMINI_AI_MODEL') || 'gemini-3-flash-preview';
+        const modelName = this.configService.get<string>('GEMINI_AI_MODEL');
+        if (!modelName) throw new Error('GEMINI_AI_MODEL is not defined');
+
         const model = this.genAI.getGenerativeModel({
             model: modelName,
             systemInstruction: systemPrompt

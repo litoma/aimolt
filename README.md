@@ -38,6 +38,7 @@ aimolt/
     ```env
     DISCORD_TOKEN=...
     GEMINI_API_KEY=...
+    GEMINI_AI_MODEL="gemini-3-flash-preview"
     SUPABASE_URL=...
     SUPABASE_KEY=...
     ```
@@ -55,7 +56,7 @@ aimolt/
 1.  **GitHubへプッシュ**: このリポジトリをPushします。
 2.  [Koyebのダッシュボード](https://app.koyeb.com) で新しいAppを作成します。
 3.  このリポジトリを選択します。
-4.  環境変数 (`DISCORD_TOKEN`, `GEMINI_API_KEY` 等) を設定します。
+4.  環境変数 (`DISCORD_TOKEN`, `GEMINI_API_KEY`, `GEMINI_AI_MODEL` 等) を設定します。
 5.  **Deploy** をクリックします。
     - `Dockerfile` が自動的に検出され、ビルド・デプロイが行われます。
     - アプリケーションが `node dist/main` で起動します。
