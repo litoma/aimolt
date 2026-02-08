@@ -1,5 +1,7 @@
 import { Relationship } from '../entities/relationship.entity';
 
+export const IRelationshipRepositoryToken = Symbol('IRelationshipRepository');
+
 export interface IRelationshipRepository {
     findByUserId(userId: string): Promise<Relationship | null>;
     create(relationship: Relationship): Promise<Relationship>;

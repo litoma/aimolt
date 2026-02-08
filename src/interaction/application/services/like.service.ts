@@ -4,6 +4,8 @@ import { GeminiService } from '../../../core/gemini/gemini.service';
 import { PromptService } from '../../../core/prompt/prompt.service';
 import { VADService } from '../../../personality/application/services/vad.service';
 import { RelationshipService } from '../../../personality/application/services/relationship.service';
+import { AnalysisService } from '../../../personality/application/services/analysis.service';
+import { MemoryService } from '../../../personality/application/services/memory.service';
 import { SupabaseService } from '../../../core/supabase/supabase.service';
 import { Message } from 'discord.js';
 
@@ -14,6 +16,8 @@ export class LikeService {
         private readonly promptService: PromptService,
         private readonly vadService: VADService,
         private readonly relationshipService: RelationshipService,
+        private readonly analysisService: AnalysisService,
+        private readonly memoryService: MemoryService,
         private readonly supabaseService: SupabaseService,
         private readonly configService: ConfigService,
     ) { }
@@ -26,12 +30,16 @@ export class LikeService {
         }
 
         try {
-            // 1. Save User Message
-            await this.saveConversation(userId, 'user', userMessage);
+            // 1. Parallel Processing: Save Msg, Analyze, Get Context, Get Memories
+            const [_, analysis, history, memories] = await Promise.all([
+                this.saveConversation(userId, 'user', userMessage),
+                this.analysisService.analyzeMessage(userId, userMessage), // New
+                this.getRecentContext(userId, parseInt(this.configService.get<string>('CONVERSATION_LIMIT'), 10) || 100),
+                this.memoryService.getRelevantMemories(userId) // New
+            ]);
 
-            // 2. Fetch Conversation History (Context)
-            const limit = parseInt(this.configService.get<string>('CONVERSATION_LIMIT'), 10) || 100;
-            const history = await this.getRecentContext(userId, limit);
+            // 2. Process Memory (Async, fire & forget or await if critical)
+            this.memoryService.processMemory(analysis).catch(e => console.error('Memory process error:', e));
 
             // 3. Prepare Prompt
             const systemInstruction = this.promptService.getSystemPrompt();
@@ -39,9 +47,13 @@ export class LikeService {
 
             let contextBlock = '';
             if (history.length > 0) {
-                contextBlock = '\n\n【直近の会話履歴】\n' + history.map(h => `${h.role === 'user' ? 'ユーザー' : 'AImolt'}: ${h.content}`).join('\n');
+                contextBlock += '\n\n【直近の会話履歴】\n' + history.map(h => `${h.role === 'user' ? 'ユーザー' : 'AImolt'}: ${h.content}`).join('\n');
+            }
+            if (memories) {
+                contextBlock += '\n\n【ユーザーに関する記憶】\n' + memories;
             }
 
+            // Include analysis insights in prompt? Maybe later. For now, context is key.
             const promptWithMessage = `${baseLikePrompt}${contextBlock}\n\nユーザーのメッセージ: ${userMessage}`;
 
             // 4. Generate Response
@@ -56,8 +68,8 @@ export class LikeService {
             // 6. Save AI Response
             await this.saveConversation(userId, 'assistant', replyText);
 
-            // 7. Update Personality (Fire and forget)
-            this.updatePersonality(userId, userMessage).catch(err => console.error('Personality update error:', err));
+            // 7. Update Personality (VAD & Relationship)
+            this.updatePersonality(userId, userMessage, analysis).catch(err => console.error('Personality update error:', err));
 
         } catch (error) {
             console.error('Error in LikeService:', error);
@@ -65,20 +77,22 @@ export class LikeService {
         }
     }
 
-    private async updatePersonality(userId: string, userMessage: string) {
+    private async updatePersonality(userId: string, userMessage: string, analysis: any) {
         // Update Emotion (VAD)
         const newEmotion = await this.vadService.updateEmotion(userId, userMessage);
 
-        // Derive approximate sentiment from Valence (0-100)
-        // > 60 positive, < 40 negative
+        // Derive approximate sentiment from Valence
         let sentiment = 'neutral';
         if (newEmotion.valence > 60) sentiment = 'positive';
         if (newEmotion.valence < 40) sentiment = 'negative';
 
-        // Update Relationship
+        // Update Relationship with richer data
         await this.relationshipService.updateRelationship(userId, {
             sentiment: sentiment,
-            sentimentScore: (newEmotion.valence - 50) / 50 // Normalize -1 to 1
+            sentimentScore: (newEmotion.valence - 50) / 50,
+            analysis: analysis, // Pass detailed analysis
+            vad: newEmotion,    // Pass VAD state
+            userMessage: userMessage
         });
     }
 

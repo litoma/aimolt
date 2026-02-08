@@ -16,13 +16,17 @@ const gemini_service_1 = require("../../../core/gemini/gemini.service");
 const prompt_service_1 = require("../../../core/prompt/prompt.service");
 const vad_service_1 = require("../../../personality/application/services/vad.service");
 const relationship_service_1 = require("../../../personality/application/services/relationship.service");
+const analysis_service_1 = require("../../../personality/application/services/analysis.service");
+const memory_service_1 = require("../../../personality/application/services/memory.service");
 const supabase_service_1 = require("../../../core/supabase/supabase.service");
 let LikeService = class LikeService {
-    constructor(geminiService, promptService, vadService, relationshipService, supabaseService, configService) {
+    constructor(geminiService, promptService, vadService, relationshipService, analysisService, memoryService, supabaseService, configService) {
         this.geminiService = geminiService;
         this.promptService = promptService;
         this.vadService = vadService;
         this.relationshipService = relationshipService;
+        this.analysisService = analysisService;
+        this.memoryService = memoryService;
         this.supabaseService = supabaseService;
         this.configService = configService;
     }
@@ -33,27 +37,34 @@ let LikeService = class LikeService {
             return;
         }
         try {
-            await this.saveConversation(userId, 'user', userMessage);
-            const limit = parseInt(this.configService.get('CONVERSATION_LIMIT'), 10) || 100;
-            const history = await this.getRecentContext(userId, limit);
+            const [_, analysis, history, memories] = await Promise.all([
+                this.saveConversation(userId, 'user', userMessage),
+                this.analysisService.analyzeMessage(userId, userMessage),
+                this.getRecentContext(userId, parseInt(this.configService.get('CONVERSATION_LIMIT'), 10) || 100),
+                this.memoryService.getRelevantMemories(userId)
+            ]);
+            this.memoryService.processMemory(analysis).catch(e => console.error('Memory process error:', e));
             const systemInstruction = this.promptService.getSystemPrompt();
             const baseLikePrompt = this.promptService.getLikePrompt();
             let contextBlock = '';
             if (history.length > 0) {
-                contextBlock = '\n\n【直近の会話履歴】\n' + history.map(h => `${h.role === 'user' ? 'ユーザー' : 'AImolt'}: ${h.content}`).join('\n');
+                contextBlock += '\n\n【直近の会話履歴】\n' + history.map(h => `${h.role === 'user' ? 'ユーザー' : 'AImolt'}: ${h.content}`).join('\n');
+            }
+            if (memories) {
+                contextBlock += '\n\n【ユーザーに関する記憶】\n' + memories;
             }
             const promptWithMessage = `${baseLikePrompt}${contextBlock}\n\nユーザーのメッセージ: ${userMessage}`;
             const replyText = await this.geminiService.generateText(systemInstruction, promptWithMessage);
             await message.reply(replyText.slice(0, 2000));
             await this.saveConversation(userId, 'assistant', replyText);
-            this.updatePersonality(userId, userMessage).catch(err => console.error('Personality update error:', err));
+            this.updatePersonality(userId, userMessage, analysis).catch(err => console.error('Personality update error:', err));
         }
         catch (error) {
             console.error('Error in LikeService:', error);
             await message.reply('うわっ、なんかミスっちゃったみたい！🙈');
         }
     }
-    async updatePersonality(userId, userMessage) {
+    async updatePersonality(userId, userMessage, analysis) {
         const newEmotion = await this.vadService.updateEmotion(userId, userMessage);
         let sentiment = 'neutral';
         if (newEmotion.valence > 60)
@@ -62,7 +73,10 @@ let LikeService = class LikeService {
             sentiment = 'negative';
         await this.relationshipService.updateRelationship(userId, {
             sentiment: sentiment,
-            sentimentScore: (newEmotion.valence - 50) / 50
+            sentimentScore: (newEmotion.valence - 50) / 50,
+            analysis: analysis,
+            vad: newEmotion,
+            userMessage: userMessage
         });
     }
     async getRecentContext(userId, limit) {
@@ -110,6 +124,8 @@ exports.LikeService = LikeService = __decorate([
         prompt_service_1.PromptService,
         vad_service_1.VADService,
         relationship_service_1.RelationshipService,
+        analysis_service_1.AnalysisService,
+        memory_service_1.MemoryService,
         supabase_service_1.SupabaseService,
         config_1.ConfigService])
 ], LikeService);

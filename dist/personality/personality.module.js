@@ -11,10 +11,18 @@ const common_1 = require("@nestjs/common");
 const core_module_1 = require("../core/core.module");
 const vad_service_1 = require("./application/services/vad.service");
 const relationship_service_1 = require("./application/services/relationship.service");
+const analysis_service_1 = require("./application/services/analysis.service");
+const memory_service_1 = require("./application/services/memory.service");
 const supabase_emotion_repository_1 = require("./infrastructure/repositories/supabase-emotion.repository");
 const supabase_relationship_repository_1 = require("./infrastructure/repositories/supabase-relationship.repository");
+const supabase_conversation_analysis_repository_1 = require("./infrastructure/repositories/supabase-conversation-analysis.repository");
+const supabase_user_memory_repository_1 = require("./infrastructure/repositories/supabase-user-memory.repository");
+const supabase_relationship_history_repository_1 = require("./infrastructure/repositories/supabase-relationship-history.repository");
 const emotion_repository_interface_1 = require("./domain/repositories/emotion.repository.interface");
 const relationship_repository_interface_1 = require("./domain/repositories/relationship.repository.interface");
+const conversation_analysis_repository_interface_1 = require("./domain/repositories/conversation-analysis.repository.interface");
+const user_memory_repository_interface_1 = require("./domain/repositories/user-memory.repository.interface");
+const relationship_history_repository_interface_1 = require("./domain/repositories/relationship-history.repository.interface");
 const personality_gateway_1 = require("./interface/personality.gateway");
 const discord_module_1 = require("../discord/discord.module");
 let PersonalityModule = class PersonalityModule {
@@ -27,6 +35,8 @@ exports.PersonalityModule = PersonalityModule = __decorate([
             personality_gateway_1.PersonalityGateway,
             vad_service_1.VADService,
             relationship_service_1.RelationshipService,
+            analysis_service_1.AnalysisService,
+            memory_service_1.MemoryService,
             {
                 provide: emotion_repository_interface_1.IEmotionRepository,
                 useClass: supabase_emotion_repository_1.SupabaseEmotionRepository,
@@ -35,8 +45,20 @@ exports.PersonalityModule = PersonalityModule = __decorate([
                 provide: relationship_repository_interface_1.IRelationshipRepository,
                 useClass: supabase_relationship_repository_1.SupabaseRelationshipRepository,
             },
+            {
+                provide: conversation_analysis_repository_interface_1.IConversationAnalysisRepository,
+                useClass: supabase_conversation_analysis_repository_1.SupabaseConversationAnalysisRepository,
+            },
+            {
+                provide: user_memory_repository_interface_1.IUserMemoryRepository,
+                useClass: supabase_user_memory_repository_1.SupabaseUserMemoryRepository,
+            },
+            {
+                provide: relationship_history_repository_interface_1.IRelationshipHistoryRepository,
+                useClass: supabase_relationship_history_repository_1.SupabaseRelationshipHistoryRepository,
+            },
         ],
-        exports: [vad_service_1.VADService, relationship_service_1.RelationshipService],
+        exports: [vad_service_1.VADService, relationship_service_1.RelationshipService, analysis_service_1.AnalysisService, memory_service_1.MemoryService],
     })
 ], PersonalityModule);
 //# sourceMappingURL=personality.module.js.map

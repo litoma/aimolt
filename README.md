@@ -7,8 +7,10 @@ AImoltは、**Gemini 3 Flash Preview** と **Supabase (PostgreSQL)** を活用�
 
 - **テキスト応答**: 👍リアクションでAIが応答 (Gemini 3 Flash Preview)
 - **音声文字起こし**: 🎤リアクションで音声ファイルを文字起こし (Gemini)
-- **メモ機能**: 📝リアクションでObsidianなどに記録
-- **人格システム**: VADモデルによる感情シミュレーションと関係性管理
+- **人格システム (復元完了)**:
+  - **Conversation Analysis**: メッセージの感情・トピック・重要度を分析
+  - **User Memory**: ユーザーの好みや重要な事実を記憶・蓄積
+  - **Relationship History**: 好感度・信頼度の変化を追跡し、関係性を深化
 - **Docker対応**: マルチステージビルドにより軽量化されたコンテナで動作
 
 ## 📂 プロジェクト構造
