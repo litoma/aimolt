@@ -1,15 +1,22 @@
-app/.env
-app/node_modules/
-app/package-lock.json
-app/temp/
-db/data/
-
-app/dist/
-app/logs/
+# Credentials
 .env
+
+# Build Artifacts
+dist/
 node_modules/
-cov_profile/
-coverage/
+
+# Logs
+logs/
+*.log
+
+# Temp
+temp/
+
+# Editor/System
 .DS_Store
-**/*.log
+.vscode/
+
+# Testing
+coverage/
+cov_profile/
 tests/
