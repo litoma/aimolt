@@ -129,7 +129,7 @@ let RelationshipService = class RelationshipService {
 exports.RelationshipService = RelationshipService;
 exports.RelationshipService = RelationshipService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, common_1.Inject)(relationship_repository_interface_1.IRelationshipRepository)),
+    __param(0, (0, common_1.Inject)(relationship_repository_interface_1.IRelationshipRepositoryToken)),
     __param(1, (0, common_1.Inject)(relationship_history_repository_interface_1.IRelationshipHistoryRepository)),
     __metadata("design:paramtypes", [Object, Object])
 ], RelationshipService);

@@ -42,7 +42,7 @@ exports.PersonalityModule = PersonalityModule = __decorate([
                 useClass: supabase_emotion_repository_1.SupabaseEmotionRepository,
             },
             {
-                provide: relationship_repository_interface_1.IRelationshipRepository,
+                provide: relationship_repository_interface_1.IRelationshipRepositoryToken,
                 useClass: supabase_relationship_repository_1.SupabaseRelationshipRepository,
             },
             {

@@ -10,7 +10,7 @@ import { SupabaseConversationAnalysisRepository } from './infrastructure/reposit
 import { SupabaseUserMemoryRepository } from './infrastructure/repositories/supabase-user-memory.repository';
 import { SupabaseRelationshipHistoryRepository } from './infrastructure/repositories/supabase-relationship-history.repository';
 import { IEmotionRepository } from './domain/repositories/emotion.repository.interface';
-import { IRelationshipRepository } from './domain/repositories/relationship.repository.interface';
+import { IRelationshipRepositoryToken } from './domain/repositories/relationship.repository.interface';
 import { IConversationAnalysisRepository } from './domain/repositories/conversation-analysis.repository.interface';
 import { IUserMemoryRepository } from './domain/repositories/user-memory.repository.interface';
 import { IRelationshipHistoryRepository } from './domain/repositories/relationship-history.repository.interface';
@@ -31,7 +31,7 @@ import { DiscordModule } from '../discord/discord.module';
             useClass: SupabaseEmotionRepository,
         },
         {
-            provide: IRelationshipRepository,
+            provide: IRelationshipRepositoryToken,
             useClass: SupabaseRelationshipRepository,
         },
         {

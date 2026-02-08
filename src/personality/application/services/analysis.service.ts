@@ -5,7 +5,7 @@ import { ConversationAnalysis } from '../../domain/entities/conversation-analysi
 @Injectable()
 export class AnalysisService {
     constructor(
-        @Inject('IConversationAnalysisRepository')
+        @Inject(IConversationAnalysisRepository)
         private readonly analysisRepository: IConversationAnalysisRepository,
     ) { }
 

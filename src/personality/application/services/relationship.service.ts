@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { IRelationshipRepository } from '../../domain/repositories/relationship.repository.interface';
+import { IRelationshipRepositoryToken, IRelationshipRepository } from '../../domain/repositories/relationship.repository.interface';
 import { IRelationshipHistoryRepository } from '../../domain/repositories/relationship-history.repository.interface';
 import { Relationship } from '../../domain/entities/relationship.entity';
 import { RelationshipHistory } from '../../domain/entities/relationship-history.entity';
@@ -14,7 +14,7 @@ export interface InteractionImpact {
 @Injectable()
 export class RelationshipService {
     constructor(
-        @Inject(IRelationshipRepository)
+        @Inject(IRelationshipRepositoryToken)
         private readonly relationshipRepository: IRelationshipRepository,
         @Inject(IRelationshipHistoryRepository)
         private readonly historyRepository: IRelationshipHistoryRepository,

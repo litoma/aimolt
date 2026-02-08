@@ -6,7 +6,7 @@ import { ConversationAnalysis } from '../../domain/entities/conversation-analysi
 @Injectable()
 export class MemoryService {
     constructor(
-        @Inject('IUserMemoryRepository')
+        @Inject(IUserMemoryRepository)
         private readonly memoryRepository: IUserMemoryRepository,
     ) { }
 
