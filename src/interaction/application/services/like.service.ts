@@ -31,11 +31,11 @@ export class LikeService {
 
         try {
             // 1. Parallel Processing: Save Msg, Analyze, Get Context, Get Memories
-            const [_, analysis, history, memories] = await Promise.all([
-                this.saveConversation(userId, 'user', userMessage),
-                this.analysisService.analyzeMessage(userId, userMessage), // New
+            // 1. Parallel Processing: Analyze, Get Context, Get Memories
+            const [analysis, history, memories] = await Promise.all([
+                this.analysisService.analyzeMessage(userId, userMessage), // Analyzed in memory
                 this.getRecentContext(userId, parseInt(this.configService.get<string>('CONVERSATION_LIMIT'), 10) || 100),
-                this.memoryService.getRelevantMemories(userId) // New
+                this.memoryService.getRelevantMemories(userId)
             ]);
 
             // 2. Process Memory (Async, fire & forget or await if critical)
@@ -65,8 +65,8 @@ export class LikeService {
             // 5. Send Reply
             await message.reply(replyText.slice(0, 2000));
 
-            // 6. Save AI Response
-            await this.saveConversation(userId, 'assistant', replyText);
+            // 6. Save Conversation (Combined)
+            await this.saveConversation(userId, userMessage, replyText, analysis);
 
             // 7. Update Personality (VAD & Relationship)
             this.updatePersonality(userId, userMessage, analysis).catch(err => console.error('Personality update error:', err));
@@ -99,7 +99,7 @@ export class LikeService {
     private async getRecentContext(userId: string, limit: number): Promise<{ role: string, content: string }[]> {
         const { data, error } = await this.supabaseService.getClient()
             .from('conversations')
-            .select('user_message, bot_response, initiator, created_at')
+            .select('user_message, bot_response, created_at')
             .eq('user_id', userId)
             .order('created_at', { ascending: false })
             .limit(limit);
@@ -109,21 +109,30 @@ export class LikeService {
             return [];
         }
 
-        return (data || []).reverse().map(item => {
-            const role = item.initiator === 'user' ? 'user' : 'assistant';
-            const content = item.initiator === 'user' ? item.user_message : item.bot_response;
-            return { role, content };
-        }).filter(item => item.content);
+        return (data || []).reverse().flatMap(item => [
+            { role: 'user', content: item.user_message },
+            { role: 'assistant', content: item.bot_response }
+        ]).filter(item => item.content);
     }
 
-    private async saveConversation(userId: string, role: 'user' | 'assistant', content: string): Promise<void> {
+    private async saveConversation(userId: string, userMessage: string, botResponse: string, analysis: any): Promise<void> {
         try {
+            const isMemory = analysis.importance_score >= 4;
+
             const payload = {
                 user_id: userId,
-                initiator: role === 'user' ? 'user' : 'bot',
-                user_message: role === 'user' ? content : '',
-                bot_response: role === 'assistant' ? content : '',
-                message_type: 'text'
+                user_message: userMessage,
+                bot_response: botResponse,
+                sentiment: analysis.sentiment,
+                emotion_detected: analysis.emotion_detected,
+                topic_category: analysis.topic_category,
+                keywords: analysis.keywords,
+                importance_score: analysis.importance_score,
+                confidence_score: analysis.confidence_score,
+                analyzed_at: new Date(),
+                is_memory: isMemory,
+                memory_type: isMemory ? 'fact' : null, // Simple heuristic for now
+                access_count: 0
             };
 
             const { error } = await this.supabaseService.getClient()
@@ -131,7 +140,7 @@ export class LikeService {
                 .insert([payload]);
 
             if (error) {
-                console.error(`Failed to save ${role} message to Supabase:`, error);
+                console.error('Failed to save conversation to Supabase:', error);
             }
         } catch (err) {
             console.error('Supabase persistence error:', err);

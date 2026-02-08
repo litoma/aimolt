@@ -1,8 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { IRelationshipRepositoryToken, IRelationshipRepository } from '../../domain/repositories/relationship.repository.interface';
-import { IRelationshipHistoryRepository } from '../../domain/repositories/relationship-history.repository.interface';
 import { Relationship } from '../../domain/entities/relationship.entity';
-import { RelationshipHistory } from '../../domain/entities/relationship-history.entity';
 
 export interface InteractionImpact {
     affection: number;
@@ -16,8 +14,6 @@ export class RelationshipService {
     constructor(
         @Inject(IRelationshipRepositoryToken)
         private readonly relationshipRepository: IRelationshipRepository,
-        @Inject(IRelationshipHistoryRepository)
-        private readonly historyRepository: IRelationshipHistoryRepository,
     ) { }
 
     async getRelationship(userId: string): Promise<Relationship> {
@@ -58,9 +54,6 @@ export class RelationshipService {
 
         // 5. Save changes
         const updated = await this.relationshipRepository.update(relationship);
-
-        // 6. Log History
-        await this.logChanges(userId, oldValues, relationship, interactionData.userMessage || 'Interaction');
 
         return updated;
     }
@@ -112,34 +105,7 @@ export class RelationshipService {
         return 'stranger';
     }
 
-    private async logChanges(userId: string, oldRel: Relationship, newRel: Relationship, message: string) {
-        const changes: Partial<RelationshipHistory> = {};
 
-        if (oldRel.affection_level !== newRel.affection_level) {
-            await this.historyRepository.create(new RelationshipHistory({
-                user_id: userId,
-                event_type: 'affection_change',
-                new_value: newRel.affection_level.toString(),
-                trigger_message: message
-            }));
-        }
-        if (oldRel.trust_level !== newRel.trust_level) {
-            await this.historyRepository.create(new RelationshipHistory({
-                user_id: userId,
-                event_type: 'trust_change',
-                new_value: newRel.trust_level.toString(),
-                trigger_message: message
-            }));
-        }
-        if (oldRel.relationship_stage !== newRel.relationship_stage) {
-            await this.historyRepository.create(new RelationshipHistory({
-                user_id: userId,
-                event_type: 'stage_change',
-                new_value: newRel.relationship_stage,
-                trigger_message: message
-            }));
-        }
-    }
 
     private clamp(val: number, min: number, max: number) {
         return Math.min(Math.max(val, min), max);

@@ -22,7 +22,7 @@ let SupabaseRelationshipRepository = class SupabaseRelationshipRepository {
     }
     async findByUserId(userId) {
         const { data, error } = await this.client
-            .from('user_relationships')
+            .from('relationships')
             .select('*')
             .eq('user_id', userId)
             .maybeSingle();
@@ -41,7 +41,7 @@ let SupabaseRelationshipRepository = class SupabaseRelationshipRepository {
     async create(relationship) {
         const payload = this.toDbPayload(relationship);
         const { data, error } = await this.client
-            .from('user_relationships')
+            .from('relationships')
             .insert([payload])
             .select()
             .single();
@@ -55,7 +55,7 @@ let SupabaseRelationshipRepository = class SupabaseRelationshipRepository {
         const payload = this.toDbPayload(relationship);
         const { user_id, ...updates } = payload;
         const { data, error } = await this.client
-            .from('user_relationships')
+            .from('relationships')
             .update(updates)
             .eq('user_id', user_id)
             .select()

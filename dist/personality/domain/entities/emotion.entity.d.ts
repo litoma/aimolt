@@ -7,7 +7,6 @@ export declare class Emotion {
     interest_level: number;
     intimacy_level: number;
     mood_type: string;
-    conversation_count: number;
     last_interaction: Date;
     created_at: Date;
     updated_at: Date;

@@ -13,7 +13,7 @@ export class SupabaseRelationshipRepository implements IRelationshipRepository {
 
     async findByUserId(userId: string): Promise<Relationship | null> {
         const { data, error } = await this.client
-            .from('user_relationships')
+            .from('relationships')
             .select('*')
             .eq('user_id', userId)
             .maybeSingle();
@@ -37,7 +37,7 @@ export class SupabaseRelationshipRepository implements IRelationshipRepository {
         const payload = this.toDbPayload(relationship);
 
         const { data, error } = await this.client
-            .from('user_relationships')
+            .from('relationships')
             .insert([payload])
             .select()
             .single();
@@ -55,7 +55,7 @@ export class SupabaseRelationshipRepository implements IRelationshipRepository {
         const { user_id, ...updates } = payload;
 
         const { data, error } = await this.client
-            .from('user_relationships')
+            .from('relationships')
             .update(updates)
             .eq('user_id', user_id)
             .select()

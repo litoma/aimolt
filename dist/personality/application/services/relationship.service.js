@@ -15,13 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RelationshipService = void 0;
 const common_1 = require("@nestjs/common");
 const relationship_repository_interface_1 = require("../../domain/repositories/relationship.repository.interface");
-const relationship_history_repository_interface_1 = require("../../domain/repositories/relationship-history.repository.interface");
 const relationship_entity_1 = require("../../domain/entities/relationship.entity");
-const relationship_history_entity_1 = require("../../domain/entities/relationship-history.entity");
 let RelationshipService = class RelationshipService {
-    constructor(relationshipRepository, historyRepository) {
+    constructor(relationshipRepository) {
         this.relationshipRepository = relationshipRepository;
-        this.historyRepository = historyRepository;
     }
     async getRelationship(userId) {
         let relationship = await this.relationshipRepository.findByUserId(userId);
@@ -49,7 +46,6 @@ let RelationshipService = class RelationshipService {
         relationship.last_interaction = new Date();
         relationship.relationship_stage = this.determineStage(relationship);
         const updated = await this.relationshipRepository.update(relationship);
-        await this.logChanges(userId, oldValues, relationship, interactionData.userMessage || 'Interaction');
         return updated;
     }
     calculateImpact(data, current) {
@@ -95,33 +91,6 @@ let RelationshipService = class RelationshipService {
             return 'acquaintance';
         return 'stranger';
     }
-    async logChanges(userId, oldRel, newRel, message) {
-        const changes = {};
-        if (oldRel.affection_level !== newRel.affection_level) {
-            await this.historyRepository.create(new relationship_history_entity_1.RelationshipHistory({
-                user_id: userId,
-                event_type: 'affection_change',
-                new_value: newRel.affection_level.toString(),
-                trigger_message: message
-            }));
-        }
-        if (oldRel.trust_level !== newRel.trust_level) {
-            await this.historyRepository.create(new relationship_history_entity_1.RelationshipHistory({
-                user_id: userId,
-                event_type: 'trust_change',
-                new_value: newRel.trust_level.toString(),
-                trigger_message: message
-            }));
-        }
-        if (oldRel.relationship_stage !== newRel.relationship_stage) {
-            await this.historyRepository.create(new relationship_history_entity_1.RelationshipHistory({
-                user_id: userId,
-                event_type: 'stage_change',
-                new_value: newRel.relationship_stage,
-                trigger_message: message
-            }));
-        }
-    }
     clamp(val, min, max) {
         return Math.min(Math.max(val, min), max);
     }
@@ -130,7 +99,6 @@ exports.RelationshipService = RelationshipService;
 exports.RelationshipService = RelationshipService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, common_1.Inject)(relationship_repository_interface_1.IRelationshipRepositoryToken)),
-    __param(1, (0, common_1.Inject)(relationship_history_repository_interface_1.IRelationshipHistoryRepository)),
-    __metadata("design:paramtypes", [Object, Object])
+    __metadata("design:paramtypes", [Object])
 ], RelationshipService);
 //# sourceMappingURL=relationship.service.js.map

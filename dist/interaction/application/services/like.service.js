@@ -37,8 +37,7 @@ let LikeService = class LikeService {
             return;
         }
         try {
-            const [_, analysis, history, memories] = await Promise.all([
-                this.saveConversation(userId, 'user', userMessage),
+            const [analysis, history, memories] = await Promise.all([
                 this.analysisService.analyzeMessage(userId, userMessage),
                 this.getRecentContext(userId, parseInt(this.configService.get('CONVERSATION_LIMIT'), 10) || 100),
                 this.memoryService.getRelevantMemories(userId)
@@ -56,7 +55,7 @@ let LikeService = class LikeService {
             const promptWithMessage = `${baseLikePrompt}${contextBlock}\n\nユーザーのメッセージ: ${userMessage}`;
             const replyText = await this.geminiService.generateText(systemInstruction, promptWithMessage);
             await message.reply(replyText.slice(0, 2000));
-            await this.saveConversation(userId, 'assistant', replyText);
+            await this.saveConversation(userId, userMessage, replyText, analysis);
             this.updatePersonality(userId, userMessage, analysis).catch(err => console.error('Personality update error:', err));
         }
         catch (error) {
@@ -82,7 +81,7 @@ let LikeService = class LikeService {
     async getRecentContext(userId, limit) {
         const { data, error } = await this.supabaseService.getClient()
             .from('conversations')
-            .select('user_message, bot_response, initiator, created_at')
+            .select('user_message, bot_response, created_at')
             .eq('user_id', userId)
             .order('created_at', { ascending: false })
             .limit(limit);
@@ -90,26 +89,34 @@ let LikeService = class LikeService {
             console.error('Failed to fetch context:', error);
             return [];
         }
-        return (data || []).reverse().map(item => {
-            const role = item.initiator === 'user' ? 'user' : 'assistant';
-            const content = item.initiator === 'user' ? item.user_message : item.bot_response;
-            return { role, content };
-        }).filter(item => item.content);
+        return (data || []).reverse().flatMap(item => [
+            { role: 'user', content: item.user_message },
+            { role: 'assistant', content: item.bot_response }
+        ]).filter(item => item.content);
     }
-    async saveConversation(userId, role, content) {
+    async saveConversation(userId, userMessage, botResponse, analysis) {
         try {
+            const isMemory = analysis.importance_score >= 4;
             const payload = {
                 user_id: userId,
-                initiator: role === 'user' ? 'user' : 'bot',
-                user_message: role === 'user' ? content : '',
-                bot_response: role === 'assistant' ? content : '',
-                message_type: 'text'
+                user_message: userMessage,
+                bot_response: botResponse,
+                sentiment: analysis.sentiment,
+                emotion_detected: analysis.emotion_detected,
+                topic_category: analysis.topic_category,
+                keywords: analysis.keywords,
+                importance_score: analysis.importance_score,
+                confidence_score: analysis.confidence_score,
+                analyzed_at: new Date(),
+                is_memory: isMemory,
+                memory_type: isMemory ? 'fact' : null,
+                access_count: 0
             };
             const { error } = await this.supabaseService.getClient()
                 .from('conversations')
                 .insert([payload]);
             if (error) {
-                console.error(`Failed to save ${role} message to Supabase:`, error);
+                console.error('Failed to save conversation to Supabase:', error);
             }
         }
         catch (err) {

@@ -22,7 +22,7 @@ let SupabaseEmotionRepository = class SupabaseEmotionRepository {
     }
     async findByUserId(userId) {
         const { data, error } = await this.client
-            .from('emotion_states')
+            .from('emotions')
             .select('*')
             .eq('user_id', userId)
             .maybeSingle();
@@ -34,7 +34,7 @@ let SupabaseEmotionRepository = class SupabaseEmotionRepository {
     }
     async create(emotion) {
         const { data, error } = await this.client
-            .from('emotion_states')
+            .from('emotions')
             .insert([emotion])
             .select()
             .single();
@@ -47,7 +47,7 @@ let SupabaseEmotionRepository = class SupabaseEmotionRepository {
     async update(emotion) {
         const { user_id, ...updates } = emotion;
         const { data, error } = await this.client
-            .from('emotion_states')
+            .from('emotions')
             .update(updates)
             .eq('user_id', user_id)
             .select()

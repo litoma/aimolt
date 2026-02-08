@@ -1,16 +1,13 @@
 import { Injectable, Inject } from '@nestjs/common';
-import { IConversationAnalysisRepository } from '../../domain/repositories/conversation-analysis.repository.interface';
+
 import { ConversationAnalysis } from '../../domain/entities/conversation-analysis.entity';
 
 @Injectable()
 export class AnalysisService {
-    constructor(
-        @Inject(IConversationAnalysisRepository)
-        private readonly analysisRepository: IConversationAnalysisRepository,
-    ) { }
+    constructor() { }
 
     async analyzeMessage(userId: string, message: string): Promise<ConversationAnalysis> {
-        const analysis = new ConversationAnalysis({
+        return new ConversationAnalysis({
             user_id: userId,
             user_message: message,
             sentiment: this.analyzeSentiment(message),
@@ -20,8 +17,6 @@ export class AnalysisService {
             importance_score: this.calculateImportanceScore(message),
             confidence_score: 0.75 // Default confidence
         });
-
-        return await this.analysisRepository.create(analysis);
     }
 
     private analyzeSentiment(message: string): 'positive' | 'negative' | 'neutral' {

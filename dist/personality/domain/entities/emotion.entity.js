@@ -11,7 +11,6 @@ class Emotion {
         this.interest_level = this.interest_level ?? 50;
         this.intimacy_level = this.intimacy_level ?? 0;
         this.mood_type = this.mood_type ?? 'neutral';
-        this.conversation_count = this.conversation_count ?? 0;
         this.last_interaction = this.last_interaction ?? new Date();
     }
     static createDefault(userId) {

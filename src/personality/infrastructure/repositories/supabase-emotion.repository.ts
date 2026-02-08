@@ -13,7 +13,7 @@ export class SupabaseEmotionRepository implements IEmotionRepository {
 
     async findByUserId(userId: string): Promise<Emotion | null> {
         const { data, error } = await this.client
-            .from('emotion_states')
+            .from('emotions')
             .select('*')
             .eq('user_id', userId)
             .maybeSingle();
@@ -28,7 +28,7 @@ export class SupabaseEmotionRepository implements IEmotionRepository {
 
     async create(emotion: Emotion): Promise<Emotion> {
         const { data, error } = await this.client
-            .from('emotion_states')
+            .from('emotions')
             .insert([emotion])
             .select()
             .single();
@@ -47,7 +47,7 @@ export class SupabaseEmotionRepository implements IEmotionRepository {
         const { user_id, ...updates } = emotion;
 
         const { data, error } = await this.client
-            .from('emotion_states')
+            .from('emotions')
             .update(updates)
             .eq('user_id', user_id)
             .select()
