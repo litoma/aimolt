@@ -1,40 +1,40 @@
 # AImolt Discord Bot (NestJS + Docker)
 
-AImolt is a multi-functional Discord bot powered by **Gemini 1.5 Pro/Flash** and **Supabase (PostgreSQL)**, built with **NestJS**.
-Designed for deployment on **Koyeb** (or any Docker-compatible platform) to ensure persistent WebSocket connections for real-time interactions.
+AImoltは、**Gemini 3 Flash Preview** と **Supabase (PostgreSQL)** を活用した多機能Discordボットです。
+**NestJS** で構築されており、**Koyeb** (またはDocker対応プラットフォーム) 上で常駐プロセスとして動作し、WebSocket (Gateway) によるリアルタイム応答を実現します。
 
-## 🚀 Features
+## 🚀 主な機能
 
-- **Text Response**: Intelligent replies using Gemini API (context-aware).
-- **Voice Transcription**: 🎤 React to voice messages to transcribe them (using Gemini).
-- **Memo**: 📝 React to save messages to Obsidian (via local proxy or API).
-- **Personality System**: VAD-based emotion simulation and relationship management.
-- **Dockerized**: Fully containerized for easy deployment.
+- **テキスト応答**: 👍リアクションでAIが応答 (Gemini 3 Flash Preview)
+- **音声文字起こし**: 🎤リアクションで音声ファイルを文字起こし (Gemini)
+- **メモ機能**: 📝リアクションでObsidianなどに記録
+- **人格システム**: VADモデルによる感情シミュレーションと関係性管理
+- **Docker対応**: マルチステージビルドにより軽量化されたコンテナで動作
 
-## 📂 Project Structure
+## 📂 プロジェクト構造
 
 ```
 aimolt/
-├── src/                   # NestJS Source Code
+├── src/                   # NestJS ソースコード
 │   ├── discord/           # Discord.js Gateway & Events
 │   ├── ai/                # Gemini Service
 │   └── ...
-├── Dockerfile             # Multi-stage Docker build
-├── ecosystem.config.js    # PM2 Configuration
-├── nest-cli.json          # NestJS Config
+├── Dockerfile             # マルチステージビルド用設定
+├── ecosystem.config.js    # PM2 設定
+├── nest-cli.json          # NestJS 設定
 └── README.md
 ```
 
-## 🛠️ Setup & Development
+## 🛠️ セットアップ & 開発
 
-### Prerequisites
+### 必須環境
 - Node.js v22+
-- Docker (optional, for container testing)
+- Docker (コンテナ動作確認用)
 - PostgreSQL (Supabase)
 
-### Local Dev
-1.  **Configure Environment**:
-    Create `.env` based on your project settings.
+### ローカルでの開発
+1.  **環境変数の設定**:
+    `.env` ファイルを作成してください。
     ```env
     DISCORD_TOKEN=...
     GEMINI_API_KEY=...
@@ -42,33 +42,33 @@ aimolt/
     SUPABASE_KEY=...
     ```
 
-2.  **Install & Run**:
+2.  **インストールと起動**:
     ```bash
     npm install
     npm run start:dev
     ```
 
-## ☁️ Deployment (Koyeb)
+## ☁️ デプロイ (Koyeb)
 
-This repository is optimized for **Koyeb**.
+本リポジトリは **Koyeb** へのデプロイに最適化されています。
 
-1.  **Push to GitHub**.
-2.  Create a new App on [Koyeb](https://app.koyeb.com).
-3.  Select this repository.
-4.  Set Environment Variables (`DISCORD_TOKEN`, etc.).
-5.  **Deploy**.
-    - Koyeb automatically builds using the `Dockerfile`.
-    - PM2 manages the process inside the container.
+1.  **GitHubへプッシュ**: このリポジトリをPushします。
+2.  [Koyebのダッシュボード](https://app.koyeb.com) で新しいAppを作成します。
+3.  このリポジトリを選択します。
+4.  環境変数 (`DISCORD_TOKEN`, `GEMINI_API_KEY` 等) を設定します。
+5.  **Deploy** をクリックします。
+    - `Dockerfile` が自動的に検出され、ビルド・デプロイが行われます。
+    - コンテナ内で PM2 がプロセスを管理します。
 
-## 🐳 Docker (Local)
+## 🐳 Docker (ローカル実行)
 
 ```bash
-# Build
+# ビルド
 docker build -t aimolt .
 
-# Run
+# 実行
 docker run --env-file .env aimolt
 ```
 
-## 📄 License
+## 📄 ライセンス
 ISC License
