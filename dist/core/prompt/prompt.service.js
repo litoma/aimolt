@@ -11,75 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PromptService = void 0;
 const common_1 = require("@nestjs/common");
-const supabase_service_1 = require("../supabase/supabase.service");
-const fs = require("fs");
-const path = require("path");
-const util_1 = require("util");
-const readFileAsync = (0, util_1.promisify)(fs.readFile);
+const prompts_1 = require("../../config/prompts");
 let PromptService = class PromptService {
-    constructor(supabaseService) {
-        this.supabaseService = supabaseService;
-        this.systemPrompt = '';
-        this.likePrompt = '';
-        this.transcribePrompt = '';
-    }
-    async onModuleInit() {
-        await this.refreshPrompts();
-    }
-    async refreshPrompts() {
-        const { data, error } = await this.supabaseService.getClient()
-            .from('prompts')
-            .select('prompt_type, content');
-        if (!error && data && data.length > 0) {
-            data.forEach(p => {
-                if (p.prompt_type === 'system')
-                    this.systemPrompt = p.content;
-                if (p.prompt_type === 'like_reaction')
-                    this.likePrompt = p.content;
-                if (p.prompt_type === 'transcribe')
-                    this.transcribePrompt = p.content;
-            });
-            console.log('✅ Prompts refreshed from DB');
-        }
-        else {
-            console.warn('⚠️ DB Prompt fetch failed or empty, falling back to files:', error?.message);
-            await this.loadFromFiles();
-        }
-    }
-    async loadFromFiles() {
-        try {
-            const promptDir = path.join(process.cwd(), 'prompt');
-            try {
-                this.systemPrompt = await readFileAsync(path.join(promptDir, 'system.txt'), 'utf8');
-                console.log('📄 Loaded system prompt from file');
-            }
-            catch (e) {
-                console.warn('Failed to load system.txt');
-            }
-            try {
-                this.likePrompt = await readFileAsync(path.join(promptDir, 'like_reaction.txt'), 'utf8');
-                console.log('📄 Loaded like prompt from file');
-            }
-            catch (e) {
-            }
-            try {
-                this.transcribePrompt = await readFileAsync(path.join(promptDir, 'transcribe.txt'), 'utf8');
-            }
-            catch (e) {
-            }
-        }
-        catch (error) {
-            console.error('❌ Failed to load prompts from files:', error);
-        }
-    }
+    constructor() { }
     getSystemPrompt() {
-        return this.systemPrompt || 'You are a helpful assistant.';
+        return prompts_1.SYSTEM_PROMPT;
     }
     getLikePrompt() {
-        return this.likePrompt || 'Generate a positive, short reaction.';
+        return prompts_1.LIKE_REACTION_PROMPT;
     }
     getTranscribePrompt() {
-        return this.transcribePrompt || 'Transcript the audio to Japanese, removing filler words.';
+        return prompts_1.TRANSCRIBE_PROMPT;
     }
     async getDynamicLikePrompt(userId, message) {
         return this.getLikePrompt();
@@ -88,6 +30,6 @@ let PromptService = class PromptService {
 exports.PromptService = PromptService;
 exports.PromptService = PromptService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [supabase_service_1.SupabaseService])
+    __metadata("design:paramtypes", [])
 ], PromptService);
 //# sourceMappingURL=prompt.service.js.map

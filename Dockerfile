@@ -26,7 +26,6 @@ RUN npm ci --only=production && \
 
 # Copy built assets from builder stage
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/prompt ./prompt
 
 # Create necessary directories
 RUN mkdir -p logs temp prompt && \
