@@ -1,5 +1,4 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { SupabaseService } from '../supabase/supabase.service';
 import * as fs from 'fs';
 import * as path from 'path';
 import { promisify } from 'util';
@@ -12,34 +11,16 @@ export class PromptService implements OnModuleInit {
     private likePrompt: string = '';
     private transcribePrompt: string = '';
 
-    constructor(private readonly supabaseService: SupabaseService) { }
+    constructor() { }
 
     async onModuleInit() {
-        await this.refreshPrompts();
-    }
-
-    async refreshPrompts() {
-        // Try DB first
-        const { data, error } = await this.supabaseService.getClient()
-            .from('prompts')
-            .select('prompt_type, content');
-
-        if (!error && data && data.length > 0) {
-            data.forEach(p => {
-                if (p.prompt_type === 'system') this.systemPrompt = p.content;
-                if (p.prompt_type === 'like_reaction') this.likePrompt = p.content;
-                if (p.prompt_type === 'transcribe') this.transcribePrompt = p.content;
-            });
-            console.log('✅ Prompts refreshed from DB');
-        } else {
-            console.warn('⚠️ DB Prompt fetch failed or empty, falling back to files:', error?.message);
-            await this.loadFromFiles();
-        }
+        await this.loadFromFiles();
     }
 
     async loadFromFiles() {
         try {
             const promptDir = path.join(process.cwd(), 'prompt');
+            console.log(`Loading prompts from: ${promptDir}`);
 
             // System Prompt
             try {
@@ -82,7 +63,6 @@ export class PromptService implements OnModuleInit {
 
     // Placeholder for dynamic/adaptive prompts if needed
     async getDynamicLikePrompt(userId: string, message: string): Promise<string> {
-        // Logic for retrieving specific prompt variations from DB can go here
         return this.getLikePrompt();
     }
 }
