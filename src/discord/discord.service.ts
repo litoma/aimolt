@@ -18,9 +18,9 @@ export class DiscordService implements OnModuleInit, OnModuleDestroy {
     }
 
     async onModuleInit() {
-        const token = this.configService.get<string>('DISCORD_BOT_TOKEN');
+        const token = this.configService.get<string>('DISCORD_TOKEN');
         if (!token) {
-            throw new Error('DISCORD_BOT_TOKEN is not defined');
+            throw new Error('DISCORD_TOKEN is not defined');
         }
 
         this.client.on('ready', () => {
