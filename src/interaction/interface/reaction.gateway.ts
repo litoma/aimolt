@@ -59,7 +59,15 @@ export class ReactionGateway implements OnModuleInit {
             if (fullReaction.emoji.name === '👍') {
                 const message = await fullReaction.message.fetch();
                 if (!message.author.bot) {
-                    await this.likeService.handleLike(message, fullUser.id);
+                    await this.likeService.handleLike(message, fullUser.id, true);
+                }
+            }
+
+            // Ephemeral Like (Ghost)
+            if (fullReaction.emoji.name === '👻') {
+                const message = await fullReaction.message.fetch();
+                if (!message.author.bot) {
+                    await this.likeService.handleLike(message, fullUser.id, false);
                 }
             }
 

@@ -22,7 +22,7 @@ export class LikeService {
         private readonly configService: ConfigService,
     ) { }
 
-    async handleLike(message: Message, userId: string): Promise<void> {
+    async handleLike(message: Message, userId: string, saveHistory: boolean = true): Promise<void> {
         const userMessage = message.content;
         if (!userMessage) {
             await message.reply('メッセージが空か無効です！😅');
@@ -30,7 +30,6 @@ export class LikeService {
         }
 
         try {
-            // 1. Parallel Processing: Save Msg, Analyze, Get Context, Get Memories
             // 1. Parallel Processing: Analyze, Get Context, Get Memories
             const [analysis, history, memories] = await Promise.all([
                 this.analysisService.analyzeMessage(userId, userMessage), // Analyzed in memory
@@ -39,7 +38,9 @@ export class LikeService {
             ]);
 
             // 2. Process Memory (Async, fire & forget or await if critical)
-            this.memoryService.processMemory(analysis).catch(e => console.error('Memory process error:', e));
+            if (saveHistory) {
+                this.memoryService.processMemory(analysis).catch(e => console.error('Memory process error:', e));
+            }
 
             // 3. Prepare Prompt
             const systemInstruction = this.promptService.getSystemPrompt();
@@ -65,11 +66,11 @@ export class LikeService {
             // 5. Send Reply
             await message.reply(replyText.slice(0, 2000));
 
-            // 6. Save Conversation (Combined)
-            await this.saveConversation(userId, userMessage, replyText, analysis);
-
-            // 7. Update Personality (VAD & Relationship)
-            this.updatePersonality(userId, userMessage, analysis).catch(err => console.error('Personality update error:', err));
+            // 6. Save Conversation & Update Personality (Only if saveHistory is true)
+            if (saveHistory) {
+                await this.saveConversation(userId, userMessage, replyText, analysis);
+                this.updatePersonality(userId, userMessage, analysis).catch(err => console.error('Personality update error:', err));
+            }
 
         } catch (error) {
             console.error('Error in LikeService:', error);
