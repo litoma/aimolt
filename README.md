@@ -9,7 +9,7 @@ AImoltは、**Gemini** と **Supabase (PostgreSQL)** を活用した多機能Dis
 - **音声文字起こし**: 🎤リアクションで音声ファイルを文字起こし (Gemini)
 - **人格・記憶システム**:
   - **Conversations**: 会話ログ、感情分析結果、ユーザーの記憶を1つのテーブルで統合管理
-  - **Relationships**: ユーザーごとの現在の好感度・信頼度・関係性ステージを保持（履歴は削除し、最新状態のみ管理）
+  - **Relationships**: ユーザーごとの現在の好感度・信頼度・関係性ステージを保持
   - **Emotions**: ユーザーごとの現在の感情状態 (VADモデル) を保持
 - **Docker対応**: マルチステージビルドによる軽量コンテナ運用
 
@@ -22,7 +22,6 @@ aimolt/
 │   ├── ai/                # Gemini Service
 │   └── ...
 ├── Dockerfile             # マルチステージビルド用設定
-├── ecosystem.config.js    # PM2 設定
 ├── nest-cli.json          # NestJS 設定
 └── README.md
 ```
