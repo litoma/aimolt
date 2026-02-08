@@ -5,15 +5,18 @@ import { DiscordService } from '../../../discord/discord.service';
 import { Message, TextChannel, DMChannel, NewsChannel, ThreadChannel } from 'discord.js';
 import * as https from 'https';
 
+import { SupabaseService } from '../../../core/supabase/supabase.service';
+
 @Injectable()
 export class TranscriptionService {
     constructor(
         private readonly geminiService: GeminiService,
         private readonly promptService: PromptService,
         private readonly discordService: DiscordService,
+        private readonly supabaseService: SupabaseService,
     ) { }
 
-    async handleTranscription(message: Message, userId: string): Promise<void> {
+    async handleTranscription(message: Message, userId: string, saveToDb: boolean = true): Promise<void> {
         const audioExts = ['.ogg', '.mp3', '.wav', '.m4a'];
         let targetAttachment = null;
 
@@ -83,6 +86,12 @@ export class TranscriptionService {
                     // Send as text
                     await this.sendMessage(message, `>>> ${cleanedText}`);
                 }
+
+                // Save to DB if requested
+                if (saveToDb) {
+                    await this.saveTranscription(userId, cleanedText);
+                }
+
             } else {
                 await this.sendMessage(message, `<@${userId}> ⚠️ 文字起こし結果が空でした。😓`);
             }
@@ -90,6 +99,26 @@ export class TranscriptionService {
         } catch (error) {
             console.error('Transcription Error:', error);
             await this.sendMessage(message, `<@${userId}> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: ${error.message}`);
+        }
+    }
+
+    private async saveTranscription(userId: string, text: string): Promise<void> {
+        try {
+            const { error } = await this.supabaseService.getClient()
+                .from('transcripts')
+                .insert([{
+                    user_id: userId,
+                    text: text,
+                    created_at: new Date()
+                }]);
+
+            if (error) {
+                console.error('Failed to save transcription:', error);
+            } else {
+                console.log(`Saved transcription for user ${userId}`);
+            }
+        } catch (err) {
+            console.error('Supabase persistence error (transcripts):', err);
         }
     }
 
