@@ -58,7 +58,7 @@ aimolt/
 4.  環境変数 (`DISCORD_TOKEN`, `GEMINI_API_KEY` 等) を設定します。
 5.  **Deploy** をクリックします。
     - `Dockerfile` が自動的に検出され、ビルド・デプロイが行われます。
-    - コンテナ内で PM2 がプロセスを管理します。
+    - アプリケーションが `node dist/main` で起動します。
 
 ## 🐳 Docker (ローカル実行)
 

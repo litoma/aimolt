@@ -26,10 +26,6 @@ RUN npm ci --only=production && \
 
 # Copy built assets from builder stage
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/ecosystem.config.js ./
-
-# Install PM2 globally
-RUN npm install -g pm2
 
 # Create necessary directories
 RUN mkdir -p logs temp prompt && \
@@ -38,4 +34,4 @@ RUN mkdir -p logs temp prompt && \
 USER node
 
 # Start application
-CMD ["pm2-runtime", "start", "ecosystem.config.js"]
+CMD ["node", "dist/main"]
