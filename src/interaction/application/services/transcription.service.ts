@@ -59,9 +59,17 @@ export class TranscriptionService {
             await this.sendMessage(message, '🎉 文字起こしが完了したよ〜！');
 
             if (cleanedText.trim()) {
-                const quotedText = `>>> ${cleanedText}`;
-                for (let i = 0; i < quotedText.length; i += 1900) {
-                    await this.sendMessage(message, quotedText.slice(i, i + 1900));
+                const MAX_LENGTH = 1900;
+                if (cleanedText.length > MAX_LENGTH) {
+                    // Send as file
+                    const buffer = Buffer.from(cleanedText, 'utf-8');
+                    await this.sendMessage(message, '📝 文字起こし結果が長いため、テキストファイルで送信します。', [{
+                        attachment: buffer,
+                        name: 'transcription.txt'
+                    }]);
+                } else {
+                    // Send as text
+                    await this.sendMessage(message, `>>> ${cleanedText}`);
                 }
             } else {
                 await this.sendMessage(message, `<@${userId}> ⚠️ 文字起こし結果が空でした。😓`);
@@ -73,10 +81,10 @@ export class TranscriptionService {
         }
     }
 
-    private async sendMessage(originalMessage: Message, content: string): Promise<Message | null> {
+    private async sendMessage(originalMessage: Message, content: string, files?: any[]): Promise<Message | null> {
         const channel = originalMessage.channel as TextChannel | DMChannel | NewsChannel | ThreadChannel;
         if (channel.send) {
-            return await channel.send(content);
+            return await channel.send({ content, files });
         }
         return null;
     }
