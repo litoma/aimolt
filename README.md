@@ -1,61 +1,74 @@
-# AImolt Discord Bot (Deno)
+# AImolt Discord Bot (NestJS + Docker)
 
-AImoltは、Gemini 3 Flash PreviewとSupabaseを活用した多機能Discordボットです。
-2026年2月より、**Deno + Discordeno** アーキテクチャに全面移行しました。
+AImolt is a multi-functional Discord bot powered by **Gemini 1.5 Pro/Flash** and **Supabase (PostgreSQL)**, built with **NestJS**.
+Designed for deployment on **Koyeb** (or any Docker-compatible platform) to ensure persistent WebSocket connections for real-time interactions.
 
-LegacyなNestJS版コードは `app/` ディレクトリにアーカイブされています。
+## 🚀 Features
 
-## 🚀 主な機能
+- **Text Response**: Intelligent replies using Gemini API (context-aware).
+- **Voice Transcription**: 🎤 React to voice messages to transcribe them (using Gemini).
+- **Memo**: 📝 React to save messages to Obsidian (via local proxy or API).
+- **Personality System**: VAD-based emotion simulation and relationship management.
+- **Dockerized**: Fully containerized for easy deployment.
 
-- **テキスト応答**: 👍リアクションでAIが応答 (会話履歴考慮)
-- **音声文字起こし**: 🎤リアクションで音声ファイルを文字起こし (メモリ内処理)
-- **メモ機能**: 📝リアクションでObsidianのDaily Noteに追記 (ローカル環境のみ)
-- **人格システム**: VADモデルによる感情シミュレーションと関係性管理
-
-## 📂 プロジェクト構造
+## 📂 Project Structure
 
 ```
 aimolt/
-├── main.ts                # Deno Entrypoint
-├── deno.json              # Deno Config
-├── src/                   # Deno Source Code
-├── app/                   # Legacy NestJS App (Archive)
+├── src/                   # NestJS Source Code
+│   ├── discord/           # Discord.js Gateway & Events
+│   ├── ai/                # Gemini Service
+│   └── ...
+├── Dockerfile             # Multi-stage Docker build
+├── ecosystem.config.js    # PM2 Configuration
+├── nest-cli.json          # NestJS Config
 └── README.md
 ```
 
-## 🦕 Deno版のセットアップ
+## 🛠️ Setup & Development
 
-### 必須環境
-- [Deno](https://docs.deno.com/runtime/manual) v2.x 以上
+### Prerequisites
+- Node.js v22+
+- Docker (optional, for container testing)
+- PostgreSQL (Supabase)
 
-### 起動方法
+### Local Dev
+1.  **Configure Environment**:
+    Create `.env` based on your project settings.
+    ```env
+    DISCORD_TOKEN=...
+    GEMINI_API_KEY=...
+    SUPABASE_URL=...
+    SUPABASE_KEY=...
+    ```
 
-1. **環境変数設定**:
-   `.env` ファイルを作成してください。
+2.  **Install & Run**:
+    ```bash
+    npm install
+    npm run start:dev
+    ```
 
-2. **起動**:
-   ```bash
-   deno task start
-   ```
+## ☁️ Deployment (Koyeb)
 
-## ☁️ デプロイ (Deno Deploy)
+This repository is optimized for **Koyeb**.
 
-**Entrypoint**: `main.ts` (ルート直下)
-詳細は `DEPLOYMENT.md` を参照してください。
+1.  **Push to GitHub**.
+2.  Create a new App on [Koyeb](https://app.koyeb.com).
+3.  Select this repository.
+4.  Set Environment Variables (`DISCORD_TOKEN`, etc.).
+5.  **Deploy**.
+    - Koyeb automatically builds using the `Dockerfile`.
+    - PM2 manages the process inside the container.
 
-## 🛠️ 開発・テスト
+## 🐳 Docker (Local)
 
-- **Lint / Format**:
-  Denoには標準で組み込まれています。
-  ```bash
-  deno lint
-  deno fmt
-  ```
+```bash
+# Build
+docker build -t aimolt .
 
-- **テスト**:
-  ```bash
-  deno test
-  ```
+# Run
+docker run --env-file .env aimolt
+```
 
-## 📄 ライセンス
+## 📄 License
 ISC License

@@ -1,5 +1,83 @@
 {
+  "name": "aimolt",
+  "version": "1.0.0",
+  "description": "Discord bot with Gemini AI and Supabase",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "nest build",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/main",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop aimolt",
+    "pm2:restart": "pm2 restart aimolt",
+    "pm2:logs": "pm2 logs aimolt",
+    "pm2:delete": "pm2 delete aimolt",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f discord-bot",
+    "test": "jest",
+    "lint": "echo \"No linting configured\" && exit 0"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "gemini",
+    "ai",
+    "supabase",
+    "postgresql",
+    "transcription",
+    "voice"
+  ],
+  "author": "litoma",
+  "license": "ISC",
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
   "dependencies": {
-    "dotenv": "^17.2.4"
-  }
+    "@google/generative-ai": "^0.24.1",
+    "@nestjs/common": "^11.1.13",
+    "@nestjs/config": "^4.0.3",
+    "@nestjs/core": "^11.1.13",
+    "@nestjs/platform-express": "^11.1.13",
+    "@supabase/supabase-js": "^2.50.1",
+    "axios": "^1.10.0",
+    "discord.js": "^14.20.0",
+    "dotenv": "^16.5.0",
+    "node-cron": "^3.0.3",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.16",
+    "@nestjs/schematics": "^11.0.9",
+    "@nestjs/testing": "^11.1.13",
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.2.0",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "jest": "^30.2.0",
+    "pm2": "^6.0.8",
+    "prettier": "^3.8.1",
+    "source-map-support": "^0.5.21",
+    "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/litoma/aimolt.git"
+  },
+  "bugs": {
+    "url": "https://github.com/litoma/aimolt/issues"
+  },
+  "homepage": "https://github.com/litoma/aimolt#readme"
 }
