@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Client, GatewayIntentBits } from 'discord.js';
+import { Client, GatewayIntentBits, Partials } from 'discord.js';
 
 @Injectable()
 export class DiscordService implements OnModuleInit, OnModuleDestroy {
@@ -13,6 +13,11 @@ export class DiscordService implements OnModuleInit, OnModuleDestroy {
                 GatewayIntentBits.GuildMessages,
                 GatewayIntentBits.MessageContent,
                 GatewayIntentBits.GuildMessageReactions,
+            ],
+            partials: [
+                Partials.Message,
+                Partials.Channel,
+                Partials.Reaction,
             ],
         });
     }
