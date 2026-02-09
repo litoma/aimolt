@@ -35,7 +35,7 @@ export class TranscriptionService {
 
         const maxSize = 20 * 1024 * 1024; // Lower limit for memory safety (20MB)
         if (targetAttachment.size > maxSize) {
-            await this.sendMessage(message, `<@${userId}> ❌ ファイルサイズが大きすぎます（20MBまで）。`);
+            await this.sendMessage(message, `<@${userId}> ❌ ファイルサイズが大きすぎます（20MBまで）`);
             return;
         }
 
@@ -74,6 +74,11 @@ export class TranscriptionService {
             await this.sendMessage(message, '🎉 文字起こしが完了したよ〜！');
 
             if (cleanedText.trim()) {
+                // Save to DB if requested (Prioritize persistence)
+                if (saveToDb) {
+                    await this.saveTranscription(userId, cleanedText);
+                }
+
                 const MAX_LENGTH = 1900;
                 if (cleanedText.length > MAX_LENGTH) {
                     // Send as file
@@ -87,18 +92,13 @@ export class TranscriptionService {
                     await this.sendMessage(message, `>>> ${cleanedText}`);
                 }
 
-                // Save to DB if requested
-                if (saveToDb) {
-                    await this.saveTranscription(userId, cleanedText);
-                }
-
             } else {
-                await this.sendMessage(message, `<@${userId}> ⚠️ 文字起こし結果が空でした。😓`);
+                await this.sendMessage(message, `<@${userId}> ⚠️ 文字起こし結果が空でした`);
             }
 
         } catch (error) {
             console.error('Transcription Error:', error);
-            await this.sendMessage(message, `<@${userId}> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: ${error.message}`);
+            await this.sendMessage(message, `<@${userId}> ❌ 音声処理中にエラーが発生しました: ${error.message}`);
         }
     }
 
