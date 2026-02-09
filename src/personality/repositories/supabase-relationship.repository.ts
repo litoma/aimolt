@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { IRelationshipRepository } from '../../domain/repositories/relationship.repository.interface';
-import { Relationship } from '../../domain/entities/relationship.entity';
-import { SupabaseService } from '../../../core/supabase/supabase.service';
+import { Relationship } from '../entities/relationship.entity';
+import { SupabaseService } from '../../core/supabase/supabase.service';
 
 @Injectable()
-export class SupabaseRelationshipRepository implements IRelationshipRepository {
+export class SupabaseRelationshipRepository {
     constructor(private readonly supabaseService: SupabaseService) { }
 
     private get client() {

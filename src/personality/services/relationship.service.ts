@@ -1,6 +1,6 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { IRelationshipRepositoryToken, IRelationshipRepository } from '../../domain/repositories/relationship.repository.interface';
-import { Relationship } from '../../domain/entities/relationship.entity';
+import { Injectable } from '@nestjs/common';
+import { SupabaseRelationshipRepository } from '../repositories/supabase-relationship.repository';
+import { Relationship } from '../entities/relationship.entity';
 
 export interface InteractionImpact {
     affection: number;
@@ -12,8 +12,7 @@ export interface InteractionImpact {
 @Injectable()
 export class RelationshipService {
     constructor(
-        @Inject(IRelationshipRepositoryToken)
-        private readonly relationshipRepository: IRelationshipRepository,
+        private readonly relationshipRepository: SupabaseRelationshipRepository,
     ) { }
 
     async getRelationship(userId: string): Promise<Relationship> {

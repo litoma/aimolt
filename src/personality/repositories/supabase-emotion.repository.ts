@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { IEmotionRepository } from '../../domain/repositories/emotion.repository.interface';
-import { Emotion } from '../../domain/entities/emotion.entity';
-import { SupabaseService } from '../../../core/supabase/supabase.service';
+import { Emotion } from '../entities/emotion.entity';
+import { SupabaseService } from '../../core/supabase/supabase.service';
 
 @Injectable()
-export class SupabaseEmotionRepository implements IEmotionRepository {
+export class SupabaseEmotionRepository {
     constructor(private readonly supabaseService: SupabaseService) { }
 
     private get client() {

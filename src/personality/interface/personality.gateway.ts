@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { DiscordService } from '../../discord/discord.service';
-import { VADService } from '../application/services/vad.service';
-import { RelationshipService } from '../application/services/relationship.service';
+import { VADService } from '../services/vad.service';
+import { RelationshipService } from '../services/relationship.service';
 import { Message, EmbedBuilder } from 'discord.js';
 
 @Injectable()

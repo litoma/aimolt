@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GeminiService } from '../../../core/gemini/gemini.service';
 import { PromptService } from '../../../core/prompt/prompt.service';
-import { VADService } from '../../../personality/application/services/vad.service';
-import { RelationshipService } from '../../../personality/application/services/relationship.service';
-import { AnalysisService } from '../../../personality/application/services/analysis.service';
-import { MemoryService } from '../../../personality/application/services/memory.service';
+import { VADService } from '../../../personality/services/vad.service';
+import { RelationshipService } from '../../../personality/services/relationship.service';
+import { AnalysisService } from '../../../personality/services/analysis.service';
+import { MemoryService } from '../../../personality/services/memory.service';
 import { SupabaseService } from '../../../core/supabase/supabase.service';
 import { Message } from 'discord.js';
 
@@ -74,7 +74,7 @@ export class LikeService {
 
         } catch (error) {
             console.error('Error in LikeService:', error);
-            await message.reply('うわっ、なんかミスっちゃったみたい！🙈');
+            await message.reply('何らかのエラーが発生しました');
         }
     }
 

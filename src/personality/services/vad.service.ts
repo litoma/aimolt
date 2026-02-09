@@ -1,12 +1,11 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { IEmotionRepository } from '../../domain/repositories/emotion.repository.interface';
-import { Emotion } from '../../domain/entities/emotion.entity';
+import { Injectable } from '@nestjs/common';
+import { SupabaseEmotionRepository } from '../repositories/supabase-emotion.repository';
+import { Emotion } from '../entities/emotion.entity';
 
 @Injectable()
 export class VADService {
     constructor(
-        @Inject(IEmotionRepository)
-        private readonly emotionRepository: IEmotionRepository,
+        private readonly emotionRepository: SupabaseEmotionRepository,
     ) { }
 
     async getCurrentEmotion(userId: string): Promise<Emotion> {

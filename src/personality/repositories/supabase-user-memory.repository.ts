@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { IUserMemoryRepository } from '../../domain/repositories/user-memory.repository.interface';
-import { UserMemory } from '../../domain/entities/user-memory.entity';
-import { SupabaseService } from '../../../core/supabase/supabase.service';
+import { UserMemory } from '../entities/user-memory.entity';
+import { SupabaseService } from '../../core/supabase/supabase.service';
 
 @Injectable()
-export class SupabaseUserMemoryRepository implements IUserMemoryRepository {
+export class SupabaseUserMemoryRepository {
     constructor(private readonly supabaseService: SupabaseService) { }
 
     private get client() {

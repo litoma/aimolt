@@ -1,13 +1,12 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { IUserMemoryRepository } from '../../domain/repositories/user-memory.repository.interface';
-import { UserMemory } from '../../domain/entities/user-memory.entity';
-import { ConversationAnalysis } from '../../domain/entities/conversation-analysis.entity';
+import { Injectable } from '@nestjs/common';
+import { SupabaseUserMemoryRepository } from '../repositories/supabase-user-memory.repository';
+import { UserMemory } from '../entities/user-memory.entity';
+import { ConversationAnalysis } from '../entities/conversation-analysis.entity';
 
 @Injectable()
 export class MemoryService {
     constructor(
-        @Inject(IUserMemoryRepository)
-        private readonly memoryRepository: IUserMemoryRepository,
+        private readonly memoryRepository: SupabaseUserMemoryRepository,
     ) { }
 
     async processMemory(analysis: ConversationAnalysis): Promise<void> {

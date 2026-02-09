@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 
-import { ConversationAnalysis } from '../../domain/entities/conversation-analysis.entity';
+import { ConversationAnalysis } from '../entities/conversation-analysis.entity';
 
 @Injectable()
 export class AnalysisService {

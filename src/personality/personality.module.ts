@@ -1,16 +1,12 @@
 import { Module } from '@nestjs/common';
 import { CoreModule } from '../core/core.module';
-import { VADService } from './application/services/vad.service';
-import { RelationshipService } from './application/services/relationship.service';
-import { AnalysisService } from './application/services/analysis.service';
-import { MemoryService } from './application/services/memory.service';
-import { SupabaseEmotionRepository } from './infrastructure/repositories/supabase-emotion.repository';
-import { SupabaseRelationshipRepository } from './infrastructure/repositories/supabase-relationship.repository';
-
-import { SupabaseUserMemoryRepository } from './infrastructure/repositories/supabase-user-memory.repository';
-import { IEmotionRepository } from './domain/repositories/emotion.repository.interface';
-import { IRelationshipRepositoryToken } from './domain/repositories/relationship.repository.interface';
-import { IUserMemoryRepository } from './domain/repositories/user-memory.repository.interface';
+import { VADService } from './services/vad.service';
+import { RelationshipService } from './services/relationship.service';
+import { AnalysisService } from './services/analysis.service';
+import { MemoryService } from './services/memory.service';
+import { SupabaseEmotionRepository } from './repositories/supabase-emotion.repository';
+import { SupabaseRelationshipRepository } from './repositories/supabase-relationship.repository';
+import { SupabaseUserMemoryRepository } from './repositories/supabase-user-memory.repository';
 
 import { PersonalityGateway } from './interface/personality.gateway';
 import { DiscordModule } from '../discord/discord.module';
@@ -23,20 +19,9 @@ import { DiscordModule } from '../discord/discord.module';
         RelationshipService,
         AnalysisService,
         MemoryService,
-        {
-            provide: IEmotionRepository,
-            useClass: SupabaseEmotionRepository,
-        },
-        {
-            provide: IRelationshipRepositoryToken,
-            useClass: SupabaseRelationshipRepository,
-        },
-
-        {
-            provide: IUserMemoryRepository,
-            useClass: SupabaseUserMemoryRepository,
-        },
-
+        SupabaseEmotionRepository,
+        SupabaseRelationshipRepository,
+        SupabaseUserMemoryRepository,
     ],
     exports: [VADService, RelationshipService, AnalysisService, MemoryService],
 })
