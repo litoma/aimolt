@@ -20,7 +20,7 @@ if (!SUPABASE_URL || !SUPABASE_KEY || !GEMINI_API_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: EMBEDDING_MODEL });
-const SAFE_MAX_CHARS = 3000;
+const SAFE_MAX_CHARS = 2000;
 
 async function embedText(text: string): Promise<number[] | null> {
     try {
