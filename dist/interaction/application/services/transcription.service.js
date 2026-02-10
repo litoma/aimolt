@@ -14,23 +14,16 @@ const common_1 = require("@nestjs/common");
 const gemini_service_1 = require("../../../core/gemini/gemini.service");
 const prompt_service_1 = require("../../../core/prompt/prompt.service");
 const discord_service_1 = require("../../../discord/discord.service");
-const fs = require("fs");
-const path = require("path");
 const https = require("https");
-const util_1 = require("util");
-const unlinkAsync = (0, util_1.promisify)(fs.unlink);
-const readFileAsync = (0, util_1.promisify)(fs.readFile);
+const supabase_service_1 = require("../../../core/supabase/supabase.service");
 let TranscriptionService = class TranscriptionService {
-    constructor(geminiService, promptService, discordService) {
+    constructor(geminiService, promptService, discordService, supabaseService) {
         this.geminiService = geminiService;
         this.promptService = promptService;
         this.discordService = discordService;
-        const tempDir = path.join(process.cwd(), 'temp');
-        if (!fs.existsSync(tempDir)) {
-            fs.mkdirSync(tempDir);
-        }
+        this.supabaseService = supabaseService;
     }
-    async handleTranscription(message, userId) {
+    async handleTranscription(message, userId, saveToDb = true) {
         const audioExts = ['.ogg', '.mp3', '.wav', '.m4a'];
         let targetAttachment = null;
         for (const attachment of message.attachments.values()) {
@@ -44,25 +37,39 @@ let TranscriptionService = class TranscriptionService {
             await this.sendMessage(message, `<@${userId}> ⚠️ 音声ファイルが見つかりません。対応形式: ${audioExts.join(', ')}`);
             return;
         }
-        const maxSize = 100 * 1024 * 1024;
+        const maxSize = 20 * 1024 * 1024;
         if (targetAttachment.size > maxSize) {
-            await this.sendMessage(message, `<@${userId}> ❌ ファイルサイズが100MBを超えています。`);
+            await this.sendMessage(message, `<@${userId}> ❌ ファイルサイズが大きすぎます（20MBまで）`);
             return;
         }
-        const timestamp = Date.now();
-        const tempDir = path.join(process.cwd(), 'temp');
-        const filePath = path.join(tempDir, `original_${timestamp}_${targetAttachment.name}`);
         const downloadUrl = targetAttachment.proxyURL || targetAttachment.url;
         try {
-            await this.downloadAudio(downloadUrl, filePath);
+            const audioBuffer = await this.downloadAudio(downloadUrl);
             const systemInstruction = this.promptService.getTranscribePrompt();
-            const audioData = await readFileAsync(filePath);
-            const mimeType = targetAttachment.contentType || 'audio/ogg';
+            let mimeType = targetAttachment.contentType;
+            if (!mimeType) {
+                const ext = (targetAttachment.name || '').toLowerCase().split('.').pop();
+                switch (ext) {
+                    case 'mp3':
+                        mimeType = 'audio/mpeg';
+                        break;
+                    case 'wav':
+                        mimeType = 'audio/wav';
+                        break;
+                    case 'm4a':
+                        mimeType = 'audio/mp4';
+                        break;
+                    case 'ogg':
+                        mimeType = 'audio/ogg';
+                        break;
+                    default: mimeType = 'audio/ogg';
+                }
+            }
             const parts = [
                 '以下の音声を日本語のテキストに変換し、フィラー語を除去して自然な文章にしてください。',
                 {
                     inlineData: {
-                        data: audioData.toString('base64'),
+                        data: audioBuffer.toString('base64'),
                         mimeType: mimeType
                     }
                 }
@@ -71,48 +78,71 @@ let TranscriptionService = class TranscriptionService {
             const cleanedText = this.removeFillerWords(transcriptionRaw);
             await this.sendMessage(message, '🎉 文字起こしが完了したよ〜！');
             if (cleanedText.trim()) {
-                const quotedText = `>>> ${cleanedText}`;
-                for (let i = 0; i < quotedText.length; i += 1900) {
-                    await this.sendMessage(message, quotedText.slice(i, i + 1900));
+                if (saveToDb) {
+                    const keywords = await this.extractKeywords(cleanedText);
+                    await this.saveTranscription(userId, cleanedText, keywords);
+                }
+                const MAX_LENGTH = 1900;
+                if (cleanedText.length > MAX_LENGTH) {
+                    const buffer = Buffer.from(cleanedText, 'utf-8');
+                    await this.sendMessage(message, '📝 文字起こし結果が長いため、テキストファイルで送信します。', [{
+                            attachment: buffer,
+                            name: 'transcription.txt'
+                        }]);
+                }
+                else {
+                    await this.sendMessage(message, `>>> ${cleanedText}`);
                 }
             }
             else {
-                await this.sendMessage(message, `<@${userId}> ⚠️ 文字起こし結果が空でした。😓`);
+                await this.sendMessage(message, `<@${userId}> ⚠️ 文字起こし結果が空でした`);
             }
         }
         catch (error) {
             console.error('Transcription Error:', error);
-            await this.sendMessage(message, `<@${userId}> ❌ 音声処理中にエラーが発生したよ！🙈 詳細: ${error.message}`);
-        }
-        finally {
-            if (fs.existsSync(filePath)) {
-                await unlinkAsync(filePath).catch(err => console.error('Cleanup error:', err));
-            }
+            await this.sendMessage(message, `<@${userId}> ❌ 音声処理中にエラーが発生しました: ${error.message}`);
         }
     }
-    async sendMessage(originalMessage, content) {
+    async saveTranscription(userId, text, keywords = []) {
+        try {
+            const { error } = await this.supabaseService.getClient()
+                .from('transcripts')
+                .insert([{
+                    user_id: userId,
+                    text: text,
+                    keywords: keywords,
+                    created_at: new Date()
+                }]);
+            if (error) {
+                console.error('Failed to save transcription:', error);
+            }
+            else {
+                console.log(`Saved transcription for user ${userId}`);
+            }
+        }
+        catch (err) {
+            console.error('Supabase persistence error (transcripts):', err);
+        }
+    }
+    async sendMessage(originalMessage, content, files) {
         const channel = originalMessage.channel;
         if (channel.send) {
-            return await channel.send(content);
+            return await channel.send({ content, files });
         }
         return null;
     }
-    downloadAudio(url, filePath) {
+    downloadAudio(url) {
         return new Promise((resolve, reject) => {
-            const file = fs.createWriteStream(filePath);
             https.get(url, (response) => {
                 if (response.statusCode !== 200) {
                     reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
                     return;
                 }
-                response.pipe(file);
-                file.on('finish', () => {
-                    file.close();
-                    resolve();
-                });
-            }).on('error', (err) => {
-                fs.unlink(filePath, () => reject(err));
-            });
+                const chunks = [];
+                response.on('data', (chunk) => chunks.push(chunk));
+                response.on('end', () => resolve(Buffer.concat(chunks)));
+                response.on('error', (err) => reject(err));
+            }).on('error', (err) => reject(err));
         });
     }
     removeFillerWords(text) {
@@ -143,12 +173,35 @@ let TranscriptionService = class TranscriptionService {
         });
         return cleanText.trim();
     }
+    async extractKeywords(text) {
+        try {
+            const systemPrompt = '以下のテキストから、話者が「現在直面している課題」「関心を持っている技術」「体調や気分の変化」に関する重要なキーワードや短いフレーズを最大5つ抽出してください。結果はJSON形式の配列で返してください。出力形式: ["キーワード1", "キーワード2", ...]';
+            const userPrompt = `テキスト:\n${text}`;
+            const result = await this.geminiService.generateText(systemPrompt, userPrompt);
+            const cleanResult = result.replace(/```json/g, '').replace(/```/g, '').trim();
+            try {
+                const keywords = JSON.parse(cleanResult);
+                if (Array.isArray(keywords)) {
+                    return keywords.slice(0, 5);
+                }
+            }
+            catch (e) {
+                console.error('Failed to parse keywords JSON:', e);
+            }
+            return [];
+        }
+        catch (error) {
+            console.error('Keyword extraction error:', error);
+            return [];
+        }
+    }
 };
 exports.TranscriptionService = TranscriptionService;
 exports.TranscriptionService = TranscriptionService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [gemini_service_1.GeminiService,
         prompt_service_1.PromptService,
-        discord_service_1.DiscordService])
+        discord_service_1.DiscordService,
+        supabase_service_1.SupabaseService])
 ], TranscriptionService);
 //# sourceMappingURL=transcription.service.js.map

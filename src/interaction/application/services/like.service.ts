@@ -30,11 +30,11 @@ export class LikeService {
         }
 
         try {
-            // 1. Parallel Processing: Analyze, Get Context, Get Memories
-            const [analysis, history, memories] = await Promise.all([
+            // 1. Parallel Processing: Analyze, Get Context, Get Related Knowledge
+            const [analysis, history, relatedContext] = await Promise.all([
                 this.analysisService.analyzeMessage(userId, userMessage), // Analyzed in memory
                 this.getRecentContext(userId, parseInt(this.configService.get<string>('CONVERSATION_LIMIT'), 10) || 100),
-                this.memoryService.getRelevantMemories(userId)
+                this.analysisService.searchRelatedKnowledge(userMessage)
             ]);
 
             // 2. Process Memory (Async, fire & forget or await if critical)
@@ -50,8 +50,8 @@ export class LikeService {
             if (history.length > 0) {
                 contextBlock += '\n\n【直近の会話履歴】\n' + history.map(h => `${h.role === 'user' ? 'ユーザー' : 'AImolt'}: ${h.content}`).join('\n');
             }
-            if (memories) {
-                contextBlock += '\n\n【ユーザーに関する記憶】\n' + memories;
+            if (relatedContext.length > 0) {
+                contextBlock += '\n\n【関連情報・過去の記憶】\n' + relatedContext.join('\n');
             }
 
             // Include analysis insights in prompt? Maybe later. For now, context is key.
@@ -120,6 +120,9 @@ export class LikeService {
         try {
             const isMemory = analysis.importance_score >= 4;
 
+            // Generate embedding for Vector Search
+            const embedding = await this.geminiService.embedText(userMessage);
+
             const payload = {
                 user_id: userId,
                 user_message: userMessage,
@@ -132,8 +135,9 @@ export class LikeService {
                 confidence_score: analysis.confidence_score,
                 analyzed_at: new Date(),
                 is_memory: isMemory,
-                memory_type: isMemory ? 'fact' : null, // Simple heuristic for now
-                access_count: 0
+                memory_type: isMemory ? 'fact' : null,
+                access_count: 0,
+                embedding: embedding
             };
 
             const { error } = await this.supabaseService.getClient()

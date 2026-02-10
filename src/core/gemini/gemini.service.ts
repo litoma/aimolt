@@ -72,4 +72,14 @@ export class GeminiService {
         });
         return model.startChat({ history });
     }
+
+    async embedText(text: string): Promise<number[]> {
+        return this.commonService.retry(async () => {
+            const modelName = this.configService.get<string>('GEMINI_EMBEDDING_AI_MODEL') || 'models/gemini-embedding-001';
+
+            const model = this.genAI.getGenerativeModel({ model: modelName });
+            const result = await model.embedContent(text);
+            return result.embedding.values;
+        }, 3, 1000, 10000, 'Gemini Embedding Generation');
+    }
 }

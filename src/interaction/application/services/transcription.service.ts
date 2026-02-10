@@ -76,8 +76,8 @@ export class TranscriptionService {
             if (cleanedText.trim()) {
                 // Save to DB if requested (Prioritize persistence)
                 if (saveToDb) {
-                    const keywords = await this.extractKeywords(cleanedText);
-                    await this.saveTranscription(userId, cleanedText, keywords);
+                    const embedding = await this.geminiService.embedText(cleanedText);
+                    await this.saveTranscription(userId, cleanedText, embedding);
                 }
 
                 const MAX_LENGTH = 1900;
@@ -103,14 +103,14 @@ export class TranscriptionService {
         }
     }
 
-    private async saveTranscription(userId: string, text: string, keywords: string[] = []): Promise<void> {
+    private async saveTranscription(userId: string, text: string, embedding: number[]): Promise<void> {
         try {
             const { error } = await this.supabaseService.getClient()
                 .from('transcripts')
                 .insert([{
                     user_id: userId,
                     text: text,
-                    keywords: keywords,
+                    embedding: embedding,
                     created_at: new Date()
                 }]);
 
@@ -177,28 +177,5 @@ export class TranscriptionService {
         return cleanText.trim();
     }
 
-    private async extractKeywords(text: string): Promise<string[]> {
-        try {
-            const systemPrompt = '以下のテキストから、話者が「現在直面している課題」「関心を持っている技術」「体調や気分の変化」に関する重要なキーワードや短いフレーズを最大5つ抽出してください。結果はJSON形式の配列で返してください。出力形式: ["キーワード1", "キーワード2", ...]';
-            const userPrompt = `テキスト:\n${text}`;
 
-            const result = await this.geminiService.generateText(systemPrompt, userPrompt);
-
-            // Clean up code blocks if present
-            const cleanResult = result.replace(/```json/g, '').replace(/```/g, '').trim();
-
-            try {
-                const keywords = JSON.parse(cleanResult);
-                if (Array.isArray(keywords)) {
-                    return keywords.slice(0, 5);
-                }
-            } catch (e) {
-                console.error('Failed to parse keywords JSON:', e);
-            }
-            return [];
-        } catch (error) {
-            console.error('Keyword extraction error:', error);
-            return [];
-        }
-    }
 }

@@ -1,10 +1,15 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { GeminiService } from '../../core/gemini/gemini.service';
+import { SupabaseService } from '../../core/supabase/supabase.service';
 
 import { ConversationAnalysis } from '../entities/conversation-analysis.entity';
 
 @Injectable()
 export class AnalysisService {
-    constructor() { }
+    constructor(
+        private readonly geminiService: GeminiService,
+        private readonly supabaseService: SupabaseService
+    ) { }
 
     async analyzeMessage(userId: string, message: string): Promise<ConversationAnalysis> {
         return new ConversationAnalysis({
@@ -75,5 +80,84 @@ export class AnalysisService {
         if (message.includes('?')) score += 1;
         if (/重要|緊急|教えて|相談/.test(message)) score += 3;
         return Math.min(score, 10);
+    }
+
+    async searchRelatedKnowledge(query: string): Promise<string[]> {
+        const entities = await this.extractEntities(query);
+        const searchQueries = [query, ...entities];
+
+        // Multi-query Vector Search
+        const results = await Promise.all(
+            searchQueries.map(q => this.performVectorSearch(q))
+        );
+
+        // Deduplicate & Sort
+        const allItems = results.flat();
+        const uniqueItems = this.deduplicateResults(allItems)
+            .sort((a, b) => b.similarity - a.similarity);
+
+        return uniqueItems.map(item => item.content);
+    }
+
+    private async extractEntities(query: string): Promise<string[]> {
+        try {
+            const systemPrompt = 'ユーザーのメッセージから、検索に有効な「関連エンティティ」「専門用語」「類義語」を最大3つ抽出してください。結果はJSON形式の文字列配列で返してください。例: ["React", "UIライブラリ", "Facebook"]';
+            const userPrompt = `メッセージ: ${query}`;
+            const result = await this.geminiService.generateText(systemPrompt, userPrompt);
+            const cleanResult = result.replace(/```json/g, '').replace(/```/g, '').trim();
+            const parsed = JSON.parse(cleanResult);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+            console.error('Entity extraction failed:', e);
+            return [];
+        }
+    }
+
+    private async performVectorSearch(query: string): Promise<any[]> {
+        try {
+            const embedding = await this.geminiService.embedText(query);
+
+            // Parallel DB queries
+            const [convRes, trRes] = await Promise.all([
+                this.supabaseService.getClient().rpc('match_conversations', {
+                    query_embedding: embedding, match_threshold: 0.5, match_count: 5
+                }),
+                this.supabaseService.getClient().rpc('match_transcripts', {
+                    query_embedding: embedding, match_threshold: 0.5, match_count: 3
+                })
+            ]);
+
+            const results = [];
+
+            if (convRes.data) {
+                results.push(...convRes.data.map((c: any) => ({
+                    id: `conv_${c.id}`,
+                    content: `User: ${c.user_message}\nAI: ${c.bot_response}`,
+                    similarity: c.similarity
+                })));
+            }
+
+            if (trRes.data) {
+                results.push(...trRes.data.map((t: any) => ({
+                    id: `tr_${t.id}`,
+                    content: `Transcript: ${t.text}`, // Note: text might be long
+                    similarity: t.similarity
+                })));
+            }
+
+            return results;
+        } catch (e) {
+            console.error('Vector search failed:', e);
+            return [];
+        }
+    }
+
+    private deduplicateResults(items: any[]): any[] {
+        const seen = new Set();
+        return items.filter(item => {
+            if (seen.has(item.id)) return false;
+            seen.add(item.id);
+            return true;
+        });
     }
 }

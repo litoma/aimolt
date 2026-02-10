@@ -14,10 +14,10 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const gemini_service_1 = require("../../../core/gemini/gemini.service");
 const prompt_service_1 = require("../../../core/prompt/prompt.service");
-const vad_service_1 = require("../../../personality/application/services/vad.service");
-const relationship_service_1 = require("../../../personality/application/services/relationship.service");
-const analysis_service_1 = require("../../../personality/application/services/analysis.service");
-const memory_service_1 = require("../../../personality/application/services/memory.service");
+const vad_service_1 = require("../../../personality/services/vad.service");
+const relationship_service_1 = require("../../../personality/services/relationship.service");
+const analysis_service_1 = require("../../../personality/services/analysis.service");
+const memory_service_1 = require("../../../personality/services/memory.service");
 const supabase_service_1 = require("../../../core/supabase/supabase.service");
 let LikeService = class LikeService {
     constructor(geminiService, promptService, vadService, relationshipService, analysisService, memoryService, supabaseService, configService) {
@@ -30,7 +30,7 @@ let LikeService = class LikeService {
         this.supabaseService = supabaseService;
         this.configService = configService;
     }
-    async handleLike(message, userId) {
+    async handleLike(message, userId, saveHistory = true) {
         const userMessage = message.content;
         if (!userMessage) {
             await message.reply('メッセージが空か無効です！😅');
@@ -42,7 +42,9 @@ let LikeService = class LikeService {
                 this.getRecentContext(userId, parseInt(this.configService.get('CONVERSATION_LIMIT'), 10) || 100),
                 this.memoryService.getRelevantMemories(userId)
             ]);
-            this.memoryService.processMemory(analysis).catch(e => console.error('Memory process error:', e));
+            if (saveHistory) {
+                this.memoryService.processMemory(analysis).catch(e => console.error('Memory process error:', e));
+            }
             const systemInstruction = this.promptService.getSystemPrompt();
             const baseLikePrompt = this.promptService.getLikePrompt();
             let contextBlock = '';
@@ -55,12 +57,14 @@ let LikeService = class LikeService {
             const promptWithMessage = `${baseLikePrompt}${contextBlock}\n\nユーザーのメッセージ: ${userMessage}`;
             const replyText = await this.geminiService.generateText(systemInstruction, promptWithMessage);
             await message.reply(replyText.slice(0, 2000));
-            await this.saveConversation(userId, userMessage, replyText, analysis);
-            this.updatePersonality(userId, userMessage, analysis).catch(err => console.error('Personality update error:', err));
+            if (saveHistory) {
+                await this.saveConversation(userId, userMessage, replyText, analysis);
+                this.updatePersonality(userId, userMessage, analysis).catch(err => console.error('Personality update error:', err));
+            }
         }
         catch (error) {
             console.error('Error in LikeService:', error);
-            await message.reply('うわっ、なんかミスっちゃったみたい！🙈');
+            await message.reply('何らかのエラーが発生しました');
         }
     }
     async updatePersonality(userId, userMessage, analysis) {

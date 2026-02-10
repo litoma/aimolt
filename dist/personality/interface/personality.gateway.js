@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PersonalityGateway = void 0;
 const common_1 = require("@nestjs/common");
 const discord_service_1 = require("../../discord/discord.service");
-const vad_service_1 = require("../application/services/vad.service");
-const relationship_service_1 = require("../application/services/relationship.service");
+const vad_service_1 = require("../services/vad.service");
+const relationship_service_1 = require("../services/relationship.service");
 const discord_js_1 = require("discord.js");
 let PersonalityGateway = class PersonalityGateway {
     constructor(discordService, vadService, relationshipService) {

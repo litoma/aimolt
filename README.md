@@ -1,4 +1,4 @@
-# AImolt Discord 
+# AImolt Discord Bot
 
 AImoltは、**Gemini** と **Supabase (PostgreSQL)** を活用した多機能Discordボットです。
 **NestJS** で構築されており、**Koyeb** (またはDocker対応プラットフォーム) 上で常駐プロセスとして動作し、WebSocket (Gateway) によるリアルタイム応答を実現します。

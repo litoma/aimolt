@@ -58,7 +58,20 @@ let ReactionGateway = class ReactionGateway {
             if (fullReaction.emoji.name === '👍') {
                 const message = await fullReaction.message.fetch();
                 if (!message.author.bot) {
-                    await this.likeService.handleLike(message, fullUser.id);
+                    await this.likeService.handleLike(message, fullUser.id, true);
+                }
+            }
+            if (fullReaction.emoji.name === '👻') {
+                const message = await fullReaction.message.fetch();
+                if (!message.author.bot) {
+                    const audioExts = ['.ogg', '.mp3', '.wav', '.m4a'];
+                    const hasAudio = message.attachments.some(att => audioExts.some(ext => (att.name || '').toLowerCase().endsWith(ext)));
+                    if (hasAudio) {
+                        await this.transcriptionService.handleTranscription(message, fullUser.id, false);
+                    }
+                    else {
+                        await this.likeService.handleLike(message, fullUser.id, false);
+                    }
                 }
             }
             if (fullReaction.emoji.name === '📝') {
@@ -67,7 +80,7 @@ let ReactionGateway = class ReactionGateway {
             }
             if (fullReaction.emoji.name === '🎤') {
                 const message = await fullReaction.message.fetch();
-                await this.transcriptionService.handleTranscription(message, fullUser.id);
+                await this.transcriptionService.handleTranscription(message, fullUser.id, true);
             }
         }
         catch (error) {

@@ -23,6 +23,11 @@ let DiscordService = class DiscordService {
                 discord_js_1.GatewayIntentBits.MessageContent,
                 discord_js_1.GatewayIntentBits.GuildMessageReactions,
             ],
+            partials: [
+                discord_js_1.Partials.Message,
+                discord_js_1.Partials.Channel,
+                discord_js_1.Partials.Reaction,
+            ],
         });
     }
     async onModuleInit() {
