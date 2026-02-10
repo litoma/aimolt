@@ -77,8 +77,14 @@ export class GeminiService {
         return this.commonService.retry(async () => {
             const modelName = this.configService.get<string>('GEMINI_EMBEDDING_AI_MODEL') || 'models/gemini-embedding-001';
 
+            // Truncate text to fit within 2048 tokens.
+            // Estimation: 1 token ~ 1.5 chars (Japanese/mixed). 
+            // 2048 tokens ~ 3000 chars. Setting safe limit to 3000 chars.
+            const SAFE_MAX_CHARS = 3000;
+            const truncatedText = text.length > SAFE_MAX_CHARS ? text.slice(0, SAFE_MAX_CHARS) : text;
+
             const model = this.genAI.getGenerativeModel({ model: modelName });
-            const result = await model.embedContent(text);
+            const result = await model.embedContent(truncatedText);
             return result.embedding.values;
         }, 3, 1000, 10000, 'Gemini Embedding Generation');
     }

@@ -76,6 +76,9 @@ export class TranscriptionService {
             if (cleanedText.trim()) {
                 // Save to DB if requested (Prioritize persistence)
                 if (saveToDb) {
+                    // Embedding generated here will be truncated to ~3000 chars within embedText.
+                    // This means vector search matches against the BEGINNING of the transcript.
+                    // Full text is preserved in the 'text' column.
                     const embedding = await this.geminiService.embedText(cleanedText);
                     await this.saveTranscription(userId, cleanedText, embedding);
                 }
