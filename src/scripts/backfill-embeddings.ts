@@ -10,7 +10,7 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const EMBEDDING_MODEL = process.env.GEMINI_EMBEDDING_AI_MODEL || 'models/gemini-embedding-001';
+const EMBEDDING_MODEL = process.env.GEMINI_AI_MODEL_EMBEDDING || 'models/gemini-embedding-001';
 
 if (!SUPABASE_URL || !SUPABASE_KEY || !GEMINI_API_KEY) {
     console.error('Missing environment variables!');
@@ -20,10 +20,12 @@ if (!SUPABASE_URL || !SUPABASE_KEY || !GEMINI_API_KEY) {
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: EMBEDDING_MODEL });
+const SAFE_MAX_CHARS = 3000;
 
 async function embedText(text: string): Promise<number[] | null> {
     try {
-        const result = await model.embedContent(text);
+        const truncatedText = text.length > SAFE_MAX_CHARS ? text.slice(0, SAFE_MAX_CHARS) : text;
+        const result = await model.embedContent(truncatedText);
         return result.embedding.values;
     } catch (e) {
         console.error('Embedding error:', e);
