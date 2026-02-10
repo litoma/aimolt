@@ -46,7 +46,7 @@ export class GeminiService {
         }, 3, 1000, 10000, 'Gemini Text Generation');
     }
 
-    async generateTextWithParts(systemPrompt: string, parts: any[]): Promise<string> {
+    async generateTextWithParts(systemPrompt: string, parts: any[], config?: any): Promise<string> {
         return this.commonService.retry(async () => {
             const modelName = this.configService.get<string>('GEMINI_AI_MODEL');
             if (!modelName) throw new Error('GEMINI_AI_MODEL is not defined');
@@ -54,6 +54,7 @@ export class GeminiService {
             const model = this.genAI.getGenerativeModel({
                 model: modelName,
                 systemInstruction: systemPrompt,
+                generationConfig: config
             });
 
             const result = await model.generateContent(parts);

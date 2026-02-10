@@ -68,7 +68,11 @@ export class TranscriptionService {
                 }
             ];
 
-            const transcriptionRaw = await this.geminiService.generateTextWithParts(systemInstruction, parts);
+            const transcriptionRaw = await this.geminiService.generateTextWithParts(
+                systemInstruction,
+                parts,
+                { temperature: 0.1 } // Low temperature to prevent hallucinations
+            );
             const cleanedText = this.removeFillerWords(transcriptionRaw);
 
             await this.sendMessage(message, '🎉 文字起こしが完了したよ〜！');
