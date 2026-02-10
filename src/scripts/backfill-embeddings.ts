@@ -8,7 +8,7 @@ import * as path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_KEY; // Should be SERVICE_ROLE_KEY if RLS is strict, or ANON if allowed
+const SUPABASE_KEY = process.env.SUPABASE_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const EMBEDDING_MODEL = process.env.GEMINI_EMBEDDING_AI_MODEL || 'models/gemini-embedding-001';
 
@@ -33,16 +33,17 @@ async function embedText(text: string): Promise<number[] | null> {
 
 async function backfillConversations() {
     console.log('Starting backfill for conversations...');
-    let hasMore = true;
-    let page = 0;
+    let lastId = 0;
     const pageSize = 50;
+    let hasMore = true;
 
     while (hasMore) {
         const { data, error } = await supabase
             .from('conversations')
-            .select('id, user_message')
-            .is('embedding', null)
-            .range(page * pageSize, (page + 1) * pageSize - 1);
+            .select('id, user_message, embedding') // Select embedding to check if exists
+            .gt('id', lastId)
+            .order('id', { ascending: true })
+            .limit(pageSize);
 
         if (error) {
             console.error('Fetch error (conversations):', error);
@@ -54,12 +55,16 @@ async function backfillConversations() {
             break;
         }
 
-        console.log(`Processing ${data.length} conversations...`);
+        console.log(`Processing ${data.length} conversations (ID > ${lastId})...`);
 
         for (const record of data) {
+            lastId = record.id; // Update lastId regardless of success
+
+            // Skip if already has embedding
+            if (record.embedding) continue;
+            // Skip if no text
             if (!record.user_message) continue;
 
-            // Generate embedding for user_message
             const vector = await embedText(record.user_message);
             if (vector) {
                 const { error: updateError } = await supabase
@@ -70,30 +75,26 @@ async function backfillConversations() {
                 if (updateError) console.error(`Failed to update conversation ${record.id}:`, updateError);
                 else process.stdout.write('.');
             }
-            // Rate limit handling (simple wait)
+            // Rate limit handling
             await new Promise(r => setTimeout(r, 100));
         }
         console.log('\nBatch complete.');
-        // Don't increment page, because we are fetching where embedding is NULL. 
-        // Warning: if some fail repeatedly, this loop might get stuck.
-        // Safer to just re-fetch same range or use simple pagination if we don't care about order.
-        // Actually, since we update rows, they will no longer be NULL.
-        // So page 0 is always correct content to fetch next.
     }
     console.log('Conversations backfill done.');
 }
 
 async function backfillTranscripts() {
     console.log('Starting backfill for transcripts...');
-    // Similar logic
-    let hasMore = true;
+    let lastId = 0;
     const pageSize = 50;
+    let hasMore = true;
 
     while (hasMore) {
         const { data, error } = await supabase
             .from('transcripts')
-            .select('id, text')
-            .is('embedding', null)
+            .select('id, text, embedding')
+            .gt('id', lastId)
+            .order('id', { ascending: true })
             .limit(pageSize);
 
         if (error) {
@@ -106,10 +107,16 @@ async function backfillTranscripts() {
             break;
         }
 
-        console.log(`Processing ${data.length} transcripts...`);
+        console.log(`Processing ${data.length} transcripts (ID > ${lastId})...`);
 
         for (const record of data) {
-            if (!record.text) continue;
+            lastId = record.id;
+
+            if (record.embedding) continue;
+            if (!record.text || record.text.trim() === '') {
+                // process.stdout.write('S'); // Skipped empty
+                continue;
+            }
 
             const vector = await embedText(record.text);
             if (vector) {
@@ -120,6 +127,8 @@ async function backfillTranscripts() {
 
                 if (updateError) console.error(`Failed to update transcript ${record.id}:`, updateError);
                 else process.stdout.write('.');
+            } else {
+                console.error(`Failed to embed transcript ${record.id}`);
             }
             await new Promise(r => setTimeout(r, 100));
         }
