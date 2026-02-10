@@ -34,4 +34,4 @@ RUN mkdir -p logs temp prompt && \
 USER node
 
 # Start application
-CMD ["node", "dist/main"]
+CMD ["node", "dist/src/main"]
