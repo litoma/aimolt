@@ -33,12 +33,15 @@ export class VADService {
         // Adjust current values towards the target or just add/subtract
         // Let's implement a simple shift for now based on delta - 50 (center)
         // Normalize: 0-100. Delta > 50 increases, < 50 decreases.
-        // Sensitivity factor 0.1
-        const k = 0.1;
+        // Sensitivity factor 0.5 (Increased from 0.1 for visibility)
+        const k = 0.5;
 
         emotion.valence = Math.max(0, Math.min(100, emotion.valence + (vadDelta.valence - 50) * k));
         emotion.arousal = Math.max(0, Math.min(100, emotion.arousal + (vadDelta.arousal - 50) * k));
         emotion.dominance = Math.max(0, Math.min(100, emotion.dominance + (vadDelta.dominance - 50) * k));
+
+        emotion.updated_at = new Date();
+        emotion.last_interaction = new Date();
 
         return await this.emotionRepository.update(emotion);
     }
