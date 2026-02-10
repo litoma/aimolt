@@ -68,8 +68,11 @@ export class LikeService {
 
             // 6. Save Conversation & Update Personality (Only if saveHistory is true)
             if (saveHistory) {
-                await this.saveConversation(userId, userMessage, replyText, analysis);
-                this.updatePersonality(userId, userMessage, analysis).catch(err => console.error('Personality update error:', err));
+                // Execute in background to stop typing indicator immediately after reply
+                this.saveConversation(userId, userMessage, replyText, analysis)
+                    .catch(e => console.error('Save conversation error:', e));
+                this.updatePersonality(userId, userMessage, analysis)
+                    .catch(err => console.error('Personality update error:', err));
             }
 
         } catch (error) {
