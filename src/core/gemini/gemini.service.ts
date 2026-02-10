@@ -78,9 +78,9 @@ export class GeminiService {
             const modelName = this.configService.get<string>('GEMINI_AI_MODEL_EMBEDDING') || 'models/gemini-embedding-001';
 
             // Truncate text to fit within 2048 tokens.
-            // For Japanese, 1 character can sometimes be close to 1 token.
-            // To be absolutely safe against the 2048 token limit, we set the char limit to 2000.
-            const SAFE_MAX_CHARS = 2000;
+            // Estimation: 1 token ~ 1.5 chars (Japanese/mixed). 
+            // 2048 tokens ~ 3000 chars. Setting safe limit to 3000 chars.
+            const SAFE_MAX_CHARS = 3000;
             const truncatedText = text.length > SAFE_MAX_CHARS ? text.slice(0, SAFE_MAX_CHARS) : text;
 
             const model = this.genAI.getGenerativeModel({ model: modelName });
