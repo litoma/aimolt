@@ -36,9 +36,9 @@ export class VADService {
         // Sensitivity factor 0.5 (Increased from 0.1 for visibility)
         const k = 0.5;
 
-        emotion.valence = Math.max(0, Math.min(100, emotion.valence + (vadDelta.valence - 50) * k));
-        emotion.arousal = Math.max(0, Math.min(100, emotion.arousal + (vadDelta.arousal - 50) * k));
-        emotion.dominance = Math.max(0, Math.min(100, emotion.dominance + (vadDelta.dominance - 50) * k));
+        emotion.valence = Math.round(Math.max(0, Math.min(100, emotion.valence + (vadDelta.valence - 50) * k)));
+        emotion.arousal = Math.round(Math.max(0, Math.min(100, emotion.arousal + (vadDelta.arousal - 50) * k)));
+        emotion.dominance = Math.round(Math.max(0, Math.min(100, emotion.dominance + (vadDelta.dominance - 50) * k)));
 
         emotion.updated_at = new Date();
         emotion.last_interaction = new Date();
