@@ -5,6 +5,7 @@ import { DiscordService } from '../../../discord/discord.service';
 import { Message, TextChannel, DMChannel, NewsChannel, ThreadChannel } from 'discord.js';
 import * as https from 'https';
 import { AnalysisService } from '../../../personality/services/analysis.service';
+import { ImpressionService } from '../../../personality/services/impression.service';
 import { SupabaseService } from '../../../core/supabase/supabase.service';
 
 @Injectable()
@@ -15,6 +16,7 @@ export class TranscriptionService {
         private readonly discordService: DiscordService,
         private readonly supabaseService: SupabaseService,
         private readonly analysisService: AnalysisService,
+        private readonly impressionService: ImpressionService,
     ) { }
 
     async handleTranscription(message: Message, userId: string, saveToDb: boolean = true): Promise<void> {
@@ -102,6 +104,10 @@ export class TranscriptionService {
 
                     if (transcriptId) {
                         try {
+                            // Update Relationship (Impression Analysis) - Async
+                            this.impressionService.analyzeAndUpdate(userId, 'transcript', cleanedText)
+                                .catch(err => console.error('Impression update failure:', err));
+
                             const advice = await this.analysisService.generateAdvice(cleanedText);
                             if (advice) {
                                 if (transcriptMessage) {

@@ -4,6 +4,7 @@ import { GeminiService } from '../../../core/gemini/gemini.service';
 import { PromptService } from '../../../core/prompt/prompt.service';
 import { VADService } from '../../../personality/services/vad.service';
 import { RelationshipService } from '../../../personality/services/relationship.service';
+import { ImpressionService } from '../../../personality/services/impression.service';
 import { AnalysisService } from '../../../personality/services/analysis.service';
 import { MemoryService } from '../../../personality/services/memory.service';
 import { SupabaseService } from '../../../core/supabase/supabase.service';
@@ -16,6 +17,7 @@ export class LikeService {
         private readonly promptService: PromptService,
         private readonly vadService: VADService,
         private readonly relationshipService: RelationshipService,
+        private readonly impressionService: ImpressionService,
         private readonly analysisService: AnalysisService,
         private readonly memoryService: MemoryService,
         private readonly supabaseService: SupabaseService,
@@ -46,6 +48,16 @@ export class LikeService {
             const systemInstruction = this.promptService.getSystemPrompt();
             const baseLikePrompt = this.promptService.getLikePrompt();
 
+            // Fetch Relationship Data
+            const relationship = await this.relationshipService.getRelationship(userId);
+            const relationshipContext = `
+【ユーザーとの関係性データ (Automation)】
+- Impression: ${relationship.impression_summary || 'なし'}
+- Mentor Focus: ${relationship.mentor_focus || 'なし'}
+- Affection Score: ${relationship.affection_score}
+- Understanding Score: ${relationship.understanding_score}
+`;
+
             let contextBlock = '';
             if (history.length > 0) {
                 contextBlock += '\n\n【直近の会話履歴】\n' + history.map(h => `${h.role === 'user' ? 'ユーザー' : 'AImolt'}: ${h.content}`).join('\n');
@@ -55,7 +67,7 @@ export class LikeService {
             }
 
             // Include analysis insights in prompt? Maybe later. For now, context is key.
-            const promptWithMessage = `${baseLikePrompt}${contextBlock}\n\nユーザーのメッセージ: ${userMessage}`;
+            const promptWithMessage = `${baseLikePrompt}${relationshipContext}${contextBlock}\n\nユーザーのメッセージ: ${userMessage}`;
 
             // 4. Generate Response
             const replyText = await this.geminiService.generateText(
@@ -83,21 +95,10 @@ export class LikeService {
 
     private async updatePersonality(userId: string, userMessage: string, analysis: any) {
         // Update Emotion (VAD)
-        const newEmotion = await this.vadService.updateEmotion(userId, userMessage);
+        await this.vadService.updateEmotion(userId, userMessage);
 
-        // Derive approximate sentiment from Valence
-        let sentiment = 'neutral';
-        if (newEmotion.valence > 60) sentiment = 'positive';
-        if (newEmotion.valence < 40) sentiment = 'negative';
-
-        // Update Relationship with richer data
-        await this.relationshipService.updateRelationship(userId, {
-            sentiment: sentiment,
-            sentimentScore: (newEmotion.valence - 50) / 50,
-            analysis: analysis, // Pass detailed analysis
-            vad: newEmotion,    // Pass VAD state
-            userMessage: userMessage
-        });
+        // Update Relationship (Impression Analysis)
+        await this.impressionService.analyzeAndUpdate(userId, 'chat', `User: ${userMessage}\nAnalysis: ${JSON.stringify(analysis)}`);
     }
 
     private async getRecentContext(userId: string, limit: number): Promise<{ role: string, content: string }[]> {

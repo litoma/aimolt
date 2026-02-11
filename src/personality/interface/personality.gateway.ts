@@ -55,8 +55,8 @@ export class PersonalityGateway implements OnModuleInit {
                     },
                     {
                         name: '🤝 Relationship',
-                        value: `Stage: ${relationship.relationship_stage}\nAffection: ${relationship.affection_level}\nTrust: ${relationship.trust_level}`,
-                        inline: true
+                        value: `Impression: ${(relationship.impression_summary || '').slice(0, 50)}...\nFocus: ${relationship.mentor_focus}\nUnderstanding: ${relationship.understanding_score}\nAffection: ${relationship.affection_score}`,
+                        inline: false
                     }
                 )
                 .setTimestamp();

@@ -20,10 +20,15 @@ AImoltは単なるチャットボットではなく、ユーザーとの対話�
 - **Dominance (支配性)**: 主体的な会話で上昇、受動的な会話で下降。
 これら3つの数値を組み合わせ、「喜び (Happy)」「怒り (Angry)」「平静 (Calm)」などのムードを動的に決定し、応答の口調や内容に反映させます。
 
-#### 🤝 関係性追跡 (Relationship Tracking)
-ユーザーごとの好感度や信頼度を蓄積し、関係性ステージを変化させます。
-- **ステージ**: `Stranger` (初対面) → `Acquaintance` (知人) → `Friend` (友人) → `Bestie` (親友)
-- **影響**: 関係が深まるにつれて、よりフレンドリーで親密な口調になったり、ジョークを言ったりするようになります。
+#### 🤝 理解・メンターシステム (Understanding & Mentor System)
+**LLM (Gemini) が会話内容から動的に関係性を分析・更新する**システムです。
+
+- **Impression Summary**: ユーザーの性格、現在の悩み、興味関心などをAIが分析し、要約して記憶します。
+- **Mentor Focus**: AIが現在どのようなスタンスでユーザーに接すべきか（例: "Listen" - 聞き役, "Challenge" - 挑戦を促す）を決定します。
+- **Understanding Score**: 会話の深さや自己開示の度合い応じて、AIの「理解度」が蓄積されていきます（青天井）。
+- **Affection Score**: ユーザーからの感謝や好意的な言葉によって上下する「好感度」スコアです (-100 〜 +100)。
+
+ユーザーの文脈を深く理解し、長期的なメンターやパートナーとして振る舞うための仕組みです。
 
 ### 3. ベクトル検索と長期記憶 (Vector Search & Memory)
 過去の膨大な会話ログから、現在の文脈に関連する情報を瞬時に検索・想起します。
@@ -72,7 +77,16 @@ GEMINI_AI_MODEL="gemini-3-flash-preview"
 GEMINI_AI_MODEL_EMBEDDING="gemini-embedding-001"
 SUPABASE_URL=...
 SUPABASE_KEY=...
-TAVILY_API_KEY=... # Web検索用APIキー (必須)
+TAVILY_API_KEY=...
+```
+
+### データベース (Supabase)
+本プロジェクトは **Supabase (PostgreSQL)** を使用しています。
+`relationships` テーブルには以下のカラムが必要です（マイグレーション済み）:
+- `impression_summary` (text)
+- `mentor_focus` (text)
+- `understanding_score` (int)
+- `affection_score` (int)
 ```
 
 ### ローカル起動

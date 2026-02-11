@@ -24,12 +24,7 @@ export class SupabaseRelationshipRepository {
 
         if (!data) return null;
 
-        // Map DB columns to Entity properties
-        const entity = new Relationship(data);
-        if (data.conversation_count !== undefined) {
-            entity.total_conversations = data.conversation_count;
-        }
-        return entity;
+        return new Relationship(data);
     }
 
     async create(relationship: Relationship): Promise<Relationship> {
@@ -46,7 +41,7 @@ export class SupabaseRelationshipRepository {
             throw error;
         }
 
-        return this.toEntity(data);
+        return new Relationship(data);
     }
 
     async update(relationship: Relationship): Promise<Relationship> {
@@ -65,22 +60,10 @@ export class SupabaseRelationshipRepository {
             throw error;
         }
 
-        return this.toEntity(data);
+        return new Relationship(data);
     }
 
     private toDbPayload(relationship: Relationship): any {
-        const { total_conversations, ...rest } = relationship;
-        return {
-            ...rest,
-            conversation_count: total_conversations, // Map property to column
-        };
-    }
-
-    private toEntity(data: any): Relationship {
-        const entity = new Relationship(data);
-        if (data.conversation_count !== undefined) {
-            entity.total_conversations = data.conversation_count;
-        }
-        return entity;
+        return { ...relationship };
     }
 }

@@ -3,6 +3,7 @@ import { DiscordService } from '../../discord/discord.service';
 import { LikeService } from '../application/services/like.service';
 import { MemoService } from '../application/services/memo.service';
 import { TranscriptionService } from '../application/services/transcription.service';
+import { RelationshipService } from '../../personality/services/relationship.service';
 import { MessageReaction, User, PartialMessageReaction, PartialUser } from 'discord.js';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class ReactionGateway implements OnModuleInit {
         private readonly likeService: LikeService,
         private readonly memoService: MemoService,
         private readonly transcriptionService: TranscriptionService,
+        private readonly relationshipService: RelationshipService,
     ) { }
 
     onModuleInit() {
@@ -95,6 +97,7 @@ export class ReactionGateway implements OnModuleInit {
                 const message = await fullReaction.message.fetch();
                 await this.transcriptionService.handleTranscription(message, fullUser.id, true);
             }
+
 
         } catch (error) {
             console.error('[ReactionGateway] Error processing reaction:', error);

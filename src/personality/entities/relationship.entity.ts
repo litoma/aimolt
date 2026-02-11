@@ -1,14 +1,10 @@
 export class Relationship {
     user_id: string;
-    affection_level: number; // 0-100
-    trust_level: number; // 0-100
-    comfort_level: number; // 0-100
-    last_interaction: Date;
-    relationship_stage: 'stranger' | 'acquaintance' | 'friend' | 'close_friend';
-    known_interests: string[];
-    preferred_formality: 'formal' | 'casual' | 'intimate';
-    total_conversations: number;
-    meaningful_interactions: number;
+    impression_summary: string;
+    mentor_focus: string;
+    understanding_score: number;
+    affection_score: number;
+    // stage: 'Observer' | 'Junior Mentor' | 'Trusted Partner' | 'Life Coach'; // TBD if needed in DB or computed
 
     created_at: Date;
     updated_at: Date;
@@ -17,15 +13,10 @@ export class Relationship {
         Object.assign(this, partial);
 
         // Set defaults
-        this.affection_level = this.affection_level ?? 50;
-        this.trust_level = this.trust_level ?? 50;
-        this.comfort_level = this.comfort_level ?? 50;
-        this.last_interaction = this.last_interaction ?? new Date();
-        this.relationship_stage = this.relationship_stage ?? 'stranger';
-        this.known_interests = this.known_interests ?? [];
-        this.preferred_formality = this.preferred_formality ?? 'formal';
-        this.total_conversations = this.total_conversations ?? 0;
-        this.meaningful_interactions = this.meaningful_interactions ?? 0;
+        this.understanding_score = this.understanding_score ?? 0;
+        this.affection_score = this.affection_score ?? 0;
+        this.impression_summary = this.impression_summary ?? '';
+        this.mentor_focus = this.mentor_focus ?? '';
     }
 
     static createDefault(userId: string): Relationship {
