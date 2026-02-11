@@ -76,21 +76,23 @@ export class TranscriptionService {
             );
             const cleanedText = this.removeFillerWords(transcriptionRaw);
 
-            await this.sendMessage(message, '🎉文字起こしが完了しました');
+            await this.sendMessage(message, '🎤 **文字起こしが完了しました**:');
 
             if (cleanedText.trim()) {
                 // Send as text
                 const MAX_LENGTH = 1900;
+                let transcriptMessage: Message | null = null;
+
                 if (cleanedText.length > MAX_LENGTH) {
                     // Send as file
                     const buffer = Buffer.from(cleanedText, 'utf-8');
-                    await this.sendMessage(message, '📝 文字起こし結果が長いため、テキストファイルで送信します。', [{
+                    transcriptMessage = await this.sendMessage(message, '📝 文字起こし結果が長いため、テキストファイルで送信します。', [{
                         attachment: buffer,
                         name: 'transcription.txt'
                     }]);
                 } else {
                     // Send as text
-                    await this.sendMessage(message, `>>> ${cleanedText}`);
+                    transcriptMessage = await this.sendMessage(message, `>>> ${cleanedText}`);
                 }
 
                 // Save to DB and Generate Advice
@@ -102,7 +104,11 @@ export class TranscriptionService {
                         try {
                             const advice = await this.analysisService.generateAdvice(cleanedText);
                             if (advice) {
-                                await this.sendMessage(message, `💡 **AIからのアドバイス**: \n${advice}`);
+                                if (transcriptMessage) {
+                                    await transcriptMessage.reply(`💡 **AIからのアドバイス**: \n${advice}`);
+                                } else {
+                                    await this.sendMessage(message, `💡 **AIからのアドバイス**: \n${advice}`);
+                                }
                                 await this.updateAdvice(transcriptId, advice);
                             }
                         } catch (adviceError) {
