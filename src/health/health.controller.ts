@@ -17,18 +17,31 @@ export class HealthController {
         let lastMessageTime = 'N/A';
 
         try {
-            const { data } = await this.supabaseService.getClient()
-                .from('conversations')
-                .select('created_at')
-                .order('created_at', { ascending: false })
-                .limit(1)
-                .single();
+            const [convRes, transRes] = await Promise.all([
+                this.supabaseService.getClient()
+                    .from('conversations')
+                    .select('created_at')
+                    .order('created_at', { ascending: false })
+                    .limit(1)
+                    .single(),
+                this.supabaseService.getClient()
+                    .from('transcripts')
+                    .select('created_at')
+                    .order('created_at', { ascending: false })
+                    .limit(1)
+                    .single()
+            ]);
 
-            if (data) {
-                lastMessageTime = new Date(data.created_at).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+            const convTime = convRes.data ? new Date(convRes.data.created_at).getTime() : 0;
+            const transTime = transRes.data ? new Date(transRes.data.created_at).getTime() : 0;
+
+            const latestTime = Math.max(convTime, transTime);
+
+            if (latestTime > 0) {
+                lastMessageTime = new Date(latestTime).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
             }
         } catch (e) {
-            console.error('Failed to fetch last message time', e);
+            console.error('Failed to fetch last activity time', e);
         }
 
         return `
@@ -85,7 +98,7 @@ export class HealthController {
                 <div class="container">
                     <img src="${iconUrl}" alt="Bot Icon" class="icon">
                     <div class="status ${user ? '' : 'error'}">Status: ${status}</div>
-                    <div class="info">Last Message: ${lastMessageTime}</div>
+                    <div class="info">Last Activity: ${lastMessageTime}</div>
                 </div>
             </body>
             </html>
