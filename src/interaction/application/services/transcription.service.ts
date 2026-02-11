@@ -76,7 +76,7 @@ export class TranscriptionService {
             );
             const cleanedText = this.removeFillerWords(transcriptionRaw);
 
-            await this.sendMessage(message, '🎉 文字起こしが完了したよ〜！');
+            await this.sendMessage(message, '🎉文字起こしが完了しました');
 
             if (cleanedText.trim()) {
                 // Send as text
