@@ -7,8 +7,6 @@ import { MessageReaction, User, PartialMessageReaction, PartialUser } from 'disc
 
 @Injectable()
 export class ReactionGateway implements OnModuleInit {
-    private processingCache = new Set<string>();
-
     constructor(
         private readonly discordService: DiscordService,
         private readonly likeService: LikeService,
@@ -17,13 +15,15 @@ export class ReactionGateway implements OnModuleInit {
     ) { }
 
     onModuleInit() {
+        console.log('[DEBUG] ReactionGateway onModuleInit called at ' + new Date().toISOString());
         if (!this.discordService.client) {
             console.error('[ReactionGateway] Discord Client not found!');
             return;
         }
-        this.discordService.client.on('messageReactionAdd', (reaction, user) =>
-            this.handleReaction(reaction, user)
-        );
+        this.discordService.client.on('messageReactionAdd', (reaction, user) => {
+            console.log(`[DEBUG] Event messageReactionAdd received for ${reaction.emoji.name}`);
+            this.handleReaction(reaction, user);
+        });
         console.log('[ReactionGateway] Subscribed to messageReactionAdd events');
     }
 
@@ -53,15 +53,6 @@ export class ReactionGateway implements OnModuleInit {
 
         const fullUser = user as User;
         const fullReaction = reaction as MessageReaction;
-
-        // Dedup Check
-        const cacheKey = `${fullReaction.message.id}:${fullUser.id}:${fullReaction.emoji.name}`;
-        if (this.processingCache.has(cacheKey)) {
-            console.log(`[ReactionGateway] Skipped duplicate reaction: ${cacheKey}`);
-            return;
-        }
-        this.processingCache.add(cacheKey);
-        setTimeout(() => this.processingCache.delete(cacheKey), 10000); // Clear after 10s
 
         // Start typing indicator for any handled reaction
         const stopTyping = this.discordService.startTyping(fullReaction.message.channel);
