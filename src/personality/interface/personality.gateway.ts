@@ -22,7 +22,7 @@ export class PersonalityGateway implements OnModuleInit {
     }
 
     async handleMessage(message: Message) {
-        console.log(`[DEBUG] PersonalityGateway saw message: ${message.content}`);
+
         if (message.author.bot) return;
 
         if (message.content.startsWith('!personality status')) {
