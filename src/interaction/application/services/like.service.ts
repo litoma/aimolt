@@ -6,7 +6,6 @@ import { VADService } from '../../../personality/services/vad.service';
 import { RelationshipService } from '../../../personality/services/relationship.service';
 import { ImpressionService } from '../../../personality/services/impression.service';
 import { AnalysisService } from '../../../personality/services/analysis.service';
-import { MemoryService } from '../../../personality/services/memory.service';
 import { SupabaseService } from '../../../core/supabase/supabase.service';
 import { Message } from 'discord.js';
 
@@ -19,7 +18,6 @@ export class LikeService {
         private readonly relationshipService: RelationshipService,
         private readonly impressionService: ImpressionService,
         private readonly analysisService: AnalysisService,
-        private readonly memoryService: MemoryService,
         private readonly supabaseService: SupabaseService,
         private readonly configService: ConfigService,
     ) { }
@@ -40,9 +38,9 @@ export class LikeService {
             ]);
 
             // 2. Process Memory (Async, fire & forget or await if critical)
-            if (saveHistory) {
-                this.memoryService.processMemory(analysis).catch(e => console.error('Memory process error:', e));
-            }
+            // if (saveHistory) {
+            //     this.memoryService.processMemory(analysis).catch(e => console.error('Memory process error:', e));
+            // }
 
             // 3. Prepare Prompt
             const systemInstruction = this.promptService.getSystemPrompt();
@@ -134,13 +132,8 @@ export class LikeService {
                 sentiment: analysis.sentiment,
                 emotion_detected: analysis.emotion_detected,
                 topic_category: analysis.topic_category,
-                keywords: analysis.keywords,
                 importance_score: analysis.importance_score,
-                confidence_score: analysis.confidence_score,
                 analyzed_at: new Date(),
-                is_memory: isMemory,
-                memory_type: isMemory ? 'fact' : null,
-                access_count: 0,
                 embedding: embedding
             };
 

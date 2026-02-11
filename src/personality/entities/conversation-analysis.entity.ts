@@ -6,9 +6,7 @@ export class ConversationAnalysis {
     sentiment: 'positive' | 'negative' | 'neutral';
     emotion_detected: string;
     topic_category: string;
-    keywords: string[];
     importance_score: number;
-    confidence_score: number;
     analyzed_at?: Date;
 
     constructor(partial: Partial<ConversationAnalysis>) {

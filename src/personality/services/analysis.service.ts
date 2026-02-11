@@ -20,9 +20,7 @@ export class AnalysisService {
             sentiment: this.analyzeSentiment(message),
             emotion_detected: this.detectEmotion(message),
             topic_category: this.categorizeMessage(message),
-            keywords: this.extractKeywords(message),
             importance_score: this.calculateImportanceScore(message),
-            confidence_score: 0.75 // Default confidence
         });
     }
 
@@ -34,10 +32,8 @@ export class AnalysisService {
             : '';
 
         // 2. Tavily Search for external information
-        // Use a summarized query or keywords for Tavily if transcript is too long, 
-        // but for now let's try extracting entities/keywords first.
-        const keywords = this.extractKeywords(transcriptText).join(' ');
-        const searchResults = await this.tavilyService.search(keywords || transcriptText.slice(0, 100)); // Fallback to start of text
+        // Use the first 100 chars as query since keywords extraction is removed
+        const searchResults = await this.tavilyService.search(transcriptText.slice(0, 100));
         const webContext = searchResults.length > 0
             ? `\n\n【Web検索結果】\n${searchResults.join('\n---\n')}`
             : '';
@@ -109,12 +105,6 @@ ${webContext}
         return 'general';
     }
 
-    private extractKeywords(message: string): string[] {
-        // Simple extraction logic: remove common particles and keep meaningful words
-        // In production, consider using a proper tokenizer like kuromoji.js
-        const stopWords = /^[はがをにへとのでも]|です|ます|した|する/gi;
-        return message.split(/\s+/).filter(w => w.length > 2 && !stopWords.test(w)).slice(0, 5);
-    }
 
     private calculateImportanceScore(message: string): number {
         let score = 1;
