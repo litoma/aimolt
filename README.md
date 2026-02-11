@@ -1,6 +1,6 @@
 # AImolt Discord Bot
 
-AImoltは、**Gemini 1.5 Flash / 3 Flash Preview** と **Supabase (PostgreSQL)** を活用した、高度な対話能力と長期記憶を持つDiscordボットです。
+AImoltは、**Gemini** と **Supabase** を活用した、高度な対話能力と長期記憶を持つDiscordボットです。
 **NestJS** で構築されており、**Koyeb** 上で常駐プロセスとして動作します。
 
 ## 🚀 主な機能
@@ -28,12 +28,19 @@ AImoltは単なるチャットボットではなく、ユーザーとの対話�
 ### 3. ベクトル検索と長期記憶 (Vector Search & Memory)
 過去の膨大な会話ログから、現在の文脈に関連する情報を瞬時に検索・想起します。
 
-- **Embeddings**: `gemini-embedding-001` を使用して全会話・文字起こしデータをベクトル化 (**3072次元**)。
+- **Embeddings**: `gemini-embedding-001` を使用して全会話・文字起こしデータをベクトル化。
 - **pgvector**: Supabaseの `pgvector` 拡張機能を使用し、高速な類似度検索を実現。
 - **ハイブリッド検索**:
   - **Conversations**: 過去のやり取りから関連する文脈を検索。
   - **Transcripts**: 過去の音声文字起こしデータからも検索可能。
 - **安全策**: API制限を考慮し、日本語入力は適切に切り詰め (Truncate) 処理を行っています。
+
+### 4. アドバイス生成 (Advice Generation)
+音声文字起こし機能に連動して、ユーザーの発言に対する有用なアドバイスをAIが自動生成します。
+
+- **Web Search**: `Tavily API` を使用して最新のWeb情報を検索。
+- **Vector Search**: 過去の記憶から関連情報を取得。
+- **Synthesis**: これらを統合し、Geminiが最適なアドバイスを作成してDiscordに返信します。
 
 ## 📂 プロジェクト構造
 
@@ -65,6 +72,7 @@ GEMINI_AI_MODEL="gemini-3-flash-preview"
 GEMINI_AI_MODEL_EMBEDDING="gemini-embedding-001"
 SUPABASE_URL=...
 SUPABASE_KEY=...
+TAVILY_API_KEY=... # Web検索用APIキー (必須)
 ```
 
 ### ローカル起動

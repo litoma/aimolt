@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { GeminiService } from '../../core/gemini/gemini.service';
 import { SupabaseService } from '../../core/supabase/supabase.service';
+import { TavilyService } from '../../core/search/tavily.service';
 
 import { ConversationAnalysis } from '../entities/conversation-analysis.entity';
 
@@ -8,7 +9,8 @@ import { ConversationAnalysis } from '../entities/conversation-analysis.entity';
 export class AnalysisService {
     constructor(
         private readonly geminiService: GeminiService,
-        private readonly supabaseService: SupabaseService
+        private readonly supabaseService: SupabaseService,
+        private readonly tavilyService: TavilyService
     ) { }
 
     async analyzeMessage(userId: string, message: string): Promise<ConversationAnalysis> {
@@ -22,6 +24,46 @@ export class AnalysisService {
             importance_score: this.calculateImportanceScore(message),
             confidence_score: 0.75 // Default confidence
         });
+    }
+
+    async generateAdvice(transcriptText: string): Promise<string> {
+        // 1. Vector Search for related past knowledge
+        const relatedKnowledge = await this.searchRelatedKnowledge(transcriptText);
+        const knowledgeContext = relatedKnowledge.length > 0
+            ? `\n\n【過去の関連情報】\n${relatedKnowledge.join('\n---\n')}`
+            : '';
+
+        // 2. Tavily Search for external information
+        // Use a summarized query or keywords for Tavily if transcript is too long, 
+        // but for now let's try extracting entities/keywords first.
+        const keywords = this.extractKeywords(transcriptText).join(' ');
+        const searchResults = await this.tavilyService.search(keywords || transcriptText.slice(0, 100)); // Fallback to start of text
+        const webContext = searchResults.length > 0
+            ? `\n\n【Web検索結果】\n${searchResults.join('\n---\n')}`
+            : '';
+
+        if (!knowledgeContext && !webContext) {
+            return '（関連情報が見つかりませんでした。）';
+        }
+
+        // 3. Generate Advice using Gemini
+        const systemPrompt = `
+あなたはユーザーの活動をサポートするAIアシスタントです。
+ユーザーの発言（音声文字起こし）に基づいて、過去の記録やWeb検索結果を参照し、有益なアドバイスやフィードバックを提供してください。
+アドバイスは簡潔かつ具体的にお願いします。
+`;
+        const userPrompt = `
+ユーザーの発言:
+${transcriptText}
+
+${knowledgeContext}
+
+${webContext}
+
+上記を踏まえて、アドバイスを作成してください。
+`;
+
+        return this.geminiService.generateText(systemPrompt, userPrompt);
     }
 
     private analyzeSentiment(message: string): 'positive' | 'negative' | 'neutral' {

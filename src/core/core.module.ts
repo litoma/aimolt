@@ -4,6 +4,7 @@ import { SupabaseModule } from './supabase/supabase.module';
 import { GeminiService } from './gemini/gemini.service';
 import { PromptService } from './prompt/prompt.service';
 import { CommonService } from './common/common.service';
+import { TavilyService } from './search/tavily.service';
 
 @Module({
     imports: [
@@ -12,7 +13,7 @@ import { CommonService } from './common/common.service';
         }),
         SupabaseModule,
     ],
-    providers: [GeminiService, PromptService, CommonService],
-    exports: [SupabaseModule, GeminiService, PromptService, CommonService],
+    providers: [GeminiService, PromptService, CommonService, TavilyService],
+    exports: [SupabaseModule, GeminiService, PromptService, CommonService, TavilyService],
 })
 export class CoreModule { }

@@ -4,7 +4,7 @@ import { PromptService } from '../../../core/prompt/prompt.service';
 import { DiscordService } from '../../../discord/discord.service';
 import { Message, TextChannel, DMChannel, NewsChannel, ThreadChannel } from 'discord.js';
 import * as https from 'https';
-
+import { AnalysisService } from '../../../personality/services/analysis.service';
 import { SupabaseService } from '../../../core/supabase/supabase.service';
 
 @Injectable()
@@ -14,6 +14,7 @@ export class TranscriptionService {
         private readonly promptService: PromptService,
         private readonly discordService: DiscordService,
         private readonly supabaseService: SupabaseService,
+        private readonly analysisService: AnalysisService,
     ) { }
 
     async handleTranscription(message: Message, userId: string, saveToDb: boolean = true): Promise<void> {
@@ -78,15 +79,7 @@ export class TranscriptionService {
             await this.sendMessage(message, '🎉 文字起こしが完了したよ〜！');
 
             if (cleanedText.trim()) {
-                // Save to DB if requested (Prioritize persistence)
-                if (saveToDb) {
-                    // Embedding generated here will be truncated to ~3000 chars within embedText.
-                    // This means vector search matches against the BEGINNING of the transcript.
-                    // Full text is preserved in the 'text' column.
-                    const embedding = await this.geminiService.embedText(cleanedText);
-                    await this.saveTranscription(userId, cleanedText, embedding);
-                }
-
+                // Send as text
                 const MAX_LENGTH = 1900;
                 if (cleanedText.length > MAX_LENGTH) {
                     // Send as file
@@ -100,6 +93,24 @@ export class TranscriptionService {
                     await this.sendMessage(message, `>>> ${cleanedText}`);
                 }
 
+                // Save to DB and Generate Advice
+                if (saveToDb) {
+                    const embedding = await this.geminiService.embedText(cleanedText);
+                    const transcriptId = await this.saveTranscription(userId, cleanedText, embedding);
+
+                    if (transcriptId) {
+                        try {
+                            const advice = await this.analysisService.generateAdvice(cleanedText);
+                            if (advice) {
+                                await this.sendMessage(message, `💡 **AIからのアドバイス**: \n${advice}`);
+                                await this.updateAdvice(transcriptId, advice);
+                            }
+                        } catch (adviceError) {
+                            console.error('Advice generation failed:', adviceError);
+                        }
+                    }
+                }
+
             } else {
                 await this.sendMessage(message, `<@${userId}> ⚠️ 文字起こし結果が空でした`);
             }
@@ -110,24 +121,44 @@ export class TranscriptionService {
         }
     }
 
-    private async saveTranscription(userId: string, text: string, embedding: number[]): Promise<void> {
+    private async saveTranscription(userId: string, text: string, embedding: number[]): Promise<number | null> {
         try {
-            const { error } = await this.supabaseService.getClient()
+            const { data, error } = await this.supabaseService.getClient()
                 .from('transcripts')
                 .insert([{
                     user_id: userId,
                     text: text,
                     embedding: embedding,
                     created_at: new Date()
-                }]);
+                }])
+                .select('id')
+                .single();
 
             if (error) {
                 console.error('Failed to save transcription:', error);
+                return null;
             } else {
-                console.log(`Saved transcription for user ${userId}`);
+                console.log(`Saved transcription for user ${userId}, ID: ${data.id}`);
+                return data.id;
             }
         } catch (err) {
             console.error('Supabase persistence error (transcripts):', err);
+            return null;
+        }
+    }
+
+    private async updateAdvice(id: number, advice: string): Promise<void> {
+        try {
+            const { error } = await this.supabaseService.getClient()
+                .from('transcripts')
+                .update({ advice: advice })
+                .eq('id', id);
+
+            if (error) {
+                console.error(`Failed to update advice for transcript ${id}:`, error);
+            }
+        } catch (err) {
+            console.error(`Supabase persistence error (update advice ${id}):`, err);
         }
     }
 
@@ -183,6 +214,4 @@ export class TranscriptionService {
 
         return cleanText.trim();
     }
-
-
 }
