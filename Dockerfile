@@ -1,5 +1,4 @@
 # === Stage 1: Build ===
-# === Stage 1: Build ===
 FROM node:25-alpine AS builder
 
 WORKDIR /app
@@ -35,4 +34,4 @@ RUN mkdir -p logs temp prompt && \
 USER node
 
 # Start application
-CMD ["node", "dist/src/main"]
+CMD ["node", "dist/main"]
