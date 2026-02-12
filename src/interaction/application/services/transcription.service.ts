@@ -49,16 +49,23 @@ export class TranscriptionService {
             const systemInstruction = this.promptService.getTranscribePrompt();
 
             // Determine MIME type
+            const ext = (targetAttachment.name || '').toLowerCase().split('.').pop();
             let mimeType = targetAttachment.contentType;
-            if (!mimeType) {
-                const ext = (targetAttachment.name || '').toLowerCase().split('.').pop();
-                switch (ext) {
-                    case 'mp3': mimeType = 'audio/mpeg'; break;
-                    case 'wav': mimeType = 'audio/wav'; break;
-                    case 'm4a': mimeType = 'audio/mp4'; break;
-                    case 'ogg': mimeType = 'audio/ogg'; break;
-                    default: mimeType = 'audio/ogg'; // Default fallback
-                }
+
+            // Force or fallback MIME type based on extension
+            // Discord sometimes sends 'application/octet-stream' or 'audio/x-m4a' which Gemini might not like.
+            switch (ext) {
+                case 'mp3': mimeType = 'audio/mpeg'; break;
+                case 'wav': mimeType = 'audio/wav'; break;
+                case 'm4a': mimeType = 'audio/mp4'; break;
+                case 'ogg': mimeType = 'audio/ogg'; break;
+                case 'aac': mimeType = 'audio/aac'; break;
+                case 'flac': mimeType = 'audio/flac'; break;
+                default:
+                    // Only use fallback if MIME type is missing or generic
+                    if (!mimeType || mimeType === 'application/octet-stream') {
+                        mimeType = 'audio/ogg';
+                    }
             }
 
             const parts = [
