@@ -35,12 +35,6 @@ export class RelationshipService {
         return await this.relationshipRepository.update(relationship);
     }
 
-    async incrementUnderstandingScore(userId: string, amount: number): Promise<Relationship> {
-        const relationship = await this.getRelationship(userId);
-        relationship.understanding_score += amount;
-        relationship.updated_at = new Date();
-        return await this.relationshipRepository.update(relationship);
-    }
 
     async updateAffectionScore(userId: string, delta: number): Promise<Relationship> {
         const relationship = await this.getRelationship(userId);

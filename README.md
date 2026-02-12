@@ -10,42 +10,38 @@ AImoltは、**Gemini** と **Supabase** を活用した、高度な対話能力�
 - **音声文字起こし**: 🎤リアクションでボイスメッセージや音声ファイルを文字起こし。
 - **画像認識**: 画像付きメッセージに対しても内容を理解して応答可能。
 
-### 2. 人格・記憶システム (Personality System)
-AImoltは単なるチャットボットではなく、ユーザーとの対話を通じて感情や関係性が変化する「人格」を持っています。
+### 2. 人格・記憶システム (Personality & Memory System)
+AImoltはユーザーとの対話を通じて感情や関係性が変化する「人格」を持っています。
 
 #### ❤️ 感情モデル (VAD Model)
 心理学の **VADモデル (Valence, Arousal, Dominance)** をベースに、AIの感情状態を数値化して管理しています。
-- **Valence (快/不快)**: ポジティブな会話で上昇、ネガティブな会話で下降。
-- **Arousal (覚醒度)**: 驚きや興奮で上昇、落ち着いた会話で下降。
-- **Dominance (支配性)**: 主体的な会話で上昇、受動的な会話で下降。
-これら3つの数値を組み合わせ、「喜び (Happy)」「怒り (Angry)」「平静 (Calm)」などのムードを動的に決定し、応答の口調や内容に反映させます。
+*   **Valence (快/不快)**: ポジティブな会話で上昇、ネガティブな会話で下降。
+*   **Arousal (覚醒度)**: 驚きや興奮で上昇、落ち着いた会話で下降。
+*   **Dominance (支配性)**: 主体的な会話で上昇、受動的な会話で下降。
 
 #### 🤝 理解・メンターシステム (Understanding & Mentor System)
 **LLM (Gemini) が会話内容から動的に関係性を分析・更新する**システムです。
 
-- **Impression Summary**: ユーザーの性格、現在の悩み、興味関心などをAIが分析し、要約して記憶します。
-- **Mentor Focus**: AIが現在どのようなスタンスでユーザーに接すべきか（例: "Listen" - 聞き役, "Challenge" - 挑戦を促す）を決定します。
-- **Understanding Score**: 会話の深さや自己開示の度合い応じて、AIの「理解度」が蓄積されていきます（青天井）。
-- **Affection Score**: ユーザーからの感謝や好意的な言葉によって上下する「好感度」スコアです (-100 〜 +100)。
+*   **Impression Summary**: ユーザーの人物像や現在の状況をAIが分析し、要約して記憶します。
+*   **Mentor Focus**: AIが現在どのようなスタンスでユーザーに接すべきか（例: "Listen", "Challenge", "Encourage"）を決定します。
+*   **Affection Score**: ユーザーからの感謝や好意的な言葉によって上下する「好感度」スコアです (-100 〜 +100)。
 
-ユーザーの文脈を深く理解し、長期的なメンターやパートナーとして振る舞うための仕組みです。
+これら一連のサイクルにより、ユーザーの文脈を深く理解し、長期的なメンターやパートナーとして振る舞います。
 
 ### 3. ベクトル検索と長期記憶 (Vector Search & Memory)
 過去の膨大な会話ログから、現在の文脈に関連する情報を瞬時に検索・想起します。
 
-- **Embeddings**: `gemini-embedding-001` を使用して全会話・文字起こしデータをベクトル化。
-- **pgvector**: Supabaseの `pgvector` 拡張機能を使用し、高速な類似度検索を実現。
-- **ハイブリッド検索**:
-  - **Conversations**: 過去のやり取りから関連する文脈を検索。
-  - **Transcripts**: 過去の音声文字起こしデータからも検索可能。
-- **安全策**: API制限を考慮し、日本語入力は適切に切り詰め (Truncate) 処理を行っています。
+*   **Embeddings**: `gemini-embedding-001` を使用して全会話・文字起こしデータをベクトル化。
+*   **pgvector (halfvec)**: Supabaseの `pgvector` 拡張機能を使用し、`halfvec(3072)` 型で効率的に管理。高速な類似度検索を実現しています。
+*   **ハイブリッド検索**:
+    *   **Conversations**: 過去のやり取りから関連する文脈を検索。
+    *   **Transcripts**: 過去の音声文字起こしデータからも検索可能。
 
 ### 4. アドバイス生成 (Advice Generation)
 音声文字起こし機能に連動して、ユーザーの発言に対する有用なアドバイスをAIが自動生成します。
 
-- **Web Search**: `Tavily API` を使用して最新のWeb情報を検索。
-- **Vector Search**: 過去の記憶から関連情報を取得。
-- **Synthesis**: これらを統合し、Geminiが最適なアドバイスを作成してDiscordに返信します。
+*   **Web Search**: `Tavily API` を使用して最新のWeb情報を検索。
+*   **Synthesis**: これらを統合し、Geminiが最適なアドバイスを作成してDiscordに返信します。
 
 ## 📂 プロジェクト構造
 
@@ -56,8 +52,8 @@ aimolt/
 │   ├── discord/               # Discord Client & Event Handlers
 │   ├── interaction/           # Interaction Logic (Like, Transcribe, Memo)
 │   ├── personality/           # Personality Engine (Analysis, VAD, Relationship)
-│   └── scripts/               # Maintenance Scripts (Backfill etc.)
-├── Dockerfile                 # Multi-stage build configuration
+│   └── health/                # Health Check Controller
+├── Dockerfile                 # Multi-stage build configuration (Node 25-alpine)
 ├── nest-cli.json              # NestJS config
 └── README.md
 ```
@@ -65,9 +61,9 @@ aimolt/
 ## 🛠️ セットアップ & 開発
 
 ### 必須環境
-- Node.js v22+
-- Docker
-- PostgreSQL (Supabase with `pgvector` enabled)
+*   Node.js v25+
+*   Docker
+*   PostgreSQL (Supabase with `pgvector` enabled)
 
 ### 環境変数 (.env)
 ```env
@@ -81,12 +77,52 @@ TAVILY_API_KEY=...
 ```
 
 ### データベース (Supabase)
-本プロジェクトは **Supabase (PostgreSQL)** を使用しています。
-`relationships` テーブルには以下のカラムが必要です（マイグレーション済み）:
-- `impression_summary` (text)
-- `mentor_focus` (text)
-- `understanding_score` (int)
-- `affection_score` (int)
+本プロジェクトは **Supabase (PostgreSQL)** を活用し、`pgvector` (`halfvec`) によるベクトル検索を実装しています。
+
+#### ER図
+
+```mermaid
+erDiagram
+    users ||--o{ emotions : "has"
+    users ||--o{ relationships : "has"
+    users ||--o{ conversations : "has history"
+    users ||--o{ transcripts : "has transcripts"
+
+    emotions {
+        bigint id PK
+        text user_id UK
+        int valence
+        int arousal
+        int dominance
+        timestamp updated_at
+    }
+
+    relationships {
+        bigint id PK
+        text user_id UK
+        text impression_summary
+        text mentor_focus
+        int affection_score
+        timestamp updated_at
+    }
+
+    conversations {
+        bigint id PK
+        text user_id
+        text user_message
+        text bot_response
+        halfvec(3072) embedding
+        timestamp created_at
+    }
+
+    transcripts {
+        bigint id PK
+        text user_id
+        text text
+        text advice
+        halfvec(3072) embedding
+        timestamp created_at
+    }
 ```
 
 ### ローカル起動
@@ -106,4 +142,4 @@ docker run --env-file .env aimolt
 ```
 
 ## 📄 ライセンス
-ISC License
+MIT License

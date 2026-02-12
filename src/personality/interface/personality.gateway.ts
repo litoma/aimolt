@@ -50,12 +50,12 @@ export class PersonalityGateway implements OnModuleInit {
                 .addFields(
                     {
                         name: '🎭 Emotion (VAD)',
-                        value: `Valence: ${emotion.valence}\nArousal: ${emotion.arousal}\nDominance: ${emotion.dominance}\nMood: ${emotion.mood_type}`,
+                        value: `Valence: ${emotion.valence}\nArousal: ${emotion.arousal}\nDominance: ${emotion.dominance}`,
                         inline: true
                     },
                     {
                         name: '🤝 Relationship',
-                        value: `Impression: ${(relationship.impression_summary || '').slice(0, 50)}...\nFocus: ${relationship.mentor_focus}\nUnderstanding: ${relationship.understanding_score}\nAffection: ${relationship.affection_score}`,
+                        value: `Impression: ${(relationship.impression_summary || '').slice(0, 50)}...\nFocus: ${relationship.mentor_focus}\nAffection: ${relationship.affection_score}`,
                         inline: false
                     }
                 )

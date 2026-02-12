@@ -53,7 +53,6 @@ export class LikeService {
 - Impression: ${relationship.impression_summary || 'なし'}
 - Mentor Focus: ${relationship.mentor_focus || 'なし'}
 - Affection Score: ${relationship.affection_score}
-- Understanding Score: ${relationship.understanding_score}
 `;
 
             let contextBlock = '';
@@ -129,11 +128,6 @@ export class LikeService {
                 user_id: userId,
                 user_message: userMessage,
                 bot_response: botResponse,
-                sentiment: analysis.sentiment,
-                emotion_detected: analysis.emotion_detected,
-                topic_category: analysis.topic_category,
-                importance_score: analysis.importance_score,
-                analyzed_at: new Date(),
                 embedding: embedding
             };
 

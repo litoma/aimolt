@@ -1,5 +1,6 @@
 # === Stage 1: Build ===
-FROM node:22-alpine AS builder
+# === Stage 1: Build ===
+FROM node:25-alpine AS builder
 
 WORKDIR /app
 
@@ -15,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # === Stage 2: Production Run ===
-FROM node:22-alpine AS runner
+FROM node:25-alpine AS runner
 
 WORKDIR /app
 

@@ -41,7 +41,6 @@ export class VADService {
         emotion.dominance = Math.round(Math.max(0, Math.min(100, emotion.dominance + (vadDelta.dominance - 50) * k)));
 
         emotion.updated_at = new Date();
-        emotion.last_interaction = new Date();
 
         return await this.emotionRepository.update(emotion);
     }
