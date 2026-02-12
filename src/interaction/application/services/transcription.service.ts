@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { GeminiService } from '../../../core/gemini/gemini.service';
 import { PromptService } from '../../../core/prompt/prompt.service';
-import { Message, TextChannel, DMChannel, NewsChannel, ThreadChannel } from 'discord.js';
+import { Message, TextChannel, DMChannel, NewsChannel, ThreadChannel, EmbedBuilder } from 'discord.js';
 import axios from 'axios';
 import { DiscordService } from '../../../discord/discord.service';
 import { AnalysisService } from '../../../personality/services/analysis.service';
@@ -118,10 +118,15 @@ export class TranscriptionService {
 
                             const advice = await this.analysisService.generateAdvice(cleanedText);
                             if (advice) {
+                                const embed = new EmbedBuilder()
+                                    .setColor('#FFA500') // Orange
+                                    .setDescription(advice)
+                                    .setFooter({ text: 'AI Advice' });
+
                                 if (transcriptMessage) {
-                                    await transcriptMessage.reply(`💡 **AIからのアドバイス**: \n${advice}`);
+                                    await transcriptMessage.reply({ embeds: [embed] });
                                 } else {
-                                    await this.sendMessage(message, `💡 **AIからのアドバイス**: \n${advice}`);
+                                    await this.sendMessage(message, '', undefined, [embed]);
                                 }
                                 await this.updateAdvice(transcriptId, advice);
                             }
@@ -182,10 +187,10 @@ export class TranscriptionService {
         }
     }
 
-    private async sendMessage(originalMessage: Message, content: string, files?: any[]): Promise<Message | null> {
+    private async sendMessage(originalMessage: Message, content: string, files?: any[], embeds?: any[]): Promise<Message | null> {
         const channel = originalMessage.channel as TextChannel | DMChannel | NewsChannel | ThreadChannel;
         if (channel.send) {
-            return await channel.send({ content, files });
+            return await channel.send({ content, files, embeds });
         }
         return null;
     }
