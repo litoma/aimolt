@@ -17,13 +17,11 @@ export class ReactionGateway implements OnModuleInit {
     ) { }
 
     onModuleInit() {
-        console.log('[DEBUG] ReactionGateway onModuleInit called at ' + new Date().toISOString());
         if (!this.discordService.client) {
             console.error('[ReactionGateway] Discord Client not found!');
             return;
         }
         this.discordService.client.on('messageReactionAdd', (reaction, user) => {
-            console.log(`[DEBUG] Event messageReactionAdd received for ${reaction.emoji.name}`);
             this.handleReaction(reaction, user);
         });
         console.log('[ReactionGateway] Subscribed to messageReactionAdd events');
