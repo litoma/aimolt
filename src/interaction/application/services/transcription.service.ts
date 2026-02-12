@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { GeminiService } from '../../../core/gemini/gemini.service';
 import { PromptService } from '../../../core/prompt/prompt.service';
-import { DiscordService } from '../../../discord/discord.service';
 import { Message, TextChannel, DMChannel, NewsChannel, ThreadChannel } from 'discord.js';
-import * as https from 'https';
+import axios from 'axios';
+import { DiscordService } from '../../../discord/discord.service';
 import { AnalysisService } from '../../../personality/services/analysis.service';
 import { ImpressionService } from '../../../personality/services/impression.service';
 import { SupabaseService } from '../../../core/supabase/supabase.service';
@@ -42,7 +42,8 @@ export class TranscriptionService {
             return;
         }
 
-        const downloadUrl = targetAttachment.proxyURL || targetAttachment.url;
+        // Use .url (CDN) instead of .proxyURL (Media Proxy) to avoid potential 415/403 issues with some file types
+        const downloadUrl = targetAttachment.url || targetAttachment.proxyURL;
 
         try {
             const audioBuffer = await this.downloadAudio(downloadUrl);
@@ -189,20 +190,18 @@ export class TranscriptionService {
         return null;
     }
 
-    private downloadAudio(url: string): Promise<Buffer> {
-        return new Promise((resolve, reject) => {
-            https.get(url, (response) => {
-                if (response.statusCode !== 200) {
-                    reject(new Error(`HTTP ${response.statusCode}: ${response.statusMessage}`));
-                    return;
+    private async downloadAudio(url: string): Promise<Buffer> {
+        try {
+            const response = await axios.get(url, {
+                responseType: 'arraybuffer',
+                headers: {
+                    'User-Agent': 'DiscordBot (AImolt, 1.0.0)'
                 }
-
-                const chunks: Buffer[] = [];
-                response.on('data', (chunk) => chunks.push(chunk));
-                response.on('end', () => resolve(Buffer.concat(chunks)));
-                response.on('error', (err) => reject(err));
-            }).on('error', (err) => reject(err));
-        });
+            });
+            return Buffer.from(response.data);
+        } catch (error) {
+            throw new Error(`Failed to download audio: ${error.message} (URL: ${url})`);
+        }
     }
 
     private removeFillerWords(text: string): string {
