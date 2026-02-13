@@ -98,18 +98,27 @@ export class HealthController {
         const tempDir = path.resolve(process.cwd(), 'temp');
         if (fs.existsSync(tempDir)) {
             const files = fs.readdirSync(tempDir);
-            const backupFiles = files.filter(file => file.startsWith('backup-') && file.endsWith('.sql'));
+            // Look for backup directories: backup-YYYY-MM-DD
+            const backupDirs = files.filter(file => {
+                const filePath = path.join(tempDir, file);
+                try {
+                    return file.startsWith('backup-') && fs.statSync(filePath).isDirectory();
+                } catch (e) {
+                    return false;
+                }
+            });
 
-            if (backupFiles.length > 0) {
-                // Sort by filename (which contains date) descending to get latest
-                backupFiles.sort().reverse();
-                const latestBackup = backupFiles[0];
+            if (backupDirs.length > 0) {
+                // Sort by dirname (which contains date) descending to get latest
+                backupDirs.sort().reverse();
+                const latestBackupDir = backupDirs[0];
 
                 try {
-                    const stats = fs.statSync(path.join(tempDir, latestBackup));
+                    // Use modification time of the directory
+                    const stats = fs.statSync(path.join(tempDir, latestBackupDir));
                     lastBackupTime = stats.mtime.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
                 } catch (e) {
-                    console.error('Failed to get backup file stats', e);
+                    console.error('Failed to get backup directory stats', e);
                 }
             }
         }

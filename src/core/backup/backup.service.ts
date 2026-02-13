@@ -1,18 +1,18 @@
 import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import * as cron from 'node-cron';
-import { exec } from 'child_process';
 import * as path from 'path';
 import * as fs from 'fs';
-import { promisify } from 'util';
 import { ConfigService } from '@nestjs/config';
-
-const execAsync = promisify(exec);
+import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class BackupService implements OnApplicationBootstrap {
     private readonly logger = new Logger(BackupService.name);
 
-    constructor(private readonly configService: ConfigService) { }
+    constructor(
+        private readonly configService: ConfigService,
+        private readonly supabaseService: SupabaseService
+    ) { }
 
     onApplicationBootstrap() {
         this.scheduleBackup();
@@ -20,14 +20,8 @@ export class BackupService implements OnApplicationBootstrap {
 
     private scheduleBackup() {
         // Run every day at 00:00 JST (Asia/Tokyo)
-        // Cron pattern: 0 0 * * *
-        // Note: node-cron uses system time. We should ensure system time is correct or handle offset.
-        // Assuming container timezone is UTC, 00:00 JST is 15:00 UTC previous day.
-        // However, it's safer to specify timezone if supported or just rely on server time.
-        // Here we schedule for 00:00 server time for simplicity, but user asked for "1 day 1 time".
-
         cron.schedule('0 0 * * *', () => {
-            this.logger.log('Starting daily database backup...');
+            this.logger.log('Starting daily database backup (JSON)...');
             this.executeBackup();
         }, {
             timezone: 'Asia/Tokyo'
@@ -37,9 +31,9 @@ export class BackupService implements OnApplicationBootstrap {
     }
 
     async executeBackup() {
-        const databaseUrl = this.configService.get<string>('DATABASE_URL');
-        if (!databaseUrl) {
-            this.logger.error('DATABASE_URL is not defined. Skipping backup.');
+        const client = this.supabaseService.getClient();
+        if (!client) {
+            this.logger.error('Supabase client is not initialized. Skipping backup.');
             return;
         }
 
@@ -47,29 +41,58 @@ export class BackupService implements OnApplicationBootstrap {
         const yyyy = date.getFullYear();
         const mm = String(date.getMonth() + 1).padStart(2, '0');
         const dd = String(date.getDate()).padStart(2, '0');
-        const filename = `backup-${yyyy}-${mm}-${dd}.sql`;
+        const backupDirName = `backup-${yyyy}-${mm}-${dd}`;
 
         // Use /app/temp in container, or relative temp for local dev
         const tempDir = path.resolve(process.cwd(), 'temp');
-        if (!fs.existsSync(tempDir)) {
-            fs.mkdirSync(tempDir, { recursive: true });
+        const backupDirPath = path.join(tempDir, backupDirName);
+
+        if (!fs.existsSync(backupDirPath)) {
+            fs.mkdirSync(backupDirPath, { recursive: true });
         }
 
-        const filePath = path.join(tempDir, filename);
+        // List of tables to backup
+        // Note: Supabase API (PostgREST) reads are non-blocking. 
+        // Writes can continue during backup, but data consistency across tables is not guaranteed.
+        const tables = [
+            'conversations',
+            'transcripts',
+            'emotions',
+            'relationships'
+        ];
 
-        // Command: pg_dump "DATABASE_URL" -f "filePath"
-        // Note: DATABASE_URL should be in connection string format
-        const command = `pg_dump "${databaseUrl}" -f "${filePath}"`;
+        for (const table of tables) {
+            try {
+                this.logger.log(`Backing up table: ${table}...`);
 
-        try {
-            await execAsync(command);
-            this.logger.log(`Database backup completed successfully: ${filePath}`);
+                // Fetch all rows
+                // Note: For very large tables, we should use pagination (range). 
+                // For now, assuming manageable size or increasing limit. Default limit is often 1000.
+                // We'll set a high limit.
+                const { data, error } = await client
+                    .from(table)
+                    .select('*')
+                    .limit(1000000); // Adjust as needed or implement pagination
 
-            // Optional: Cleanup old backups (keep last 7 days)
-            this.cleanupOldBackups(tempDir);
-        } catch (error) {
-            this.logger.error('Database backup failed:', error);
+                if (error) {
+                    this.logger.error(`Failed to fetch data for table ${table}: ${error.message}`);
+                    continue;
+                }
+
+                if (data) {
+                    const filePath = path.join(backupDirPath, `${table}.json`);
+                    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+                    this.logger.log(`Saved ${data.length} rows to ${filePath}`);
+                }
+            } catch (error) {
+                this.logger.error(`Error backing up table ${table}:`, error);
+            }
         }
+
+        this.logger.log(`Database backup completed: ${backupDirPath}`);
+
+        // Cleanup old backups (keep last 7 days)
+        this.cleanupOldBackups(tempDir);
     }
 
     private cleanupOldBackups(dir: string) {
@@ -80,11 +103,12 @@ export class BackupService implements OnApplicationBootstrap {
             const retentionMs = retentionDays * 24 * 60 * 60 * 1000;
 
             for (const file of files) {
-                if (file.startsWith('backup-') && file.endsWith('.sql')) {
+                // Check if it's a backup directory
+                if (file.startsWith('backup-')) {
                     const filePath = path.join(dir, file);
                     const stats = fs.statSync(filePath);
-                    if (now - stats.mtimeMs > retentionMs) {
-                        fs.unlinkSync(filePath);
+                    if (stats.isDirectory() && (now - stats.mtimeMs > retentionMs)) {
+                        fs.rmSync(filePath, { recursive: true, force: true });
                         this.logger.log(`Deleted old backup: ${file}`);
                     }
                 }

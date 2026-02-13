@@ -22,8 +22,7 @@ WORKDIR /app
 # Install production dependencies only
 COPY package*.json ./
 RUN npm ci --only=production && \
-    npm cache clean --force && \
-    apk add --no-cache postgresql-client
+    npm cache clean --force
 
 # Copy built assets from builder stage
 COPY --from=builder /app/dist ./dist
