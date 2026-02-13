@@ -93,6 +93,27 @@ export class HealthController {
             console.error('Failed to fetch last activity time', e);
         }
 
+        // Check for latest backup
+        let lastBackupTime = 'N/A';
+        const tempDir = path.resolve(process.cwd(), 'temp');
+        if (fs.existsSync(tempDir)) {
+            const files = fs.readdirSync(tempDir);
+            const backupFiles = files.filter(file => file.startsWith('backup-') && file.endsWith('.sql'));
+
+            if (backupFiles.length > 0) {
+                // Sort by filename (which contains date) descending to get latest
+                backupFiles.sort().reverse();
+                const latestBackup = backupFiles[0];
+
+                try {
+                    const stats = fs.statSync(path.join(tempDir, latestBackup));
+                    lastBackupTime = stats.mtime.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+                } catch (e) {
+                    console.error('Failed to get backup file stats', e);
+                }
+            }
+        }
+
         return `
             <!DOCTYPE html>
             <html lang="ja">
@@ -171,6 +192,7 @@ export class HealthController {
                     <div class="version">v1.0.0</div>
                     <div class="status ${user ? '' : 'error'}">Status: ${status}</div>
                     <div class="info">Last Activity: ${lastMessageTime}</div>
+                    <div class="info">Last Backup: ${lastBackupTime}</div>
                     <div class="badges">
                         <a href="https://github.com/litoma/aimolt" target="_blank" class="badge">
                             <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
