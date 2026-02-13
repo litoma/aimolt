@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { GeminiService } from '../../../core/gemini/gemini.service';
 import { PromptService } from '../../../core/prompt/prompt.service';
-import { Message, TextChannel, DMChannel, NewsChannel, ThreadChannel, EmbedBuilder } from 'discord.js';
+import { Message, TextChannel, DMChannel, NewsChannel, ThreadChannel } from 'discord.js';
 import axios from 'axios';
 import { DiscordService } from '../../../discord/discord.service';
 import { AnalysisService } from '../../../personality/services/analysis.service';
@@ -118,15 +118,12 @@ export class TranscriptionService {
 
                             const advice = await this.analysisService.generateAdvice(cleanedText);
                             if (advice) {
-                                const embed = new EmbedBuilder()
-                                    .setColor('#FFA500') // Orange
-                                    .setDescription(advice)
-                                    .setFooter({ text: 'AI Advice' });
+                                const replyContent = `<@${userId}>\n**AI Advice:**\n\n${advice}`;
 
                                 if (transcriptMessage) {
-                                    await transcriptMessage.reply({ embeds: [embed] });
+                                    await transcriptMessage.reply(replyContent);
                                 } else {
-                                    await this.sendMessage(message, '', undefined, [embed]);
+                                    await this.sendMessage(message, replyContent);
                                 }
                                 await this.updateAdvice(transcriptId, advice);
                             }
