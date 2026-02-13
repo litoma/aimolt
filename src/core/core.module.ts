@@ -6,6 +6,8 @@ import { PromptService } from './prompt/prompt.service';
 import { CommonService } from './common/common.service';
 import { TavilyService } from './search/tavily.service';
 
+import { BackupService } from './backup/backup.service';
+
 @Module({
     imports: [
         ConfigModule.forRoot({
@@ -13,7 +15,7 @@ import { TavilyService } from './search/tavily.service';
         }),
         SupabaseModule,
     ],
-    providers: [GeminiService, PromptService, CommonService, TavilyService],
-    exports: [SupabaseModule, GeminiService, PromptService, CommonService, TavilyService],
+    providers: [GeminiService, PromptService, CommonService, TavilyService, BackupService],
+    exports: [SupabaseModule, GeminiService, PromptService, CommonService, TavilyService, BackupService],
 })
 export class CoreModule { }
