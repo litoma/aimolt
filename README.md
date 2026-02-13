@@ -15,9 +15,10 @@ AImoltはユーザーとの対話を通じて感情や関係性が変化する�
 
 #### ❤️ 感情モデル (VAD Model)
 心理学の **VADモデル (Valence, Arousal, Dominance)** をベースに、AIの感情状態を数値化して管理しています。
-*   **Valence (快/不快)**: ポジティブな会話で上昇、ネガティブな会話で下降。
-*   **Arousal (覚醒度)**: 驚きや興奮で上昇、落ち着いた会話で下降。
-*   **Dominance (支配性)**: 主体的な会話で上昇、受動的な会話で下降。
+
+*   **Valence**: ポジティブな会話で上昇、ネガティブな会話で下降。
+*   **Arousal**: 驚きや興奮で上昇、落ち着いた会話で下降。
+*   **Dominance**: 主体的な会話で上昇、受動的な会話で下降。
 
 #### 🤝 理解・メンターシステム (Understanding & Mentor System)
 **LLM (Gemini) が会話内容から動的に関係性を分析・更新する**システムです。
@@ -124,6 +125,28 @@ erDiagram
         timestamp created_at
     }
 ```
+
+### 📦 バックアップとリストア (Backup & Restore)
+
+AImoltは、`pg_dump` などの外部ツールに依存せず、Supabase API (PostgREST) を利用して独自のJSONバックアップを作成します。
+
+#### 自動バックアップ
+*   **スケジュール**: 毎日 00:00 (JST)
+*   **保存先 (コンテナ内)**: `/app/temp/backup-{YYYY-MM-DD}/`
+*   **形式**: テーブルごとの JSON ファイル (`conversations.json`, `transcripts.json` など)
+*   **対象テーブル**: `conversations`, `transcripts`, `emotions`, `relationships`
+*   **保持期間**: ローカル保存は最新7世代分のみ保持されます（古いものは自動削除）。
+
+#### 手動リストア
+バックアップされたJSONファイルからデータベースを復元するためのスクリプトが用意されています。
+
+```bash
+# 使用法: npx ts-node src/core/backup/restore.ts <バックアップフォルダのパス>
+npx ts-node src/core/backup/restore.ts /app/temp/backup-2024-01-01
+```
+
+> **注意**: リストア処理は既存のデータに対して `upsert` を行います。
+
 
 ### ローカル起動
 ```bash
