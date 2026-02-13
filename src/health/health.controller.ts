@@ -1,6 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Res } from '@nestjs/common';
 import { DiscordService } from '../discord/discord.service';
 import { SupabaseService } from '../core/supabase/supabase.service';
+import * as fs from 'fs';
+import * as path from 'path';
+import axios from 'axios';
+import { Response } from 'express';
 
 @Controller()
 export class HealthController {
@@ -9,10 +13,55 @@ export class HealthController {
         private readonly supabaseService: SupabaseService
     ) { }
 
+    @Get('avatar')
+    async getAvatar(@Res() res: Response) {
+        const user = this.discordService.client.user;
+        if (!user) {
+            return res.redirect('https://cdn.discordapp.com/embed/avatars/0.png');
+        }
+
+        const avatarHash = user.avatar;
+        if (!avatarHash) {
+            return res.redirect(user.displayAvatarURL({ size: 256 }));
+        }
+
+        // Use /app/temp in production (container), or relative temp for local dev
+        const tempDir = path.resolve(process.cwd(), 'temp');
+        if (!fs.existsSync(tempDir)) {
+            fs.mkdirSync(tempDir, { recursive: true });
+        }
+
+        const filePath = path.join(tempDir, `${avatarHash}.png`);
+
+        if (fs.existsSync(filePath)) {
+            return res.sendFile(filePath);
+        }
+
+        try {
+            const avatarUrl = user.displayAvatarURL({ size: 256, extension: 'png' });
+            const response = await axios.get(avatarUrl, { responseType: 'arraybuffer' });
+
+            // Clean up old avatar files
+            const files = fs.readdirSync(tempDir);
+            for (const file of files) {
+                if (file.endsWith('.png')) {
+                    fs.unlinkSync(path.join(tempDir, file));
+                }
+            }
+
+            fs.writeFileSync(filePath, response.data);
+            return res.sendFile(filePath);
+        } catch (error) {
+            console.error('Failed to cache avatar:', error);
+            return res.redirect(user.displayAvatarURL({ size: 256 }));
+        }
+    }
+
     @Get()
     async check() {
         const user = this.discordService.client.user;
-        const iconUrl = user ? user.displayAvatarURL({ size: 256 }) : 'https://cdn.discordapp.com/embed/avatars/0.png';
+        // Use local cached avatar endpoint with hash for cache busting
+        const iconUrl = user && user.avatar ? `/avatar?v=${user.avatar}` : (user ? user.displayAvatarURL({ size: 256 }) : 'https://cdn.discordapp.com/embed/avatars/0.png');
         const status = user ? 'Online' : 'Initializing';
         let lastMessageTime = 'N/A';
 
@@ -70,6 +119,18 @@ export class HealthController {
                         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
                         width: 300px;
                     }
+                    .greeting {
+                        font-size: 1.5rem;
+                        font-weight: bold;
+                        color: #000;
+                        margin-bottom: 1rem;
+                    }
+                    .version {
+                        font-size: 1rem;
+                        font-weight: bold;
+                        color: #000;
+                        margin-bottom: 0.5rem;
+                    }
                     .icon {
                         width: 128px;
                         height: 128px;
@@ -92,13 +153,32 @@ export class HealthController {
                         color: #666;
                         margin-top: 0.5rem;
                     }
+                    .badges {
+                        margin-top: 1rem;
+                        display: flex;
+                        justify-content: center;
+                        gap: 10px;
+                    }
+                    .badge img {
+                        height: 28px;
+                    }
                 </style>
             </head>
             <body>
                 <div class="container">
+                    <div class="greeting">Hi, I'm AImolt.</div>
                     <img src="${iconUrl}" alt="Bot Icon" class="icon">
+                    <div class="version">v1.0.0</div>
                     <div class="status ${user ? '' : 'error'}">Status: ${status}</div>
                     <div class="info">Last Activity: ${lastMessageTime}</div>
+                    <div class="badges">
+                        <a href="https://github.com/litoma/aimolt" target="_blank" class="badge">
+                            <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+                        </a>
+                        <a href="https://bsky.app/profile/aimolt.bsky.social" target="_blank" class="badge">
+                            <img src="https://img.shields.io/badge/Bluesky-0285FF?style=for-the-badge&logo=bluesky&logoColor=white" alt="Bluesky">
+                        </a>
+                    </div>
                 </div>
             </body>
             </html>
