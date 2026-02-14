@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { DiscordService } from '../../discord/discord.service';
-import { VADService } from '../services/vad.service';
+import { PersonalityService } from '../services/personality.service';
 import { RelationshipService } from '../services/relationship.service';
 import { Message, EmbedBuilder } from 'discord.js';
 
@@ -8,7 +8,7 @@ import { Message, EmbedBuilder } from 'discord.js';
 export class PersonalityGateway implements OnModuleInit {
     constructor(
         private readonly discordService: DiscordService,
-        private readonly vadService: VADService,
+        private readonly personalityService: PersonalityService,
         private readonly relationshipService: RelationshipService,
     ) { }
 
@@ -29,6 +29,9 @@ export class PersonalityGateway implements OnModuleInit {
             console.log('[DEBUG] Matched !personality status command');
             await this.handleStatus(message);
         }
+
+        // TODO: Integrate processUserMessage in the main message flow (e.g. in Core or Interaction module)
+        // For now, we just expose status.
     }
 
     private async handleStatus(message: Message) {
@@ -39,8 +42,8 @@ export class PersonalityGateway implements OnModuleInit {
         const stopTyping = this.discordService.startTyping(message.channel);
 
         try {
-            const [emotion, relationship] = await Promise.all([
-                this.vadService.getCurrentEmotion(targetUserId),
+            const [emotionSummary, relationship] = await Promise.all([
+                this.personalityService.getEmotionSummary(targetUserId),
                 this.relationshipService.getRelationship(targetUserId),
             ]);
 
@@ -50,7 +53,7 @@ export class PersonalityGateway implements OnModuleInit {
                 .addFields(
                     {
                         name: '🎭 Emotion (VAD)',
-                        value: `Valence: ${emotion.valence}\nArousal: ${emotion.arousal}\nDominance: ${emotion.dominance}`,
+                        value: emotionSummary,
                         inline: true
                     },
                     {

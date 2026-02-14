@@ -118,7 +118,7 @@ export class TranscriptionService {
 
                             const advice = await this.analysisService.generateAdvice(cleanedText);
                             if (advice) {
-                                const replyContent = `<@${userId}>\n**AI Advice:**\n\n${advice}`;
+                                const replyContent = `<@${userId}>\n${advice}`;
 
                                 if (transcriptMessage) {
                                     await transcriptMessage.reply(replyContent);

@@ -9,9 +9,11 @@ import { SupabaseRelationshipRepository } from './repositories/supabase-relation
 import { PersonalityGateway } from './interface/personality.gateway';
 import { DiscordModule } from '../discord/discord.module';
 import { ImpressionService } from './services/impression.service';
+import { EmotionModule } from './emotion/emotion.module';
+import { PersonalityService } from './services/personality.service';
 
 @Module({
-    imports: [CoreModule, DiscordModule],
+    imports: [CoreModule, DiscordModule, EmotionModule],
     providers: [
         PersonalityGateway,
         VADService,
@@ -20,7 +22,8 @@ import { ImpressionService } from './services/impression.service';
         ImpressionService,
         SupabaseEmotionRepository,
         SupabaseRelationshipRepository,
+        PersonalityService,
     ],
-    exports: [VADService, RelationshipService, AnalysisService, ImpressionService],
+    exports: [VADService, RelationshipService, AnalysisService, ImpressionService, PersonalityService],
 })
 export class PersonalityModule { }
