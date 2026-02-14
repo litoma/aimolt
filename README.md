@@ -51,7 +51,7 @@ aimolt/
 ├── src/
 │   ├── core/                  # Core Services (Gemini, Supabase, Prompt)
 │   ├── discord/               # Discord Client & Event Handlers
-│   ├── interaction/           # Interaction Logic (Like, Transcribe, Memo)
+│   ├── interaction/           # Interaction Logic (Like, Transcribe)
 │   ├── personality/           # Personality Engine (Analysis, VAD, Relationship)
 │   └── health/                # Health Check Controller
 ├── Dockerfile                 # Multi-stage build configuration (Node 25-alpine)

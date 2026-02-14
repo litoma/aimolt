@@ -1,7 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { DiscordService } from '../../discord/discord.service';
 import { LikeService } from '../application/services/like.service';
-import { MemoService } from '../application/services/memo.service';
+
 import { TranscriptionService } from '../application/services/transcription.service';
 import { RelationshipService } from '../../personality/services/relationship.service';
 import { MessageReaction, User, PartialMessageReaction, PartialUser } from 'discord.js';
@@ -11,7 +11,7 @@ export class ReactionGateway implements OnModuleInit {
     constructor(
         private readonly discordService: DiscordService,
         private readonly likeService: LikeService,
-        private readonly memoService: MemoService,
+
         private readonly transcriptionService: TranscriptionService,
         private readonly relationshipService: RelationshipService,
     ) { }
@@ -84,11 +84,7 @@ export class ReactionGateway implements OnModuleInit {
                 }
             }
 
-            // Memo Feature
-            if (fullReaction.emoji.name === '📝') {
-                const message = await fullReaction.message.fetch();
-                await this.memoService.handleMemo(message, fullUser.id);
-            }
+
 
             // Transcription Feature (Persistent)
             if (fullReaction.emoji.name === '🎤') {

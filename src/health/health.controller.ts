@@ -198,10 +198,9 @@ export class HealthController {
                 <div class="container">
                     <div class="greeting">Hi, I'm AImolt.</div>
                     <img src="${iconUrl}" alt="Bot Icon" class="icon">
-                    <div class="version">v1.0.0</div>
                     <div class="status ${user ? '' : 'error'}">Status: ${status}</div>
-                    <div class="info">Last Activity: ${lastMessageTime}</div>
-                    <div class="info">Last Backup: ${lastBackupTime}</div>
+                    <div class="info">Latest Activity: ${lastMessageTime}</div>
+                    <div class="info">Latest Backup: ${lastBackupTime}</div>
                     <div class="badges">
                         <a href="https://github.com/litoma/aimolt" target="_blank" class="badge">
                             <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
