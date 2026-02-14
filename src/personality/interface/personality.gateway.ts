@@ -63,7 +63,7 @@ export class PersonalityGateway implements OnModuleInit {
                     },
                     {
                         name: '🤝 Relationship',
-                        value: `Impression: ${(relationship.impression_summary || '').slice(0, 50)}...\nFocus: ${relationship.mentor_focus}\nAffection: ${relationship.affection_score}`,
+                        value: `Impression: ${relationship.impression_summary || 'なし'}\nFocus: ${relationship.mentor_focus}\nAffection: ${relationship.affection_score}`,
                         inline: false
                     }
                 )
