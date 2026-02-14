@@ -118,4 +118,11 @@ export class PersonalityService {
         const emotion = await this.getCurrentEmotion(userId);
         return EmotionHelper.getSummary(emotion);
     }
+
+    /**
+     * 現在の感情状態を取得（公的アクセサ）
+     */
+    async getCurrentEmotionState(userId: string): Promise<EmotionState> {
+        return this.getCurrentEmotion(userId);
+    }
 }

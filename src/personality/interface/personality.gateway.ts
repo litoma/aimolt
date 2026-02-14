@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { DiscordService } from '../../discord/discord.service';
 import { PersonalityService } from '../services/personality.service';
 import { RelationshipService } from '../services/relationship.service';
+import { EmotionHelper } from '../emotion/emotion.helper';
 import { Message, EmbedBuilder } from 'discord.js';
 
 @Injectable()
@@ -42,10 +43,14 @@ export class PersonalityGateway implements OnModuleInit {
         const stopTyping = this.discordService.startTyping(message.channel);
 
         try {
-            const [emotionSummary, relationship] = await Promise.all([
-                this.personalityService.getEmotionSummary(targetUserId),
+            const [emotion, relationship] = await Promise.all([
+                this.personalityService.getCurrentEmotionState(targetUserId),
                 this.relationshipService.getRelationship(targetUserId),
             ]);
+
+            const vLabel = EmotionHelper.getValenceLabel(emotion.valence);
+            const aLabel = EmotionHelper.getArousalLabel(emotion.arousal);
+            const dLabel = EmotionHelper.getDominanceLabel(emotion.dominance);
 
             const embed = new EmbedBuilder()
                 .setColor('#0099ff')
@@ -53,7 +58,7 @@ export class PersonalityGateway implements OnModuleInit {
                 .addFields(
                     {
                         name: '🎭 Emotion (VAD)',
-                        value: emotionSummary,
+                        value: `Valence: ${emotion.valence} (${vLabel})\nArousal: ${emotion.arousal} (${aLabel})\nDominance: ${emotion.dominance} (${dLabel})`,
                         inline: true
                     },
                     {
