@@ -114,9 +114,27 @@ export class HealthController {
                 const latestBackupDir = backupDirs[0];
 
                 try {
-                    // Use modification time of the directory
-                    const stats = fs.statSync(path.join(tempDir, latestBackupDir));
-                    lastBackupTime = stats.mtime.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+                    const latestDirFull = path.join(tempDir, latestBackupDir);
+                    const timestampFile = path.join(latestDirFull, 'restore_complete.txt');
+
+                    if (fs.existsSync(timestampFile)) {
+                        // If restore completion file exists, use its content (ISO string) or mtime
+                        // Content is more accurate if we wrote it.
+                        const content = fs.readFileSync(timestampFile, 'utf-8').trim();
+                        const date = new Date(content);
+                        if (!isNaN(date.getTime())) {
+                            lastBackupTime = date.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+                        } else {
+                            // Fallback to file mtime
+                            const stats = fs.statSync(timestampFile);
+                            lastBackupTime = stats.mtime.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+                        }
+                    } else {
+                        // Fallback to directory modification time (backup time)
+                        // This handles cases where restore hasn't run or failed to write file
+                        const stats = fs.statSync(latestDirFull);
+                        lastBackupTime = stats.mtime.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+                    }
                 } catch (e) {
                     console.error('Failed to get backup directory stats', e);
                 }

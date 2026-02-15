@@ -40,10 +40,12 @@
     "@nestjs/core": "^11.1.13",
     "@nestjs/platform-express": "^11.1.13",
     "@supabase/supabase-js": "^2.50.1",
+    "@types/pg": "^8.16.0",
     "axios": "^1.10.0",
     "discord.js": "^14.20.0",
     "dotenv": "^16.5.0",
     "node-cron": "^3.0.3",
+    "pg": "^8.18.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2"
   },

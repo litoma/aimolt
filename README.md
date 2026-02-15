@@ -134,24 +134,34 @@ erDiagram
 
 ### 📦 バックアップとリストア (Backup & Restore)
 
-AImoltは、`pg_dump` などの外部ツールに依存せず、Supabase API (PostgREST) を利用して独自のJSONバックアップを作成します。
+AImoltは、**Supabase API (PostgREST)** を利用して独自のJSONバックアップを作成し、**Koyeb上のPostgreSQL** へ自動的に同期（リストア）します。
 
-#### 自動バックアップ
+#### 自動バックアップ & リストア
 *   **スケジュール**: 毎日 00:00 (JST)
+*   **プロセス**:
+    1.  **Dynamic Backup**: Supabase上の全ユーザー定義テーブルを動的に検出し、データとスキーマ定義 (`schema.json`) をJSONとして保存します。
+    2.  **Auto Restore**: バックアップ完了後、直ちにKoyeb上のPostgreSQLデータベースへ接続し、データを復元します。
 *   **保存先 (コンテナ内)**: `/app/temp/backup-{YYYY-MM-DD}/`
-*   **形式**: テーブルごとの JSON ファイル (`conversations.json`, `transcripts.json` など)
-*   **対象テーブル**: `conversations`, `transcripts`, `emotions`, `relationships`
-*   **保持期間**: ローカル保存は最新7世代分のみ保持されます（古いものは自動削除）。
+*   **対象テーブル**: すべてのユーザー定義テーブル (動的検出)
+*   **保持期間**: ローカルバックアップファイルは最新7世代分のみ保持されます（古いものは自動削除）。
+
+> **注意**: Koyebへの自動リストア時は、**既存のデータ（publicスキーマ）を一度完全に削除 (DROP SCHEMA) して作り直します**。これにより、SupabaseとKoyebのデータ状態が完全に同期されます。
 
 #### 手動リストア
 バックアップされたJSONファイルからデータベースを復元するためのスクリプトが用意されています。
 
 ```bash
-# 使用法: npx ts-node src/core/backup/restore.ts <バックアップフォルダのパス>
-npx ts-node src/core/backup/restore.ts /app/temp/backup-2024-01-01
+# 使用法: node dist/core/backup/restore.js <バックアップフォルダのパス> [--target=koyeb|supabase]
+
+# 例: Koyebへリストア (完全初期化 & 復元)
+node dist/core/backup/restore.js /app/temp/backup-2024-01-01 --target=koyeb
+
+# 例: Supabaseへリストア (Upsert)
+node dist/core/backup/restore.js /app/temp/backup-2024-01-01 --target=supabase
 ```
 
-> **注意**: リストア処理は既存のデータに対して `upsert` を行います。
+#### ヘルスチェック
+`https://aimolt.yusukesakai.com/` の **"Latest Backup"** 欄には、**Koyebへのリストアが完了した日時** が表示されます。これにより、データがいつ時点まで同期されているかを確認できます。
 
 
 ### ローカル起動
