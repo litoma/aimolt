@@ -130,14 +130,7 @@ erDiagram
         halfvec(3072) embedding
         timestamp created_at
     }
-    transcripts {
-        bigint id PK
-        text user_id
-        text text
-        text advice
-        halfvec(3072) embedding
-        timestamp created_at
-    }
+
 ```
 
 > **Supabaseを初期構築するとき**
