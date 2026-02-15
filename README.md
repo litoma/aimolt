@@ -130,7 +130,19 @@ erDiagram
         halfvec(3072) embedding
         timestamp created_at
     }
+    transcripts {
+        bigint id PK
+        text user_id
+        text text
+        text advice
+        halfvec(3072) embedding
+        timestamp created_at
+    }
 ```
+
+> **Supabaseを初期構築するとき**
+> 詳細なセットアップ手順（テーブル作成、RPC関数定義など）は [README_SUPABASE.md](./README_SUPABASE.md) を参照してください。
+
 
 ### 📦 バックアップとリストア (Backup & Restore)
 
