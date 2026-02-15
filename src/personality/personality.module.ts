@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { CoreModule } from '../core/core.module';
-import { VADService } from './services/vad.service';
 import { RelationshipService } from './services/relationship.service';
 import { AnalysisService } from './services/analysis.service';
 import { SupabaseEmotionRepository } from './repositories/supabase-emotion.repository';
@@ -16,7 +15,6 @@ import { PersonalityService } from './services/personality.service';
     imports: [CoreModule, DiscordModule, EmotionModule],
     providers: [
         PersonalityGateway,
-        VADService,
         RelationshipService,
         AnalysisService,
         ImpressionService,
@@ -24,6 +22,6 @@ import { PersonalityService } from './services/personality.service';
         SupabaseRelationshipRepository,
         PersonalityService,
     ],
-    exports: [VADService, RelationshipService, AnalysisService, ImpressionService, PersonalityService],
+    exports: [RelationshipService, AnalysisService, ImpressionService, PersonalityService],
 })
 export class PersonalityModule { }

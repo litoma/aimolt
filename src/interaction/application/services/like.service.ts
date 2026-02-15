@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GeminiService } from '../../../core/gemini/gemini.service';
 import { PromptService } from '../../../core/prompt/prompt.service';
-import { VADService } from '../../../personality/services/vad.service';
+import { PersonalityService } from '../../../personality/services/personality.service';
 import { RelationshipService } from '../../../personality/services/relationship.service';
 import { ImpressionService } from '../../../personality/services/impression.service';
 import { AnalysisService } from '../../../personality/services/analysis.service';
@@ -14,7 +14,7 @@ export class LikeService {
     constructor(
         private readonly geminiService: GeminiService,
         private readonly promptService: PromptService,
-        private readonly vadService: VADService,
+        private readonly personalityService: PersonalityService,
         private readonly relationshipService: RelationshipService,
         private readonly impressionService: ImpressionService,
         private readonly analysisService: AnalysisService,
@@ -91,8 +91,8 @@ export class LikeService {
     }
 
     private async updatePersonality(userId: string, userMessage: string, analysis: any) {
-        // Update Emotion (VAD)
-        await this.vadService.updateEmotion(userId, userMessage);
+        // Update Emotion (VAD) using PersonalityService (LLM-based)
+        await this.personalityService.processUserMessage(userId, userMessage);
 
         // Update Relationship (Impression Analysis)
         await this.impressionService.analyzeAndUpdate(userId, 'chat', `User: ${userMessage}\nAnalysis: ${JSON.stringify(analysis)}`);
