@@ -137,8 +137,30 @@ async function restoreToKoyeb(backupDir: string) {
             const timestampPath = path.join(backupDir, 'restore_complete.txt');
             fs.writeFileSync(timestampPath, new Date().toISOString());
             console.log(`Recorded completion timestamp to ${timestampPath}`);
+
+            // Update system table for persistence
+            const supabaseUrl = process.env.SUPABASE_URL;
+            const supabaseKey = process.env.SUPABASE_KEY;
+
+            if (supabaseUrl && supabaseKey) {
+                const supabase = createClient(supabaseUrl, supabaseKey);
+                // We use 'upsert' to ensure the key exists or is updated
+                const { error } = await supabase
+                    .from('system')
+                    .upsert({
+                        key: 'last_backup_time',
+                        value: new Date().toISOString(),
+                        updated_at: new Date()
+                    });
+
+                if (error) {
+                    console.error('Failed to update system table (last_backup_time):', error);
+                } else {
+                    console.log('Updated system table (last_backup_time).');
+                }
+            }
         } catch (e) {
-            console.error('Failed to write completion timestamp:', e);
+            console.error('Failed to write completion timestamp or update system table:', e);
         }
 
     } catch (error) {

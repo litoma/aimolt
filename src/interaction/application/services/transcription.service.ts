@@ -7,6 +7,7 @@ import { DiscordService } from '../../../discord/discord.service';
 import { AnalysisService } from '../../../personality/services/analysis.service';
 import { ImpressionService } from '../../../personality/services/impression.service';
 import { SupabaseService } from '../../../core/supabase/supabase.service';
+import { SystemService } from '../../../core/system/system.service';
 
 @Injectable()
 export class TranscriptionService {
@@ -17,9 +18,13 @@ export class TranscriptionService {
         private readonly supabaseService: SupabaseService,
         private readonly analysisService: AnalysisService,
         private readonly impressionService: ImpressionService,
+        private readonly systemService: SystemService,
     ) { }
 
     async handleTranscription(message: Message, userId: string, saveToDb: boolean = true): Promise<void> {
+        // Update activity time
+        this.systemService.updateActivityTime().catch(err => console.error('Failed to update activity time', err));
+
         const audioExts = ['.ogg', '.mp3', '.wav', '.m4a'];
         let targetAttachment = null;
 

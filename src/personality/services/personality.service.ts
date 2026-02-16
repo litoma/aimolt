@@ -4,6 +4,7 @@ import { EmotionHelper } from '../emotion/emotion.helper';
 import { EmotionState } from '../emotion/types/emotion.types';
 import { SupabaseEmotionRepository } from '../repositories/supabase-emotion.repository';
 import { Emotion } from '../entities/emotion.entity';
+import { SystemService } from '../../core/system/system.service';
 
 @Injectable()
 export class PersonalityService {
@@ -12,6 +13,7 @@ export class PersonalityService {
     constructor(
         private readonly emotionAnalyzer: EmotionAnalyzerService,
         private readonly emotionRepository: SupabaseEmotionRepository,
+        private readonly systemService: SystemService,
     ) { }
 
     /**
@@ -22,6 +24,9 @@ export class PersonalityService {
         message: string,
         context?: string,
     ): Promise<EmotionState> {
+        // Update activity time
+        this.systemService.updateActivityTime().catch(err => this.logger.warn('Failed to update activity time', err));
+
         // 1. 現在のVAD値を取得
         const currentEmotion = await this.getCurrentEmotion(userId);
 

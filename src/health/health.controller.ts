@@ -1,6 +1,7 @@
 import { Controller, Get, Res } from '@nestjs/common';
 import { DiscordService } from '../discord/discord.service';
 import { SupabaseService } from '../core/supabase/supabase.service';
+import { SystemService } from '../core/system/system.service';
 import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
@@ -10,7 +11,8 @@ import { Response } from 'express';
 export class HealthController {
     constructor(
         private readonly discordService: DiscordService,
-        private readonly supabaseService: SupabaseService
+        private readonly supabaseService: SupabaseService,
+        private readonly systemService: SystemService
     ) { }
 
     @Get('avatar')
@@ -59,85 +61,67 @@ export class HealthController {
 
     @Get()
     async check() {
+        // Define temp directory for caching
+        const tempDir = path.resolve(process.cwd(), 'temp');
+        if (!fs.existsSync(tempDir)) {
+            fs.mkdirSync(tempDir, { recursive: true });
+        }
+
         const user = this.discordService.client.user;
         // Use local cached avatar endpoint with hash for cache busting
         const iconUrl = user && user.avatar ? `/avatar?v=${user.avatar}` : (user ? user.displayAvatarURL({ size: 256 }) : 'https://cdn.discordapp.com/embed/avatars/0.png');
         const status = user ? 'Online' : 'Initializing';
+
+        // 1. Last Activity Time (Cache: 1 hour)
         let lastMessageTime = 'N/A';
+        const activityCachePath = path.resolve(tempDir, 'last_activity_time.txt');
+        let activityTimeCached = false;
 
-        try {
-            const [convRes, transRes] = await Promise.all([
-                this.supabaseService.getClient()
-                    .from('conversations')
-                    .select('created_at')
-                    .order('created_at', { ascending: false })
-                    .limit(1)
-                    .single(),
-                this.supabaseService.getClient()
-                    .from('transcripts')
-                    .select('created_at')
-                    .order('created_at', { ascending: false })
-                    .limit(1)
-                    .single()
-            ]);
-
-            const convTime = convRes.data ? new Date(convRes.data.created_at).getTime() : 0;
-            const transTime = transRes.data ? new Date(transRes.data.created_at).getTime() : 0;
-
-            const latestTime = Math.max(convTime, transTime);
-
-            if (latestTime > 0) {
-                lastMessageTime = new Date(latestTime).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+        if (fs.existsSync(activityCachePath)) {
+            const stats = fs.statSync(activityCachePath);
+            const now = new Date().getTime();
+            if (now - stats.mtime.getTime() < 60 * 60 * 1000) { // 1 hour
+                lastMessageTime = fs.readFileSync(activityCachePath, 'utf-8');
+                activityTimeCached = true;
             }
-        } catch (e) {
-            console.error('Failed to fetch last activity time', e);
         }
 
-        // Check for latest backup
+        if (!activityTimeCached) {
+            try {
+                // Fetch from System Table directly
+                const timeStr = await this.systemService.getValue('last_activity_time');
+                if (timeStr) {
+                    lastMessageTime = new Date(timeStr).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+                    fs.writeFileSync(activityCachePath, lastMessageTime);
+                }
+            } catch (e) {
+                console.error('Failed to fetch last activity time', e);
+            }
+        }
+
+        // 2. Last Backup Time (Cache: 24 hours)
         let lastBackupTime = 'N/A';
-        const tempDir = path.resolve(process.cwd(), 'temp');
-        if (fs.existsSync(tempDir)) {
-            const files = fs.readdirSync(tempDir);
-            // Look for backup directories: backup-YYYY-MM-DD
-            const backupDirs = files.filter(file => {
-                const filePath = path.join(tempDir, file);
-                try {
-                    return file.startsWith('backup-') && fs.statSync(filePath).isDirectory();
-                } catch (e) {
-                    return false;
+        const backupCachePath = path.resolve(tempDir, 'last_backup_time.txt');
+        let backupTimeCached = false;
+
+        if (fs.existsSync(backupCachePath)) {
+            const stats = fs.statSync(backupCachePath);
+            const now = new Date().getTime();
+            if (now - stats.mtime.getTime() < 24 * 60 * 60 * 1000) { // 24 hours
+                lastBackupTime = fs.readFileSync(backupCachePath, 'utf-8');
+                backupTimeCached = true;
+            }
+        }
+
+        if (!backupTimeCached) {
+            try {
+                const timeStr = await this.systemService.getValue('last_backup_time');
+                if (timeStr) {
+                    lastBackupTime = new Date(timeStr).toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
+                    fs.writeFileSync(backupCachePath, lastBackupTime);
                 }
-            });
-
-            if (backupDirs.length > 0) {
-                // Sort by dirname (which contains date) descending to get latest
-                backupDirs.sort().reverse();
-                const latestBackupDir = backupDirs[0];
-
-                try {
-                    const latestDirFull = path.join(tempDir, latestBackupDir);
-                    const timestampFile = path.join(latestDirFull, 'restore_complete.txt');
-
-                    if (fs.existsSync(timestampFile)) {
-                        // If restore completion file exists, use its content (ISO string) or mtime
-                        // Content is more accurate if we wrote it.
-                        const content = fs.readFileSync(timestampFile, 'utf-8').trim();
-                        const date = new Date(content);
-                        if (!isNaN(date.getTime())) {
-                            lastBackupTime = date.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
-                        } else {
-                            // Fallback to file mtime
-                            const stats = fs.statSync(timestampFile);
-                            lastBackupTime = stats.mtime.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
-                        }
-                    } else {
-                        // Fallback to directory modification time (backup time)
-                        // This handles cases where restore hasn't run or failed to write file
-                        const stats = fs.statSync(latestDirFull);
-                        lastBackupTime = stats.mtime.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
-                    }
-                } catch (e) {
-                    console.error('Failed to get backup directory stats', e);
-                }
+            } catch (e) {
+                console.error('Failed to fetch last backup time', e);
             }
         }
 

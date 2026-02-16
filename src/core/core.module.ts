@@ -5,6 +5,7 @@ import { GeminiService } from './gemini/gemini.service';
 import { PromptService } from './prompt/prompt.service';
 import { CommonService } from './common/common.service';
 import { TavilyService } from './search/tavily.service';
+import { SystemService } from './system/system.service';
 
 import { BackupService } from './backup/backup.service';
 
@@ -15,7 +16,7 @@ import { BackupService } from './backup/backup.service';
         }),
         SupabaseModule,
     ],
-    providers: [GeminiService, PromptService, CommonService, TavilyService, BackupService],
-    exports: [SupabaseModule, GeminiService, PromptService, CommonService, TavilyService, BackupService],
+    providers: [GeminiService, PromptService, CommonService, TavilyService, BackupService, SystemService],
+    exports: [SupabaseModule, GeminiService, PromptService, CommonService, TavilyService, BackupService, SystemService],
 })
 export class CoreModule { }
