@@ -2,7 +2,6 @@ import { Controller, Get, Res } from '@nestjs/common';
 import { DiscordService } from '../discord/discord.service';
 import { SupabaseService } from '../core/supabase/supabase.service';
 import { SystemService } from '../core/system/system.service';
-import { BlueskyService } from '../bluesky/bluesky.service';
 import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
@@ -13,19 +12,10 @@ export class HealthController {
     constructor(
         private readonly discordService: DiscordService,
         private readonly supabaseService: SupabaseService,
-        private readonly systemService: SystemService,
-        private readonly blueskyService: BlueskyService
+        private readonly systemService: SystemService
     ) { }
 
-    @Get('health/test-bluesky')
-    async testBluesky() {
-        try {
-            await this.blueskyService.post(`Test post from AImolt at ${new Date().toISOString()}`);
-            return 'Posted to Bluesky successfully';
-        } catch (error) {
-            return `Failed to post to Bluesky: ${error.message}`;
-        }
-    }
+
 
     @Get('avatar')
     async getAvatar(@Res() res: Response) {

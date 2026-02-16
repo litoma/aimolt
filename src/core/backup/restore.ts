@@ -63,13 +63,15 @@ if (require.main === module) {
 
 
 async function restoreToKoyeb(backupDir: string) {
+    const host = process.env.DATABASE_HOST;
     const dbConfig = {
-        host: process.env.DATABASE_HOST,
+        host: host,
         user: process.env.DATABASE_USER,
         password: process.env.DATABASE_PASSWORD,
         database: process.env.DATABASE_NAME,
         port: Number(process.env.DATABASE_PORT) || 5432,
-        ssl: { rejectUnauthorized: false } // Koyeb typically needs SSL
+        ssl: { rejectUnauthorized: false }, // Koyeb typically needs SSL
+        options: host ? `endpoint=${host.split('.')[0]}` : undefined
     };
 
     if (!dbConfig.host || !dbConfig.user || !dbConfig.password || !dbConfig.database) {
