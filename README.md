@@ -162,7 +162,7 @@ node dist/core/backup/restore.js /app/temp/backup-2024-01-01 --target=supabase
 ```
 
 #### ヘルスチェック
-`https://aimolt.yusukesakai.com/` の **"Latest Backup"** 欄には、**Koyebへのリストアが完了した日時** が表示されます。これにより、データがいつ時点まで同期されているかを確認できます。
+`https://aimolt.yusukesakai.com/` の **"Last Backup"** 欄には、**Koyebへのリストアが完了した日時** が表示されます。また、**"Last Activity"** 欄には、直近の会話または文字起こしが行われた日時が表示されます。これにより、システムが正常に稼働し、データが同期されているかを確認できます。
 
 
 ### ローカル起動

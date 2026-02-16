@@ -63,6 +63,15 @@ create table transcripts (
 );
 ```
 
+### system
+```sql
+create table system (
+  key text primary key,
+  value text,
+  updated_at timestamp with time zone default timezone('utc'::text, now())
+);
+```
+
 ## 3. 関数 (RPCs) の作成
 
 ### Vector Search Functions
@@ -184,6 +193,9 @@ create policy "Allow all access" on conversations for all using (true);
 
 alter table transcripts enable row level security;
 create policy "Allow all access" on transcripts for all using (true);
+
+alter table system enable row level security;
+create policy "Allow all access" on system for all using (true);
 ```
 
 ## 5. 環境変数の設定
