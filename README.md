@@ -69,10 +69,10 @@ aimolt/
 - **`!personality status`**
     - 現在の感情状態 (VAD) と、ユーザーとの関係性ステータスを表示します。
 
-## 🗺️ システム構成
+## ⚙️ システム構成
 
 ```mermaid
-graph TD
+graph LR
     User([User])
     Discord[Discord App]
     GitHub[GitHub]
