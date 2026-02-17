@@ -21,9 +21,11 @@ export class TranscriptionService {
         private readonly systemService: SystemService,
     ) { }
 
-    async handleTranscription(message: Message, userId: string, saveToDb: boolean = true): Promise<void> {
+    async handleTranscription(message: Message, userId: string, options: { saveToDb: boolean; generateAdvice: boolean; updateActivity: boolean }): Promise<void> {
         // Update activity time
-        this.systemService.updateActivityTime().catch(err => console.error('Failed to update activity time', err));
+        if (options.updateActivity) {
+            this.systemService.updateActivityTime().catch(err => console.error('Failed to update activity time', err));
+        }
 
         const audioExts = ['.ogg', '.mp3', '.wav', '.m4a'];
         let targetAttachment = null;
@@ -111,31 +113,24 @@ export class TranscriptionService {
                 }
 
                 // Save to DB and Generate Advice
-                if (saveToDb) {
+                if (options.saveToDb) {
                     const embedding = await this.geminiService.embedText(cleanedText);
                     const transcriptId = await this.saveTranscription(userId, cleanedText, embedding);
 
                     if (transcriptId) {
-                        try {
-                            // Update Relationship (Impression Analysis) - Async
-                            this.impressionService.analyzeAndUpdate(userId, 'transcript', cleanedText)
-                                .catch(err => console.error('Impression update failure:', err));
+                        // Update Relationship (Impression Analysis) - Async
+                        this.impressionService.analyzeAndUpdate(userId, 'transcript', cleanedText)
+                            .catch(err => console.error('Impression update failure:', err));
 
-                            const advice = await this.analysisService.generateAdvice(cleanedText);
-                            if (advice) {
-                                const replyContent = `<@${userId}>\n${advice}`;
-
-                                if (transcriptMessage) {
-                                    await transcriptMessage.reply(replyContent);
-                                } else {
-                                    await this.sendMessage(message, replyContent);
-                                }
-                                await this.updateAdvice(transcriptId, advice);
-                            }
-                        } catch (adviceError) {
-                            console.error('Advice generation failed:', adviceError);
+                        if (options.generateAdvice) {
+                            await this.generateAndSendAdvice(userId, cleanedText, transcriptMessage || message, transcriptId);
                         }
                     }
+
+                } else if (options.generateAdvice) {
+                    // Generate advice without saving to DB (Ephemeral advice)
+                    // Transcript ID is null here
+                    await this.generateAndSendAdvice(userId, cleanedText, transcriptMessage || message, null);
                 }
 
             } else {
@@ -145,6 +140,22 @@ export class TranscriptionService {
         } catch (error) {
             console.error('Transcription Error:', error);
             await this.sendMessage(message, `<@${userId}> ❌ 音声処理中にエラーが発生しました: ${error.message}`);
+        }
+    }
+
+    private async generateAndSendAdvice(userId: string, text: string, replyTarget: Message, transcriptId: number | null) {
+        try {
+            const advice = await this.analysisService.generateAdvice(text);
+            if (advice) {
+                const replyContent = `<@${userId}>\n${advice}`;
+                await replyTarget.reply(replyContent);
+
+                if (transcriptId) {
+                    await this.updateAdvice(transcriptId, advice);
+                }
+            }
+        } catch (adviceError) {
+            console.error('Advice generation failed:', adviceError);
         }
     }
 

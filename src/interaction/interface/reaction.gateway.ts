@@ -58,14 +58,30 @@ export class ReactionGateway implements OnModuleInit {
         const stopTyping = this.discordService.startTyping(fullReaction.message.channel);
 
         try {
+            // 👍 Like Reaction
             if (fullReaction.emoji.name === '👍') {
                 const message = await fullReaction.message.fetch();
                 if (!message.author.bot) {
-                    await this.likeService.handleLike(message, fullUser.id, true);
+                    const audioExts = ['.ogg', '.mp3', '.wav', '.m4a'];
+                    const hasAudio = message.attachments.some(att =>
+                        audioExts.some(ext => (att.name || '').toLowerCase().endsWith(ext))
+                    );
+
+                    if (hasAudio) {
+                        // Audio: Transcription + Advice + Save + Update Activity
+                        await this.transcriptionService.handleTranscription(message, fullUser.id, {
+                            saveToDb: true,
+                            generateAdvice: true,
+                            updateActivity: true
+                        });
+                    } else {
+                        // Text: Normal Like (Save History + Update Activity + Update Personality)
+                        await this.likeService.handleLike(message, fullUser.id, true);
+                    }
                 }
             }
 
-            // Ephemeral Action (Ghost)
+            // 👻 Ghost Reaction
             if (fullReaction.emoji.name === '👻') {
                 const message = await fullReaction.message.fetch();
                 if (!message.author.bot) {
@@ -75,21 +91,28 @@ export class ReactionGateway implements OnModuleInit {
                     );
 
                     if (hasAudio) {
-                        // Ephemeral Transcription (Don't save to DB)
-                        await this.transcriptionService.handleTranscription(message, fullUser.id, false);
+                        // Audio: Transcription + Advice (Ephemeral) (No Save, No Activity Update)
+                        await this.transcriptionService.handleTranscription(message, fullUser.id, {
+                            saveToDb: false,
+                            generateAdvice: true,
+                            updateActivity: false
+                        });
                     } else {
-                        // Ephemeral Like (Don't save to history)
+                        // Text: Ephemeral Like (No Save, No Activity Update - by LikeService internal logic)
                         await this.likeService.handleLike(message, fullUser.id, false);
                     }
                 }
             }
 
-
-
-            // Transcription Feature (Persistent)
+            // 🎤 Mic Reaction
             if (fullReaction.emoji.name === '🎤') {
                 const message = await fullReaction.message.fetch();
-                await this.transcriptionService.handleTranscription(message, fullUser.id, true);
+                // Audio: Transcription Only (No Advice, No Save, No Activity Update)
+                await this.transcriptionService.handleTranscription(message, fullUser.id, {
+                    saveToDb: false,
+                    generateAdvice: false,
+                    updateActivity: false
+                });
             }
 
 
