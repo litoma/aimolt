@@ -64,6 +64,41 @@ aimolt/
 └── README.md
 ```
 
+## 💻 コマンド
+
+- **`!personality status`**
+    - 現在の感情状態 (VAD) と、ユーザーとの関係性ステータスを表示します。
+
+## 🏗️ システム構成 (System Architecture)
+
+```mermaid
+graph TD
+    User([User])
+    Discord[Discord App]
+    GitHub[GitHub]
+    UptimeRobot[UptimeRobot]
+    
+    subgraph Koyeb
+        App[AImolt App (NestJS)]
+        KoyebDB[(Koyeb DB<br>PostgreSQL)]
+    end
+    
+    subgraph Supabase
+        SupabaseDB[(Supabase DB<br>pgvector)]
+        SupabaseAuth[Auth]
+    end
+
+    User <-->|Chat / Voice| Discord
+    Discord <-->|Gateway / REST| App
+    
+    App <-->|Store/Retrieve Vector Data| SupabaseDB
+    App -->|Daily Backup| SupabaseDB
+    App -->|Daily Restore| KoyebDB
+    
+    GitHub -->|Deploy (Webhook)| Koyeb
+    UptimeRobot -->|Health Check| App
+```
+
 ## 🛠️ セットアップ & 開発
 
 ### 必須環境
