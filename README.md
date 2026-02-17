@@ -69,7 +69,7 @@ aimolt/
 - **`!personality status`**
     - 現在の感情状態 (VAD) と、ユーザーとの関係性ステータスを表示します。
 
-## 🧩 システム構成 (System Architecture)
+## 🗺️ システム構成
 
 ```mermaid
 graph TD
@@ -88,14 +88,15 @@ graph TD
         SupabaseAuth[Auth]
     end
 
-    User <-->|Chat / Voice| Discord
-    Discord <-->|Gateway / REST| App
-    App <-->|Store/Retrieve Vector Data| SupabaseDB
-    App -->|Daily Backup| SupabaseDB
-    App -->|Daily Restore| KoyebDB
+    User <-->|"Chat / Voice"| Discord
+    Discord <-->|"Gateway / REST"| App
     
-    GitHub -->|Deploy (Webhook)| Koyeb
-    UptimeRobot -->|Health Check| App
+    App <-->|"Store/Retrieve Vector Data"| SupabaseDB
+    App -->|"Daily Backup"| SupabaseDB
+    App -->|"Daily Restore"| KoyebDB
+    
+    GitHub -->|"Deploy (Webhook)"| Koyeb
+    UptimeRobot -->|"Health Check"| App
 ```
 
 ## 🛠️ セットアップ & 開発
