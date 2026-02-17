@@ -186,18 +186,7 @@ AImoltは、**Supabase API (PostgREST)** を利用して独自のJSONバック�
 
 > **注意**: Koyebへの自動リストア時は、**既存のデータ（publicスキーマ）を一度完全に削除 (DROP SCHEMA) して作り直します**。これにより、SupabaseとKoyebのデータ状態が完全に同期されます。
 
-#### 手動リストア
-バックアップされたJSONファイルからデータベースを復元するためのスクリプトが用意されています。
 
-```bash
-# 使用法: node dist/core/backup/restore.js <バックアップフォルダのパス> [--target=koyeb|supabase]
-
-# 例: Koyebへリストア (完全初期化 & 復元)
-node dist/core/backup/restore.js /app/temp/backup-2024-01-01 --target=koyeb
-
-# 例: Supabaseへリストア (Upsert)
-node dist/core/backup/restore.js /app/temp/backup-2024-01-01 --target=supabase
-```
 
 #### ヘルスチェック
 `https://aimolt.yusukesakai.com/` の **"Last Backup"** 欄には、**Koyebへのリストアが完了した日時** が表示されます。また、**"Last Activity"** 欄には、直近の会話または文字起こしが行われた日時が表示されます。これにより、システムが正常に稼働し、データが同期されているかを確認できます。

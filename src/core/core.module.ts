@@ -8,6 +8,7 @@ import { TavilyService } from './search/tavily.service';
 import { SystemService } from './system/system.service';
 
 import { BackupService } from './backup/backup.service';
+import { RestoreService } from './backup/restore.service';
 
 @Module({
     imports: [
@@ -16,7 +17,7 @@ import { BackupService } from './backup/backup.service';
         }),
         SupabaseModule,
     ],
-    providers: [GeminiService, PromptService, CommonService, TavilyService, BackupService, SystemService],
-    exports: [SupabaseModule, GeminiService, PromptService, CommonService, TavilyService, BackupService, SystemService],
+    providers: [GeminiService, PromptService, CommonService, TavilyService, BackupService, RestoreService, SystemService],
+    exports: [SupabaseModule, GeminiService, PromptService, CommonService, TavilyService, BackupService, RestoreService, SystemService],
 })
 export class CoreModule { }

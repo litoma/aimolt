@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { SupabaseService } from '../supabase/supabase.service';
+import { RestoreService } from './restore.service';
 
 @Injectable()
 export class BackupService implements OnApplicationBootstrap {
@@ -11,7 +12,8 @@ export class BackupService implements OnApplicationBootstrap {
 
     constructor(
         private readonly configService: ConfigService,
-        private readonly supabaseService: SupabaseService
+        private readonly supabaseService: SupabaseService,
+        private readonly restoreService: RestoreService
     ) { }
 
     onApplicationBootstrap() {
@@ -123,35 +125,7 @@ export class BackupService implements OnApplicationBootstrap {
         try {
             this.logger.log(`Starting restore process for directory: ${backupDir}`);
 
-            // Import the restore function dynamically or just assume it is bundled if we change the build 
-            // implementation. However, since we are in the same dir...
-            // Note: If we use standard import at top of file, we need to ensure restore.ts is treated as a module.
-            // It is now.
-
-            // To avoid static import issues if the file structure changes or during circular dependency checks (unlikely here),
-            // let's use require or dynamic import.
-            // But standard import is best for type safety.
-            // Let's rely on the fact that I will add the import at the top.
-
-            // For now, let's use the imported function.
-            // I need to add `import { restore } from './restore';` at the top of the file.
-            // But since I am editing the middle of the file here, I will use dynamic import 
-            // or I should have added the import statement in a separate step?
-            // "ReplaceFileContent" can handle multiple chunks? No, I am using single replace tool right now?
-            // I can use MultiReplaceFileContent or just use dynamic import here which is cleaner for optional/script-like modules.
-
-            const { restore } = require('./restore');
-            // OR check if I can use import()
-            // const restoreModule = await import('./restore');
-            // restoreModule.restore(...)
-
-            // Since this is a NestJS app (server-side), dynamic require is fine and robust.
-            // Using require ensuring relative path is correct relative to this file?
-            // In dist, both are in dist/core/backup/.
-            // In src, both are in src/core/backup/.
-            // So './restore' works.
-
-            await restore(backupDir, 'koyeb');
+            await this.restoreService.restore(backupDir, 'koyeb');
 
             this.logger.log('Automatic restore to Koyeb DB completed.');
 
