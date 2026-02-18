@@ -27,8 +27,18 @@ export class BlueskySchedulerService {
                 .single();
 
             if (error || !data) {
-                // No posts or error, log mostly if error isn't just "no rows" (PGRST116)
-                if (error && error.code !== 'PGRST116') {
+                // No posts found (PGRST116) means first run
+                if (error && error.code === 'PGRST116') {
+                    this.logger.log('No posts found. Initializing schedule with immediate post.');
+                    await this.supabase.getClient().from('posts').insert({
+                        content: '（初期化用・投稿なし）',
+                        next_scheduled_at: new Date().toISOString(),
+                        mode_id: 'initial',
+                    });
+                    return; // Next run will pick this up
+                }
+
+                if (error) {
                     this.logger.warn(`Failed to check schedule: ${error.message}`);
                 }
                 return;
