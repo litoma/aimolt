@@ -88,13 +88,17 @@ export class BlueskyPostingService {
 
             // ⑦ postsテーブルに記録
             const nextScheduledAt = this.calcNextSchedule(); // 1〜23時間後
-            await this.supabase.getClient().from('posts').insert({
+            const { error: insertError } = await this.supabase.getClient().from('posts').insert({
                 content: finalContent,
                 next_scheduled_at: nextScheduledAt.toISOString(),
                 mode_id: mode.id,
             });
 
-            this.logger.log(`Post saved. Next at: ${nextScheduledAt.toISOString()}`);
+            if (insertError) {
+                this.logger.error(`Failed to save post to DB: ${insertError.message}`);
+            } else {
+                this.logger.log(`Post saved. Next at: ${nextScheduledAt.toISOString()}`);
+            }
         } catch (error) {
             this.logger.error('Error in Bluesky posting execution', error);
         }

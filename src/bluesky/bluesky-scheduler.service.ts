@@ -30,11 +30,17 @@ export class BlueskySchedulerService {
                 // No posts found (PGRST116) means first run
                 if (error && error.code === 'PGRST116') {
                     this.logger.log('No posts found. Initializing schedule with immediate post.');
-                    await this.supabase.getClient().from('posts').insert({
+                    const { error: insertError } = await this.supabase.getClient().from('posts').insert({
                         content: '（初期化用・投稿なし）',
                         next_scheduled_at: new Date().toISOString(),
                         mode_id: 'initial',
                     });
+
+                    if (insertError) {
+                        this.logger.error(`Failed to insert initial post: ${insertError.message}`);
+                    } else {
+                        this.logger.log('Initial post schedule created.');
+                    }
                     return; // Next run will pick this up
                 }
 
