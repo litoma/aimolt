@@ -49,6 +49,13 @@ AImoltは、**Gemini** と **Supabase** を活用した、高度な対話能力�
 *   **Web Search**: `Tavily API` を使用して最新のWeb情報を検索。
 *   **Synthesis**: これらを統合し、Geminiが最適なアドバイスを作成してDiscordに返信します。
 
+### 6. 🦋 Bluesky 自動投稿 (Auto-Posting)
+AImoltの「内なる思考」をBlueskyに自動投稿します。
+
+*   **Dynamic Content**: 現在の感情 (VAD)、ユーザーとの関係性、直近の会話内容から、その瞬間の「気持ち」を生成します。
+*   **Privacy First**: 会話内容はGeminiによって抽象化され、個人情報を含まない形（「あるユーザーとの対話で...」など）で投稿されます。
+*   **Scheduling**: 1時間〜24時間の間隔でランダムに投稿スケジュールを決定します。
+
 ## 📂 プロジェクト構造
 
 ```
@@ -115,6 +122,9 @@ GEMINI_AI_MODEL_EMBEDDING="gemini-embedding-001"
 SUPABASE_URL=...
 SUPABASE_KEY=...
 TAVILY_API_KEY=...
+BLUESKY_IDENTIFIER=...
+BLUESKY_APP_PASSWORD=...
+
 ```
 
 ### データベース (Supabase)
@@ -162,6 +172,14 @@ erDiagram
         text text
         text advice
         halfvec(3072) embedding
+        timestamp created_at
+    }
+
+    posts {
+        bigint id PK
+        text content
+        timestamp next_scheduled_at
+        text mode_id
         timestamp created_at
     }
 

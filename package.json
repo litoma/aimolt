@@ -40,6 +40,7 @@
     "@nestjs/config": "^4.0.3",
     "@nestjs/core": "^11.1.13",
     "@nestjs/platform-express": "^11.1.13",
+    "@nestjs/schedule": "^6.1.1",
     "@supabase/supabase-js": "^2.50.1",
     "@types/pg": "^8.16.0",
     "axios": "^1.10.0",
