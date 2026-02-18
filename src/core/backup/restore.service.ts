@@ -51,8 +51,7 @@ export class RestoreService {
         };
 
         if (!dbConfig.host || !dbConfig.user || !dbConfig.password || !dbConfig.database) {
-            this.logger.error('Error: DATABASE_HOST, DATABASE_USER, DATABASE_PASSWORD, and DATABASE_NAME must be set for Koyeb restore.');
-            if (require.main === module) process.exit(1);
+            this.logger.log('Koyeb DB environment variables (DATABASE_HOST, etc.) not fully set. Skipping restore.');
             return;
         }
 
