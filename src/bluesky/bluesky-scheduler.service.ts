@@ -14,7 +14,7 @@ export class BlueskySchedulerService {
         private readonly postingService: BlueskyPostingService,
     ) { }
 
-    @Cron(CronExpression.EVERY_MINUTE)
+    @Cron(CronExpression.EVERY_5_MINUTES)
     async checkAndPost() {
         if (this.isPosting) return;
 
