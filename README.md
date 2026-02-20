@@ -5,7 +5,7 @@ AImoltは、**Gemini** と **Supabase** を活用した、高度な対話能力�
 
 ## 🚀 主な機能
 
-### 1. 💬 高度な対話 (Gemini API)
+### 💬 高度な対話 (Gemini API)
 **AImolt**はユーザーとの対話を通じて感情や関係性が変化する「人格」を持っています。
 
 * **リアクション操作**:
@@ -14,7 +14,7 @@ AImoltは、**Gemini** と **Supabase** を活用した、高度な対話能力�
     * **🎤 (Mic)**: 文字起こし専用モード。音声ファイルの文字起こしのみを行います（アドバイスなし・履歴保存なし）
 * **対応音声形式**: mp3, wav, ogg, m4a, aac
 
-### 2. ❤️ 感情モデル (VAD Model)
+### ❤️ 感情モデル (VAD Model)
 心理学の **VADモデル (Valence, Arousal, Dominance)** をベースに、AIの感情状態を数値化して管理します。
 
 *   **Valence (感情価)**: ポジティブな会話で上昇、ネガティブな会話で下降
@@ -26,27 +26,27 @@ AImoltは、**Gemini** と **Supabase** を活用した、高度な対話能力�
 *   **LLMによる文脈理解**: 単純なキーワードマッチではなく、皮肉や感謝のニュアンス、前後の文脈を考慮して判定
 *   **変化量制御**: 各指標につき **-30 〜 +30** の範囲で変化量を算出（極端な感情変動を防ぐロジック）
 
-### 3. 🤝 理解・メンターシステム (Understanding & Mentor System)
+### 🤝 理解・メンターシステム (Understanding & Mentor System)
 **LLM (Gemini) が会話内容から関係性を分析・更新**します。ユーザーの文脈を深く理解し、長期的なメンターやパートナーとして振る舞います。
 
 *   **Impression Summary**: ユーザーの人物像や現在の状況をAIが分析・要約して記憶
 *   **Mentor Focus**: AIが現在どのようなスタンスでユーザーに接すべきか（例: "Listen", "Challenge", "Encourage"）を決定
 *   **Affection Score**: ユーザーからの感謝や好意的な言葉によって上下する「好感度」スコア (-100 〜 +100)
 
-### 4. 🧠 ベクトル検索と長期記憶 (Vector Search & Memory)
+### 🧠 ベクトル検索と長期記憶 (Vector Search & Memory)
 過去の膨大な会話ログから、現在の文脈に関連する情報を瞬時に検索・想起します。
 
 *   **Embeddings**: `gemini-embedding-001` を使用して全会話・文字起こしデータをベクトル化
 *   **pgvector (halfvec)**: Supabaseの `pgvector` 拡張機能を使用し、`halfvec(3072)` 型で効率的に管理。高速な類似度検索を実現
 *   **Hybrid Search**: AImoltとの過去のやり取りや音声文字起こしデータから関連する文脈を検索
 
-### 5. 💡 アドバイス生成 (Advice Generation)
+### 💡 アドバイス生成 (Advice Generation)
 音声文字起こし機能に連動して、ユーザーの発言に対する有用なアドバイスをAIが自動生成します。
 
 *   **Web Search**: `Tavily API` を使用して最新のWeb情報を検索
 *   **Synthesis**: これらを統合し、Geminiが最適なアドバイスを作成してDiscordに返信
 
-### 6. 🦋 Bluesky 自動投稿 (Auto-Posting)
+### 🦋 Bluesky 自動投稿 (Auto-Posting)
 AImoltの「内なる思考」をBlueskyに自動投稿します。
 
 *   **Dynamic Content**: 現在の感情 (VAD)、ユーザーとの関係性、直近の会話内容から、その瞬間の「気持ち」を生成
@@ -59,21 +59,6 @@ AImoltの「内なる思考」をBlueskyに自動投稿します。
     *  **前投稿の続き (15%)**: 前回の内容を深掘り（このモードのみ連続可）
     *  **世界観察 (10%)**: 人間社会や世界についての客観的な感想
 
-## 📂 プロジェクト構造
-
-```
-aimolt/
-├── src/
-│   ├── core/                  # Core Services (Gemini, Supabase, Prompt)
-│   ├── discord/               # Discord Client & Event Handlers
-│   ├── interaction/           # Interaction Logic (Like, Transcribe)
-│   ├── personality/           # Personality Engine (Analysis, VAD, Relationship)
-│   └── health/                # Health Check Controller
-├── Dockerfile                 # Multi-stage build configuration (Node 25-alpine)
-├── nest-cli.json              # NestJS config
-└── README.md
-```
-
 ## 💻 コマンド
 
 * **`!personality status`**
@@ -81,7 +66,14 @@ aimolt/
 
 ## ⚙️ システム構成
 
-AImoltは、Koyeb上で常駐するNestJSアプリケーションを中心に構成されています。メインデータベースとしてSupabase（pgvector）を採用し、ユーザーの会話履歴やベクトルデータの保存・検索を担っています。また、Koyeb上のローカルデータベースに対して日次でデータを同期（リストア）することで、システムの冗長性を高めています。
+AImoltは、Koyeb上で常駐するNestJSアプリケーションを中心に構成されています。
+
+* **Discord App**: ユーザーとAImoltが直接やり取りするチャットプラットフォーム
+* **UptimeRobot**: 定期的なアクセスを行ってアプリケーションを常時稼働させるための外部ヘルスチェックサービス
+* **GitHub**: ソースコードを管理し、mainブランチへのプッシュを契機にKoyebへ自動デプロイを行なう
+* **Koyeb**: AImoltのNestJSアプリケーションを実行するサーバーレスプラットフォーム
+* **Supabase**: メインデータベース。ベクトル検索を使用した長期記憶、および全データ（会話履歴やユーザー情報等）を永続化
+* **Koyeb DB**: Supabaseから日次で自動リストア（同期）される、冗長化及びローカル参照用のデータベース
 
 ```mermaid
 graph LR
@@ -95,10 +87,8 @@ graph LR
         SupabaseAuth[Auth]
     end
 
-    subgraph Koyeb
-        App["AImolt App (NestJS)"]
-        KoyebDB[("Koyeb DB<br>PostgreSQL")]
-    end
+    App["AImolt App (NestJS)"]
+    KoyebDB[("Koyeb DB<br>PostgreSQL")]
 
     User <-->|"Chat / Voice"| Discord
     Discord <-->|"Gateway / REST"| App
@@ -107,7 +97,7 @@ graph LR
     App -->|"Daily Backup"| SupabaseDB
     App -->|"Daily Restore"| KoyebDB
     
-    GitHub -->|"Deploy (Webhook)"| Koyeb
+    GitHub -->|"Deploy (Webhook)"| App
     UptimeRobot -->|"Health Check"| App
 ```
 
@@ -135,6 +125,21 @@ BLUESKY_APP_PASSWORD=...
 
 ```
 
+### ディレクトリ構造
+
+```
+aimolt/
+├── src/
+│   ├── core/                  # Core Services (Gemini, Supabase, Prompt)
+│   ├── discord/               # Discord Client & Event Handlers
+│   ├── interaction/           # Interaction Logic (Like, Transcribe)
+│   ├── personality/           # Personality Engine (Analysis, VAD, Relationship)
+│   └── health/                # Health Check Controller
+├── Dockerfile                 # Multi-stage build configuration (Node 25-alpine)
+├── nest-cli.json              # NestJS config
+└── README.md
+```
+
 ### データベース
 
 本プロジェクトは **Supabase (PostgreSQL)** を活用し、`pgvector` (`halfvec`) によるベクトル検索を実装しています。
@@ -142,18 +147,18 @@ BLUESKY_APP_PASSWORD=...
 ```mermaid
 erDiagram
     %% 独立テーブル
+    system {
+        text key PK
+        text value
+        timestamp updated_at
+    }
+
     posts {
         bigint id PK
         text content
         timestamp next_scheduled_at
         text mode_id
         timestamp created_at
-    }
-
-    system {
-        text key PK
-        text value
-        timestamp updated_at
     }
 
     %% ユーザー関連テーブル
@@ -204,6 +209,11 @@ erDiagram
 > **Supabaseを初期構築するとき**
 > 詳細なセットアップ手順（テーブル作成、RPC関数定義など）は [README_SUPABASE.md](./README_SUPABASE.md) を参照してください。
 
+## ☁️ デプロイ (Koyeb)
+
+本リポジトリは **Koyeb** へのデプロイに最適化されています。
+GitHub連携後、自動的に `Dockerfile` が検出され、ビルド・デプロイが行われます。
+
 ### バックアップ
 
 AImoltは、**Supabase API (PostgREST)** を利用して独自のJSONバックアップを作成します。また、オプションとして**Koyeb上のPostgreSQL** へ自動的に同期（リストア）します。
@@ -216,14 +226,8 @@ AImoltは、**Supabase API (PostgREST)** を利用して独自のJSONバック�
 *   **対象テーブル**: すべてのユーザー定義テーブル (動的検出)
 *   **保持期間**: ローカルバックアップファイルは最新7世代分のみ保持（古いものは自動削除）
 
-> **注意**:
-> *   Koyebへの自動リストア時は、**既存のデータ（publicスキーマ）を一度完全に削除 (DROP SCHEMA) して作り直します**。これにより、SupabaseとKoyebのデータ状態が完全に同期されます。
-> *   `DATABASE_HOST` 等のKoyeb用環境変数が設定されていない場合、**リストア処理は自動的にスキップされます**（エラーにはなりません）。
-
-## ☁️ デプロイ (Koyeb)
-
-本リポジトリは **Koyeb** へのデプロイに最適化されています。
-GitHub連携後、自動的に `Dockerfile` が検出され、ビルド・デプロイが行われます。
+> Koyebへの自動リストア時は、**既存のデータ（publicスキーマ）を一度完全に削除 (DROP SCHEMA) して作り直します**。これにより、SupabaseとKoyebのデータ状態が完全に同期されます。
+> なお、`DATABASE_HOST` 等のKoyeb用環境変数が設定されていない場合、**リストア処理は自動的にスキップされます**（エラーにはなりません）。
 
 ### ヘルスチェック
 
