@@ -191,36 +191,24 @@ $$;
 
 ## 4. Row Level Security (RLS)
 
-本プロジェクトではサーバーサイド（Bot）から `service_role` キーまたは管理者権限のあるアカウントでアクセスする場合、RLSをバイパスできますが、`anon` キーを使用する場合やセキュリティを強化する場合は、RLSを有効化してください。
-
-現状のコードベースでは `anon` キーを使用している可能性があるため、以下のポリシーを推奨します（全アクセス許可）。
-※ 本番環境でユーザーごとのアクセス制御が必要な場合は、`user_id` に基づくポリシーに変更してください。
+本プロジェクトではサーバーサイド（Bot）から `Secret Key` でアクセスするため、RLSをバイパスします。
+セキュリティ担保のため、全てのテーブルでRLSを有効化してください（ポリシーを設定しないことで、デフォルトで全ての外部アクセスが遮断されます）。
 
 ```sql
+-- RLSを有効化 (ポリシーは作成しません)
 alter table emotions enable row level security;
-create policy "Allow all access" on emotions for all using (true);
-
 alter table relationships enable row level security;
-create policy "Allow all access" on relationships for all using (true);
-
 alter table conversations enable row level security;
-create policy "Allow all access" on conversations for all using (true);
-
 alter table transcripts enable row level security;
-create policy "Allow all access" on transcripts for all using (true);
-
 alter table system enable row level security;
-create policy "Allow all access" on system for all using (true);
-
 alter table posts enable row level security;
-create policy "Allow all access" on posts for all using (true);
 ```
 
 ## 5. 環境変数の設定
 
-Supabaseの `Project Settings` > `API` から URL と Anon Key を取得し、`.env` ファイルに設定してください。
+Supabaseの `Project Settings` > `API` > `Publishable and secret API keys` から **Secret Key** (`sb_secret_...`) を取得し、`.env` ファイルに設定してください。
 
 ```env
 SUPABASE_URL=https://<your-project-id>.supabase.co
-SUPABASE_KEY=<your-anon-key>
+SUPABASE_SECRET_KEY=sb_secret_...
 ```
