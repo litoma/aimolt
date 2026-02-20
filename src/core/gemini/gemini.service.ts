@@ -30,10 +30,11 @@ export class GeminiService {
         });
     }
 
-    async generateText(systemPrompt: string, userPrompt: string): Promise<string> {
+    async generateText(systemPrompt: string, userPrompt: string, modelOverride?: string): Promise<string> {
         return this.commonService.retry(async () => {
-            const modelName = this.configService.get<string>('GEMINI_AI_MODEL');
-            if (!modelName) throw new Error('GEMINI_AI_MODEL is not defined');
+            const defaultModelName = this.configService.get<string>('GEMINI_AI_MODEL');
+            if (!defaultModelName) throw new Error('GEMINI_AI_MODEL is not defined');
+            const modelName = modelOverride || defaultModelName;
 
             const model = this.genAI.getGenerativeModel({
                 model: modelName,
