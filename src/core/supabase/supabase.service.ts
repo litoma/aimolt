@@ -10,14 +10,15 @@ export class SupabaseService implements OnModuleInit {
 
     onModuleInit() {
         const supabaseUrl = this.configService.get<string>('SUPABASE_URL');
-        const supabaseKey = this.configService.get<string>('SUPABASE_KEY');
+        const supabaseKey = this.configService.get<string>('SUPABASE_SECRET_KEY');
 
         if (!supabaseUrl || !supabaseKey) {
-            throw new Error('SUPABASE_URL or SUPABASE_KEY is not defined in environment variables');
+            throw new Error('SUPABASE_URL or SUPABASE_SECRET_KEY is not defined in environment variables');
         }
 
         this.supabase = createClient(supabaseUrl, supabaseKey);
-        console.log('✅ Supabase client initialized via NestJS');
+        console.log('✅ Supabase client initialized via NestJS (Service Role)');
+        console.log(`🔑 Key Prefix Used: ${supabaseKey.substring(0, 15)}...`);
     }
 
     getClient(): SupabaseClient {
