@@ -1,5 +1,4 @@
 # AImolt is a Discord bot.
-
 AImoltは、**Gemini** と **Supabase** を活用した、高度な対話能力と長期記憶を持つDiscordボットです。
 **NestJS** で構築されており、**Koyeb** 上で常駐プロセスとして動作します。
 
@@ -112,15 +111,18 @@ graph LR
 ```env
 DISCORD_TOKEN=...
 GEMINI_API_KEY=...
-GEMINI_AI_MODEL="gemini-3-flash-preview"
-GEMINI_AI_MODEL_EMBEDDING="gemini-embedding-001"
+GEMINI_AI_MODEL="gemini-3-flash-preview"         # メインモデル
+GEMINI_AI_MODEL_EMBEDDING="gemini-embedding-001" # エンベディングモデル
 GEMINI_AI_MODEL_BLUESKY="gemini-3.1-pro-preview" # Bluesky専用モデル（オプション）
 SUPABASE_URL=...
 SUPABASE_SECRET_KEY=...
 TAVILY_API_KEY=...
-BLUESKY_IDENTIFIER=...
-BLUESKY_APP_PASSWORD=...
-
+DATABASE_HOST=...                                # Koyeb DB（オプション）
+DATABASE_USER=...                                # Koyeb DB（オプション）
+DATABASE_PASSWORD=...                            # Koyeb DB（オプション）
+DATABASE_NAME=...                                # Koyeb DB（オプション）
+BLUESKY_IDENTIFIER=...                           # Bluesky（オプション）
+BLUESKY_APP_PASSWORD=...                         # Bluesky（オプション）
 ```
 
 ### ディレクトリ構造
@@ -139,7 +141,6 @@ aimolt/
 ```
 
 ### データベース
-
 本プロジェクトは **Supabase (PostgreSQL)** を活用し、`pgvector` (`halfvec`) によるベクトル検索を実装しています。
 
 ```mermaid
@@ -208,12 +209,10 @@ erDiagram
 > 詳細なセットアップ手順（テーブル作成、RPC関数定義など）は [README_SUPABASE.md](./README_SUPABASE.md) を参照してください。
 
 ## ☁️ デプロイ (Koyeb)
-
 本リポジトリは **Koyeb** へのデプロイに最適化されています。
 GitHub連携後、自動的に `Dockerfile` が検出され、ビルド・デプロイが行われます。
 
 ### バックアップ
-
 AImoltは、**Supabase API (PostgREST)** を利用して独自のJSONバックアップを作成します。また、オプションとして**Koyeb上のPostgreSQL** へ自動的に同期（リストア）します。
 
 *   **スケジュール**: 毎日 00:00 (JST)
@@ -228,7 +227,6 @@ AImoltは、**Supabase API (PostgREST)** を利用して独自のJSONバック�
 > なお、`DATABASE_HOST` 等のKoyeb用環境変数が設定されていない場合、**リストア処理は自動的にスキップされます**（エラーにはなりません）。
 
 ### ヘルスチェック
-
 Koyebのヘルスチェックページの **"Last Backup"** 欄には、**Koyebへのリストアが完了した日時** が表示されます。また、**"Last Activity"** 欄には、直近の会話または文字起こしが行われた日時が表示されます。これにより、システムが正常に稼働し、データが同期されているかを確認できます。
 
 ## 📄 ライセンス
