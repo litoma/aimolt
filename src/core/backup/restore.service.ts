@@ -107,7 +107,7 @@ export class RestoreService {
 
                 // Update system table for persistence
                 const supabaseUrl = process.env.SUPABASE_URL;
-                const supabaseKey = process.env.SUPABASE_KEY;
+                const supabaseKey = process.env.SUPABASE_SECRET_KEY;
 
                 if (supabaseUrl && supabaseKey) {
                     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -213,10 +213,10 @@ export class RestoreService {
 
     private async restoreToSupabase(backupDir: string) {
         const supabaseUrl = process.env.SUPABASE_URL;
-        const supabaseKey = process.env.SUPABASE_KEY;
+        const supabaseKey = process.env.SUPABASE_SECRET_KEY;
 
         if (!supabaseUrl || !supabaseKey) {
-            this.logger.error('Error: SUPABASE_URL and SUPABASE_KEY must be set in environment variables.');
+            this.logger.error('Error: SUPABASE_URL and SUPABASE_SECRET_KEY must be set in environment variables.');
             if (require.main === module) process.exit(1);
             return;
         }
