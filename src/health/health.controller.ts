@@ -109,7 +109,7 @@ export class HealthController {
         if (fs.existsSync(backupCachePath)) {
             const stats = fs.statSync(backupCachePath);
             const now = new Date().getTime();
-            if (now - stats.mtime.getTime() < 24 * 60 * 60 * 1000) { // 24 hours
+            if (now - stats.mtime.getTime() < 60 * 60 * 1000) { // 1 hour
                 lastBackupTime = fs.readFileSync(backupCachePath, 'utf-8');
                 backupTimeCached = true;
             }

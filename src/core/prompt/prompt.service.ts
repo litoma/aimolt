@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SYSTEM_PROMPT, LIKE_REACTION_PROMPT, TRANSCRIBE_PROMPT } from '../../config/prompts';
+import { SYSTEM_PROMPT, CONVERSATIONS_PROMPT, TRANSCRIBE_PROMPT } from '../../config/prompts';
 
 @Injectable()
 export class PromptService {
@@ -10,7 +10,7 @@ export class PromptService {
     }
 
     getLikePrompt(): string {
-        return LIKE_REACTION_PROMPT;
+        return CONVERSATIONS_PROMPT;
     }
 
     getTranscribePrompt(): string {
