@@ -84,8 +84,9 @@ graph LR
 
     subgraph Koyeb
         App["AImolt App (NestJS)"]
-        KoyebDB[("Koyeb DB<br>PostgreSQL")]
     end
+    
+    KoyebDB[("Koyeb DB<br>PostgreSQL")]
 
     User <-->|"Chat / Voice"| Discord
     Discord <-->|"Gateway / REST"| App
@@ -96,9 +97,6 @@ graph LR
     
     GitHub -->|"Deploy (Webhook)"| Koyeb
     UptimeRobot -->|"Health Check"| App
-    
-    %% レイアウト調整: SupabaseをKoyebDBより上に配置
-    SupabaseDB ~~~ KoyebDB
 ```
 
 ## 🛠️ セットアップ & 開発
