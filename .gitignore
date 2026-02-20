@@ -20,3 +20,6 @@ temp/
 coverage/
 cov_profile/
 tests/
+
+# Scripts
+scripts/
