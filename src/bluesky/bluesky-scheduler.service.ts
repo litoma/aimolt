@@ -1,6 +1,7 @@
 
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { ConfigService } from '@nestjs/config';
 import { SupabaseService } from '../core/supabase/supabase.service';
 import { BlueskyPostingService } from './bluesky-posting.service';
 
@@ -12,10 +13,20 @@ export class BlueskySchedulerService {
     constructor(
         private readonly supabase: SupabaseService,
         private readonly postingService: BlueskyPostingService,
+        private readonly configService: ConfigService,
     ) { }
 
     @Cron(CronExpression.EVERY_5_MINUTES)
     async checkAndPost() {
+        // 環境変数が設定されていない場合は実行しない
+        const identifier = this.configService.get<string>('BLUESKY_IDENTIFIER');
+        const password = this.configService.get<string>('BLUESKY_APP_PASSWORD');
+        if (!identifier || !password) {
+            // ログがうるさくなるのでデバッグレベルにするか、初回のみ出すなどの工夫が必要だが、
+            // ここでは単に何もしない（スケジュール実行自体をスキップ）
+            return;
+        }
+
         if (this.isPosting) return;
 
         try {

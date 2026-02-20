@@ -1,5 +1,6 @@
 
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { SupabaseService } from '../core/supabase/supabase.service';
 import { GeminiService } from '../core/gemini/gemini.service';
 import { BlueskyService } from './bluesky.service';
@@ -15,9 +16,18 @@ export class BlueskyPostingService {
         private readonly gemini: GeminiService,
         private readonly bluesky: BlueskyService,
         private readonly promptService: BlueskyPromptService,
+        private readonly configService: ConfigService,
     ) { }
 
     async execute(): Promise<void> {
+        // 環境変数チェック（念のためここでも）
+        const identifier = this.configService.get<string>('BLUESKY_IDENTIFIER');
+        const password = this.configService.get<string>('BLUESKY_APP_PASSWORD');
+        if (!identifier || !password) {
+            this.logger.warn('Bluesky credentials missing. Aborting posting execution.');
+            return;
+        }
+
         this.logger.log('Bluesky posting started');
 
         try {
