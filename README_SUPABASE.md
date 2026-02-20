@@ -70,6 +70,7 @@ create table system (
   value text,
   updated_at timestamp with time zone default timezone('utc'::text, now())
 );
+```
 
 ### posts
 ```sql
@@ -84,8 +85,6 @@ create table posts (
 -- Initial record (Required for scheduler to pick up)
 insert into posts (content, mode_id, next_scheduled_at)
 values ('（初期化用・投稿なし）', 'initial', now());
-
-```
 ```
 
 ## 3. 関数 (RPCs) の作成
