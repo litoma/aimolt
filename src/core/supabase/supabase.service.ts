@@ -18,7 +18,6 @@ export class SupabaseService implements OnModuleInit {
 
         this.supabase = createClient(supabaseUrl, supabaseKey);
         console.log('✅ Supabase client initialized via NestJS (Service Role)');
-        console.log(`🔑 Key Prefix Used: ${supabaseKey.substring(0, 15)}...`);
     }
 
     getClient(): SupabaseClient {
