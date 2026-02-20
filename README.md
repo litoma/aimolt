@@ -92,7 +92,7 @@ graph LR
     Discord <-->|"Gateway / REST"| App
     
     App <-->|"Store/Retrieve Vector Data"| SupabaseDB
-    App -->|"Daily Backup"| SupabaseDB
+    SupabaseDB -->|"Daily Backup"| App
     App -->|"Daily Restore"| KoyebDB
     
     GitHub -->|"Deploy (Webhook)"| Koyeb
