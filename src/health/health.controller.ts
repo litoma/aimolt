@@ -134,6 +134,7 @@ export class HealthController {
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>AImolt Status</title>
+                <link rel="apple-touch-icon" href="${iconUrl}">
                 <style>
                     body {
                         display: flex;
