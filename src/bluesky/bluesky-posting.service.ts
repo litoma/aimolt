@@ -28,8 +28,10 @@ export class BlueskyPostingService {
             return;
         }
 
-        const blueskyModelOverride = this.configService.get<string>('GEMINI_AI_MODEL_BLUESKY');
-
+        const blueskyGenerationConfig = {
+            thinkingConfig: { thinkingLevel: 'MINIMAL' },
+            maxOutputTokens: 200,
+        };
 
         this.logger.log('Bluesky posting started');
 
@@ -70,7 +72,7 @@ export class BlueskyPostingService {
                 rawTranscripts
             );
 
-            const abstractionResult = await this.gemini.generateText(abstractionSystemPrompt, abstractionUserPrompt, blueskyModelOverride);
+            const abstractionResult = await this.gemini.generateText(abstractionSystemPrompt, abstractionUserPrompt, undefined, blueskyGenerationConfig);
             const abstractedContext = this.parseAbstractionResult(abstractionResult);
 
             // ③ 投稿モード選択
@@ -89,12 +91,12 @@ export class BlueskyPostingService {
                 mode,
             });
 
-            const postContent = await this.gemini.generateText(postingSystemPrompt, postingUserPrompt, blueskyModelOverride);
+            const postContent = await this.gemini.generateText(postingSystemPrompt, postingUserPrompt, undefined, blueskyGenerationConfig);
 
             // ⑤ 300文字チェック（超過した場合は再生成1回まで）
             const finalContent = postContent.length <= 300
                 ? postContent
-                : await this.retryGeneration(postingSystemPrompt, postingUserPrompt, blueskyModelOverride);
+                : await this.retryGeneration(postingSystemPrompt, postingUserPrompt, blueskyGenerationConfig);
 
             // ⑥ Blueskyに投稿
             await this.bluesky.post(finalContent);
@@ -192,9 +194,9 @@ export class BlueskyPostingService {
     }
 
     /** 300文字超の場合1回だけ再生成 */
-    private async retryGeneration(systemPrompt: string, userPrompt: string, modelOverride?: string): Promise<string> {
+    private async retryGeneration(systemPrompt: string, userPrompt: string, generationConfig?: object): Promise<string> {
         const retryUserPrompt = userPrompt + '\n\n【重要】前回の出力が長すぎました。必ず300文字以内で出力してください。';
-        const result = await this.gemini.generateText(systemPrompt, retryUserPrompt, modelOverride);
+        const result = await this.gemini.generateText(systemPrompt, retryUserPrompt, undefined, generationConfig);
         return result.slice(0, 300); // それでも超過したら強制カット
     }
 

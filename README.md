@@ -111,18 +111,17 @@ graph LR
 ```env
 DISCORD_TOKEN=...
 GEMINI_API_KEY=...
-GEMINI_AI_MODEL="gemini-3-flash-preview"         # メインモデル
-GEMINI_AI_MODEL_EMBEDDING="gemini-embedding-001" # エンベディングモデル
-GEMINI_AI_MODEL_BLUESKY="gemini-3.1-pro-preview" # Bluesky専用モデル（オプション）
+GEMINI_AI_MODEL="gemini-3-flash-preview"             # メインAIモデル
+GEMINI_AI_MODEL_EMBEDDING="gemini-embedding-001"     # エンベディングAIモデル
 SUPABASE_URL=...
 SUPABASE_SECRET_KEY=...
 TAVILY_API_KEY=...
-DATABASE_HOST=...                                # Koyeb DB（オプション）
-DATABASE_USER=...                                # Koyeb DB（オプション）
-DATABASE_PASSWORD=...                            # Koyeb DB（オプション）
-DATABASE_NAME=...                                # Koyeb DB（オプション）
-BLUESKY_IDENTIFIER=...                           # Bluesky（オプション）
-BLUESKY_APP_PASSWORD=...                         # Bluesky（オプション）
+DATABASE_HOST=...                                    # オプション（Koyeb DB）
+DATABASE_USER=...                                    # オプション（Koyeb DB）
+DATABASE_PASSWORD=...                                # オプション（Koyeb DB）
+DATABASE_NAME=...                                    # オプション（Koyeb DB）
+BLUESKY_IDENTIFIER=...                               # オプション（Bluesky）
+BLUESKY_APP_PASSWORD=...                             # オプション（Bluesky）
 ```
 
 ### ディレクトリ構造
