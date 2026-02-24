@@ -51,14 +51,22 @@ export class BlueskyPostingService {
             const userId = userData.user_id;
 
             // ② DBからデータ収集
-            const [emotions, relationship, conversations, transcripts, lastPost] =
+            const [emotions, relationship, lastPost] =
                 await Promise.all([
                     this.fetchEmotions(userId),
                     this.fetchRelationship(userId),
-                    this.fetchRecentConversations(userId, 3),
-                    this.fetchRecentTranscripts(userId, 2),
                     this.fetchLastPost(),
                 ]);
+
+            // ③ 投稿モード選択（ハイブリッド検索クエリに使うため先に行う）
+            const mode = this.promptService.selectMode(lastPost?.mode_id);
+
+            // ハイブリッドコンテキスト取得（直近 + ベクトル検索）
+            const { conversations, transcripts } = await this.fetchHybridContext(
+                userId,
+                mode,
+                lastPost?.content ?? '',
+            );
 
             // ② Step1: プライバシー抽象化
             const rawConversations = conversations
@@ -75,8 +83,7 @@ export class BlueskyPostingService {
             const abstractionResult = await this.gemini.generateText(abstractionSystemPrompt, abstractionUserPrompt, undefined, blueskyGenerationConfig);
             const abstractedContext = this.parseAbstractionResult(abstractionResult);
 
-            // ③ 投稿モード選択
-            const mode = this.promptService.selectMode(lastPost?.mode_id);
+            // （投稿モード選択はハイブリッドコンテキスト取得の前に移動済み）
 
             // ④ Step2: 投稿文生成
             const postingSystemPrompt = this.promptService.getPostingSystemPrompt();
@@ -144,7 +151,7 @@ export class BlueskyPostingService {
     private async fetchRecentConversations(userId: string, limit: number) {
         const { data } = await this.supabase.getClient()
             .from('conversations')
-            .select('user_message, bot_response')
+            .select('id, user_message, bot_response')
             .eq('user_id', userId)
             .order('created_at', { ascending: false })
             .limit(limit);
@@ -154,11 +161,81 @@ export class BlueskyPostingService {
     private async fetchRecentTranscripts(userId: string, limit: number) {
         const { data } = await this.supabase.getClient()
             .from('transcripts')
-            .select('text')
+            .select('id, text')
             .eq('user_id', userId)
             .order('created_at', { ascending: false })
             .limit(limit);
         return data ?? [];
+    }
+
+    /**
+     * ベクトル検索用クエリ文字列を組み立てる
+     * 「モードの意図 + 前回投稿」を埋め込みのクエリにする
+     */
+    private buildSearchQuery(mode: PostMode, previousPost: string): string {
+        return [mode.instruction, previousPost]
+            .filter(Boolean)
+            .join('\n')
+            .slice(0, 500);
+    }
+
+    /**
+     * 直近データ + ベクトル検索のハイブリッドでコンテキストを収集
+     * ベクトル検索が失敗した場合は直近データのみにフォールバック
+     */
+    private async fetchHybridContext(
+        userId: string,
+        mode: PostMode,
+        previousPost: string,
+    ): Promise<{
+        conversations: { id: string; user_message: string; bot_response: string }[];
+        transcripts: { id: string; text: string }[];
+    }> {
+        // --- 直近データ（固定） ---
+        const [recentConv, recentTrans] = await Promise.all([
+            this.fetchRecentConversations(userId, 2),
+            this.fetchRecentTranscripts(userId, 2),
+        ]);
+
+        try {
+            const recentConvIds = new Set(recentConv.map(c => c.id));
+            const recentTransIds = new Set(recentTrans.map(t => t.id));
+
+            // --- ベクトル検索 ---
+            const queryText = this.buildSearchQuery(mode, previousPost);
+            const queryEmbedding = await this.gemini.embedText(queryText);
+            const embeddingLiteral = `[${queryEmbedding.join(',')}]`;
+
+            const [vectorConv, vectorTrans] = await Promise.all([
+                this.supabase.getClient().rpc('match_conversations', {
+                    query_embedding: embeddingLiteral,
+                    match_threshold: 0.6,
+                    match_count: 4,
+                }),
+                this.supabase.getClient().rpc('match_transcripts', {
+                    query_embedding: embeddingLiteral,
+                    match_threshold: 0.6,
+                    match_count: 5,
+                }),
+            ]);
+
+            // 直近と重複するものを除外
+            const extraConv = (vectorConv.data ?? [])
+                .filter(c => !recentConvIds.has(c.id))
+                .slice(0, 2);
+
+            const extraTrans = (vectorTrans.data ?? [])
+                .filter(t => !recentTransIds.has(t.id))
+                .slice(0, 3);
+
+            return {
+                conversations: [...recentConv, ...extraConv],
+                transcripts: [...recentTrans, ...extraTrans],
+            };
+        } catch (error) {
+            this.logger.warn('Vector search failed, falling back to recent data only.', error);
+            return { conversations: recentConv, transcripts: recentTrans };
+        }
     }
 
     private async fetchLastPost() {

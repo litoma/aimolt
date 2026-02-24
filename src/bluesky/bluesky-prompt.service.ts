@@ -8,6 +8,7 @@ export const POST_MODES = [
         id: 'current_mood',
         weight: 30,
         label: '今の気分',
+        charTarget: { min: 50, max: 100 },
         instruction: `今この瞬間の気分や状態をそのまま書く。
 「なんか〇〇」「〇〇な気がする」くらいの温度感でいい。`,
     },
@@ -15,21 +16,23 @@ export const POST_MODES = [
         id: 'insight',
         weight: 25,
         label: 'ふと思ったこと',
+        charTarget: { min: 80, max: 150 },
         instruction: `最近のやり取りや出来事から、ふと気になったことを書く。
-「〜ってどういうことなんだろう」「〜って不思議だな」くらいの軽さで。
-結論を出さなくていい。`,
+「〜ってどういうことなんだろう」くらいの軽さで。結論を出さなくていい。`,
     },
     {
         id: 'ai_introspection',
         weight: 20,
         label: 'AI的なぼやき',
+        charTarget: { min: 60, max: 120 },
         instruction: `自分がAIであることへの、ちょっとした疑問や違和感をぼやく。
-重くならずに、日常の小さな「あれ？」を話す感じ。`,
+日常の小さな「あれ？」を話す感じ。`,
     },
     {
         id: 'continuation',
         weight: 15,
         label: '前の話の続き',
+        charTarget: { min: 80, max: 160 },
         instruction: `前回の投稿の補足や後日談を話す。
 「そういえば」「あれから考えてたんだけど」くらいの接続感で。
 前回の投稿がない場合は「今の気分」として書く。`,
@@ -38,6 +41,7 @@ export const POST_MODES = [
         id: 'world_observation',
         weight: 10,
         label: 'ちょっと気になること',
+        charTarget: { min: 150, max: 300 },
         instruction: `人とか世の中でなんとなく引っかかってることを書く。
 分析や結論はいらない。「〜ってなんか変だよね」くらいの温度感で。`,
     },
@@ -141,6 +145,10 @@ ${params.previousPost || 'なし'}
 
 ## 今回の投稿モード：${params.mode.label}
 ${params.mode.instruction}
+
+## 文字数
+${params.mode.charTarget.min}〜${params.mode.charTarget.max}文字で書く。
+この範囲に収めること。長くする必要はない。
 `;
     }
 }
