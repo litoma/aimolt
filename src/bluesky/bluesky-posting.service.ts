@@ -28,7 +28,7 @@ export class BlueskyPostingService {
             return;
         }
 
-        const blueskyGenerationConfig = {
+        const abstractionGenerationConfig = {
             thinkingConfig: { thinkingLevel: 'MINIMAL' },
             maxOutputTokens: 200,
         };
@@ -80,7 +80,7 @@ export class BlueskyPostingService {
                 rawTranscripts
             );
 
-            const abstractionResult = await this.gemini.generateText(abstractionSystemPrompt, abstractionUserPrompt, undefined, blueskyGenerationConfig);
+            const abstractionResult = await this.gemini.generateText(abstractionSystemPrompt, abstractionUserPrompt, undefined, abstractionGenerationConfig);
             const abstractedContext = this.parseAbstractionResult(abstractionResult);
 
             // （投稿モード選択はハイブリッドコンテキスト取得の前に移動済み）
@@ -98,12 +98,25 @@ export class BlueskyPostingService {
                 mode,
             });
 
-            const postContent = await this.gemini.generateText(postingSystemPrompt, postingUserPrompt, undefined, blueskyGenerationConfig);
+            // 投稿文生成はモード別トークン上限を使用
+            const postGenerationConfig = {
+                thinkingConfig: { thinkingLevel: 'MINIMAL' },
+                maxOutputTokens: mode.maxTokens,
+            };
+
+            let postContent = await this.gemini.generateText(postingSystemPrompt, postingUserPrompt, undefined, postGenerationConfig);
+
+            // 文末の途中切れ検知：句読点・改行で終わっていない場合は再生成
+            const endsCleanly = /[。、！？\n]$/.test(postContent.trim());
+            if (!endsCleanly) {
+                this.logger.warn('Post content seems truncated, retrying...');
+                postContent = await this.retryGeneration(postingSystemPrompt, postingUserPrompt, postGenerationConfig);
+            }
 
             // ⑤ 300文字チェック（超過した場合は再生成1回まで）
             const finalContent = postContent.length <= 300
                 ? postContent
-                : await this.retryGeneration(postingSystemPrompt, postingUserPrompt, blueskyGenerationConfig);
+                : await this.retryGeneration(postingSystemPrompt, postingUserPrompt, postGenerationConfig);
 
             // ⑥ Blueskyに投稿
             await this.bluesky.post(finalContent);

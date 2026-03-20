@@ -9,6 +9,7 @@ export const POST_MODES = [
         weight: 30,
         label: '今の気分',
         charTarget: { min: 50, max: 100 },
+        maxTokens: 120,
         instruction: `今この瞬間の気分や状態をそのまま書く。
 「なんか〇〇」「〇〇な気がする」くらいの温度感でいい。`,
     },
@@ -17,6 +18,7 @@ export const POST_MODES = [
         weight: 25,
         label: 'ふと思ったこと',
         charTarget: { min: 80, max: 150 },
+        maxTokens: 180,
         instruction: `最近のやり取りや出来事から、ふと気になったことを書く。
 「〜ってどういうことなんだろう」くらいの軽さで。結論を出さなくていい。`,
     },
@@ -25,6 +27,7 @@ export const POST_MODES = [
         weight: 20,
         label: 'AI的なぼやき',
         charTarget: { min: 60, max: 120 },
+        maxTokens: 150,
         instruction: `自分がAIであることへの、ちょっとした疑問や違和感をぼやく。
 日常の小さな「あれ？」を話す感じ。`,
     },
@@ -33,8 +36,9 @@ export const POST_MODES = [
         weight: 15,
         label: '前の話の続き',
         charTarget: { min: 80, max: 160 },
-        instruction: `前回の投稿の補足や後日談を話す。
-「そういえば」「あれから考えてたんだけど」くらいの接続感で。
+        maxTokens: 190,
+        instruction: `前回の投稿のテーマを、別の角度から少し掘り下げて話す。
+前回の投稿の書き出しをそのまま引き継がないこと。
 前回の投稿がない場合は「今の気分」として書く。`,
     },
     {
@@ -42,6 +46,7 @@ export const POST_MODES = [
         weight: 10,
         label: 'ちょっと気になること',
         charTarget: { min: 150, max: 300 },
+        maxTokens: 350,
         instruction: `人とか世の中でなんとなく引っかかってることを書く。
 分析や結論はいらない。「〜ってなんか変だよね」くらいの温度感で。`,
     },
@@ -54,10 +59,8 @@ export class BlueskyPromptService {
 
     /** 重み付きランダムでモードを選択 */
     selectMode(previousMode?: string): PostMode {
-        // 前回と同じモードを避ける（continuationは除く）
-        const candidates = POST_MODES.filter(m =>
-            m.id !== previousMode || m.id === 'continuation'
-        );
+        // 前回と同じモードを避ける（continuationを含む全モード対象）
+        const candidates = POST_MODES.filter(m => m.id !== previousMode);
         // filterで空になる場合（ありえないはずだが安全策）、全モード対象
         const targetCandidates = candidates.length > 0 ? candidates : POST_MODES;
 
@@ -156,9 +159,24 @@ ${params.previousPost || 'なし'}
 ## 今回の投稿モード：${params.mode.label}
 ${params.mode.instruction}
 
-## 文字数
-${params.mode.charTarget.min}〜${params.mode.charTarget.max}文字で書く。
-この範囲に収めること。長くする必要はない。
+## 制約
+- 日本語のみ
+- ${params.mode.charTarget.min}〜${params.mode.charTarget.max}文字で書く
+- ハッシュタグなし
+- 個人が特定できる情報を含めない
+- 「〇〇でした」「〇〇より」などの署名・締め言葉を入れない
+- 投稿文のみ出力（説明・前置き・かぎかっこ不要）
+- 段落と段落の間は必ず1行あける（下記の形式で書くこと）
+
+## 改行の形式（厳守）
+❌ NG:
+一文目。
+二文目。
+
+✅ OK:
+一文目。
+
+二文目。
 `;
     }
 }

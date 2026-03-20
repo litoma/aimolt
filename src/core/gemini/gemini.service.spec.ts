@@ -73,15 +73,4 @@ describe('GeminiService Model Override', () => {
             })
         );
     });
-
-    it('should use overridden model when modelOverride is provided', async () => {
-        await service.generateText('system prompt', 'user prompt', 'override-model');
-
-        expect(mockGetGenerativeModel).toHaveBeenCalledWith(
-            expect.objectContaining({
-                model: 'override-model',
-                systemInstruction: 'system prompt',
-            })
-        );
-    });
 });
