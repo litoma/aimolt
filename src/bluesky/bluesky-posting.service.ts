@@ -106,6 +106,17 @@ export class BlueskyPostingService {
 
             let postContent = await this.gemini.generateText(postingSystemPrompt, postingUserPrompt, undefined, postGenerationConfig);
 
+            // 思考断片サニタイズ：冒頭が英文の行を除去（thinkingLevel: MINIMALでも稀に混入）
+            postContent = postContent
+                .split('\n')
+                .filter((line, index) => index !== 0 || !/^[A-Za-z]/.test(line.trim()))
+                .join('\n')
+                .trim();
+            if (!postContent) {
+                this.logger.warn('Post content empty after sanitization, retrying...');
+                postContent = await this.retryGeneration(postingSystemPrompt, postingUserPrompt, postGenerationConfig);
+            }
+
             // 文末の途中切れ検知：句読点・改行で終わっていない場合は再生成
             const endsCleanly = /[。、！？\n]$/.test(postContent.trim());
             if (!endsCleanly) {
