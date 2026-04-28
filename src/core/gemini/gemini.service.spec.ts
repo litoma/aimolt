@@ -3,24 +3,23 @@ import { GeminiService } from './gemini.service';
 import { ConfigService } from '@nestjs/config';
 import { CommonService } from '../common/common.service';
 
-// Mock Google Generative AI
 const mockGenerateContent = jest.fn().mockResolvedValue({
-    response: { text: () => 'mocked text' }
+    text: 'mocked text'
 });
 
-const mockGetGenerativeModel = jest.fn().mockReturnValue({
-    generateContent: mockGenerateContent,
-    startChat: jest.fn(),
-    embedContent: jest.fn(),
-});
-
-jest.mock('@google/generative-ai', () => {
+jest.mock('@google/genai', () => {
     return {
-        GoogleGenerativeAI: jest.fn().mockImplementation(() => {
+        GoogleGenAI: jest.fn().mockImplementation(() => {
             return {
-                getGenerativeModel: mockGetGenerativeModel,
+                models: {
+                    generateContent: mockGenerateContent,
+                    embedContent: jest.fn(),
+                },
+                chats: {
+                    create: jest.fn(),
+                }
             };
-        }),
+        })
     };
 });
 
@@ -66,10 +65,12 @@ describe('GeminiService Model Override', () => {
     it('should use default GEMINI_AI_MODEL when modelOverride is not provided', async () => {
         await service.generateText('system prompt', 'user prompt');
 
-        expect(mockGetGenerativeModel).toHaveBeenCalledWith(
+        expect(mockGenerateContent).toHaveBeenCalledWith(
             expect.objectContaining({
                 model: 'default-model',
-                systemInstruction: 'system prompt',
+                config: expect.objectContaining({
+                    systemInstruction: 'system prompt',
+                })
             })
         );
     });

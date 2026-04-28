@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@atproto/api": "^0.18.21",
-    "@google/generative-ai": "^0.24.1",
+    "@google/genai": "^1.50.1",
     "@nestjs/common": "^11.1.13",
     "@nestjs/config": "^4.0.3",
     "@nestjs/core": "^11.1.13",

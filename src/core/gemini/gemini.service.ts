@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 import { CommonService } from '../common/common.service';
 
 @Injectable()
 export class GeminiService {
-    private genAI: GoogleGenerativeAI;
-    private model: GenerativeModel;
+    private genAI: GoogleGenAI;
 
     constructor(
         private configService: ConfigService,
@@ -15,19 +14,7 @@ export class GeminiService {
         const apiKey = this.configService.get<string>('GEMINI_API_KEY');
         if (!apiKey) throw new Error('GEMINI_API_KEY is not defined');
 
-        this.genAI = new GoogleGenerativeAI(apiKey);
-
-        const modelId = this.configService.get<string>('GEMINI_AI_MODEL');
-        if (!modelId) throw new Error('GEMINI_AI_MODEL is not defined');
-
-        this.model = this.genAI.getGenerativeModel({
-            model: modelId,
-            generationConfig: {
-                maxOutputTokens: 2000,
-                temperature: 1.0,
-                topP: 0.95,
-            }
-        });
+        this.genAI = new GoogleGenAI({ apiKey });
     }
 
     async generateText(systemPrompt: string, userPrompt: string, _modelOverride?: string, generationConfig?: object): Promise<string> {
@@ -35,15 +22,16 @@ export class GeminiService {
             const modelName = this.configService.get<string>('GEMINI_AI_MODEL');
             if (!modelName) throw new Error('GEMINI_AI_MODEL is not defined');
 
-            const model = this.genAI.getGenerativeModel({
+            const result = await this.genAI.models.generateContent({
                 model: modelName,
-                systemInstruction: systemPrompt,
-                ...(generationConfig ? { generationConfig } : {}),
+                contents: userPrompt,
+                config: {
+                    systemInstruction: systemPrompt,
+                    ...(generationConfig || {})
+                }
             });
 
-            const result = await model.generateContent(userPrompt);
-            const response = await result.response;
-            return response.text();
+            return result.text || '';
         }, 3, 1000, 10000, 'Gemini Text Generation');
     }
 
@@ -52,15 +40,16 @@ export class GeminiService {
             const modelName = this.configService.get<string>('GEMINI_AI_MODEL');
             if (!modelName) throw new Error('GEMINI_AI_MODEL is not defined');
 
-            const model = this.genAI.getGenerativeModel({
+            const result = await this.genAI.models.generateContent({
                 model: modelName,
-                systemInstruction: systemPrompt,
-                generationConfig: config
+                contents: parts,
+                config: {
+                    systemInstruction: systemPrompt,
+                    ...(config || {})
+                }
             });
 
-            const result = await model.generateContent(parts);
-            const response = await result.response;
-            return response.text();
+            return result.text || '';
         }, 3, 1000, 10000, 'Gemini Multimodal Generation');
     }
 
@@ -68,11 +57,13 @@ export class GeminiService {
         const modelName = this.configService.get<string>('GEMINI_AI_MODEL');
         if (!modelName) throw new Error('GEMINI_AI_MODEL is not defined');
 
-        const model = this.genAI.getGenerativeModel({
+        return this.genAI.chats.create({
             model: modelName,
-            systemInstruction: systemPrompt
+            config: {
+                systemInstruction: systemPrompt
+            },
+            history: history
         });
-        return model.startChat({ history });
     }
 
     async embedText(text: string): Promise<number[]> {
@@ -85,9 +76,11 @@ export class GeminiService {
             const SAFE_MAX_CHARS = 3000;
             const truncatedText = text.length > SAFE_MAX_CHARS ? text.slice(0, SAFE_MAX_CHARS) : text;
 
-            const model = this.genAI.getGenerativeModel({ model: modelName });
-            const result = await model.embedContent(truncatedText);
-            return result.embedding.values;
+            const result = await this.genAI.models.embedContent({
+                model: modelName,
+                contents: truncatedText
+            });
+            return result.embeddings?.[0]?.values || [];
         }, 3, 1000, 10000, 'Gemini Embedding Generation');
     }
 }
