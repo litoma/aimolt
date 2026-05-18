@@ -204,7 +204,31 @@ alter table system enable row level security;
 alter table posts enable row level security;
 ```
 
-## 5. 環境変数の設定
+## 5. Explicit API Grants (明示的な権限付与)
+
+> [!IMPORTANT]
+> **Supabase仕様変更への対応 (2026年5月30日以降のデフォルト動作)**
+> 新規プロジェクト、または2026年10月30日以降の既存プロジェクトにおいて、`public` スキーマの新規テーブルはデフォルトで Data API (supabase-js / REST) に公開されなくなりました。
+> 本プロジェクトはサーバーサイドから `service_role` キー（SUPABASE_SECRET_KEY）を使用してアクセスするため、API経由でアクセスできるように、以下のSQLを実行して `service_role` に明示的に権限を付与する必要があります。
+
+```sql
+-- テーブルへの権限付与
+grant select, insert, update, delete on table emotions to service_role;
+grant select, insert, update, delete on table relationships to service_role;
+grant select, insert, update, delete on table conversations to service_role;
+grant select, insert, update, delete on table transcripts to service_role;
+grant select, insert, update, delete on table system to service_role;
+grant select, insert, update, delete on table posts to service_role;
+
+-- カスタム関数 (RPC) への実行権限付与
+-- ※ PostgreSQLでは引数型まで含めた完全なシグネチャが必要です
+grant execute on function match_conversations(vector, double precision, integer, jsonb) to service_role;
+grant execute on function match_transcripts(vector, double precision, integer, jsonb) to service_role;
+grant execute on function get_all_tables() to service_role;
+grant execute on function get_table_columns(text) to service_role;
+```
+
+## 6. 環境変数の設定
 
 Supabaseの `Project Settings` > `API` > `Publishable and secret API keys` から **Secret Key** (`sb_secret_...`) を取得し、`.env` ファイルに設定してください。
 
