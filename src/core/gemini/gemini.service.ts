@@ -68,7 +68,7 @@ export class GeminiService {
 
     async embedText(text: string): Promise<number[]> {
         return this.commonService.retry(async () => {
-            const modelName = this.configService.get<string>('GEMINI_AI_MODEL_EMBEDDING') || 'models/gemini-embedding-001';
+            const modelName = this.configService.get<string>('GEMINI_AI_MODEL_EMBEDDING') || 'models/gemini-embedding-2';
 
             // Truncate text to fit within 2048 tokens.
             // Estimation: 1 token ~ 1.5 chars (Japanese/mixed). 
